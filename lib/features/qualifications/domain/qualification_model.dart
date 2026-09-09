@@ -1,0 +1,40 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'qualification_model.freezed.dart';
+
+@freezed
+class QualificationModel with _$QualificationModel {
+  const factory QualificationModel({
+    required String id,
+    @Default('') String studentId,
+    @Default('') String classroomId,
+    @Default('') String studentName,
+    @Default('') String classroomName,
+    @Default(0.0) double score,
+    @Default('') String type,
+    @Default('') String description,
+    @Default('') String date,
+  }) = _QualificationModel;
+
+  factory QualificationModel.fromJson(Map<String, dynamic> json) {
+    final attrs = json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    return QualificationModel(
+      id: json['data']?['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      studentId: attrs['student_id']?.toString() ?? '',
+      classroomId: attrs['classroom_id']?.toString() ?? '',
+      studentName: attrs['student_name'] ?? '',
+      classroomName: attrs['classroom_name'] ?? '',
+      score: _parseDouble(attrs['score']),
+      type: attrs['type'] ?? '',
+      description: attrs['description'] ?? '',
+      date: attrs['date'] ?? '',
+    );
+  }
+
+  static double _parseDouble(dynamic value) {
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
+  }
+}

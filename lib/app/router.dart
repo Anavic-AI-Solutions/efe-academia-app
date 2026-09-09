@@ -7,6 +7,10 @@ import '../features/auth/providers/auth_provider.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/forgot_password_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
+import '../features/classrooms/screens/classroom_list_screen.dart';
+import '../features/classrooms/screens/classroom_detail_screen.dart';
+import '../features/students/screens/student_list_screen.dart';
+import '../features/students/screens/student_detail_screen.dart';
 
 // ---------------------------------------------------------------------------
 // Scaffold with bottom navigation
@@ -125,8 +129,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/classrooms',
-                builder: (context, state) =>
-                    const _PlaceholderScreen(title: 'Classrooms'),
+                builder: (context, state) => const ClassroomListScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) => ClassroomDetailScreen(
+                      classroomId: state.pathParameters['id']!,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -134,8 +145,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/students',
-                builder: (context, state) =>
-                    const _PlaceholderScreen(title: 'Students'),
+                builder: (context, state) => const StudentListScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) => StudentDetailScreen(
+                      studentId: state.pathParameters['id']!,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
