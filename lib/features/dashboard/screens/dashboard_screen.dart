@@ -43,13 +43,13 @@ class DashboardScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(16),
       children: [
         const SizedBox(height: 48),
-        Row(
+        const Row(
           children: [
-            const LoadingShimmer(width: 56, height: 56, borderRadius: 28),
-            const SizedBox(width: 16),
+            LoadingShimmer(width: 56, height: 56, borderRadius: 28),
+            SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 LoadingShimmer(width: 160, height: 20),
                 SizedBox(height: 8),
                 LoadingShimmer(width: 100, height: 14),

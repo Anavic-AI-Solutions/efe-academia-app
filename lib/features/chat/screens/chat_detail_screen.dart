@@ -112,7 +112,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                  fillColor: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 10,
@@ -170,7 +170,7 @@ class _MessageBubble extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isMe
                     ? theme.colorScheme.primary
-                    : theme.colorScheme.surfaceVariant,
+                    : theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(16),
                   topRight: const Radius.circular(16),

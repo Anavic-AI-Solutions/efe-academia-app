@@ -71,7 +71,7 @@ class _NotificationTile extends StatelessWidget {
       tileColor: notification.read ? null : theme.colorScheme.primaryContainer.withOpacity(0.1),
       leading: CircleAvatar(
         backgroundColor: notification.read
-            ? theme.colorScheme.surfaceVariant
+            ? theme.colorScheme.surfaceContainerHighest
             : theme.colorScheme.primary,
         child: Icon(
           _getIcon(notification.type),
