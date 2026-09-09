@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../auth/providers/auth_provider.dart';
@@ -105,49 +106,49 @@ class DashboardScreen extends ConsumerWidget {
               icon: PhosphorIconsRegular.chalkboardTeacher,
               label: 'Classes',
               color: Colors.blue,
-              onTap: () {},
+              onTap: () => context.push('/classrooms'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.users,
               label: 'Students',
               color: Colors.green,
-              onTap: () {},
-            ),
-            QuickAction(
-              icon: PhosphorIconsRegular.calendarCheck,
-              label: 'Attendance',
-              color: Colors.orange,
-              onTap: () {},
-            ),
-            QuickAction(
-              icon: PhosphorIconsRegular.fileText,
-              label: 'Reports',
-              color: Colors.purple,
-              onTap: () {},
+              onTap: () => context.push('/students'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.bell,
-              label: 'Notices',
+              label: 'Notifications',
+              color: Colors.orange,
+              onTap: () => context.push('/notifications'),
+            ),
+            QuickAction(
+              icon: PhosphorIconsRegular.newspaper,
+              label: 'News',
+              color: Colors.purple,
+              onTap: () => context.push('/news'),
+            ),
+            QuickAction(
+              icon: PhosphorIconsRegular.calendarBlank,
+              label: 'Events',
               color: Colors.red,
-              onTap: () {},
+              onTap: () => context.push('/events'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.currencyDollar,
               label: 'Fees',
               color: AppColors.primary,
-              onTap: () {},
+              onTap: () => context.push('/fees'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.chatCircle,
               label: 'Chat',
               color: Colors.teal,
-              onTap: () {},
+              onTap: () => context.push('/chat'),
             ),
             QuickAction(
-              icon: PhosphorIconsRegular.gearSix,
-              label: 'Settings',
+              icon: PhosphorIconsRegular.magnifyingGlass,
+              label: 'Search',
               color: Colors.grey,
-              onTap: () {},
+              onTap: () => context.push('/search'),
             ),
           ],
         ),

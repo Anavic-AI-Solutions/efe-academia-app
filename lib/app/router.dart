@@ -11,6 +11,13 @@ import '../features/classrooms/screens/classroom_list_screen.dart';
 import '../features/classrooms/screens/classroom_detail_screen.dart';
 import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
+import '../features/chat/screens/chat_list_screen.dart';
+import '../features/chat/screens/chat_detail_screen.dart';
+import '../features/profile/screens/profile_screen.dart';
+import '../features/notifications/screens/notification_list_screen.dart';
+import '../features/news/screens/news_list_screen.dart';
+import '../features/events/screens/event_list_screen.dart';
+import '../features/search/screens/search_screen.dart';
 
 // ---------------------------------------------------------------------------
 // Scaffold with bottom navigation
@@ -58,29 +65,6 @@ class ScaffoldWithNav extends StatelessWidget {
             label: 'Profile',
           ),
         ],
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Placeholder screens for unimplemented routes
-// ---------------------------------------------------------------------------
-
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-
-  const _PlaceholderScreen({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
       ),
     );
   }
@@ -161,8 +145,16 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/chat',
-                builder: (context, state) =>
-                    const _PlaceholderScreen(title: 'Chat'),
+                builder: (context, state) => const ChatListScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) => ChatDetailScreen(
+                      chatId: state.pathParameters['id']!,
+                      chatName: state.uri.queryParameters['name'],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -170,12 +162,28 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/profile',
-                builder: (context, state) =>
-                    const _PlaceholderScreen(title: 'Profile'),
+                builder: (context, state) => const ProfileScreen(),
               ),
             ],
           ),
         ],
+      ),
+      // Standalone routes (not in bottom nav)
+      GoRoute(
+        path: '/notifications',
+        builder: (context, state) => const NotificationListScreen(),
+      ),
+      GoRoute(
+        path: '/news',
+        builder: (context, state) => const NewsListScreen(),
+      ),
+      GoRoute(
+        path: '/events',
+        builder: (context, state) => const EventListScreen(),
+      ),
+      GoRoute(
+        path: '/search',
+        builder: (context, state) => const SearchScreen(),
       ),
     ],
   );
