@@ -6,44 +6,90 @@ import 'package:intl/intl.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/large_title_bar.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
 import '../providers/news_provider.dart';
 import '../domain/news_model.dart';
 
-class NewsListScreen extends ConsumerWidget {
+class NewsListScreen extends ConsumerStatefulWidget {
   const NewsListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NewsListScreen> createState() => _NewsListScreenState();
+}
+
+class _NewsListScreenState extends ConsumerState<NewsListScreen> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      ref.read(newsListProvider.notifier).loadMore();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(newsListProvider);
+    final news = state.pagination.data;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('News'),
+      body: Column(
+        children: [
+          const LargeTitleBar(title: 'News'),
+          Expanded(
+            child: state.isLoading && news.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : state.error != null && news.isEmpty
+                    ? ErrorView(
+                        message: 'Failed to load news',
+                        detail: state.error,
+                        onRetry: () =>
+                            ref.read(newsListProvider.notifier).refresh(),
+                      )
+                    : news.isEmpty
+                        ? const EmptyState(
+                            icon: PhosphorIconsRegular.article,
+                            title: 'No news',
+                            subtitle: 'Check back later for updates',
+                          )
+                        : RefreshIndicator(
+                            onRefresh: () =>
+                                ref.read(newsListProvider.notifier).refresh(),
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                              itemCount:
+                                  news.length + (state.pagination.hasMore ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (index == news.length) {
+                                  return const Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+                                return _NewsCard(news: news[index]);
+                              },
+                            ),
+                          ),
+          ),
+        ],
       ),
-      body: state.isLoading && state.news.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : state.error != null && state.news.isEmpty
-              ? ErrorView(
-                  message: 'Failed to load news',
-                  detail: state.error,
-                  onRetry: () => ref.read(newsListProvider.notifier).refresh(),
-                )
-              : state.news.isEmpty
-                  ? const EmptyState(
-                      icon: PhosphorIconsRegular.article,
-                      title: 'No news',
-                      subtitle: 'Check back later for updates',
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () => ref.read(newsListProvider.notifier).refresh(),
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: state.news.length,
-                        itemBuilder: (context, index) => _NewsCard(
-                          news: state.news[index],
-                        ),
-                      ),
-                    ),
     );
   }
 }
@@ -55,56 +101,79 @@ class _NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            news.title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+          // Image placeholder
+          Container(
+            width: double.infinity,
+            height: 140,
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurfaceElevated : AppColors.lightSearchFill,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: Icon(
+              PhosphorIconsRegular.newspaper,
+              size: 40,
+              color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
             ),
           ),
-          if (news.eventDate != null) ...[
-            const SizedBox(height: 8),
-            Row(
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  PhosphorIconsRegular.calendar,
-                  size: 14,
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(width: 4),
                 Text(
-                  DateFormat('MMM d, yyyy').format(news.eventDate!),
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.primary,
+                  news.title,
+                  style: AppTypography.titleMedium.copyWith(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
                   ),
                 ),
+                if (news.eventDate != null) ...[
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Icon(
+                        PhosphorIconsRegular.calendar,
+                        size: 13,
+                        color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        DateFormat('MMM d, yyyy').format(news.eventDate!),
+                        style: AppTypography.labelSmall.copyWith(
+                          color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                const SizedBox(height: 8),
+                Text(
+                  news.content,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                  ),
+                ),
+                if (news.createdAt != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    DateFormat('MMM d, yyyy').format(news.createdAt!),
+                    style: AppTypography.labelSmall.copyWith(
+                      color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                    ),
+                  ),
+                ],
               ],
             ),
-          ],
-          const SizedBox(height: 8),
-          Text(
-            news.content,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodySmall?.color,
-            ),
           ),
-          if (news.createdAt != null) ...[
-            const SizedBox(height: 8),
-            Text(
-              'Published ${DateFormat('MMM d, yyyy').format(news.createdAt!)}',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.textTheme.bodySmall?.color?.withOpacity(0.6),
-              ),
-            ),
-          ],
         ],
       ),
     );

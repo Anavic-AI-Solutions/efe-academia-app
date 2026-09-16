@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
@@ -66,8 +67,10 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getClassrooms(search: state.search);
+      debugPrint('[Classrooms] Loaded ${result.data.length} items (search="${state.search}")');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
+      debugPrint('[Classrooms] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -76,8 +79,10 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getClassrooms(search: state.search);
+      debugPrint('[Classrooms] Refreshed ${result.data.length} items');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
+      debugPrint('[Classrooms] refresh ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

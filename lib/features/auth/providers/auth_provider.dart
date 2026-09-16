@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
@@ -66,30 +67,36 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> _init() async {
     try {
       final hasToken = await _repository.hasToken();
+      debugPrint('[Auth] _init: hasToken=$hasToken');
       if (!hasToken) {
         state = state.copyWith(status: AuthStatus.unauthenticated);
         return;
       }
       await _repository.loadTokenIntoClient();
       final user = await _repository.getCurrentUser();
+      debugPrint('[Auth] _init: user=${user.email} name=${user.name}');
       state = state.copyWith(
         status: AuthStatus.authenticated,
         user: user,
       );
     } catch (e) {
+      debugPrint('[Auth] _init ERROR: $e');
       state = state.copyWith(status: AuthStatus.unauthenticated);
     }
   }
 
   Future<void> login(String email, String password) async {
+    debugPrint('[Auth] login() email=$email');
     state = state.copyWith(status: AuthStatus.loading, error: null);
     try {
       final user = await _repository.login(email: email, password: password);
+      debugPrint('[Auth] login SUCCESS user=${user.email} role=${user.role}');
       state = state.copyWith(
         status: AuthStatus.authenticated,
         user: user,
       );
     } catch (e) {
+      debugPrint('[Auth] login ERROR: $e');
       state = state.copyWith(
         status: AuthStatus.error,
         error: e.toString(),
@@ -103,6 +110,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     required String password,
     required String passwordConfirmation,
   }) async {
+    debugPrint('[Auth] register() email=$email');
     state = state.copyWith(status: AuthStatus.loading, error: null);
     try {
       final user = await _repository.register(
@@ -111,11 +119,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
         password: password,
         passwordConfirmation: passwordConfirmation,
       );
+      debugPrint('[Auth] register SUCCESS user=${user.email}');
       state = state.copyWith(
         status: AuthStatus.authenticated,
         user: user,
       );
     } catch (e) {
+      debugPrint('[Auth] register ERROR: $e');
       state = state.copyWith(
         status: AuthStatus.error,
         error: e.toString(),
@@ -124,16 +134,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
+    debugPrint('[Auth] logout()');
     await _repository.logout();
     state = const AuthState(status: AuthStatus.unauthenticated);
   }
 
   Future<void> forgotPassword(String email) async {
+    debugPrint('[Auth] forgotPassword() email=$email');
     state = state.copyWith(status: AuthStatus.loading, error: null);
     try {
       await _repository.forgotPassword(email);
+      debugPrint('[Auth] forgotPassword SUCCESS');
       state = state.copyWith(status: AuthStatus.unauthenticated);
     } catch (e) {
+      debugPrint('[Auth] forgotPassword ERROR: $e');
       state = state.copyWith(
         status: AuthStatus.error,
         error: e.toString(),

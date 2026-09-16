@@ -13,7 +13,7 @@ class ClassroomApi {
       _client.get('/classrooms', queryParameters: {
         if (search != null && search.isNotEmpty) 'search': search,
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 
   Future<Response> getClassroom(String id) =>

@@ -5,6 +5,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../auth/providers/auth_provider.dart';
 import '../../../core/widgets/avatar.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -14,13 +16,16 @@ class ProfileScreen extends ConsumerWidget {
     final authState = ref.watch(authProvider);
     final user = authState.user;
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.fromLTRB(
+          20,
+          MediaQuery.of(context).padding.top + 16,
+          20,
+          40,
+        ),
         children: [
           // Profile header
           Center(
@@ -30,52 +35,102 @@ class ProfileScreen extends ConsumerWidget {
                   imageUrl: user?.avatarUrl,
                   name: user?.name ?? 'User',
                   size: 80,
-                  showBorder: true,
+                  showGradientRing: true,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   user?.name ?? 'User',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: AppTypography.headlineMedium.copyWith(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   user?.email ?? '',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodySmall?.color,
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 _RoleBadge(role: user?.role ?? ''),
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 36),
 
-          // Menu items
-          _MenuTile(
-            icon: PhosphorIconsRegular.user,
-            title: 'Edit Profile',
-            onTap: () {},
+          // Account section
+          _SectionLabel(title: 'Account', isDark: isDark),
+          const SizedBox(height: 8),
+          _SettingsGroup(
+            isDark: isDark,
+            children: [
+              _SettingsTile(
+                icon: PhosphorIconsRegular.user,
+                title: 'Edit Profile',
+                onTap: () {},
+                isDark: isDark,
+              ),
+              _SettingsTile(
+                icon: PhosphorIconsRegular.bell,
+                title: 'Notifications',
+                onTap: () => context.push('/notifications'),
+                isDark: isDark,
+              ),
+            ],
           ),
-          _MenuTile(
-            icon: PhosphorIconsRegular.bell,
-            title: 'Notifications',
-            onTap: () => context.push('/notifications'),
-          ),
-          _MenuTile(
-            icon: PhosphorIconsRegular.moon,
-            title: 'Theme',
-            onTap: () {},
-          ),
-          _MenuTile(
-            icon: PhosphorIconsRegular.info,
-            title: 'About',
-            onTap: () {},
-          ),
-
           const SizedBox(height: 24),
+
+          // Preferences section
+          _SectionLabel(title: 'Preferences', isDark: isDark),
+          const SizedBox(height: 8),
+          _SettingsGroup(
+            isDark: isDark,
+            children: [
+              _SettingsTile(
+                icon: PhosphorIconsRegular.moon,
+                title: 'Theme',
+                onTap: () {},
+                isDark: isDark,
+              ),
+              _SettingsTile(
+                icon: PhosphorIconsRegular.globe,
+                title: 'Language',
+                trailing: Text(
+                  'English',
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                  ),
+                ),
+                onTap: () {},
+                isDark: isDark,
+                showDivider: false,
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // About section
+          _SectionLabel(title: 'About', isDark: isDark),
+          const SizedBox(height: 8),
+          _SettingsGroup(
+            isDark: isDark,
+            children: [
+              _SettingsTile(
+                icon: PhosphorIconsRegular.info,
+                title: 'About',
+                onTap: () {},
+                isDark: isDark,
+              ),
+              _SettingsTile(
+                icon: PhosphorIconsRegular.question,
+                title: 'Help & Support',
+                onTap: () {},
+                isDark: isDark,
+                showDivider: false,
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
 
           // Logout button
           SizedBox(
@@ -87,6 +142,9 @@ class ProfileScreen extends ConsumerWidget {
                   builder: (context) => AlertDialog(
                     title: const Text('Logout'),
                     content: const Text('Are you sure you want to logout?'),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
@@ -94,7 +152,10 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: const Text('Logout'),
+                        child: const Text(
+                          'Logout',
+                          style: TextStyle(color: AppColors.error),
+                        ),
                       ),
                     ],
                   ),
@@ -103,12 +164,15 @@ class ProfileScreen extends ConsumerWidget {
                   await ref.read(authProvider.notifier).logout();
                 }
               },
-              icon: const Icon(PhosphorIconsBold.power),
+              icon: const Icon(PhosphorIconsBold.power, size: 20),
               label: const Text('Logout'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: theme.colorScheme.error,
-                side: BorderSide(color: theme.colorScheme.error.withOpacity(0.5)),
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                foregroundColor: AppColors.error,
+                side: BorderSide(color: AppColors.error.withOpacity(0.3)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 14),
               ),
             ),
           ),
@@ -125,18 +189,17 @@ class _RoleBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final roleColor = _getRoleColor(role);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         color: roleColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         _getRoleName(role),
-        style: theme.textTheme.labelSmall?.copyWith(
+        style: AppTypography.labelSmall.copyWith(
           color: roleColor,
           fontWeight: FontWeight.w600,
         ),
@@ -147,17 +210,17 @@ class _RoleBadge extends StatelessWidget {
   Color _getRoleColor(String role) {
     switch (role) {
       case 'admin':
-        return const Color(0xFFEF4444);
+        return AppColors.roleAdmin;
       case 'branch':
-        return const Color(0xFFF97316);
+        return AppColors.roleBranch;
       case 'professor':
-        return const Color(0xFF3B82F6);
+        return AppColors.roleProfessor;
       case 'student':
-        return const Color(0xFF10B981);
+        return AppColors.roleStudent;
       case 'parent':
-        return const Color(0xFF8B5CF6);
+        return AppColors.roleParent;
       default:
-        return const Color(0xFF6B7280);
+        return AppColors.primary;
     }
   }
 
@@ -179,29 +242,100 @@ class _RoleBadge extends StatelessWidget {
   }
 }
 
-class _MenuTile extends StatelessWidget {
+class _SectionLabel extends StatelessWidget {
+  final String title;
+  final bool isDark;
+
+  const _SectionLabel({required this.title, required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title.toUpperCase(),
+      style: AppTypography.labelSmall.copyWith(
+        color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+        letterSpacing: 0.8,
+      ),
+    );
+  }
+}
+
+class _SettingsGroup extends StatelessWidget {
+  final List<Widget> children;
+  final bool isDark;
+
+  const _SettingsGroup({required this.children, required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: children,
+      ),
+    );
+  }
+}
+
+class _SettingsTile extends StatelessWidget {
   final IconData icon;
   final String title;
+  final Widget? trailing;
   final VoidCallback? onTap;
+  final bool isDark;
+  final bool showDivider;
 
-  const _MenuTile({
+  const _SettingsTile({
     required this.icon,
     required this.title,
+    this.trailing,
     this.onTap,
+    required this.isDark,
+    this.showDivider = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: Icon(icon, color: theme.colorScheme.primary),
-        title: Text(title),
-        trailing: const Icon(PhosphorIconsRegular.caretRight),
-        onTap: onTap,
-      ),
+    return Column(
+      children: [
+        ListTile(
+          onTap: onTap,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          leading: Icon(
+            icon,
+            size: 20,
+            color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+          ),
+          title: Text(
+            title,
+            style: AppTypography.bodyLarge.copyWith(
+              color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+            ),
+          ),
+          trailing: trailing ??
+              Icon(
+                PhosphorIconsRegular.caretRight,
+                size: 16,
+                color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+              ),
+        ),
+        if (showDivider)
+          Divider(
+            height: 1,
+            indent: 52,
+            color: isDark ? AppColors.darkBorder : AppColors.lightDivider,
+          ),
+      ],
     );
   }
 }

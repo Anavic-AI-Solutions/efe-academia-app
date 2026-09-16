@@ -13,9 +13,9 @@ class NewsModel with _$NewsModel {
   }) = _NewsModel;
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
     return NewsModel(
-      id: json['data']?['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
       title: attrs['title'] ?? '',
       content: attrs['content'] ?? '',
       eventDate: attrs['event_date'] != null

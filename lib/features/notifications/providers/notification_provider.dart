@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
+import '../../../core/api/cursor_pagination.dart';
 import '../data/notification_api.dart';
 import '../data/notification_repository.dart';
 import '../domain/notification_model.dart';
@@ -22,24 +24,26 @@ final notificationRepositoryProvider = Provider<NotificationRepository>((ref) {
 // ---------------------------------------------------------------------------
 
 class NotificationListState {
-  final List<NotificationModel> notifications;
+  final CursorPagination<NotificationModel> pagination;
   final bool isLoading;
   final String? error;
 
-  const NotificationListState({
-    this.notifications = const [],
+  NotificationListState({
+    CursorPagination<NotificationModel>? pagination,
     this.isLoading = false,
     this.error,
-  });
+  }) : pagination = pagination ?? CursorPagination<NotificationModel>.empty();
+
+  List<NotificationModel> get notifications => pagination.data;
 
   NotificationListState copyWith({
-    List<NotificationModel>? notifications,
+    CursorPagination<NotificationModel>? pagination,
     bool? isLoading,
     String? error,
     bool clearError = false,
   }) {
     return NotificationListState(
-      notifications: notifications ?? this.notifications,
+      pagination: pagination ?? this.pagination,
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
     );
@@ -53,16 +57,18 @@ class NotificationListState {
 class NotificationListNotifier extends StateNotifier<NotificationListState> {
   final NotificationRepository _repository;
 
-  NotificationListNotifier(this._repository) : super(const NotificationListState()) {
+  NotificationListNotifier(this._repository) : super(NotificationListState()) {
     load();
   }
 
   Future<void> load() async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final notifications = await _repository.getNotifications();
-      state = state.copyWith(notifications: notifications, isLoading: false);
+      final result = await _repository.getNotifications();
+      debugPrint('[Notifications] Loaded ${result.data.length} items');
+      state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
+      debugPrint('[Notifications] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -70,8 +76,26 @@ class NotificationListNotifier extends StateNotifier<NotificationListState> {
   Future<void> refresh() async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final notifications = await _repository.getNotifications();
-      state = state.copyWith(notifications: notifications, isLoading: false);
+      final result = await _repository.getNotifications();
+      state = state.copyWith(pagination: result, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> loadMore() async {
+    if (!state.pagination.hasMore || state.isLoading) return;
+    state = state.copyWith(isLoading: true);
+    try {
+      final result = await _repository.getNotifications(
+        cursor: state.pagination.nextCursor,
+      );
+      state = state.copyWith(
+        pagination: result.copyWith(
+          data: [...state.pagination.data, ...result.data],
+        ),
+        isLoading: false,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -81,7 +105,11 @@ class NotificationListNotifier extends StateNotifier<NotificationListState> {
     try {
       await _repository.markAllRead();
       state = state.copyWith(
-        notifications: state.notifications.map((n) => n.copyWith(read: true)).toList(),
+        pagination: state.pagination.copyWith(
+          data: state.notifications
+              .map((n) => n.copyWith(read: true))
+              .toList(),
+        ),
       );
     } catch (e) {
       state = state.copyWith(error: e.toString());
@@ -92,7 +120,11 @@ class NotificationListNotifier extends StateNotifier<NotificationListState> {
     try {
       await _repository.markRead(id);
       state = state.copyWith(
-        notifications: state.notifications.map((n) => n.id == id ? n.copyWith(read: true) : n).toList(),
+        pagination: state.pagination.copyWith(
+          data: state.notifications
+              .map((n) => n.id == id ? n.copyWith(read: true) : n)
+              .toList(),
+        ),
       );
     } catch (e) {
       state = state.copyWith(error: e.toString());

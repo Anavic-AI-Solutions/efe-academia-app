@@ -15,7 +15,7 @@ class FeeApi {
         if (studentId != null) 'student_id': studentId,
         if (search != null && search.isNotEmpty) 'search': search,
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 
   Future<Response> getFee(String id) =>

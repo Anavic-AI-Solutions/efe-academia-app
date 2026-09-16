@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../providers/chat_provider.dart';
 import '../domain/message_model.dart';
+import '../../auth/providers/auth_provider.dart';
 
 class ChatDetailScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -25,10 +26,35 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   final _scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      ref.read(messagesProvider(widget.chatId).notifier).loadMore();
+    }
+  }
+
+  void _scrollToBottom() {
+    if (!_scrollController.hasClients) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients) return;
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   void _sendMessage() {
@@ -36,12 +62,15 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     if (text.isEmpty) return;
     ref.read(messagesProvider(widget.chatId).notifier).send(text);
     _controller.clear();
+    _scrollToBottom();
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(messagesProvider(widget.chatId));
+    final currentUserId = ref.watch(authProvider).user?.id;
     final theme = Theme.of(context);
+    final messages = state.messages;
 
     return Scaffold(
       appBar: AppBar(
@@ -50,9 +79,9 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
       body: Column(
         children: [
           Expanded(
-            child: state.isLoading && state.messages.isEmpty
+            child: state.isLoading && messages.isEmpty
                 ? const Center(child: CircularProgressIndicator())
-                : state.error != null && state.messages.isEmpty
+                : state.error != null && messages.isEmpty
                     ? Center(
                         child: Text(
                           'Failed to load messages',
@@ -61,7 +90,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                           ),
                         ),
                       )
-                    : state.messages.isEmpty
+                    : messages.isEmpty
                         ? Center(
                             child: Text(
                               'No messages yet\nStart the conversation!',
@@ -74,10 +103,23 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                         : ListView.builder(
                             controller: _scrollController,
                             padding: const EdgeInsets.all(16),
-                            itemCount: state.messages.length,
-                            itemBuilder: (context, index) => _MessageBubble(
-                              message: state.messages[index],
-                            ),
+                            itemCount: messages.length +
+                                (state.pagination.hasMore ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == messages.length) {
+                                return const Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+                              final message = messages[index];
+                              return _MessageBubble(
+                                message: message,
+                                isMe: message.senderId == currentUserId,
+                              );
+                            },
                           ),
           ),
           _buildInputBar(theme),
@@ -137,13 +179,13 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
 
 class _MessageBubble extends StatelessWidget {
   final MessageModel message;
+  final bool isMe;
 
-  const _MessageBubble({required this.message});
+  const _MessageBubble({required this.message, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isMe = message.isMe;
 
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,

@@ -20,9 +20,9 @@ class FeeModel with _$FeeModel {
   }) = _FeeModel;
 
   factory FeeModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
     return FeeModel(
-      id: json['data']?['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
       studentId: attrs['student_id']?.toString() ?? '',
       studentName: attrs['student_name'] ?? '',
       numberFee: _parseInt(attrs['number_fee']),

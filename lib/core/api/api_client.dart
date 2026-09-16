@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../storage/secure_storage.dart';
@@ -10,8 +11,11 @@ class ApiClient {
   final SecureStorage _storage;
 
   ApiClient(this._storage) {
+    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1';
+    debugPrint('[API] Base URL: $baseUrl');
+
     dio = Dio(BaseOptions(
-      baseUrl: dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1',
+      baseUrl: baseUrl,
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
       headers: {
@@ -22,6 +26,16 @@ class ApiClient {
     dio.interceptors.addAll([
       AuthInterceptor(_storage),
       ErrorInterceptor(),
+      if (kDebugMode)
+        LogInterceptor(
+          request: true,
+          requestHeader: false,
+          requestBody: true,
+          responseHeader: false,
+          responseBody: true,
+          error: true,
+          logPrint: (obj) => debugPrint('[API] $obj'),
+        ),
     ]);
   }
 

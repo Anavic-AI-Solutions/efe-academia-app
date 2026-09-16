@@ -19,9 +19,9 @@ class ClassroomModel with _$ClassroomModel {
   }) = _ClassroomModel;
 
   factory ClassroomModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
     return ClassroomModel(
-      id: json['data']?['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
       name: attrs['name'] ?? '',
       description: attrs['description'] ?? '',
       status: attrs['status'] ?? '',

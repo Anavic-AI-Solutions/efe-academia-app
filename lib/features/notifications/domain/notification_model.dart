@@ -15,9 +15,9 @@ class NotificationModel with _$NotificationModel {
   }) = _NotificationModel;
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
     return NotificationModel(
-      id: json['data']?['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
       title: attrs['title'] ?? '',
       body: attrs['body'] ?? '',
       read: attrs['read'] ?? false,

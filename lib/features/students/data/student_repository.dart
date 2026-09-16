@@ -12,11 +12,17 @@ class StudentRepository {
 
   Future<CursorPagination<StudentModel>> getStudents({
     String? search,
+    String? status,
+    String? year,
+    String? branch,
     String? cursor,
   }) async {
     try {
       final response = await _api.getStudents(
         search: search,
+        status: status,
+        year: year,
+        branch: branch,
         cursor: cursor,
       );
       final data = response.data;
@@ -26,7 +32,7 @@ class StudentRepository {
       final meta = data['meta'] ?? {};
       return CursorPagination(
         data: items,
-        nextCursor: meta['next_cursor'],
+        nextCursor: meta['cursor'],
         hasMore: meta['has_more'] ?? false,
         total: meta['total'],
       );

@@ -30,7 +30,7 @@ class QualificationRepository {
       final meta = data['meta'] ?? {};
       return CursorPagination(
         data: items,
-        nextCursor: meta['next_cursor'],
+        nextCursor: meta['cursor'],
         hasMore: meta['has_more'] ?? false,
         total: meta['total'],
       );

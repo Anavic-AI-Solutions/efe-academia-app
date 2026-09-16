@@ -5,6 +5,13 @@ class AppTypography {
 
   static const String _fontFamily = 'PlusJakartaSans';
 
+  static const TextStyle displayLarge = TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 32,
+    fontWeight: FontWeight.w700,
+    height: 1.15,
+  );
+
   static const TextStyle headlineLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 28,
@@ -29,7 +36,14 @@ class AppTypography {
   static const TextStyle titleMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 16,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
+    height: 1.35,
+  );
+
+  static const TextStyle titleSmall = TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
     height: 1.4,
   );
 
@@ -61,9 +75,16 @@ class AppTypography {
     height: 1.4,
   );
 
-  static const TextStyle labelSmall = TextStyle(
+  static const TextStyle labelMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12,
+    fontWeight: FontWeight.w500,
+    height: 1.4,
+  );
+
+  static const TextStyle labelSmall = TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 11,
     fontWeight: FontWeight.w500,
     height: 1.4,
   );

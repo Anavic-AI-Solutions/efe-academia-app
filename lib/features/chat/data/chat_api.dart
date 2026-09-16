@@ -8,15 +8,15 @@ class ChatApi {
   Future<Response> getChats({String? cursor, int limit = 20}) =>
       _client.get('/chats', queryParameters: {
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 
   Future<Response> getMessages(String chatId, {String? cursor, int limit = 50}) =>
       _client.get('/chats/$chatId/messages', queryParameters: {
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 
   Future<Response> sendMessage(String chatId, String body) =>
-      _client.post('/chats/$chatId/messages', data: {'body': body});
+      _client.post('/chats/$chatId/messages', data: {'message': body});
 }

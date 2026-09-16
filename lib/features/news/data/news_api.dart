@@ -8,6 +8,6 @@ class NewsApi {
   Future<Response> getNews({String? cursor, int limit = 20}) =>
       _client.get('/news', queryParameters: {
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 }

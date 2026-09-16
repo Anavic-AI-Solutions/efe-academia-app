@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
@@ -61,8 +62,14 @@ class DashboardNotifier extends StateNotifier<DashboardState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final data = await _repository.getDashboard();
+      debugPrint(
+        '[Dashboard] SUCCESS students=${data.totalStudents} '
+        'classrooms=${data.totalClassrooms} attendance=${data.attendanceRate} '
+        'pendingFees=${data.pendingFees}',
+      );
       state = state.copyWith(data: data, isLoading: false);
     } catch (e) {
+      debugPrint('[Dashboard] ERROR: $e');
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),

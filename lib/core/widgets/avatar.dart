@@ -1,18 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../app/theme/app_colors.dart';
 
 class AppAvatar extends StatelessWidget {
   final String? imageUrl;
   final String name;
   final double size;
   final bool showBorder;
+  final bool showGradientRing;
 
   const AppAvatar({
     super.key,
     this.imageUrl,
     required this.name,
-    this.size = 40,
+    this.size = 44,
     this.showBorder = false,
+    this.showGradientRing = false,
   });
 
   static const List<Color> _colorPalette = [
@@ -32,8 +35,10 @@ class AppAvatar extends StatelessWidget {
   }
 
   String get _initials {
-    final parts = name.trim().split(RegExp(r'\s+'));
-    if (parts.isEmpty) return '?';
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return '?';
+    final parts = trimmed.split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '?';
     if (parts.length == 1) return parts[0][0].toUpperCase();
     return '${parts[0][0]}${parts[parts.length - 1][0]}'.toUpperCase();
   }
@@ -42,32 +47,73 @@ class AppAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final borderWidth = showBorder ? 2.0 : 0.0;
     final totalSize = size + borderWidth * 2;
+    final ringWidth = showGradientRing ? 3.0 : 0.0;
+    final ringTotalSize = totalSize + ringWidth * 2;
 
-    return Container(
-      width: totalSize,
-      height: totalSize,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: showBorder
-            ? Border.all(
-                color: Theme.of(context).colorScheme.surface,
-                width: borderWidth,
-              )
-            : null,
-      ),
-      child: ClipOval(
-        child: imageUrl != null && imageUrl!.isNotEmpty
-            ? CachedNetworkImage(
-                imageUrl: imageUrl!,
-                width: size,
-                height: size,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => _buildInitials(),
-                errorWidget: (context, url, error) => _buildInitials(),
-              )
-            : _buildInitials(),
-      ),
+    Widget avatar = ClipOval(
+      child: imageUrl != null && imageUrl!.isNotEmpty
+          ? CachedNetworkImage(
+              imageUrl: imageUrl!,
+              width: size,
+              height: size,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => _buildInitials(),
+              errorWidget: (context, url, error) => _buildInitials(),
+            )
+          : _buildInitials(),
     );
+
+    if (showBorder) {
+      avatar = Container(
+        width: totalSize,
+        height: totalSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.surface,
+            width: borderWidth,
+          ),
+        ),
+        child: avatar,
+      );
+    }
+
+    if (showGradientRing) {
+      avatar = Container(
+        width: ringTotalSize,
+        height: ringTotalSize,
+        padding: const EdgeInsets.all(3),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: AppColors.primaryGradient,
+        ),
+        child: Container(
+          width: totalSize,
+          height: totalSize,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Theme.of(context).colorScheme.surface,
+              width: borderWidth > 0 ? borderWidth : 2,
+            ),
+          ),
+          child: ClipOval(
+            child: imageUrl != null && imageUrl!.isNotEmpty
+                ? CachedNetworkImage(
+                    imageUrl: imageUrl!,
+                    width: size,
+                    height: size,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => _buildInitials(),
+                    errorWidget: (context, url, error) => _buildInitials(),
+                  )
+                : _buildInitials(),
+          ),
+        ),
+      );
+    }
+
+    return avatar;
   }
 
   Widget _buildInitials() {
@@ -83,7 +129,7 @@ class AppAvatar extends StatelessWidget {
         _initials,
         style: TextStyle(
           color: Colors.white,
-          fontSize: size * 0.38,
+          fontSize: size * 0.36,
           fontWeight: FontWeight.w600,
         ),
       ),

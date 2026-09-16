@@ -17,7 +17,7 @@ class QualificationApi {
         if (classroomId != null) 'classroom_id': classroomId,
         if (search != null && search.isNotEmpty) 'search': search,
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 
   Future<Response> getQualification(String id) =>

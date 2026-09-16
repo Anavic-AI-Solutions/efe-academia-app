@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../app/theme/app_colors.dart';
 
 class LoadingShimmer extends StatelessWidget {
   final double width;
@@ -10,19 +11,21 @@ class LoadingShimmer extends StatelessWidget {
     super.key,
     required this.width,
     required this.height,
-    this.borderRadius = 8,
+    this.borderRadius = 12,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: isDark ? AppColors.darkSurfaceElevated : const Color(0xFFE2E8F0),
+      highlightColor: isDark ? AppColors.darkSurface : const Color(0xFFF8FAFC),
       child: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? AppColors.darkSurfaceElevated : Colors.white,
           borderRadius: BorderRadius.circular(borderRadius),
         ),
       ),
@@ -37,19 +40,37 @@ class ListShimmer extends StatelessWidget {
   const ListShimmer({
     super.key,
     this.itemCount = 5,
-    this.itemHeight = 80,
+    this.itemHeight = 72,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: itemCount,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(bottom: 12),
-        child: LoadingShimmer(
-          width: double.infinity,
-          height: itemHeight,
+        child: Row(
+          children: [
+            const LoadingShimmer(width: 44, height: 44, borderRadius: 22),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  LoadingShimmer(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: 14,
+                  ),
+                  const SizedBox(height: 8),
+                  LoadingShimmer(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: 12,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

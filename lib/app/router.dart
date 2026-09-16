@@ -18,6 +18,194 @@ import '../features/notifications/screens/notification_list_screen.dart';
 import '../features/news/screens/news_list_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
+import '../app/theme/app_colors.dart';
+
+// ---------------------------------------------------------------------------
+// Custom Bottom Navigation Bar
+// ---------------------------------------------------------------------------
+
+class CustomBottomNav extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
+
+  const CustomBottomNav({super.key, required this.navigationShell});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 64,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _NavItem(
+                icon: PhosphorIconsRegular.house,
+                selectedIcon: PhosphorIconsFill.house,
+                label: 'Home',
+                isSelected: navigationShell.currentIndex == 0,
+                onTap: () => navigationShell.goBranch(
+                  0,
+                  initialLocation: 0 == navigationShell.currentIndex,
+                ),
+                isDark: isDark,
+              ),
+              _NavItem(
+                icon: PhosphorIconsRegular.chalkboardTeacher,
+                selectedIcon: PhosphorIconsFill.chalkboardTeacher,
+                label: 'Classes',
+                isSelected: navigationShell.currentIndex == 1,
+                onTap: () => navigationShell.goBranch(
+                  1,
+                  initialLocation: 1 == navigationShell.currentIndex,
+                ),
+                isDark: isDark,
+              ),
+              _CenterSearchItem(onTap: () => context.push('/search')),
+              _NavItem(
+                icon: PhosphorIconsRegular.chatCircle,
+                selectedIcon: PhosphorIconsFill.chatCircle,
+                label: 'Chat',
+                isSelected: navigationShell.currentIndex == 2,
+                onTap: () => navigationShell.goBranch(
+                  2,
+                  initialLocation: 2 == navigationShell.currentIndex,
+                ),
+                isDark: isDark,
+              ),
+              _NavItem(
+                icon: PhosphorIconsRegular.userCircle,
+                selectedIcon: PhosphorIconsFill.userCircle,
+                label: 'Profile',
+                isSelected: navigationShell.currentIndex == 3,
+                onTap: () => navigationShell.goBranch(
+                  3,
+                  initialLocation: 3 == navigationShell.currentIndex,
+                ),
+                isDark: isDark,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  final IconData icon;
+  final IconData selectedIcon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final bool isDark;
+
+  const _NavItem({
+    required this.icon,
+    required this.selectedIcon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isSelected
+        ? (isDark ? const Color(0xFF6366F1) : AppColors.primary)
+        : (isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary);
+
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        width: 64,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isSelected ? selectedIcon : icon,
+              size: 24,
+              color: color,
+            ),
+            const SizedBox(height: 4),
+            Container(
+              width: 4,
+              height: 4,
+              decoration: BoxDecoration(
+                color: isSelected ? color : Colors.transparent,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CenterSearchItem extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _CenterSearchItem({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        width: 64,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: const BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x334F46E5),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                PhosphorIconsFill.magnifyingGlass,
+                size: 20,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Container(
+              width: 4,
+              height: 4,
+              decoration: const BoxDecoration(
+                color: Colors.transparent,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Scaffold with bottom navigation
@@ -32,40 +220,7 @@ class ScaffoldWithNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) => navigationShell.goBranch(
-          index,
-          initialLocation: index == navigationShell.currentIndex,
-        ),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.house),
-            selectedIcon: Icon(PhosphorIconsFill.house),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.chalkboardTeacher),
-            selectedIcon: Icon(PhosphorIconsFill.chalkboardTeacher),
-            label: 'Classes',
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.users),
-            selectedIcon: Icon(PhosphorIconsFill.users),
-            label: 'Students',
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.chatCircle),
-            selectedIcon: Icon(PhosphorIconsFill.chatCircle),
-            label: 'Chat',
-          ),
-          NavigationDestination(
-            icon: Icon(PhosphorIconsRegular.userCircle),
-            selectedIcon: Icon(PhosphorIconsFill.userCircle),
-            label: 'Profile',
-          ),
-        ],
-      ),
+      bottomNavigationBar: CustomBottomNav(navigationShell: navigationShell),
     );
   }
 }
@@ -128,22 +283,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/students',
-                builder: (context, state) => const StudentListScreen(),
-                routes: [
-                  GoRoute(
-                    path: ':id',
-                    builder: (context, state) => StudentDetailScreen(
-                      studentId: state.pathParameters['id']!,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
                 path: '/chat',
                 builder: (context, state) => const ChatListScreen(),
                 routes: [
@@ -168,7 +307,18 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      // Standalone routes (not in bottom nav)
+      GoRoute(
+        path: '/students',
+        builder: (context, state) => const StudentListScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => StudentDetailScreen(
+              studentId: state.pathParameters['id']!,
+            ),
+          ),
+        ],
+      ),
       GoRoute(
         path: '/notifications',
         builder: (context, state) => const NotificationListScreen(),

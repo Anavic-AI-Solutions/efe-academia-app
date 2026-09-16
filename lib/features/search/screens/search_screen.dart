@@ -5,6 +5,10 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/api/api_provider.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/widgets/empty_state.dart';
+import '../../../core/widgets/large_title_bar.dart';
+import '../../../core/widgets/search_bar.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
 
 // ---------------------------------------------------------------------------
 // Search State
@@ -137,131 +141,211 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(searchProvider);
-    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _controller,
-          focusNode: _focusNode,
-          decoration: InputDecoration(
-            hintText: 'Search...',
-            border: InputBorder.none,
-            hintStyle: TextStyle(color: theme.textTheme.bodySmall?.color),
-          ),
-          onSubmitted: (value) => ref.read(searchProvider.notifier).search(value),
-          onChanged: (value) {
-            if (value.isEmpty) {
-              ref.read(searchProvider.notifier).clear();
-            }
-          },
-        ),
-        actions: [
-          if (state.query.isNotEmpty)
-            IconButton(
-              onPressed: () {
-                _controller.clear();
-                ref.read(searchProvider.notifier).clear();
-              },
-              icon: const Icon(PhosphorIconsRegular.x),
+      body: Column(
+        children: [
+          LargeTitleBar(
+            title: 'Search',
+            bottom: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+              child: AppSearchBar(
+                controller: _controller,
+                hintText: 'Search students, classrooms, news...',
+                onChanged: (value) {
+                  if (value.isEmpty) {
+                    ref.read(searchProvider.notifier).clear();
+                  }
+                },
+                suffix: state.query.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(PhosphorIconsRegular.x, size: 18),
+                        onPressed: () {
+                          _controller.clear();
+                          ref.read(searchProvider.notifier).clear();
+                        },
+                      )
+                    : null,
+              ),
             ),
+          ),
+          Expanded(
+            child: state.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : state.error != null
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 72,
+                              height: 72,
+                              decoration: BoxDecoration(
+                                color: AppColors.error.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                PhosphorIconsRegular.warningCircle,
+                                size: 32,
+                                color: AppColors.error,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Search failed',
+                              style: AppTypography.titleMedium.copyWith(
+                                color: isDark
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.lightTextPrimary,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              state.error!,
+                              style: AppTypography.bodySmall.copyWith(
+                                color: AppColors.error,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      )
+                    : state.query.isEmpty
+                        ? const EmptyState(
+                            icon: PhosphorIconsRegular.magnifyingGlass,
+                            title: 'Search',
+                            subtitle: 'Search for students, classrooms, or news',
+                          )
+                        : state.results.isEmpty
+                            ? EmptyState(
+                                icon: PhosphorIconsRegular.magnifyingGlass,
+                                title: 'No results',
+                                subtitle: 'No results found for "${state.query}"',
+                              )
+                            : ListView.separated(
+                                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                                itemCount: state.results.length,
+                                separatorBuilder: (_, __) => const Divider(height: 1),
+                                itemBuilder: (context, index) {
+                                  final result = state.results[index];
+                                  return _SearchTile(
+                                    result: result,
+                                    isDark: isDark,
+                                    onTap: result.route.isNotEmpty
+                                        ? () => Navigator.pushNamed(
+                                            context, result.route)
+                                        : null,
+                                  );
+                                },
+                              ),
+          ),
         ],
       ),
-      body: state.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : state.error != null
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        PhosphorIconsRegular.warningCircle,
-                        size: 48,
-                        color: theme.colorScheme.error,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Search failed',
-                        style: theme.textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        state.error!,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.error,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+    );
+  }
+}
+
+class _SearchTile extends StatelessWidget {
+  final SearchResult result;
+  final bool isDark;
+  final VoidCallback? onTap;
+
+  const _SearchTile({
+    required this.result,
+    required this.isDark,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: _getTypeColor().withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                _getTypeIcon(),
+                color: _getTypeColor(),
+                size: 18,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    result.title,
+                    style: AppTypography.titleSmall.copyWith(
+                      color: isDark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.lightTextPrimary,
+                    ),
                   ),
-                )
-              : state.query.isEmpty
-                  ? const EmptyState(
-                      icon: PhosphorIconsRegular.magnifyingGlass,
-                      title: 'Search',
-                      subtitle: 'Search for students, classrooms, or news',
-                    )
-                  : state.results.isEmpty
-                      ? EmptyState(
-                          icon: PhosphorIconsRegular.magnifyingGlass,
-                          title: 'No results',
-                          subtitle: 'No results found for "${state.query}"',
-                        )
-                      : ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          itemCount: state.results.length,
-                          itemBuilder: (context, index) {
-                            final result = state.results[index];
-                            return ListTile(
-                              leading: _getTypeIcon(result.type),
-                              title: Text(result.title),
-                              subtitle: result.subtitle.isNotEmpty
-                                  ? Text(
-                                      result.subtitle,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  : null,
-                              trailing: result.route.isNotEmpty
-                                  ? const Icon(PhosphorIconsRegular.caretRight, size: 16)
-                                  : null,
-                              onTap: result.route.isNotEmpty
-                                  ? () => Navigator.pushNamed(context, result.route)
-                                  : null,
-                            );
-                          },
-                        ),
+                  if (result.subtitle.isNotEmpty) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      result.subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.bodySmall.copyWith(
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.lightTextSecondary,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            if (result.route.isNotEmpty)
+              Icon(
+                PhosphorIconsRegular.caretRight,
+                size: 16,
+                color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+              ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _getTypeIcon(String type) {
-    IconData icon;
-    Color? color;
-
-    switch (type) {
+  Color _getTypeColor() {
+    switch (result.type) {
       case 'student':
-        icon = PhosphorIconsRegular.student;
-        color = const Color(0xFF3B82F6);
-        break;
+        return const Color(0xFF3B82F6);
       case 'classroom':
-        icon = PhosphorIconsRegular.chalkboardTeacher;
-        color = const Color(0xFF10B981);
-        break;
+        return const Color(0xFF10B981);
       case 'news':
-        icon = PhosphorIconsRegular.article;
-        color = const Color(0xFFF59E0B);
-        break;
+        return const Color(0xFFF59E0B);
       case 'event':
-        icon = PhosphorIconsRegular.calendar;
-        color = const Color(0xFFEF4444);
-        break;
+        return const Color(0xFFEF4444);
       default:
-        icon = PhosphorIconsRegular.magnifyingGlass;
+        return AppColors.primary;
     }
+  }
 
-    return CircleAvatar(
-      backgroundColor: color?.withOpacity(0.1),
-      child: Icon(icon, color: color, size: 20),
-    );
+  IconData _getTypeIcon() {
+    switch (result.type) {
+      case 'student':
+        return PhosphorIconsRegular.student;
+      case 'classroom':
+        return PhosphorIconsRegular.chalkboardTeacher;
+      case 'news':
+        return PhosphorIconsRegular.article;
+      case 'event':
+        return PhosphorIconsRegular.calendar;
+      default:
+        return PhosphorIconsRegular.magnifyingGlass;
+    }
   }
 }

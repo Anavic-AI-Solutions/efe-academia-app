@@ -8,7 +8,7 @@ class NotificationApi {
   Future<Response> getNotifications({String? cursor, int limit = 20}) =>
       _client.get('/notifications', queryParameters: {
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 
   Future<Response> getUnreadCount() =>

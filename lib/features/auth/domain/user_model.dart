@@ -15,9 +15,12 @@ class UserModel with _$UserModel {
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    // Handle API wrapper: {success, data: {...}} → extract data
+    final data = json['data'] as Map<String, dynamic>? ?? json;
+    // Handle JSON:API: {type, id, attributes} → extract attributes
+    final attrs = data['attributes'] as Map<String, dynamic>? ?? data;
     return UserModel(
-      id: json['data']?['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: data['id']?.toString() ?? attrs['id']?.toString() ?? '',
       name: attrs['name'] ?? '',
       email: attrs['email'] ?? '',
       role: attrs['role'] ?? '',

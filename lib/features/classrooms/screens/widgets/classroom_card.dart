@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../core/widgets/app_card.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_typography.dart';
 import '../../domain/classroom_model.dart';
 
 class ClassroomCard extends StatelessWidget {
@@ -16,64 +18,77 @@ class ClassroomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return AppCard(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
       onTap: onTap,
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
-              color: AppColors.primaryLight,
+              color: AppColors.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.class_outlined,
+              PhosphorIconsRegular.chalkboardTeacher,
               color: AppColors.primary,
+              size: 20,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   classroom.name,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: AppTypography.titleSmall.copyWith(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 3),
                 Text(
                   '${classroom.shift} · ${classroom.day} · ${classroom.hour}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey,
-                      ),
+                  style: AppTypography.bodySmall.copyWith(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 6),
                 Row(
                   children: [
-                    Icon(Icons.room, size: 14, color: Colors.grey[400]),
-                    const SizedBox(width: 2),
+                    Icon(
+                      PhosphorIconsRegular.mapPin,
+                      size: 13,
+                      color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                    ),
+                    const SizedBox(width: 3),
                     Text(
                       classroom.room.isNotEmpty ? classroom.room : '-',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
-                          ),
+                      style: AppTypography.labelSmall.copyWith(
+                        color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                      ),
                     ),
-                    const SizedBox(width: 12),
-                    Icon(Icons.people, size: 14, color: Colors.grey[400]),
-                    const SizedBox(width: 2),
+                    const SizedBox(width: 10),
+                    Icon(
+                      PhosphorIconsRegular.users,
+                      size: 13,
+                      color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                    ),
+                    const SizedBox(width: 3),
                     Text(
                       '${classroom.studentCount}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
-                          ),
+                      style: AppTypography.labelSmall.copyWith(
+                        color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                      ),
                     ),
                   ],
                 ),
@@ -99,19 +114,18 @@ class _StatusBadge extends StatelessWidget {
         ? AppColors.success
         : status.toLowerCase() == 'inactive'
             ? AppColors.error
-            : Colors.grey;
+            : AppColors.lightTextTertiary;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         status,
-        style: TextStyle(
+        style: AppTypography.labelSmall.copyWith(
           color: color,
-          fontSize: 11,
           fontWeight: FontWeight.w600,
         ),
       ),

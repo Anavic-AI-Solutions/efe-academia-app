@@ -26,7 +26,7 @@ class AuthRepository {
       }
       await _storage.saveToken(token);
       _client.dio.options.headers['Authorization'] = 'Bearer $token';
-      return UserModel.fromJson(data);
+      return UserModel.fromJson(data['user'] ?? data);
     } on DioException catch (e) {
       throw _handleDioError(e);
     }
@@ -52,7 +52,7 @@ class AuthRepository {
       }
       await _storage.saveToken(token);
       _client.dio.options.headers['Authorization'] = 'Bearer $token';
-      return UserModel.fromJson(data);
+      return UserModel.fromJson(data['user'] ?? data);
     } on DioException catch (e) {
       throw _handleDioError(e);
     }
@@ -61,7 +61,7 @@ class AuthRepository {
   Future<UserModel> getCurrentUser() async {
     try {
       final response = await _api.me();
-      return UserModel.fromJson(response.data);
+      return UserModel.fromJson(response.data['data'] ?? response.data);
     } on DioException catch (e) {
       throw _handleDioError(e);
     }

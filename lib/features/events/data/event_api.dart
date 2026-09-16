@@ -8,6 +8,6 @@ class EventApi {
   Future<Response> getEvents({String? cursor, int limit = 20}) =>
       _client.get('/events', queryParameters: {
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 }

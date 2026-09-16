@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/widgets/search_bar.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_card.dart';
 
@@ -44,22 +46,17 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final listState = ref.watch(classroomListProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Classrooms'),
-      ),
       body: Column(
         children: [
+          const LargeTitleBar(
+            title: 'Classrooms',
+            showBackButton: false,
+          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: TextField(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+            child: AppSearchBar(
               controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search classrooms...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                isDense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
+              hintText: 'Search classrooms...',
               onChanged: (value) =>
                   ref.read(classroomListProvider.notifier).search(value),
             ),
@@ -101,7 +98,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
 
     return ListView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       itemCount: state.pagination.data.length + (state.pagination.hasMore ? 1 : 0),
       itemBuilder: (context, index) {
         if (index == state.pagination.data.length) {

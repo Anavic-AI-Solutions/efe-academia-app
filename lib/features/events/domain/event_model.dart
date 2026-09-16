@@ -14,9 +14,9 @@ class EventModel with _$EventModel {
   }) = _EventModel;
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
     return EventModel(
-      id: json['data']?['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
       title: attrs['title'] ?? '',
       description: attrs['description'] ?? '',
       start: attrs['start'] != null ? DateTime.tryParse(attrs['start']) : null,

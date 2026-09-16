@@ -7,13 +7,19 @@ class StudentApi {
 
   Future<Response> getStudents({
     String? search,
+    String? status,
+    String? year,
+    String? branch,
     String? cursor,
     int limit = 20,
   }) =>
       _client.get('/students', queryParameters: {
         if (search != null && search.isNotEmpty) 'search': search,
+        if (status != null && status.isNotEmpty) 'status': status,
+        if (year != null && year.isNotEmpty) 'year': year,
+        if (branch != null && branch.isNotEmpty) 'branch': branch,
         if (cursor != null) 'cursor': cursor,
-        'limit': limit,
+        'per_page': limit,
       });
 
   Future<Response> getStudent(String id) =>

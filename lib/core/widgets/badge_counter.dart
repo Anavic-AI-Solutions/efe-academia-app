@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app/theme/app_colors.dart';
 
 class BadgeCounter extends StatelessWidget {
   final int count;
@@ -19,27 +20,41 @@ class BadgeCounter extends StatelessWidget {
       children: [
         child,
         Positioned(
-          right: -6,
-          top: -6,
+          right: -2,
+          top: -2,
           child: Container(
-            padding: const EdgeInsets.all(4),
-            constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+            width: 10,
+            height: 10,
             decoration: const BoxDecoration(
-              color: Color(0xFFEF4444),
+              color: AppColors.primary,
               shape: BoxShape.circle,
-            ),
-            child: Text(
-              count > 99 ? '99+' : '$count',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
+              border: Border.fromBorderSide(
+                BorderSide(color: AppColors.lightSurface, width: 2),
               ),
-              textAlign: TextAlign.center,
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class UnreadDot extends StatelessWidget {
+  final bool show;
+
+  const UnreadDot({super.key, this.show = true});
+
+  @override
+  Widget build(BuildContext context) {
+    if (!show) return const SizedBox.shrink();
+
+    return Container(
+      width: 8,
+      height: 8,
+      decoration: const BoxDecoration(
+        color: AppColors.primary,
+        shape: BoxShape.circle,
+      ),
     );
   }
 }
