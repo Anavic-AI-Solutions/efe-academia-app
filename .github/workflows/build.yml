@@ -33,7 +33,7 @@ jobs:
       - name: Package
         run: |
           cd build/linux/x64/release/bundle
-          tar -czf ../../../efe-mobile-linux-x86_64.tar.gz *
+          tar -czf ../../../../efe-mobile-linux-x86_64.tar.gz *
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
