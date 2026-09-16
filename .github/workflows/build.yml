@@ -31,15 +31,13 @@ jobs:
         run: flutter build linux --release
 
       - name: Package
-        run: |
-          cd build/linux/x64/release/bundle
-          tar -czf ../../../../efe-mobile-linux-x86_64.tar.gz *
+        run: tar -czf efe-mobile-linux-x86_64.tar.gz -C build/linux/x64/release/bundle .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linux
-          path: build/efe-mobile-linux-x86_64.tar.gz
+          path: efe-mobile-linux-x86_64.tar.gz
 
   build-windows:
     runs-on: windows-2022
