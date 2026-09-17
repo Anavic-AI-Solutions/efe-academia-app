@@ -89,6 +89,9 @@ jobs:
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
+        timeout-minutes: 15
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: EFE Mobile v${{ steps.version.outputs.version }}
