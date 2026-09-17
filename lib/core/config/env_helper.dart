@@ -8,6 +8,9 @@ class EnvHelper {
 
   /// Finds or creates the .env file next to the executable and loads it.
   static Future<void> load() async {
+    // Initialize dotenv (required before accessing dotenv.env)
+    await dotenv.load(isOptional: true);
+
     // Try to find the executable directory
     String envDir;
     try {
