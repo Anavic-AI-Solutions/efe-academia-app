@@ -30,8 +30,17 @@ class EnvHelper {
       print('');
     }
 
-    // Load from the filesystem .env (overrides asset .env)
-    await dotenv.load(fileName: envFile.path);
+    // Read and parse .env manually
+    final content = envFile.readAsStringSync();
+    for (final line in content.split('\n')) {
+      final trimmed = line.trim();
+      if (trimmed.isEmpty || trimmed.startsWith('#')) continue;
+      final eq = trimmed.indexOf('=');
+      if (eq == -1) continue;
+      final key = trimmed.substring(0, eq).trim();
+      final value = trimmed.substring(eq + 1).trim();
+      dotenv.env[key] = value;
+    }
 
     // ignore: avoid_print
     print('[ENV] Loaded from: ${envFile.path}');
