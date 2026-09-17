@@ -84,6 +84,22 @@ void main() {
     expect(find.text('Branch: Reconquista'), findsOneWidget);
   });
 
+  testWidgets('renders without overflow on a small phone and opens the sheet',
+      (tester) async {
+    tester.view.physicalSize = const Size(320 * 3, 568 * 3);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await _pumpScreen(tester);
+
+    expect(find.text('A2 A'), findsOneWidget);
+
+    await tester.tap(find.byIcon(PhosphorIconsRegular.faders));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Apply filters'), findsOneWidget);
+  });
+
   testWidgets('removing an active chip clears that filter', (tester) async {
     final repository = await _pumpScreen(tester);
 
