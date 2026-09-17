@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
 import '../../../core/api/cursor_pagination.dart';
 import '../data/classroom_api.dart';
 import '../data/classroom_repository.dart';
+import '../domain/classroom_filters.dart';
 import '../domain/classroom_model.dart';
 
 // ---------------------------------------------------------------------------
@@ -20,6 +20,14 @@ final classroomRepositoryProvider = Provider<ClassroomRepository>((ref) {
 });
 
 // ---------------------------------------------------------------------------
+// Filter options
+// ---------------------------------------------------------------------------
+
+final classroomFiltersProvider = FutureProvider<ClassroomFilters>((ref) {
+  return ref.watch(classroomRepositoryProvider).getFilters();
+});
+
+// ---------------------------------------------------------------------------
 // List State
 // ---------------------------------------------------------------------------
 
@@ -28,13 +36,24 @@ class ClassroomListState {
   final bool isLoading;
   final String? error;
   final String search;
+  final String? branch;
+  final String? level;
+  final String? year;
+  final String? status;
 
   ClassroomListState({
     CursorPagination<ClassroomModel>? pagination,
     this.isLoading = false,
     this.error,
     this.search = '',
+    this.branch,
+    this.level,
+    this.year,
+    this.status,
   }) : pagination = pagination ?? CursorPagination<ClassroomModel>.empty();
+
+  bool get hasActiveFilters =>
+      branch != null || level != null || year != null || status != null;
 
   ClassroomListState copyWith({
     CursorPagination<ClassroomModel>? pagination,
@@ -48,6 +67,10 @@ class ClassroomListState {
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
       search: search ?? this.search,
+      branch: branch,
+      level: level,
+      year: year,
+      status: status,
     );
   }
 }
@@ -58,48 +81,70 @@ class ClassroomListState {
 
 class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
   final ClassroomRepository _repository;
+  int _requestId = 0;
 
   ClassroomListNotifier(this._repository) : super(ClassroomListState()) {
     load();
   }
 
   Future<void> load() async {
+    final requestId = ++_requestId;
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final result = await _repository.getClassrooms(search: state.search);
-      print('[Classrooms] Loaded ${result.data.length} items (search="${state.search}")');
+      final result = await _repository.getClassrooms(
+        search: state.search,
+        branch: state.branch,
+        level: state.level,
+        year: state.year,
+        status: state.status,
+      );
+      if (requestId != _requestId) return;
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      print('[Classrooms] ERROR: $e');
+      if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  Future<void> refresh() async {
-    state = state.copyWith(isLoading: true, clearError: true);
-    try {
-      final result = await _repository.getClassrooms(search: state.search);
-      print('[Classrooms] Refreshed ${result.data.length} items');
-      state = state.copyWith(pagination: result, isLoading: false);
-    } catch (e) {
-      print('[Classrooms] refresh ERROR: $e');
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
-  }
+  Future<void> refresh() => load();
 
   Future<void> search(String value) async {
     state = state.copyWith(search: value);
     await load();
   }
 
+  Future<void> applyFilters({
+    String? branch,
+    String? level,
+    String? year,
+    String? status,
+  }) async {
+    state = ClassroomListState(
+      search: state.search,
+      branch: branch,
+      level: level,
+      year: year,
+      status: status,
+    );
+    await load();
+  }
+
+  Future<void> clearFilters() => applyFilters();
+
   Future<void> loadMore() async {
     if (!state.pagination.hasMore || state.isLoading) return;
+    final requestId = ++_requestId;
     state = state.copyWith(isLoading: true);
     try {
       final result = await _repository.getClassrooms(
         search: state.search,
         cursor: state.pagination.nextCursor,
+        branch: state.branch,
+        level: state.level,
+        year: state.year,
+        status: state.status,
       );
+      if (requestId != _requestId) return;
       state = state.copyWith(
         pagination: result.copyWith(
           data: [...state.pagination.data, ...result.data],
@@ -107,6 +152,7 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
         isLoading: false,
       );
     } catch (e) {
+      if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
