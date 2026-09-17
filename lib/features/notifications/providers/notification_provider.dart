@@ -65,10 +65,10 @@ class NotificationListNotifier extends StateNotifier<NotificationListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getNotifications();
-      debugPrint('[Notifications] Loaded ${result.data.length} items');
+      print('[Notifications] Loaded ${result.data.length} items');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Notifications] ERROR: $e');
+      print('[Notifications] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

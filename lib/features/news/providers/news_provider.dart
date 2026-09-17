@@ -63,10 +63,10 @@ class NewsListNotifier extends StateNotifier<NewsListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getNews();
-      debugPrint('[News] Loaded ${result.data.length} items');
+      print('[News] Loaded ${result.data.length} items');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[News] ERROR: $e');
+      print('[News] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

@@ -63,10 +63,10 @@ class EventListNotifier extends StateNotifier<EventListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getEvents();
-      debugPrint('[Events] Loaded ${result.data.length} items');
+      print('[Events] Loaded ${result.data.length} items');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Events] ERROR: $e');
+      print('[Events] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

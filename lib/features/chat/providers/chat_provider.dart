@@ -66,10 +66,10 @@ class ChatListNotifier extends StateNotifier<ChatListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getChats();
-      debugPrint('[Chat] Loaded ${result.data.length} conversations');
+      print('[Chat] Loaded ${result.data.length} conversations');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Chat] ERROR: $e');
+      print('[Chat] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -78,10 +78,10 @@ class ChatListNotifier extends StateNotifier<ChatListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getChats();
-      debugPrint('[Chat] Refreshed ${result.data.length} conversations');
+      print('[Chat] Refreshed ${result.data.length} conversations');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Chat] refresh ERROR: $e');
+      print('[Chat] refresh ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -100,7 +100,7 @@ class ChatListNotifier extends StateNotifier<ChatListState> {
         isLoading: false,
       );
     } catch (e) {
-      debugPrint('[Chat] loadMore ERROR: $e');
+      print('[Chat] loadMore ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -159,10 +159,10 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getMessages(chatId);
-      debugPrint('[Chat:$chatId] Loaded ${result.data.length} messages');
+      print('[Chat:$chatId] Loaded ${result.data.length} messages');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Chat:$chatId] ERROR: $e');
+      print('[Chat:$chatId] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -171,10 +171,10 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getMessages(chatId);
-      debugPrint('[Chat:$chatId] Refreshed ${result.data.length} messages');
+      print('[Chat:$chatId] Refreshed ${result.data.length} messages');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Chat:$chatId] refresh ERROR: $e');
+      print('[Chat:$chatId] refresh ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -194,7 +194,7 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
         isLoading: false,
       );
     } catch (e) {
-      debugPrint('[Chat:$chatId] loadMore ERROR: $e');
+      print('[Chat:$chatId] loadMore ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -202,14 +202,14 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
   Future<void> send(String body) async {
     try {
       final message = await _repository.sendMessage(chatId, body);
-      debugPrint('[Chat:$chatId] Sent message');
+      print('[Chat:$chatId] Sent message');
       state = state.copyWith(
         pagination: state.pagination.copyWith(
           data: [...state.pagination.data, message],
         ),
       );
     } catch (e) {
-      debugPrint('[Chat:$chatId] send ERROR: $e');
+      print('[Chat:$chatId] send ERROR: $e');
       state = state.copyWith(error: e.toString());
     }
   }

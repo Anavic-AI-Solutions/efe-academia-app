@@ -62,14 +62,14 @@ class DashboardNotifier extends StateNotifier<DashboardState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final data = await _repository.getDashboard();
-      debugPrint(
+      print(
         '[Dashboard] SUCCESS students=${data.totalStudents} '
         'classrooms=${data.totalClassrooms} attendance=${data.attendanceRate} '
         'pendingFees=${data.pendingFees}',
       );
       state = state.copyWith(data: data, isLoading: false);
     } catch (e) {
-      debugPrint('[Dashboard] ERROR: $e');
+      print('[Dashboard] ERROR: $e');
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),

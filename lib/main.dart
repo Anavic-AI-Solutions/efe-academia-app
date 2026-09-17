@@ -12,7 +12,7 @@ void main() async {
     await dotenv.load();
   } catch (e) {
     // .env file not found - will use default values
-    debugPrint('Note: .env file not found, using default configuration');
+    print('Note: .env file not found, using default configuration');
   }
   
   runApp(const ProviderScope(child: EfeApp()));

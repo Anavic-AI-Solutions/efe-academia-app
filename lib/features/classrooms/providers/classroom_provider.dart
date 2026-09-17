@@ -67,10 +67,10 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getClassrooms(search: state.search);
-      debugPrint('[Classrooms] Loaded ${result.data.length} items (search="${state.search}")');
+      print('[Classrooms] Loaded ${result.data.length} items (search="${state.search}")');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Classrooms] ERROR: $e');
+      print('[Classrooms] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -79,10 +79,10 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getClassrooms(search: state.search);
-      debugPrint('[Classrooms] Refreshed ${result.data.length} items');
+      print('[Classrooms] Refreshed ${result.data.length} items');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      debugPrint('[Classrooms] refresh ERROR: $e');
+      print('[Classrooms] refresh ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

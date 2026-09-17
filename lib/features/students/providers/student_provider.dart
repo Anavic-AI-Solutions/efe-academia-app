@@ -115,12 +115,12 @@ class StudentListNotifier extends StateNotifier<StudentListState> {
         year: state.year,
         branch: state.branch,
       );
-      debugPrint(
+      print(
           '[Students] Loaded ${result.data.length} items (search="${state.search}", status=${state.status}, year=${state.year}, branch=${state.branch})');
       state = state.copyWith(pagination: result, isLoading: false);
       _mergeFilterOptions(result.data);
     } catch (e) {
-      debugPrint('[Students] ERROR: $e');
+      print('[Students] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -134,11 +134,11 @@ class StudentListNotifier extends StateNotifier<StudentListState> {
         year: state.year,
         branch: state.branch,
       );
-      debugPrint('[Students] Refreshed ${result.data.length} items');
+      print('[Students] Refreshed ${result.data.length} items');
       state = state.copyWith(pagination: result, isLoading: false);
       _mergeFilterOptions(result.data);
     } catch (e) {
-      debugPrint('[Students] refresh ERROR: $e');
+      print('[Students] refresh ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
