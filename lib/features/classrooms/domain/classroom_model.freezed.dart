@@ -26,6 +26,7 @@ mixin _$ClassroomModel {
   String get room => throw _privateConstructorUsedError;
   String get year => throw _privateConstructorUsedError;
   String get branch => throw _privateConstructorUsedError;
+  String get level => throw _privateConstructorUsedError;
   int get studentCount => throw _privateConstructorUsedError;
 
   /// Create a copy of ClassroomModel
@@ -52,6 +53,7 @@ abstract class $ClassroomModelCopyWith<$Res> {
       String room,
       String year,
       String branch,
+      String level,
       int studentCount});
 }
 
@@ -80,6 +82,7 @@ class _$ClassroomModelCopyWithImpl<$Res, $Val extends ClassroomModel>
     Object? room = null,
     Object? year = null,
     Object? branch = null,
+    Object? level = null,
     Object? studentCount = null,
   }) {
     return _then(_value.copyWith(
@@ -123,6 +126,10 @@ class _$ClassroomModelCopyWithImpl<$Res, $Val extends ClassroomModel>
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
               as String,
+      level: null == level
+          ? _value.level
+          : level // ignore: cast_nullable_to_non_nullable
+              as String,
       studentCount: null == studentCount
           ? _value.studentCount
           : studentCount // ignore: cast_nullable_to_non_nullable
@@ -150,6 +157,7 @@ abstract class _$$ClassroomModelImplCopyWith<$Res>
       String room,
       String year,
       String branch,
+      String level,
       int studentCount});
 }
 
@@ -176,6 +184,7 @@ class __$$ClassroomModelImplCopyWithImpl<$Res>
     Object? room = null,
     Object? year = null,
     Object? branch = null,
+    Object? level = null,
     Object? studentCount = null,
   }) {
     return _then(_$ClassroomModelImpl(
@@ -219,6 +228,10 @@ class __$$ClassroomModelImplCopyWithImpl<$Res>
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
               as String,
+      level: null == level
+          ? _value.level
+          : level // ignore: cast_nullable_to_non_nullable
+              as String,
       studentCount: null == studentCount
           ? _value.studentCount
           : studentCount // ignore: cast_nullable_to_non_nullable
@@ -241,6 +254,7 @@ class _$ClassroomModelImpl implements _ClassroomModel {
       this.room = '',
       this.year = '',
       this.branch = '',
+      this.level = '',
       this.studentCount = 0});
 
   @override
@@ -274,11 +288,14 @@ class _$ClassroomModelImpl implements _ClassroomModel {
   final String branch;
   @override
   @JsonKey()
+  final String level;
+  @override
+  @JsonKey()
   final int studentCount;
 
   @override
   String toString() {
-    return 'ClassroomModel(id: $id, name: $name, description: $description, status: $status, shift: $shift, day: $day, hour: $hour, room: $room, year: $year, branch: $branch, studentCount: $studentCount)';
+    return 'ClassroomModel(id: $id, name: $name, description: $description, status: $status, shift: $shift, day: $day, hour: $hour, room: $room, year: $year, branch: $branch, level: $level, studentCount: $studentCount)';
   }
 
   @override
@@ -297,13 +314,14 @@ class _$ClassroomModelImpl implements _ClassroomModel {
             (identical(other.room, room) || other.room == room) &&
             (identical(other.year, year) || other.year == year) &&
             (identical(other.branch, branch) || other.branch == branch) &&
+            (identical(other.level, level) || other.level == level) &&
             (identical(other.studentCount, studentCount) ||
                 other.studentCount == studentCount));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, name, description, status,
-      shift, day, hour, room, year, branch, studentCount);
+      shift, day, hour, room, year, branch, level, studentCount);
 
   /// Create a copy of ClassroomModel
   /// with the given fields replaced by the non-null parameter values.
@@ -327,6 +345,7 @@ abstract class _ClassroomModel implements ClassroomModel {
       final String room,
       final String year,
       final String branch,
+      final String level,
       final int studentCount}) = _$ClassroomModelImpl;
 
   @override
@@ -349,6 +368,8 @@ abstract class _ClassroomModel implements ClassroomModel {
   String get year;
   @override
   String get branch;
+  @override
+  String get level;
   @override
   int get studentCount;
 

@@ -15,6 +15,7 @@ class ClassroomModel with _$ClassroomModel {
     @Default('') String room,
     @Default('') String year,
     @Default('') String branch,
+    @Default('') String level,
     @Default(0) int studentCount,
   }) = _ClassroomModel;
 
@@ -31,6 +32,7 @@ class ClassroomModel with _$ClassroomModel {
       room: attrs['room'] ?? '',
       year: attrs['year'] ?? '',
       branch: attrs['branch'] ?? '',
+      level: attrs['level'] ?? '',
       studentCount: _parseInt(attrs['student_count']),
     );
   }

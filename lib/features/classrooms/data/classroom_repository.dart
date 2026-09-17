@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/cursor_pagination.dart';
+import '../domain/classroom_filters.dart';
 import '../domain/classroom_model.dart';
 import 'classroom_api.dart';
 
@@ -13,11 +14,19 @@ class ClassroomRepository {
   Future<CursorPagination<ClassroomModel>> getClassrooms({
     String? search,
     String? cursor,
+    String? branch,
+    String? level,
+    String? year,
+    String? status,
   }) async {
     try {
       final response = await _api.getClassrooms(
         search: search,
         cursor: cursor,
+        branch: branch,
+        level: level,
+        year: year,
+        status: status,
       );
       final data = response.data;
       final items = (data['data'] as List)
@@ -39,6 +48,15 @@ class ClassroomRepository {
     try {
       final response = await _api.getClassroom(id);
       return ClassroomModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<ClassroomFilters> getFilters() async {
+    try {
+      final response = await _api.getClassroomFilters();
+      return ClassroomFilters.fromJson(response.data);
     } on DioException catch (e) {
       throw _handleDioError(e);
     }
