@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/avatar.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../domain/student_model.dart';
@@ -20,6 +21,7 @@ class StudentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final l10n = context.l10n;
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 10),
@@ -49,7 +51,7 @@ class StudentCard extends StatelessWidget {
                 Text(
                   student.classroomNames.isNotEmpty
                       ? student.classroomNames.join(', ')
-                      : 'No classroom',
+                      : l10n.studentsNoClassroom,
                   style: AppTypography.bodySmall.copyWith(
                     color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
                   ),

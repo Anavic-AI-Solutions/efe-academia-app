@@ -5,6 +5,7 @@ import '../../../core/widgets/avatar.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../app/theme/app_colors.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/student_provider.dart';
 import '../domain/student_model.dart';
 
@@ -15,20 +16,21 @@ class StudentDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final studentAsync = ref.watch(studentDetailProvider(studentId));
 
     return Scaffold(
       appBar: AppBar(
         title: studentAsync.when(
           data: (s) => Text(s.fullname),
-          loading: () => const Text('Student'),
-          error: (_, __) => const Text('Student'),
+          loading: () => Text(l10n.studentsDetailFallbackTitle),
+          error: (_, __) => Text(l10n.studentsDetailFallbackTitle),
         ),
       ),
       body: studentAsync.when(
         loading: () => const ListShimmer(itemCount: 5, itemHeight: 60),
         error: (e, _) => ErrorView(
-          message: 'Failed to load student',
+          message: l10n.studentsDetailLoadError,
           detail: e.toString(),
           onRetry: () => ref.invalidate(studentDetailProvider(studentId)),
         ),
@@ -37,20 +39,20 @@ class StudentDetailScreen extends ConsumerWidget {
           child: Column(
             children: [
               _StudentHeader(student: student),
-              const TabBar(
+              TabBar(
                 tabs: [
-                  Tab(text: 'Grades'),
-                  Tab(text: 'Absences'),
-                  Tab(text: 'Fees'),
-                  Tab(text: 'Info'),
+                  Tab(text: l10n.studentsTabGrades),
+                  Tab(text: l10n.studentsTabAbsences),
+                  Tab(text: l10n.studentsTabFees),
+                  Tab(text: l10n.studentsTabInfo),
                 ],
               ),
               Expanded(
                 child: TabBarView(
                   children: [
-                    _buildPlaceholder('No grades available'),
-                    _buildPlaceholder('No absences available'),
-                    _buildPlaceholder('No fees available'),
+                    _buildPlaceholder(l10n.studentsNoGrades),
+                    _buildPlaceholder(l10n.studentsNoAbsences),
+                    _buildPlaceholder(l10n.studentsNoFees),
                     _InfoTab(student: student),
                   ],
                 ),
@@ -157,16 +159,21 @@ class _InfoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        _InfoRow(label: 'Full Name', value: student.fullname),
-        _InfoRow(label: 'Email', value: student.email),
-        _InfoRow(label: 'Year', value: student.year),
-        _InfoRow(label: 'Identity Number', value: student.identityNumber),
-        _InfoRow(label: 'Branch', value: student.branch),
+        _InfoRow(label: l10n.studentsInfoFullName, value: student.fullname),
+        _InfoRow(label: l10n.studentsInfoEmail, value: student.email),
+        _InfoRow(label: l10n.studentsInfoYear, value: student.year),
         _InfoRow(
-          label: 'Classrooms',
+          label: l10n.studentsInfoIdentityNumber,
+          value: student.identityNumber,
+        ),
+        _InfoRow(label: l10n.studentsInfoBranch, value: student.branch),
+        _InfoRow(
+          label: l10n.studentsInfoClassrooms,
           value: student.classroomNames.isNotEmpty
               ? student.classroomNames.join(', ')
               : '-',

@@ -5,6 +5,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../core/widgets/pill_button.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/auth_provider.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
@@ -86,9 +87,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Forgot Password',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.authForgotPasswordTitle,
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
@@ -115,6 +116,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   }
 
   Widget _buildFormState(bool isLoading) {
+    final l10n = context.l10n;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -122,14 +125,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         children: [
           const SizedBox(height: 32),
           Text(
-            'Reset your password',
+            l10n.authResetSubtitle,
             style: AppTypography.headlineMedium.copyWith(
               color: AppColors.lightTextPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            "Enter your email and we'll send you a link to reset your password.",
+            l10n.authResetInstructions,
             style: AppTypography.bodyMedium.copyWith(
               color: AppColors.lightTextSecondary,
             ),
@@ -144,20 +147,20 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             style: AppTypography.bodyMedium.copyWith(
               color: AppColors.lightTextPrimary,
             ),
-            decoration: const InputDecoration(
-              hintText: 'Email address',
-              prefixIcon: Icon(
+            decoration: InputDecoration(
+              hintText: l10n.authEmailLabel,
+              prefixIcon: const Icon(
                 PhosphorIconsRegular.envelope,
                 size: 20,
               ),
             ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
-                return 'Email is required';
+                return l10n.authEmailRequired;
               }
               if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
                   .hasMatch(value.trim())) {
-                return 'Enter a valid email';
+                return l10n.authEmailInvalid;
               }
               return null;
             },
@@ -165,7 +168,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           const SizedBox(height: 20),
 
           PillButton(
-            label: 'Send Reset Link',
+            label: l10n.authSendResetLink,
             isLoading: isLoading,
             isGradient: true,
             onPressed: _handleSubmit,
@@ -178,7 +181,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
             child: Text(
-              'Back to Sign In',
+              l10n.authBackToSignIn,
               style: AppTypography.labelLarge.copyWith(
                 color: AppColors.primary,
               ),
@@ -190,6 +193,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   }
 
   Widget _buildSuccessState() {
+    final l10n = context.l10n;
+
     return Column(
       children: [
         const SizedBox(height: 32),
@@ -208,7 +213,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 20),
         Text(
-          'Check Your Email',
+          l10n.authCheckEmail,
           style: AppTypography.headlineMedium.copyWith(
             color: AppColors.lightTextPrimary,
           ),
@@ -216,7 +221,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          "We've sent a password reset link to\n${_emailController.text.trim()}",
+          l10n.authResetLinkSent(_emailController.text.trim()),
           style: AppTypography.bodyMedium.copyWith(
             color: AppColors.lightTextSecondary,
           ),
@@ -224,7 +229,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 32),
         PillButton(
-          label: 'Back to Sign In',
+          label: l10n.authBackToSignIn,
           onPressed: widget.onBackToLogin ?? () => Navigator.pop(context),
         ),
       ],

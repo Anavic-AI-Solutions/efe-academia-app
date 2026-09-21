@@ -42,7 +42,7 @@ class QualificationRepository {
   ApiException _handleDioError(DioException e) {
     if (e.error is ApiException) return e.error as ApiException;
     return ApiException(
-      message: e.message ?? 'An unexpected error occurred',
+      message: e.message ?? 'Ocurrió un error inesperado',
       statusCode: e.response?.statusCode,
     );
   }

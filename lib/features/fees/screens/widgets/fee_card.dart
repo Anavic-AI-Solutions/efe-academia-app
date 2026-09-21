@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../l10n/l10n.dart';
 import '../../domain/fee_model.dart';
 
 class FeeCard extends StatelessWidget {
@@ -17,6 +18,8 @@ class FeeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return AppCard(
       margin: const EdgeInsets.only(bottom: 8),
       onTap: onTap,
@@ -40,7 +43,9 @@ class FeeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  fee.studentName.isNotEmpty ? fee.studentName : 'Unknown',
+                  fee.studentName.isNotEmpty
+                      ? fee.studentName
+                      : l10n.feesUnknownStudent,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -49,7 +54,7 @@ class FeeCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'Fee #${fee.numberFee} · ${fee.month} ${fee.year}',
+                  l10n.feesCardSubtitle(fee.numberFee, fee.month, fee.year),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey,
                       ),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/fee_provider.dart';
 
 class FeeDetailScreen extends ConsumerWidget {
@@ -14,46 +15,56 @@ class FeeDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final feeAsync = ref.watch(feeDetailProvider(feeId));
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
         title: feeAsync.when(
-          data: (f) => Text('Fee #${f.numberFee}'),
-          loading: () => const Text('Fee'),
-          error: (_, __) => const Text('Fee'),
+          data: (f) => Text(l10n.feesDetailTitle(f.numberFee)),
+          loading: () => Text(l10n.feesDetailFallbackTitle),
+          error: (_, __) => Text(l10n.feesDetailFallbackTitle),
         ),
       ),
       body: feeAsync.when(
         loading: () => const ListShimmer(itemCount: 5, itemHeight: 60),
         error: (e, _) => ErrorView(
-          message: 'Failed to load fee',
+          message: l10n.feesDetailLoadError,
           detail: e.toString(),
           onRetry: () => ref.invalidate(feeDetailProvider(feeId)),
         ),
         data: (fee) => ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _InfoRow(label: 'Student', value: fee.studentName),
-            _InfoRow(label: 'Fee Number', value: fee.numberFee.toString()),
-            _InfoRow(label: 'Month', value: fee.month),
-            _InfoRow(label: 'Year', value: fee.year),
+            _InfoRow(label: l10n.roleStudent, value: fee.studentName),
+            _InfoRow(
+              label: l10n.feesDetailFeeNumber,
+              value: fee.numberFee.toString(),
+            ),
+            _InfoRow(label: l10n.feesDetailMonth, value: fee.month),
+            _InfoRow(label: l10n.feesDetailYear, value: fee.year),
             const Divider(height: 32),
             _InfoRow(
-              label: 'To Pay',
+              label: l10n.feesDetailToPay,
               value: AppFormatters.formatCurrency(fee.toPay),
             ),
             _InfoRow(
-              label: 'Paid',
+              label: l10n.feesDetailPaid,
               value: AppFormatters.formatCurrency(fee.paid),
             ),
             _InfoRow(
-              label: 'Total',
+              label: l10n.feesDetailTotal,
               value: AppFormatters.formatCurrency(fee.total),
             ),
             const Divider(height: 32),
-            _InfoRow(label: 'Status', value: fee.status),
-            _InfoRow(label: 'Payment Method', value: fee.paymentMethod),
-            _InfoRow(label: 'Payment Date', value: fee.paymentDate),
+            _InfoRow(label: l10n.feesDetailStatus, value: fee.status),
+            _InfoRow(
+              label: l10n.feesDetailPaymentMethod,
+              value: fee.paymentMethod,
+            ),
+            _InfoRow(
+              label: l10n.feesDetailPaymentDate,
+              value: fee.paymentDate,
+            ),
           ],
         ),
       ),

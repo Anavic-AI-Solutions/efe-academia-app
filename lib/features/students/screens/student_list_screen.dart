@@ -10,6 +10,7 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/search_bar.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/student_provider.dart';
 import 'widgets/student_card.dart';
 
@@ -46,20 +47,21 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final listState = ref.watch(studentListProvider);
     final notifier = ref.read(studentListProvider.notifier);
 
     return Scaffold(
       body: Column(
         children: [
-          const LargeTitleBar(
-            title: 'Students',
+          LargeTitleBar(
+            title: l10n.studentsTitle,
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
             child: AppSearchBar(
               controller: _searchController,
-              hintText: 'Search students...',
+              hintText: l10n.studentsSearchHint,
               onChanged: (value) => notifier.search(value),
             ),
           ),
@@ -70,20 +72,20 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               children: [
                 _FilterChip(
-                  label: 'Todos',
+                  label: l10n.studentsFilterAll,
                   selected: listState.status == StudentListState.statusAll,
                   onTap: () => notifier.setStatus(StudentListState.statusAll),
                 ),
                 const SizedBox(width: 8),
                 _FilterChip(
-                  label: 'Activos',
+                  label: l10n.studentsFilterActive,
                   selected: listState.status == StudentListState.statusActive,
                   onTap: () =>
                       notifier.setStatus(StudentListState.statusActive),
                 ),
                 const SizedBox(width: 8),
                 _FilterChip(
-                  label: 'Inactivos',
+                  label: l10n.studentsFilterInactive,
                   selected:
                       listState.status == StudentListState.statusInactive,
                   onTap: () =>
@@ -99,7 +101,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
               children: [
                 Expanded(
                   child: _DropdownFilter(
-                    label: 'Año',
+                    label: l10n.studentsFilterYear,
                     value: listState.year,
                     options: listState.yearOptions,
                     onChanged: (value) => notifier.setYear(value),
@@ -108,7 +110,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: _DropdownFilter(
-                    label: 'Sede',
+                    label: l10n.studentsFilterBranch,
                     value: listState.branch,
                     options: listState.branchOptions,
                     onChanged: (value) => notifier.setBranch(value),
@@ -129,13 +131,15 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
   }
 
   Widget _buildBody(StudentListState state) {
+    final l10n = context.l10n;
+
     if (state.isLoading && state.pagination.data.isEmpty) {
       return const ListShimmer();
     }
 
     if (state.error != null && state.pagination.data.isEmpty) {
       return ErrorView(
-        message: 'Failed to load students',
+        message: l10n.studentsLoadError,
         detail: state.error,
         onRetry: () => ref.read(studentListProvider.notifier).refresh(),
       );
@@ -144,10 +148,10 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
     if (state.pagination.data.isEmpty) {
       return EmptyState(
         icon: Icons.people_outline,
-        title: 'No students found',
+        title: l10n.studentsEmptyTitle,
         subtitle: state.search.isNotEmpty
-            ? 'Try a different search term'
-            : 'No students match the selected filters',
+            ? l10n.studentsEmptySearch
+            : l10n.studentsEmptyFilters,
       );
     }
 
@@ -239,6 +243,7 @@ class _DropdownFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final allOptions = {
       ...options,
@@ -274,12 +279,12 @@ class _DropdownFilter extends StatelessWidget {
           items: [
             DropdownMenuItem<String>(
               value: _allValue,
-              child: Text('$label: Todos'),
+              child: Text(l10n.studentsFilterOptionAll(label)),
             ),
             ...allOptions.map(
               (option) => DropdownMenuItem<String>(
                 value: option,
-                child: Text('$label: $option'),
+                child: Text(l10n.studentsFilterOption(label, option)),
               ),
             ),
           ],

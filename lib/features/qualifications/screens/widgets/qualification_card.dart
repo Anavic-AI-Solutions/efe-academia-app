@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/app_card.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../l10n/l10n.dart';
 import '../../domain/qualification_model.dart';
 
 class QualificationCard extends StatelessWidget {
@@ -21,6 +22,7 @@ class QualificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = _scoreColor();
+    final l10n = context.l10n;
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 8),
@@ -52,7 +54,7 @@ class QualificationCard extends StatelessWidget {
                 Text(
                   qualification.studentName.isNotEmpty
                       ? qualification.studentName
-                      : 'Unknown Student',
+                      : l10n.qualificationsUnknownStudent,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -63,7 +65,7 @@ class QualificationCard extends StatelessWidget {
                 Text(
                   qualification.classroomName.isNotEmpty
                       ? qualification.classroomName
-                      : 'Unknown Classroom',
+                      : l10n.qualificationsUnknownClassroom,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey,
                       ),

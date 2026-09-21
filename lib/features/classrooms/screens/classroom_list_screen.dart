@@ -10,6 +10,7 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/search_bar.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_card.dart';
 import 'widgets/classroom_filter_chips.dart';
@@ -87,14 +88,15 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final listState = ref.watch(classroomListProvider);
     final selection = _selectionFrom(listState);
 
     return Scaffold(
       body: Column(
         children: [
-          const LargeTitleBar(
-            title: 'Classrooms',
+          LargeTitleBar(
+            title: l10n.classroomsTitle,
             showBackButton: false,
           ),
           Padding(
@@ -104,7 +106,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                 Expanded(
                   child: AppSearchBar(
                     controller: _searchController,
-                    hintText: 'Search classrooms...',
+                    hintText: l10n.classroomsSearchHint,
                     onChanged: (value) =>
                         ref.read(classroomListProvider.notifier).search(value),
                   ),
@@ -140,13 +142,15 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
   }
 
   Widget _buildBody(ClassroomListState state) {
+    final l10n = context.l10n;
+
     if (state.isLoading && state.pagination.data.isEmpty) {
       return const ListShimmer();
     }
 
     if (state.error != null && state.pagination.data.isEmpty) {
       return ErrorView(
-        message: 'Failed to load classrooms',
+        message: l10n.classroomsLoadError,
         detail: state.error,
         onRetry: () => ref.read(classroomListProvider.notifier).refresh(),
       );
@@ -156,13 +160,13 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
       final filtered = state.hasActiveFilters;
       return EmptyState(
         icon: Icons.class_outlined,
-        title: 'No classrooms found',
+        title: l10n.classroomsEmptyTitle,
         subtitle: filtered
-            ? 'Try adjusting or clearing your filters'
+            ? l10n.classroomsEmptyFiltered
             : state.search.isNotEmpty
-                ? 'Try a different search term'
-                : 'No classrooms available',
-        actionLabel: filtered ? 'Clear filters' : null,
+                ? l10n.classroomsEmptySearch
+                : l10n.classroomsEmptySubtitle,
+        actionLabel: filtered ? l10n.classroomsClearFilters : null,
         onAction: filtered
             ? () => _applySelection(const ClassroomFilterSelection())
             : null,

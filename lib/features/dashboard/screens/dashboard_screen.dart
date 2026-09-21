@@ -11,6 +11,8 @@ import '../../../core/widgets/section_header.dart';
 import '../../../core/widgets/stat_card.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/dashboard_provider.dart';
 import 'widgets/quick_action_grid.dart';
 
@@ -22,6 +24,7 @@ class DashboardScreen extends ConsumerWidget {
     final dashboardState = ref.watch(dashboardProvider);
     final authState = ref.watch(authProvider);
     final user = authState.user;
+    final l10n = context.l10n;
 
     return Scaffold(
       body: RefreshIndicator(
@@ -30,7 +33,7 @@ class DashboardScreen extends ConsumerWidget {
             ? _buildLoading(context)
             : dashboardState.error != null && dashboardState.data == null
                 ? ErrorView(
-                    message: 'Failed to load dashboard',
+                    message: l10n.dashboardLoadError,
                     detail: dashboardState.error,
                     onRetry: () =>
                         ref.read(dashboardProvider.notifier).refresh(),
@@ -94,7 +97,8 @@ class DashboardScreen extends ConsumerWidget {
     final data = dashboardState.data;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final roleName = _getRoleName(user?.role ?? '');
+    final l10n = context.l10n;
+    final roleName = _getRoleName(user?.role ?? '', l10n);
     final topPadding = MediaQuery.of(context).padding.top;
 
     return ListView(
@@ -109,8 +113,8 @@ class DashboardScreen extends ConsumerWidget {
         const SizedBox(height: 28),
 
         // Quick Actions
-        const SectionHeader(
-          title: 'Quick Actions',
+        SectionHeader(
+          title: l10n.dashboardQuickActions,
           padding: EdgeInsets.zero,
         ),
         const SizedBox(height: 12),
@@ -118,49 +122,49 @@ class DashboardScreen extends ConsumerWidget {
           actions: [
             QuickAction(
               icon: PhosphorIconsRegular.chalkboardTeacher,
-              label: 'Classes',
+              label: l10n.navClasses,
               color: const Color(0xFF3B82F6),
               onTap: () => context.push('/classrooms'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.users,
-              label: 'Students',
+              label: l10n.dashboardStudents,
               color: const Color(0xFF10B981),
               onTap: () => context.push('/students'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.bell,
-              label: 'Notifications',
+              label: l10n.profileNotifications,
               color: const Color(0xFFF97316),
               onTap: () => context.push('/notifications'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.newspaper,
-              label: 'News',
+              label: l10n.dashboardNews,
               color: const Color(0xFF8B5CF6),
               onTap: () => context.push('/news'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.calendarBlank,
-              label: 'Events',
+              label: l10n.dashboardEvents,
               color: const Color(0xFFEF4444),
               onTap: () => context.push('/events'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.currencyDollar,
-              label: 'Fees',
+              label: l10n.dashboardFees,
               color: AppColors.primary,
               onTap: () => context.push('/fees'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.chatCircle,
-              label: 'Chat',
+              label: l10n.navChat,
               color: const Color(0xFF06B6D4),
               onTap: () => context.push('/chat'),
             ),
             QuickAction(
               icon: PhosphorIconsRegular.magnifyingGlass,
-              label: 'Search',
+              label: l10n.dashboardSearch,
               color: const Color(0xFF64748B),
               onTap: () => context.push('/search'),
             ),
@@ -171,11 +175,13 @@ class DashboardScreen extends ConsumerWidget {
   }
 
   Widget _buildWelcomeHeader(BuildContext context, dynamic user, String roleName, bool isDark) {
+    final l10n = context.l10n;
+
     return Row(
       children: [
         AppAvatar(
           imageUrl: user?.avatarUrl,
-          name: user?.name ?? 'User',
+          name: user?.name ?? l10n.commonUser,
           size: 52,
           showGradientRing: true,
         ),
@@ -185,7 +191,9 @@ class DashboardScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Welcome, ${user?.name?.split(' ').first ?? 'User'}!',
+                l10n.dashboardWelcome(
+                  user?.name?.split(' ').first ?? l10n.commonUser,
+                ),
                 style: AppTypography.titleLarge.copyWith(
                   color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
                 ),
@@ -213,6 +221,8 @@ class DashboardScreen extends ConsumerWidget {
   }
 
   Widget _buildStatsSection(BuildContext context, dynamic data, bool isDark) {
+    final l10n = context.l10n;
+
     return SizedBox(
       height: 110,
       child: ListView(
@@ -221,28 +231,28 @@ class DashboardScreen extends ConsumerWidget {
           StatCard(
             icon: PhosphorIconsRegular.users,
             value: '${data?.totalStudents ?? 0}',
-            label: 'Students',
+            label: l10n.dashboardStudents,
             iconColor: const Color(0xFF3B82F6),
           ),
           const SizedBox(width: 12),
           StatCard(
             icon: PhosphorIconsRegular.chalkboardTeacher,
             value: '${data?.totalClassrooms ?? 0}',
-            label: 'Classrooms',
+            label: l10n.dashboardClassrooms,
             iconColor: const Color(0xFF10B981),
           ),
           const SizedBox(width: 12),
           StatCard(
             icon: PhosphorIconsRegular.calendarCheck,
             value: '${data?.attendanceRate ?? 0}%',
-            label: 'Attendance',
+            label: l10n.dashboardAttendance,
             iconColor: const Color(0xFFF97316),
           ),
           const SizedBox(width: 12),
           StatCard(
             icon: PhosphorIconsRegular.currencyDollar,
             value: '${data?.pendingFees ?? 0}',
-            label: 'Pending Fees',
+            label: l10n.dashboardPendingFees,
             iconColor: const Color(0xFFEF4444),
           ),
         ],
@@ -267,20 +277,20 @@ class DashboardScreen extends ConsumerWidget {
     }
   }
 
-  String _getRoleName(String role) {
+  String _getRoleName(String role, AppLocalizations l10n) {
     switch (role) {
       case 'admin':
-        return 'Administrator';
+        return l10n.roleAdmin;
       case 'branch':
-        return 'Branch Director';
+        return l10n.roleBranch;
       case 'professor':
-        return 'Professor';
+        return l10n.roleProfessor;
       case 'parent':
-        return 'Parent';
+        return l10n.roleParent;
       case 'student':
-        return 'Student';
+        return l10n.roleStudent;
       default:
-        return role.isNotEmpty ? role : 'User';
+        return role.isNotEmpty ? role : l10n.commonUser;
     }
   }
 }

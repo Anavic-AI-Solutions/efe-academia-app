@@ -1,0 +1,305 @@
+{
+  "@@locale": "es",
+  "commonCancel": "Cancelar",
+  "commonRetry": "Reintentar",
+  "commonSearchHint": "Buscar...",
+  "commonUser": "Usuario",
+  "navHome": "Inicio",
+  "navClasses": "Clases",
+  "navChat": "Chat",
+  "navProfile": "Perfil",
+  "authWelcomeBack": "Bienvenido de nuevo",
+  "authSignInSubtitle": "Iniciá sesión en tu cuenta",
+  "authEmailLabel": "Correo electrónico",
+  "authEmailRequired": "El correo electrónico es obligatorio",
+  "authEmailInvalid": "Ingresá un correo electrónico válido",
+  "authPasswordLabel": "Contraseña",
+  "authPasswordRequired": "La contraseña es obligatoria",
+  "authForgotPassword": "¿Olvidaste tu contraseña?",
+  "authSignIn": "Iniciar sesión",
+  "authForgotPasswordTitle": "Recuperar contraseña",
+  "authResetSubtitle": "Restablecé tu contraseña",
+  "authCheckEmail": "Revisá tu correo",
+  "authResetInstructions": "Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+  "authResetLinkSent": "Te enviamos un enlace para restablecer tu contraseña a\n{email}",
+  "@authResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authSendResetLink": "Enviar enlace de restablecimiento",
+  "authBackToSignIn": "Volver a iniciar sesión",
+  "validationRequired": "Obligatorio",
+  "validationInvalidEmail": "Correo electrónico inválido",
+  "validationPasswordLength": "La contraseña debe tener al menos 8 caracteres",
+  "validationPasswordsDoNotMatch": "Las contraseñas no coinciden",
+  "validationFieldRequired": "{field} es obligatorio",
+  "@validationFieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "timeJustNow": "Justo ahora",
+  "timeMinutesAgo": "{count, plural, one{Hace 1 minuto} other{Hace {count} minutos}}",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{count, plural, one{Hace 1 hora} other{Hace {count} horas}}",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "{count, plural, one{Hace 1 día} other{Hace {count} días}}",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAccount": "Cuenta",
+  "profileEditProfile": "Editar perfil",
+  "profileNotifications": "Notificaciones",
+  "profilePreferences": "Preferencias",
+  "profileTheme": "Tema",
+  "profileLanguage": "Idioma",
+  "profileSelectLanguage": "Seleccionar idioma",
+  "profileAbout": "Acerca de",
+  "profileHelpSupport": "Ayuda y soporte",
+  "profileLogout": "Cerrar sesión",
+  "profileLogoutConfirm": "¿Estás seguro de que querés cerrar sesión?",
+  "languageSpanish": "Español",
+  "languageEnglish": "English",
+  "roleAdmin": "Administrador",
+  "roleBranch": "Director de sede",
+  "roleProfessor": "Profesor",
+  "roleParent": "Tutor",
+  "roleStudent": "Estudiante",
+  "dashboardLoadError": "No se pudo cargar el panel principal",
+  "dashboardQuickActions": "Acciones rápidas",
+  "dashboardStudents": "Estudiantes",
+  "dashboardNews": "Novedades",
+  "dashboardEvents": "Eventos",
+  "dashboardFees": "Cuotas",
+  "dashboardSearch": "Buscar",
+  "dashboardWelcome": "¡Hola, {name}!",
+  "@dashboardWelcome": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardClassrooms": "Clases",
+  "dashboardAttendance": "Asistencia",
+  "dashboardPendingFees": "Cuotas pendientes",
+  "classroomsTitle": "Clases",
+  "classroomsSearchHint": "Buscar clases...",
+  "classroomsLoadError": "No se pudieron cargar las clases",
+  "classroomsEmptyTitle": "No se encontraron clases",
+  "classroomsEmptyFiltered": "Intentá ajustar o limpiar los filtros",
+  "classroomsEmptySearch": "Intentá con otro término de búsqueda",
+  "classroomsEmptySubtitle": "No hay clases disponibles",
+  "classroomsClearFilters": "Limpiá los filtros",
+  "classroomsDetailTitle": "Clase",
+  "classroomsDetailLoadError": "No se pudo cargar la clase",
+  "classroomsName": "Nombre",
+  "classroomsDescription": "Descripción",
+  "classroomsStatus": "Estado",
+  "classroomsShift": "Turno",
+  "classroomsDay": "Día",
+  "classroomsHour": "Horario",
+  "classroomsRoom": "Aula",
+  "classroomsYear": "Año",
+  "classroomsBranch": "Sucursal",
+  "classroomsLevel": "Nivel",
+  "classroomsStudents": "Estudiantes",
+  "classroomsFiltersTitle": "Filtros",
+  "classroomsFilterClearAll": "Limpiá todo",
+  "classroomsFilterApply": "Aplicar filtros",
+  "classroomsFilterClear": "Limpiá",
+  "classroomsStatusActive": "Activo",
+  "classroomsStatusArchived": "Archivado",
+  "classroomsFiltersLoadError": "No se pudieron cargar los filtros",
+  "classroomsFiltersLoadErrorDetail": "Revisá tu conexión e intentá de nuevo.",
+  "classroomsFilterChipBranch": "Sucursal: {value}",
+  "@classroomsFilterChipBranch": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "classroomsFilterChipLevel": "Nivel: {value}",
+  "@classroomsFilterChipLevel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "classroomsFilterChipYear": "Año: {value}",
+  "@classroomsFilterChipYear": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "classroomsFilterChipStatus": "Estado: {value}",
+  "@classroomsFilterChipStatus": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "studentsTitle": "Estudiantes",
+  "studentsSearchHint": "Buscar estudiantes...",
+  "studentsFilterAll": "Todos",
+  "studentsFilterActive": "Activos",
+  "studentsFilterInactive": "Inactivos",
+  "studentsFilterYear": "Año",
+  "studentsFilterBranch": "Sede",
+  "studentsFilterOptionAll": "{label}: Todos",
+  "@studentsFilterOptionAll": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "studentsFilterOption": "{label}: {value}",
+  "@studentsFilterOption": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "studentsLoadError": "No se pudieron cargar los estudiantes",
+  "studentsEmptyTitle": "No se encontraron estudiantes",
+  "studentsEmptySearch": "Probá con otro término de búsqueda",
+  "studentsEmptyFilters": "Ningún estudiante coincide con los filtros seleccionados",
+  "studentsDetailFallbackTitle": "Estudiante",
+  "studentsDetailLoadError": "No se pudo cargar el estudiante",
+  "studentsTabGrades": "Notas",
+  "studentsTabAbsences": "Inasistencias",
+  "studentsTabFees": "Cuotas",
+  "studentsTabInfo": "Información",
+  "studentsNoGrades": "No hay notas disponibles",
+  "studentsNoAbsences": "No hay inasistencias registradas",
+  "studentsNoFees": "No hay cuotas disponibles",
+  "studentsNoClassroom": "Sin clases",
+  "studentsInfoFullName": "Nombre completo",
+  "studentsInfoEmail": "Correo electrónico",
+  "studentsInfoYear": "Año",
+  "studentsInfoIdentityNumber": "Número de documento",
+  "studentsInfoBranch": "Sede",
+  "studentsInfoClassrooms": "Clases",
+  "feesTitle": "Cuotas",
+  "feesSearchHint": "Buscar cuotas...",
+  "feesLoadError": "No se pudieron cargar las cuotas",
+  "feesEmptyTitle": "No se encontraron cuotas",
+  "feesEmptySearchSubtitle": "Probá con otro término de búsqueda",
+  "feesEmptySubtitle": "No hay cuotas disponibles",
+  "feesDetailTitle": "Cuota #{number}",
+  "@feesDetailTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "feesDetailFallbackTitle": "Cuota",
+  "feesDetailLoadError": "No se pudo cargar la cuota",
+  "feesDetailFeeNumber": "Número de cuota",
+  "feesDetailMonth": "Mes",
+  "feesDetailYear": "Año",
+  "feesDetailToPay": "A pagar",
+  "feesDetailPaid": "Pagado",
+  "feesDetailTotal": "Total",
+  "feesDetailStatus": "Estado",
+  "feesDetailPaymentMethod": "Método de pago",
+  "feesDetailPaymentDate": "Fecha de pago",
+  "feesUnknownStudent": "Desconocido",
+  "feesCardSubtitle": "Cuota #{number} · {month} {year}",
+  "@feesCardSubtitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "month": {
+        "type": "String"
+      },
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "qualificationsTitle": "Calificaciones",
+  "qualificationsSearchHint": "Buscar calificaciones...",
+  "qualificationsLoadError": "No se pudieron cargar las calificaciones",
+  "qualificationsEmptyTitle": "No se encontraron calificaciones",
+  "qualificationsEmptySearchSubtitle": "Probá con otro término de búsqueda",
+  "qualificationsEmptySubtitle": "No hay calificaciones disponibles",
+  "qualificationsUnknownStudent": "Estudiante desconocido",
+  "qualificationsUnknownClassroom": "Clase desconocida",
+  "notificationsMarkAllRead": "Marcar todas como leídas",
+  "notificationsLoadError": "No se pudieron cargar las notificaciones",
+  "notificationsEmptyTitle": "No hay notificaciones",
+  "notificationsEmptySubtitle": "¡Estás al día!",
+  "notificationsToday": "Hoy",
+  "notificationsYesterday": "Ayer",
+  "notificationsEarlier": "Anteriores",
+  "chatLoadError": "No se pudieron cargar los chats",
+  "chatEmptyTitle": "No hay conversaciones",
+  "chatEmptySubtitle": "Iniciá una conversación con tus compañeros",
+  "chatMessagesLoadError": "No se pudieron cargar los mensajes",
+  "chatMessagesEmpty": "Todavía no hay mensajes\n¡Iniciá la conversación!",
+  "chatInputHint": "Escribí un mensaje...",
+  "chatTimeNow": "Ahora",
+  "chatTimeMinutesShort": "{count}m",
+  "@chatTimeMinutesShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsTitle": "Noticias",
+  "newsErrorTitle": "No se pudieron cargar las noticias",
+  "newsEmptyTitle": "No hay noticias",
+  "newsEmptySubtitle": "Volvé más tarde para ver novedades",
+  "eventsTitle": "Eventos",
+  "eventsErrorTitle": "No se pudieron cargar los eventos",
+  "eventsEmptyTitle": "No hay eventos",
+  "eventsEmptySubtitle": "No hay próximos eventos programados",
+  "searchTitle": "Buscar",
+  "searchHint": "Buscar estudiantes, clases, noticias...",
+  "searchErrorTitle": "Error en la búsqueda",
+  "searchEmptySubtitle": "Buscá estudiantes, clases o noticias",
+  "searchNoResultsTitle": "Sin resultados",
+  "searchNoResultsSubtitle": "No se encontraron resultados para \"{query}\"",
+  "@searchNoResultsSubtitle": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  }
+}

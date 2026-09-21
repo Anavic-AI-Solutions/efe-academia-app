@@ -9,6 +9,7 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/news_provider.dart';
 import '../domain/news_model.dart';
 
@@ -43,28 +44,29 @@ class _NewsListScreenState extends ConsumerState<NewsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final state = ref.watch(newsListProvider);
     final news = state.pagination.data;
 
     return Scaffold(
       body: Column(
         children: [
-          const LargeTitleBar(title: 'News'),
+          LargeTitleBar(title: l10n.newsTitle),
           Expanded(
             child: state.isLoading && news.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : state.error != null && news.isEmpty
                     ? ErrorView(
-                        message: 'Failed to load news',
+                        message: l10n.newsErrorTitle,
                         detail: state.error,
                         onRetry: () =>
                             ref.read(newsListProvider.notifier).refresh(),
                       )
                     : news.isEmpty
-                        ? const EmptyState(
+                        ? EmptyState(
                             icon: PhosphorIconsRegular.article,
-                            title: 'No news',
-                            subtitle: 'Check back later for updates',
+                            title: l10n.newsEmptyTitle,
+                            subtitle: l10n.newsEmptySubtitle,
                           )
                         : RefreshIndicator(
                             onRefresh: () =>

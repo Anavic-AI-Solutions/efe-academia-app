@@ -8,6 +8,8 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/notification_provider.dart';
 import '../domain/notification_model.dart';
 
@@ -44,19 +46,20 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(notificationListProvider);
+    final l10n = context.l10n;
 
     return Scaffold(
       body: Column(
         children: [
           LargeTitleBar(
-            title: 'Notifications',
+            title: l10n.profileNotifications,
             actions: [
               if (state.notifications.any((n) => !n.read))
                 TextButton(
                   onPressed: () =>
                       ref.read(notificationListProvider.notifier).markAllRead(),
                   child: Text(
-                    'Mark all read',
+                    l10n.notificationsMarkAllRead,
                     style: AppTypography.labelLarge.copyWith(
                       color: Theme.of(context).brightness == Brightness.dark
                           ? const Color(0xFF6366F1)
@@ -71,17 +74,17 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
                 ? const Center(child: CircularProgressIndicator())
                 : state.error != null && state.notifications.isEmpty
                     ? ErrorView(
-                        message: 'Failed to load notifications',
+                        message: l10n.notificationsLoadError,
                         detail: state.error,
                         onRetry: () => ref
                             .read(notificationListProvider.notifier)
                             .refresh(),
                       )
                     : state.notifications.isEmpty
-                        ? const EmptyState(
+                        ? EmptyState(
                             icon: PhosphorIconsRegular.bell,
-                            title: 'No notifications',
-                            subtitle: "You're all caught up!",
+                            title: l10n.notificationsEmptyTitle,
+                            subtitle: l10n.notificationsEmptySubtitle,
                           )
                         : RefreshIndicator(
                             onRefresh: () => ref
@@ -97,6 +100,7 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
 
   Widget _buildGroupedList(
       BuildContext context, NotificationListState state, WidgetRef ref) {
+    final l10n = context.l10n;
     final now = DateTime.now();
     final today = <NotificationModel>[];
     final yesterday = <NotificationModel>[];
@@ -120,7 +124,7 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       children: [
         if (today.isNotEmpty) ...[
-          _buildSectionHeader('Today', isDark),
+          _buildSectionHeader(l10n.notificationsToday, isDark),
           ...today.map((n) => _NotificationTile(
                 notification: n,
                 onTap: () {
@@ -131,7 +135,7 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
               )),
         ],
         if (yesterday.isNotEmpty) ...[
-          _buildSectionHeader('Yesterday', isDark),
+          _buildSectionHeader(l10n.notificationsYesterday, isDark),
           ...yesterday.map((n) => _NotificationTile(
                 notification: n,
                 onTap: () {
@@ -142,7 +146,7 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
               )),
         ],
         if (earlier.isNotEmpty) ...[
-          _buildSectionHeader('Earlier', isDark),
+          _buildSectionHeader(l10n.notificationsEarlier, isDark),
           ...earlier.map((n) => _NotificationTile(
                 notification: n,
                 onTap: () {
@@ -184,6 +188,7 @@ class _NotificationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final isDark = theme.brightness == Brightness.dark;
     final hasUnread = !notification.read;
 
@@ -235,7 +240,7 @@ class _NotificationTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _formatDate(notification.createdAt),
+                    _formatDate(l10n, notification.createdAt),
                     style: AppTypography.labelSmall.copyWith(
                       color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
                     ),
@@ -249,13 +254,13 @@ class _NotificationTile extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(AppLocalizations l10n, DateTime date) {
     final now = DateTime.now();
     final diff = now.difference(date);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-    if (diff.inDays < 1) return '${diff.inHours}h ago';
-    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return l10n.timeJustNow;
+    if (diff.inHours < 1) return l10n.timeMinutesAgo(diff.inMinutes);
+    if (diff.inDays < 1) return l10n.timeHoursAgo(diff.inHours);
+    if (diff.inDays < 7) return l10n.timeDaysAgo(diff.inDays);
     return DateFormat('MMM d').format(date);
   }
 }

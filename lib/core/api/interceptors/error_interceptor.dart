@@ -49,14 +49,14 @@ class ErrorInterceptor extends Interceptor {
       case 500:
         handler.reject(_wrapError(err, ApiException(
           statusCode: 500,
-          message: 'Internal server error',
+          message: 'Error interno del servidor',
           detail: _extractErrorDetail(err),
         )));
         return;
       default:
         handler.reject(_wrapError(err, ApiException(
           statusCode: statusCode,
-          message: 'Request failed',
+          message: 'La solicitud falló',
           detail: _extractErrorDetail(err),
         )));
         return;

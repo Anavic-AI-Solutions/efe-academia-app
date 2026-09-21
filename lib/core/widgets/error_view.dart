@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_typography.dart';
+import '../../l10n/l10n.dart';
 
 class ErrorView extends StatelessWidget {
   final String message;
@@ -12,7 +13,7 @@ class ErrorView extends StatelessWidget {
     super.key,
     required this.message,
     this.detail,
-    this.retryLabel = 'Retry',
+    this.retryLabel,
     this.onRetry,
   });
 
@@ -71,7 +72,7 @@ class ErrorView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24),
                     ),
                   ),
-                  child: Text(retryLabel!),
+                  child: Text(retryLabel ?? context.l10n.commonRetry),
                 ),
               ),
             ],

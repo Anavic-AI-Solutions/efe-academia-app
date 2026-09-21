@@ -10,17 +10,17 @@ class ApiException implements Exception {
 }
 
 class UnauthorizedException extends ApiException {
-  UnauthorizedException({super.message = 'Unauthorized', super.detail})
+  UnauthorizedException({super.message = 'No autorizado', super.detail})
       : super(statusCode: 401);
 }
 
 class ForbiddenException extends ApiException {
-  ForbiddenException({super.message = 'Forbidden', super.detail})
+  ForbiddenException({super.message = 'Acceso denegado', super.detail})
       : super(statusCode: 403);
 }
 
 class NotFoundException extends ApiException {
-  NotFoundException({super.message = 'Not Found', super.detail})
+  NotFoundException({super.message = 'No encontrado', super.detail})
       : super(statusCode: 404);
 }
 
@@ -28,13 +28,13 @@ class ValidationException extends ApiException {
   final Map<String, String> fieldErrors;
 
   ValidationException({required this.fieldErrors, super.detail})
-      : super(statusCode: 422, message: 'Validation Error');
+      : super(statusCode: 422, message: 'Error de validación');
 }
 
 class NetworkException extends ApiException {
-  NetworkException({super.message = 'No internet connection'});
+  NetworkException({super.message = 'Sin conexión a internet'});
 }
 
 class TimeoutException extends ApiException {
-  TimeoutException({super.message = 'Request timed out'});
+  TimeoutException({super.message = 'La solicitud tardó demasiado'});
 }

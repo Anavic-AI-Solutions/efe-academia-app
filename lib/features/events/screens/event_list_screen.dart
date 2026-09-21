@@ -9,6 +9,7 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/event_provider.dart';
 import '../domain/event_model.dart';
 
@@ -43,28 +44,29 @@ class _EventListScreenState extends ConsumerState<EventListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final state = ref.watch(eventListProvider);
     final events = state.pagination.data;
 
     return Scaffold(
       body: Column(
         children: [
-          const LargeTitleBar(title: 'Events'),
+          LargeTitleBar(title: l10n.eventsTitle),
           Expanded(
             child: state.isLoading && events.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : state.error != null && events.isEmpty
                     ? ErrorView(
-                        message: 'Failed to load events',
+                        message: l10n.eventsErrorTitle,
                         detail: state.error,
                         onRetry: () =>
                             ref.read(eventListProvider.notifier).refresh(),
                       )
                     : events.isEmpty
-                        ? const EmptyState(
+                        ? EmptyState(
                             icon: PhosphorIconsRegular.calendarBlank,
-                            title: 'No events',
-                            subtitle: 'No upcoming events scheduled',
+                            title: l10n.eventsEmptyTitle,
+                            subtitle: l10n.eventsEmptySubtitle,
                           )
                         : RefreshIndicator(
                             onRefresh: () =>

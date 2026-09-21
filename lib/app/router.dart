@@ -19,6 +19,7 @@ import '../features/news/screens/news_list_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../app/theme/app_colors.dart';
+import '../l10n/l10n.dart';
 
 // ---------------------------------------------------------------------------
 // Custom Bottom Navigation Bar
@@ -33,6 +34,7 @@ class CustomBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final l10n = context.l10n;
 
     return Container(
       decoration: BoxDecoration(
@@ -54,7 +56,7 @@ class CustomBottomNav extends StatelessWidget {
               _NavItem(
                 icon: PhosphorIconsRegular.house,
                 selectedIcon: PhosphorIconsFill.house,
-                label: 'Home',
+                label: l10n.navHome,
                 isSelected: navigationShell.currentIndex == 0,
                 onTap: () => navigationShell.goBranch(
                   0,
@@ -65,7 +67,7 @@ class CustomBottomNav extends StatelessWidget {
               _NavItem(
                 icon: PhosphorIconsRegular.chalkboardTeacher,
                 selectedIcon: PhosphorIconsFill.chalkboardTeacher,
-                label: 'Classes',
+                label: l10n.navClasses,
                 isSelected: navigationShell.currentIndex == 1,
                 onTap: () => navigationShell.goBranch(
                   1,
@@ -77,7 +79,7 @@ class CustomBottomNav extends StatelessWidget {
               _NavItem(
                 icon: PhosphorIconsRegular.chatCircle,
                 selectedIcon: PhosphorIconsFill.chatCircle,
-                label: 'Chat',
+                label: l10n.navChat,
                 isSelected: navigationShell.currentIndex == 2,
                 onTap: () => navigationShell.goBranch(
                   2,
@@ -88,7 +90,7 @@ class CustomBottomNav extends StatelessWidget {
               _NavItem(
                 icon: PhosphorIconsRegular.userCircle,
                 selectedIcon: PhosphorIconsFill.userCircle,
-                label: 'Profile',
+                label: l10n.navProfile,
                 isSelected: navigationShell.currentIndex == 3,
                 onTap: () => navigationShell.goBranch(
                   3,

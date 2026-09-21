@@ -11,6 +11,8 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/chat_provider.dart';
 import '../domain/chat_model.dart';
 
@@ -47,12 +49,13 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(chatListProvider);
     final chats = state.chats;
+    final l10n = context.l10n;
 
     return Scaffold(
       body: Column(
         children: [
-          const LargeTitleBar(
-            title: 'Chat',
+          LargeTitleBar(
+            title: l10n.navChat,
             showBackButton: false,
           ),
           Expanded(
@@ -60,16 +63,16 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                 ? const Center(child: CircularProgressIndicator())
                 : state.error != null && chats.isEmpty
                     ? ErrorView(
-                        message: 'Failed to load chats',
+                        message: l10n.chatLoadError,
                         detail: state.error,
                         onRetry: () =>
                             ref.read(chatListProvider.notifier).refresh(),
                       )
                     : chats.isEmpty
-                        ? const EmptyState(
+                        ? EmptyState(
                             icon: PhosphorIconsRegular.chatCircle,
-                            title: 'No conversations',
-                            subtitle: 'Start a conversation with your classmates',
+                            title: l10n.chatEmptyTitle,
+                            subtitle: l10n.chatEmptySubtitle,
                           )
                         : RefreshIndicator(
                             onRefresh: () =>
@@ -115,6 +118,7 @@ class _ChatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final isDark = theme.brightness == Brightness.dark;
     final hasUnread = chat.unreadCount > 0;
 
@@ -169,7 +173,7 @@ class _ChatTile extends StatelessWidget {
             const SizedBox(width: 8),
             if (chat.lastMessageAt != null)
               Text(
-                _formatTime(chat.lastMessageAt!),
+                _formatTime(l10n, chat.lastMessageAt!),
                 style: AppTypography.labelSmall.copyWith(
                   color: hasUnread
                       ? (isDark ? const Color(0xFF6366F1) : AppColors.primary)
@@ -184,11 +188,11 @@ class _ChatTile extends StatelessWidget {
     );
   }
 
-  String _formatTime(DateTime date) {
+  String _formatTime(AppLocalizations l10n, DateTime date) {
     final now = DateTime.now();
     final diff = now.difference(date);
-    if (diff.inMinutes < 1) return 'Now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m';
+    if (diff.inMinutes < 1) return l10n.chatTimeNow;
+    if (diff.inHours < 1) return l10n.chatTimeMinutesShort(diff.inMinutes);
     if (diff.inDays < 1) return DateFormat('HH:mm').format(date);
     if (diff.inDays < 7) return DateFormat('EEE').format(date);
     return DateFormat('MMM d').format(date);

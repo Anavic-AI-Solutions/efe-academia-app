@@ -8,6 +8,7 @@ class SecureStorage {
 
   static const _tokenKey = 'auth_token';
   static const _themeKey = 'theme_mode';
+  static const _languageKey = 'language_code';
 
   Future<void> saveToken(String token) async =>
       await _storage.write(key: _tokenKey, value: token);
@@ -22,4 +23,10 @@ class SecureStorage {
       await _storage.write(key: _themeKey, value: mode);
 
   Future<String?> getThemeMode() async => await _storage.read(key: _themeKey);
+
+  Future<void> saveLanguageCode(String code) async =>
+      await _storage.write(key: _languageKey, value: code);
+
+  Future<String?> getLanguageCode() async =>
+      await _storage.read(key: _languageKey);
 }

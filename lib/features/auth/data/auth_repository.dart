@@ -22,7 +22,7 @@ class AuthRepository {
       final data = response.data['data'];
       final token = data['token'] as String?;
       if (token == null) {
-        throw ApiException(message: 'No token received');
+        throw ApiException(message: 'No se recibió el token');
       }
       await _storage.saveToken(token);
       _client.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -48,7 +48,7 @@ class AuthRepository {
       final data = response.data['data'];
       final token = data['token'] as String?;
       if (token == null) {
-        throw ApiException(message: 'No token received');
+        throw ApiException(message: 'No se recibió el token');
       }
       await _storage.saveToken(token);
       _client.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -73,7 +73,7 @@ class AuthRepository {
     } on DioException {
       // Ignore logout errors — always clear local state
     } finally {
-      await _storage.clearAll();
+      await _storage.deleteToken();
       _client.dio.options.headers.remove('Authorization');
     }
   }
@@ -103,7 +103,7 @@ class AuthRepository {
       return e.error as ApiException;
     }
     return ApiException(
-      message: e.message ?? 'An unexpected error occurred',
+      message: e.message ?? 'Ocurrió un error inesperado',
       statusCode: e.response?.statusCode,
     );
   }

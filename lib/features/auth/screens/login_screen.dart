@@ -6,6 +6,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../core/widgets/pill_button.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -59,6 +60,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     final isLoading = authState.status == AuthStatus.loading;
+    final l10n = context.l10n;
 
     return Scaffold(
       body: Container(
@@ -68,47 +70,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             // Gradient header
             Container(
               width: double.infinity,
-              height: size.height * 0.42,
+              height: size.height * 0.34,
               decoration: const BoxDecoration(
                 gradient: AppColors.primaryGradient,
               ),
               child: SafeArea(
                 bottom: false,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Icon(
-                        Icons.school_rounded,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'EFE',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        height: 1.15,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Educational ERP for Nursing Schools',
-                      style: AppTypography.bodyMedium.copyWith(
-                        color: Colors.white.withOpacity(0.75),
-                      ),
-                    ),
-                  ],
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/efe_logo_white.png',
+                    height: 28,
+                    fit: BoxFit.contain,
+                    semanticLabel: 'EFE',
+                  ),
                 ),
               ),
             ),
@@ -124,14 +98,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       const SizedBox(height: 32),
                       Text(
-                        'Welcome back',
+                        l10n.authWelcomeBack,
                         style: AppTypography.headlineMedium.copyWith(
                           color: AppColors.lightTextPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Sign in to your account',
+                        l10n.authSignInSubtitle,
                         style: AppTypography.bodyMedium.copyWith(
                           color: AppColors.lightTextSecondary,
                         ),
@@ -146,20 +120,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         style: AppTypography.bodyMedium.copyWith(
                           color: AppColors.lightTextPrimary,
                         ),
-                        decoration: const InputDecoration(
-                          hintText: 'Email address',
-                          prefixIcon: Icon(
+                        decoration: InputDecoration(
+                          hintText: l10n.authEmailLabel,
+                          prefixIcon: const Icon(
                             PhosphorIconsRegular.envelope,
                             size: 20,
                           ),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Email is required';
+                            return l10n.authEmailRequired;
                           }
                           if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
                               .hasMatch(value.trim())) {
-                            return 'Enter a valid email';
+                            return l10n.authEmailInvalid;
                           }
                           return null;
                         },
@@ -176,7 +150,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           color: AppColors.lightTextPrimary,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Password',
+                          hintText: l10n.authPasswordLabel,
                           prefixIcon: const Icon(
                             PhosphorIconsRegular.lock,
                             size: 20,
@@ -197,7 +171,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Password is required';
+                            return l10n.authPasswordRequired;
                           }
                           return null;
                         },
@@ -216,7 +190,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ),
                           child: Text(
-                            'Forgot password?',
+                            l10n.authForgotPassword,
                             style: AppTypography.labelLarge.copyWith(
                               color: AppColors.primary,
                             ),
@@ -227,7 +201,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                       // Login button
                       PillButton(
-                        label: 'Sign In',
+                        label: l10n.authSignIn,
                         isLoading: isLoading,
                         isGradient: true,
                         onPressed: _handleLogin,

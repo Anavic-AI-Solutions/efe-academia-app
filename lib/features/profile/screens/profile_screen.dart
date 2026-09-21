@@ -7,6 +7,8 @@ import '../../auth/providers/auth_provider.dart';
 import '../../../core/widgets/avatar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../app/locale/locale_provider.dart';
+import '../../../l10n/l10n.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -17,6 +19,8 @@ class ProfileScreen extends ConsumerWidget {
     final user = authState.user;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final l10n = context.l10n;
+    final locale = ref.watch(localeProvider);
 
     return Scaffold(
       body: ListView(
@@ -33,13 +37,13 @@ class ProfileScreen extends ConsumerWidget {
               children: [
                 AppAvatar(
                   imageUrl: user?.avatarUrl,
-                  name: user?.name ?? 'User',
+                  name: user?.name ?? l10n.commonUser,
                   size: 80,
                   showGradientRing: true,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  user?.name ?? 'User',
+                  user?.name ?? l10n.commonUser,
                   style: AppTypography.headlineMedium.copyWith(
                     color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
                   ),
@@ -59,20 +63,20 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 36),
 
           // Account section
-          _SectionLabel(title: 'Account', isDark: isDark),
+          _SectionLabel(title: l10n.profileAccount, isDark: isDark),
           const SizedBox(height: 8),
           _SettingsGroup(
             isDark: isDark,
             children: [
               _SettingsTile(
                 icon: PhosphorIconsRegular.user,
-                title: 'Edit Profile',
+                title: l10n.profileEditProfile,
                 onTap: () {},
                 isDark: isDark,
               ),
               _SettingsTile(
                 icon: PhosphorIconsRegular.bell,
-                title: 'Notifications',
+                title: l10n.profileNotifications,
                 onTap: () => context.push('/notifications'),
                 isDark: isDark,
               ),
@@ -81,27 +85,29 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 24),
 
           // Preferences section
-          _SectionLabel(title: 'Preferences', isDark: isDark),
+          _SectionLabel(title: l10n.profilePreferences, isDark: isDark),
           const SizedBox(height: 8),
           _SettingsGroup(
             isDark: isDark,
             children: [
               _SettingsTile(
                 icon: PhosphorIconsRegular.moon,
-                title: 'Theme',
+                title: l10n.profileTheme,
                 onTap: () {},
                 isDark: isDark,
               ),
               _SettingsTile(
                 icon: PhosphorIconsRegular.globe,
-                title: 'Language',
+                title: l10n.profileLanguage,
                 trailing: Text(
-                  'English',
+                  locale.languageCode == 'en'
+                      ? l10n.languageEnglish
+                      : l10n.languageSpanish,
                   style: AppTypography.bodyMedium.copyWith(
                     color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
                   ),
                 ),
-                onTap: () {},
+                onTap: () => _showLanguageSheet(context, ref),
                 isDark: isDark,
                 showDivider: false,
               ),
@@ -110,20 +116,20 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 24),
 
           // About section
-          _SectionLabel(title: 'About', isDark: isDark),
+          _SectionLabel(title: l10n.profileAbout, isDark: isDark),
           const SizedBox(height: 8),
           _SettingsGroup(
             isDark: isDark,
             children: [
               _SettingsTile(
                 icon: PhosphorIconsRegular.info,
-                title: 'About',
+                title: l10n.profileAbout,
                 onTap: () {},
                 isDark: isDark,
               ),
               _SettingsTile(
                 icon: PhosphorIconsRegular.question,
-                title: 'Help & Support',
+                title: l10n.profileHelpSupport,
                 onTap: () {},
                 isDark: isDark,
                 showDivider: false,
@@ -140,21 +146,21 @@ class ProfileScreen extends ConsumerWidget {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text('Logout'),
-                    content: const Text('Are you sure you want to logout?'),
+                    title: Text(l10n.profileLogout),
+                    content: Text(l10n.profileLogoutConfirm),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
-                        child: const Text('Cancel'),
+                        child: Text(l10n.commonCancel),
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: const Text(
-                          'Logout',
-                          style: TextStyle(color: AppColors.error),
+                        child: Text(
+                          l10n.profileLogout,
+                          style: const TextStyle(color: AppColors.error),
                         ),
                       ),
                     ],
@@ -165,7 +171,7 @@ class ProfileScreen extends ConsumerWidget {
                 }
               },
               icon: const Icon(PhosphorIconsBold.power, size: 20),
-              label: const Text('Logout'),
+              label: Text(l10n.profileLogout),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.error,
                 side: BorderSide(color: AppColors.error.withOpacity(0.3)),
@@ -178,6 +184,62 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showLanguageSheet(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
+    final current = ref.read(localeProvider);
+
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkSurface
+          : AppColors.lightSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                child: Text(
+                  l10n.profileSelectLanguage,
+                  style: AppTypography.titleMedium,
+                ),
+              ),
+              ListTile(
+                title: Text(l10n.languageSpanish),
+                trailing: current.languageCode == 'es'
+                    ? const Icon(Icons.check_rounded, color: AppColors.primary)
+                    : null,
+                onTap: () {
+                  ref
+                      .read(localeProvider.notifier)
+                      .setLocale(const Locale('es', 'AR'));
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              ListTile(
+                title: Text(l10n.languageEnglish),
+                trailing: current.languageCode == 'en'
+                    ? const Icon(Icons.check_rounded, color: AppColors.primary)
+                    : null,
+                onTap: () {
+                  ref
+                      .read(localeProvider.notifier)
+                      .setLocale(const Locale('en'));
+                  Navigator.pop(sheetContext);
+                },
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -198,7 +260,7 @@ class _RoleBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        _getRoleName(role),
+        _getRoleName(context, role),
         style: AppTypography.labelSmall.copyWith(
           color: roleColor,
           fontWeight: FontWeight.w600,
@@ -224,20 +286,21 @@ class _RoleBadge extends StatelessWidget {
     }
   }
 
-  String _getRoleName(String role) {
+  String _getRoleName(BuildContext context, String role) {
+    final l10n = context.l10n;
     switch (role) {
       case 'admin':
-        return 'Administrator';
+        return l10n.roleAdmin;
       case 'branch':
-        return 'Branch Director';
+        return l10n.roleBranch;
       case 'professor':
-        return 'Professor';
+        return l10n.roleProfessor;
       case 'parent':
-        return 'Parent';
+        return l10n.roleParent;
       case 'student':
-        return 'Student';
+        return l10n.roleStudent;
       default:
-        return role.isNotEmpty ? role : 'User';
+        return role.isNotEmpty ? role : l10n.commonUser;
     }
   }
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/localized_app.dart';
+
 const _options = ClassroomFilters(
   branches: ['Reconquista', 'Vera'],
   levels: ['A2', 'B1'],
@@ -25,7 +27,7 @@ Future<void> _pumpApp(
           (ref) => loadOptions?.call() ?? Future.value(_options),
         ),
       ],
-      child: MaterialApp(
+      child: localizedApp(
         home: Builder(
           builder: (context) => Scaffold(
             body: Center(
@@ -62,7 +64,7 @@ void main() {
     await tester.pump();
     await tester.tap(find.text('A2'));
     await tester.pump();
-    await tester.tap(find.text('Apply filters'));
+    await tester.tap(find.text('Aplicar filtros'));
     await tester.pumpAndSettle();
 
     expect(result?.branch, 'Reconquista');
@@ -83,7 +85,7 @@ void main() {
     );
 
     await _openSheet(tester);
-    await tester.tap(find.text('Apply filters'));
+    await tester.tap(find.text('Aplicar filtros'));
     await tester.pumpAndSettle();
 
     expect(result?.branch, 'Vera');
@@ -99,9 +101,9 @@ void main() {
     );
 
     await _openSheet(tester);
-    await tester.tap(find.text('Clear all'));
+    await tester.tap(find.text('Limpiá todo'));
     await tester.pump();
-    await tester.tap(find.text('Apply filters'));
+    await tester.tap(find.text('Aplicar filtros'));
     await tester.pumpAndSettle();
 
     expect(result?.branch, isNull);
@@ -118,7 +120,7 @@ void main() {
 
     await _openSheet(tester);
 
-    expect(find.text('Could not load filters'), findsOneWidget);
-    expect(find.text('Retry'), findsOneWidget);
+    expect(find.text('No se pudieron cargar los filtros'), findsOneWidget);
+    expect(find.text('Reintentar'), findsOneWidget);
   });
 }

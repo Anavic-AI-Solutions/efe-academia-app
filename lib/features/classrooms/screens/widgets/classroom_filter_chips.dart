@@ -3,6 +3,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../l10n/l10n.dart';
 import 'classroom_filter_sheet.dart';
 
 class ClassroomFilterChips extends StatelessWidget {
@@ -21,6 +22,7 @@ class ClassroomFilterChips extends StatelessWidget {
   Widget build(BuildContext context) {
     if (selection.isEmpty) return const SizedBox.shrink();
 
+    final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SizedBox(
@@ -31,22 +33,24 @@ class ClassroomFilterChips extends StatelessWidget {
         children: [
           if (selection.branch != null)
             _ActiveFilterChip(
-              label: 'Branch: ${selection.branch}',
+              label: l10n.classroomsFilterChipBranch(selection.branch!),
               onRemove: () => onChanged(selection.copyWith(clearBranch: true)),
             ),
           if (selection.level != null)
             _ActiveFilterChip(
-              label: 'Level: ${selection.level}',
+              label: l10n.classroomsFilterChipLevel(selection.level!),
               onRemove: () => onChanged(selection.copyWith(clearLevel: true)),
             ),
           if (selection.year != null)
             _ActiveFilterChip(
-              label: 'Year: ${selection.year}',
+              label: l10n.classroomsFilterChipYear(selection.year!),
               onRemove: () => onChanged(selection.copyWith(clearYear: true)),
             ),
           if (selection.status != null)
             _ActiveFilterChip(
-              label: 'Status: ${classroomStatusLabel(selection.status!)}',
+              label: l10n.classroomsFilterChipStatus(
+                classroomStatusLabel(selection.status!, l10n),
+              ),
               onRemove: () => onChanged(selection.copyWith(clearStatus: true)),
             ),
           Center(
@@ -56,7 +60,7 @@ class ClassroomFilterChips extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
-                  'Clear',
+                  l10n.classroomsFilterClear,
                   style: AppTypography.labelMedium.copyWith(
                     color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
                     fontWeight: FontWeight.w600,

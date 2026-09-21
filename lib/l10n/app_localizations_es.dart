@@ -1,0 +1,603 @@
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Spanish Castilian (`es`).
+class AppLocalizationsEs extends AppLocalizations {
+  AppLocalizationsEs([String locale = 'es']) : super(locale);
+
+  @override
+  String get commonCancel => 'Cancelar';
+
+  @override
+  String get commonRetry => 'Reintentar';
+
+  @override
+  String get commonSearchHint => 'Buscar...';
+
+  @override
+  String get commonUser => 'Usuario';
+
+  @override
+  String get navHome => 'Inicio';
+
+  @override
+  String get navClasses => 'Clases';
+
+  @override
+  String get navChat => 'Chat';
+
+  @override
+  String get navProfile => 'Perfil';
+
+  @override
+  String get authWelcomeBack => 'Bienvenido de nuevo';
+
+  @override
+  String get authSignInSubtitle => 'Iniciá sesión en tu cuenta';
+
+  @override
+  String get authEmailLabel => 'Correo electrónico';
+
+  @override
+  String get authEmailRequired => 'El correo electrónico es obligatorio';
+
+  @override
+  String get authEmailInvalid => 'Ingresá un correo electrónico válido';
+
+  @override
+  String get authPasswordLabel => 'Contraseña';
+
+  @override
+  String get authPasswordRequired => 'La contraseña es obligatoria';
+
+  @override
+  String get authForgotPassword => '¿Olvidaste tu contraseña?';
+
+  @override
+  String get authSignIn => 'Iniciar sesión';
+
+  @override
+  String get authForgotPasswordTitle => 'Recuperar contraseña';
+
+  @override
+  String get authResetSubtitle => 'Restablecé tu contraseña';
+
+  @override
+  String get authCheckEmail => 'Revisá tu correo';
+
+  @override
+  String get authResetInstructions => 'Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
+
+  @override
+  String authResetLinkSent(String email) {
+    return 'Te enviamos un enlace para restablecer tu contraseña a\n$email';
+  }
+
+  @override
+  String get authSendResetLink => 'Enviar enlace de restablecimiento';
+
+  @override
+  String get authBackToSignIn => 'Volver a iniciar sesión';
+
+  @override
+  String get validationRequired => 'Obligatorio';
+
+  @override
+  String get validationInvalidEmail => 'Correo electrónico inválido';
+
+  @override
+  String get validationPasswordLength => 'La contraseña debe tener al menos 8 caracteres';
+
+  @override
+  String get validationPasswordsDoNotMatch => 'Las contraseñas no coinciden';
+
+  @override
+  String validationFieldRequired(String field) {
+    return '$field es obligatorio';
+  }
+
+  @override
+  String get timeJustNow => 'Justo ahora';
+
+  @override
+  String timeMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hace $count minutos',
+      one: 'Hace 1 minuto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hace $count horas',
+      one: 'Hace 1 hora',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hace $count días',
+      one: 'Hace 1 día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileAccount => 'Cuenta';
+
+  @override
+  String get profileEditProfile => 'Editar perfil';
+
+  @override
+  String get profileNotifications => 'Notificaciones';
+
+  @override
+  String get profilePreferences => 'Preferencias';
+
+  @override
+  String get profileTheme => 'Tema';
+
+  @override
+  String get profileLanguage => 'Idioma';
+
+  @override
+  String get profileSelectLanguage => 'Seleccionar idioma';
+
+  @override
+  String get profileAbout => 'Acerca de';
+
+  @override
+  String get profileHelpSupport => 'Ayuda y soporte';
+
+  @override
+  String get profileLogout => 'Cerrar sesión';
+
+  @override
+  String get profileLogoutConfirm => '¿Estás seguro de que querés cerrar sesión?';
+
+  @override
+  String get languageSpanish => 'Español';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get roleAdmin => 'Administrador';
+
+  @override
+  String get roleBranch => 'Director de sede';
+
+  @override
+  String get roleProfessor => 'Profesor';
+
+  @override
+  String get roleParent => 'Tutor';
+
+  @override
+  String get roleStudent => 'Estudiante';
+
+  @override
+  String get dashboardLoadError => 'No se pudo cargar el panel principal';
+
+  @override
+  String get dashboardQuickActions => 'Acciones rápidas';
+
+  @override
+  String get dashboardStudents => 'Estudiantes';
+
+  @override
+  String get dashboardNews => 'Novedades';
+
+  @override
+  String get dashboardEvents => 'Eventos';
+
+  @override
+  String get dashboardFees => 'Cuotas';
+
+  @override
+  String get dashboardSearch => 'Buscar';
+
+  @override
+  String dashboardWelcome(String name) {
+    return '¡Hola, $name!';
+  }
+
+  @override
+  String get dashboardClassrooms => 'Clases';
+
+  @override
+  String get dashboardAttendance => 'Asistencia';
+
+  @override
+  String get dashboardPendingFees => 'Cuotas pendientes';
+
+  @override
+  String get classroomsTitle => 'Clases';
+
+  @override
+  String get classroomsSearchHint => 'Buscar clases...';
+
+  @override
+  String get classroomsLoadError => 'No se pudieron cargar las clases';
+
+  @override
+  String get classroomsEmptyTitle => 'No se encontraron clases';
+
+  @override
+  String get classroomsEmptyFiltered => 'Intentá ajustar o limpiar los filtros';
+
+  @override
+  String get classroomsEmptySearch => 'Intentá con otro término de búsqueda';
+
+  @override
+  String get classroomsEmptySubtitle => 'No hay clases disponibles';
+
+  @override
+  String get classroomsClearFilters => 'Limpiá los filtros';
+
+  @override
+  String get classroomsDetailTitle => 'Clase';
+
+  @override
+  String get classroomsDetailLoadError => 'No se pudo cargar la clase';
+
+  @override
+  String get classroomsName => 'Nombre';
+
+  @override
+  String get classroomsDescription => 'Descripción';
+
+  @override
+  String get classroomsStatus => 'Estado';
+
+  @override
+  String get classroomsShift => 'Turno';
+
+  @override
+  String get classroomsDay => 'Día';
+
+  @override
+  String get classroomsHour => 'Horario';
+
+  @override
+  String get classroomsRoom => 'Aula';
+
+  @override
+  String get classroomsYear => 'Año';
+
+  @override
+  String get classroomsBranch => 'Sucursal';
+
+  @override
+  String get classroomsLevel => 'Nivel';
+
+  @override
+  String get classroomsStudents => 'Estudiantes';
+
+  @override
+  String get classroomsFiltersTitle => 'Filtros';
+
+  @override
+  String get classroomsFilterClearAll => 'Limpiá todo';
+
+  @override
+  String get classroomsFilterApply => 'Aplicar filtros';
+
+  @override
+  String get classroomsFilterClear => 'Limpiá';
+
+  @override
+  String get classroomsStatusActive => 'Activo';
+
+  @override
+  String get classroomsStatusArchived => 'Archivado';
+
+  @override
+  String get classroomsFiltersLoadError => 'No se pudieron cargar los filtros';
+
+  @override
+  String get classroomsFiltersLoadErrorDetail => 'Revisá tu conexión e intentá de nuevo.';
+
+  @override
+  String classroomsFilterChipBranch(String value) {
+    return 'Sucursal: $value';
+  }
+
+  @override
+  String classroomsFilterChipLevel(String value) {
+    return 'Nivel: $value';
+  }
+
+  @override
+  String classroomsFilterChipYear(String value) {
+    return 'Año: $value';
+  }
+
+  @override
+  String classroomsFilterChipStatus(String value) {
+    return 'Estado: $value';
+  }
+
+  @override
+  String get studentsTitle => 'Estudiantes';
+
+  @override
+  String get studentsSearchHint => 'Buscar estudiantes...';
+
+  @override
+  String get studentsFilterAll => 'Todos';
+
+  @override
+  String get studentsFilterActive => 'Activos';
+
+  @override
+  String get studentsFilterInactive => 'Inactivos';
+
+  @override
+  String get studentsFilterYear => 'Año';
+
+  @override
+  String get studentsFilterBranch => 'Sede';
+
+  @override
+  String studentsFilterOptionAll(String label) {
+    return '$label: Todos';
+  }
+
+  @override
+  String studentsFilterOption(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String get studentsLoadError => 'No se pudieron cargar los estudiantes';
+
+  @override
+  String get studentsEmptyTitle => 'No se encontraron estudiantes';
+
+  @override
+  String get studentsEmptySearch => 'Probá con otro término de búsqueda';
+
+  @override
+  String get studentsEmptyFilters => 'Ningún estudiante coincide con los filtros seleccionados';
+
+  @override
+  String get studentsDetailFallbackTitle => 'Estudiante';
+
+  @override
+  String get studentsDetailLoadError => 'No se pudo cargar el estudiante';
+
+  @override
+  String get studentsTabGrades => 'Notas';
+
+  @override
+  String get studentsTabAbsences => 'Inasistencias';
+
+  @override
+  String get studentsTabFees => 'Cuotas';
+
+  @override
+  String get studentsTabInfo => 'Información';
+
+  @override
+  String get studentsNoGrades => 'No hay notas disponibles';
+
+  @override
+  String get studentsNoAbsences => 'No hay inasistencias registradas';
+
+  @override
+  String get studentsNoFees => 'No hay cuotas disponibles';
+
+  @override
+  String get studentsNoClassroom => 'Sin clases';
+
+  @override
+  String get studentsInfoFullName => 'Nombre completo';
+
+  @override
+  String get studentsInfoEmail => 'Correo electrónico';
+
+  @override
+  String get studentsInfoYear => 'Año';
+
+  @override
+  String get studentsInfoIdentityNumber => 'Número de documento';
+
+  @override
+  String get studentsInfoBranch => 'Sede';
+
+  @override
+  String get studentsInfoClassrooms => 'Clases';
+
+  @override
+  String get feesTitle => 'Cuotas';
+
+  @override
+  String get feesSearchHint => 'Buscar cuotas...';
+
+  @override
+  String get feesLoadError => 'No se pudieron cargar las cuotas';
+
+  @override
+  String get feesEmptyTitle => 'No se encontraron cuotas';
+
+  @override
+  String get feesEmptySearchSubtitle => 'Probá con otro término de búsqueda';
+
+  @override
+  String get feesEmptySubtitle => 'No hay cuotas disponibles';
+
+  @override
+  String feesDetailTitle(int number) {
+    return 'Cuota #$number';
+  }
+
+  @override
+  String get feesDetailFallbackTitle => 'Cuota';
+
+  @override
+  String get feesDetailLoadError => 'No se pudo cargar la cuota';
+
+  @override
+  String get feesDetailFeeNumber => 'Número de cuota';
+
+  @override
+  String get feesDetailMonth => 'Mes';
+
+  @override
+  String get feesDetailYear => 'Año';
+
+  @override
+  String get feesDetailToPay => 'A pagar';
+
+  @override
+  String get feesDetailPaid => 'Pagado';
+
+  @override
+  String get feesDetailTotal => 'Total';
+
+  @override
+  String get feesDetailStatus => 'Estado';
+
+  @override
+  String get feesDetailPaymentMethod => 'Método de pago';
+
+  @override
+  String get feesDetailPaymentDate => 'Fecha de pago';
+
+  @override
+  String get feesUnknownStudent => 'Desconocido';
+
+  @override
+  String feesCardSubtitle(int number, String month, String year) {
+    return 'Cuota #$number · $month $year';
+  }
+
+  @override
+  String get qualificationsTitle => 'Calificaciones';
+
+  @override
+  String get qualificationsSearchHint => 'Buscar calificaciones...';
+
+  @override
+  String get qualificationsLoadError => 'No se pudieron cargar las calificaciones';
+
+  @override
+  String get qualificationsEmptyTitle => 'No se encontraron calificaciones';
+
+  @override
+  String get qualificationsEmptySearchSubtitle => 'Probá con otro término de búsqueda';
+
+  @override
+  String get qualificationsEmptySubtitle => 'No hay calificaciones disponibles';
+
+  @override
+  String get qualificationsUnknownStudent => 'Estudiante desconocido';
+
+  @override
+  String get qualificationsUnknownClassroom => 'Clase desconocida';
+
+  @override
+  String get notificationsMarkAllRead => 'Marcar todas como leídas';
+
+  @override
+  String get notificationsLoadError => 'No se pudieron cargar las notificaciones';
+
+  @override
+  String get notificationsEmptyTitle => 'No hay notificaciones';
+
+  @override
+  String get notificationsEmptySubtitle => '¡Estás al día!';
+
+  @override
+  String get notificationsToday => 'Hoy';
+
+  @override
+  String get notificationsYesterday => 'Ayer';
+
+  @override
+  String get notificationsEarlier => 'Anteriores';
+
+  @override
+  String get chatLoadError => 'No se pudieron cargar los chats';
+
+  @override
+  String get chatEmptyTitle => 'No hay conversaciones';
+
+  @override
+  String get chatEmptySubtitle => 'Iniciá una conversación con tus compañeros';
+
+  @override
+  String get chatMessagesLoadError => 'No se pudieron cargar los mensajes';
+
+  @override
+  String get chatMessagesEmpty => 'Todavía no hay mensajes\n¡Iniciá la conversación!';
+
+  @override
+  String get chatInputHint => 'Escribí un mensaje...';
+
+  @override
+  String get chatTimeNow => 'Ahora';
+
+  @override
+  String chatTimeMinutesShort(int count) {
+    return '${count}m';
+  }
+
+  @override
+  String get newsTitle => 'Noticias';
+
+  @override
+  String get newsErrorTitle => 'No se pudieron cargar las noticias';
+
+  @override
+  String get newsEmptyTitle => 'No hay noticias';
+
+  @override
+  String get newsEmptySubtitle => 'Volvé más tarde para ver novedades';
+
+  @override
+  String get eventsTitle => 'Eventos';
+
+  @override
+  String get eventsErrorTitle => 'No se pudieron cargar los eventos';
+
+  @override
+  String get eventsEmptyTitle => 'No hay eventos';
+
+  @override
+  String get eventsEmptySubtitle => 'No hay próximos eventos programados';
+
+  @override
+  String get searchTitle => 'Buscar';
+
+  @override
+  String get searchHint => 'Buscar estudiantes, clases, noticias...';
+
+  @override
+  String get searchErrorTitle => 'Error en la búsqueda';
+
+  @override
+  String get searchEmptySubtitle => 'Buscá estudiantes, clases o noticias';
+
+  @override
+  String get searchNoResultsTitle => 'Sin resultados';
+
+  @override
+  String searchNoResultsSubtitle(String query) {
+    return 'No se encontraron resultados para \"$query\"';
+  }
+}

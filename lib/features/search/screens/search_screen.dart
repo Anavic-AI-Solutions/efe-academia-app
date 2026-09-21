@@ -9,6 +9,7 @@ import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/l10n.dart';
 
 // ---------------------------------------------------------------------------
 // Search State
@@ -142,17 +143,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(searchProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = context.l10n;
 
     return Scaffold(
       body: Column(
         children: [
           LargeTitleBar(
-            title: 'Search',
+            title: l10n.searchTitle,
             bottom: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
               child: AppSearchBar(
                 controller: _controller,
-                hintText: 'Search students, classrooms, news...',
+                hintText: l10n.searchHint,
                 onChanged: (value) {
                   if (value.isEmpty) {
                     ref.read(searchProvider.notifier).clear();
@@ -193,7 +195,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'Search failed',
+                              l10n.searchErrorTitle,
                               style: AppTypography.titleMedium.copyWith(
                                 color: isDark
                                     ? AppColors.darkTextPrimary
@@ -212,16 +214,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         ),
                       )
                     : state.query.isEmpty
-                        ? const EmptyState(
+                        ? EmptyState(
                             icon: PhosphorIconsRegular.magnifyingGlass,
-                            title: 'Search',
-                            subtitle: 'Search for students, classrooms, or news',
+                            title: l10n.searchTitle,
+                            subtitle: l10n.searchEmptySubtitle,
                           )
                         : state.results.isEmpty
                             ? EmptyState(
                                 icon: PhosphorIconsRegular.magnifyingGlass,
-                                title: 'No results',
-                                subtitle: 'No results found for "${state.query}"',
+                                title: l10n.searchNoResultsTitle,
+                                subtitle:
+                                    l10n.searchNoResultsSubtitle(state.query),
                               )
                             : ListView.separated(
                                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),

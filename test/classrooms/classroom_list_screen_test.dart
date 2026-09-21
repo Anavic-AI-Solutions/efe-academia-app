@@ -9,6 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../helpers/localized_app.dart';
+
 class _FakeClassroomRepository implements ClassroomRepository {
   final List<Map<String, Object?>> calls = [];
 
@@ -58,7 +60,7 @@ Future<_FakeClassroomRepository> _pumpScreen(WidgetTester tester) async {
           ),
         ),
       ],
-      child: const MaterialApp(home: ClassroomListScreen()),
+      child: localizedApp(home: const ClassroomListScreen()),
     ),
   );
   await tester.pumpAndSettle();
@@ -71,17 +73,17 @@ void main() {
     final repository = await _pumpScreen(tester);
 
     expect(find.text('A2 A'), findsOneWidget);
-    expect(find.text('Branch: Reconquista'), findsNothing);
+    expect(find.text('Sucursal: Reconquista'), findsNothing);
 
     await tester.tap(find.byIcon(PhosphorIconsRegular.faders));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Reconquista'));
     await tester.pump();
-    await tester.tap(find.text('Apply filters'));
+    await tester.tap(find.text('Aplicar filtros'));
     await tester.pumpAndSettle();
 
     expect(repository.calls.last['branch'], 'Reconquista');
-    expect(find.text('Branch: Reconquista'), findsOneWidget);
+    expect(find.text('Sucursal: Reconquista'), findsOneWidget);
   });
 
   testWidgets('renders without overflow on a small phone and opens the sheet',
@@ -97,7 +99,7 @@ void main() {
     await tester.tap(find.byIcon(PhosphorIconsRegular.faders));
     await tester.pumpAndSettle();
 
-    expect(find.text('Apply filters'), findsOneWidget);
+    expect(find.text('Aplicar filtros'), findsOneWidget);
   });
 
   testWidgets('removing an active chip clears that filter', (tester) async {
@@ -107,13 +109,13 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Reconquista'));
     await tester.pump();
-    await tester.tap(find.text('Apply filters'));
+    await tester.tap(find.text('Aplicar filtros'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Branch: Reconquista'));
+    await tester.tap(find.text('Sucursal: Reconquista'));
     await tester.pumpAndSettle();
 
     expect(repository.calls.last['branch'], isNull);
-    expect(find.text('Branch: Reconquista'), findsNothing);
+    expect(find.text('Sucursal: Reconquista'), findsNothing);
   });
 }

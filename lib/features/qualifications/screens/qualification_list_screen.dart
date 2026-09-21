@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../l10n/l10n.dart';
 import '../providers/qualification_provider.dart';
 import 'widgets/qualification_card.dart';
 
@@ -42,10 +44,11 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
   @override
   Widget build(BuildContext context) {
     final listState = ref.watch(qualificationListProvider);
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Qualifications'),
+        title: Text(l10n.qualificationsTitle),
       ),
       body: Column(
         children: [
@@ -53,8 +56,8 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: TextField(
               controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search qualifications...',
+              decoration: InputDecoration(
+                hintText: l10n.qualificationsSearchHint,
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
                 isDense: true,
@@ -69,7 +72,7 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
             child: RefreshIndicator(
               onRefresh: () =>
                   ref.read(qualificationListProvider.notifier).refresh(),
-              child: _buildBody(listState),
+              child: _buildBody(listState, l10n),
             ),
           ),
         ],
@@ -77,14 +80,14 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
     );
   }
 
-  Widget _buildBody(QualificationListState state) {
+  Widget _buildBody(QualificationListState state, AppLocalizations l10n) {
     if (state.isLoading && state.pagination.data.isEmpty) {
       return const ListShimmer();
     }
 
     if (state.error != null && state.pagination.data.isEmpty) {
       return ErrorView(
-        message: 'Failed to load qualifications',
+        message: l10n.qualificationsLoadError,
         detail: state.error,
         onRetry: () =>
             ref.read(qualificationListProvider.notifier).refresh(),
@@ -94,10 +97,10 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
     if (state.pagination.data.isEmpty) {
       return EmptyState(
         icon: Icons.grade_outlined,
-        title: 'No qualifications found',
+        title: l10n.qualificationsEmptyTitle,
         subtitle: state.search.isNotEmpty
-            ? 'Try a different search term'
-            : 'No qualifications available',
+            ? l10n.qualificationsEmptySearchSubtitle
+            : l10n.qualificationsEmptySubtitle,
       );
     }
 

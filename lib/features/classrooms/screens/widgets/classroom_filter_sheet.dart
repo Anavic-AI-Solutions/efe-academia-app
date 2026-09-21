@@ -5,6 +5,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../core/widgets/pill_button.dart';
+import '../../../../l10n/app_localizations.dart';
+import '../../../../l10n/l10n.dart';
 import '../../domain/classroom_filters.dart';
 import '../../providers/classroom_provider.dart';
 
@@ -46,12 +48,12 @@ class ClassroomFilterSelection {
   }
 }
 
-String classroomStatusLabel(String status) {
+String classroomStatusLabel(String status, AppLocalizations l10n) {
   switch (status) {
     case 'active':
-      return 'Active';
+      return l10n.classroomsStatusActive;
     case 'archived':
-      return 'Archived';
+      return l10n.classroomsStatusArchived;
     default:
       return status;
   }
@@ -84,6 +86,7 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final optionsAsync = ref.watch(classroomFiltersProvider);
@@ -116,7 +119,7 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Filters',
+                      l10n.classroomsFiltersTitle,
                       style: AppTypography.titleLarge.copyWith(
                         color: isDark
                             ? AppColors.darkTextPrimary
@@ -139,7 +142,7 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
                           : AppColors.lightTextTertiary,
                       textStyle: AppTypography.labelLarge,
                     ),
-                    child: const Text('Clear all'),
+                    child: Text(l10n.classroomsFilterClearAll),
                   ),
                 ],
               ),
@@ -164,7 +167,7 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
               child: PillButton(
-                label: 'Apply filters',
+                label: l10n.classroomsFilterApply,
                 height: 48,
                 onPressed: () => Navigator.of(context).pop(_selection),
               ),
@@ -189,6 +192,8 @@ class _OptionsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
       child: Column(
@@ -196,7 +201,7 @@ class _OptionsBody extends StatelessWidget {
         children: [
           if (options.branches.isNotEmpty)
             _FilterSection(
-              label: 'Branch',
+              label: l10n.classroomsBranch,
               values: options.branches,
               selected: selection.branch,
               onSelected: (value) => onChanged(
@@ -207,7 +212,7 @@ class _OptionsBody extends StatelessWidget {
             ),
           if (options.levels.isNotEmpty)
             _FilterSection(
-              label: 'Level',
+              label: l10n.classroomsLevel,
               values: options.levels,
               selected: selection.level,
               onSelected: (value) => onChanged(
@@ -218,7 +223,7 @@ class _OptionsBody extends StatelessWidget {
             ),
           if (options.years.isNotEmpty)
             _FilterSection(
-              label: 'Year',
+              label: l10n.classroomsYear,
               values: options.years,
               selected: selection.year,
               onSelected: (value) => onChanged(
@@ -229,10 +234,10 @@ class _OptionsBody extends StatelessWidget {
             ),
           if (options.statuses.isNotEmpty)
             _FilterSection(
-              label: 'Status',
+              label: l10n.classroomsStatus,
               values: options.statuses,
               selected: selection.status,
-              labelFor: classroomStatusLabel,
+              labelFor: (value) => classroomStatusLabel(value, l10n),
               onSelected: (value) => onChanged(
                 value == null
                     ? selection.copyWith(clearStatus: true)
@@ -351,6 +356,7 @@ class _ErrorBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
@@ -364,7 +370,7 @@ class _ErrorBody extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Could not load filters',
+            l10n.classroomsFiltersLoadError,
             style: AppTypography.titleSmall.copyWith(
               color:
                   isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
@@ -372,7 +378,7 @@ class _ErrorBody extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Check your connection and try again.',
+            l10n.classroomsFiltersLoadErrorDetail,
             textAlign: TextAlign.center,
             style: AppTypography.bodySmall.copyWith(
               color: isDark
@@ -394,7 +400,7 @@ class _ErrorBody extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: const Text('Retry'),
+            child: Text(l10n.commonRetry),
           ),
         ],
       ),

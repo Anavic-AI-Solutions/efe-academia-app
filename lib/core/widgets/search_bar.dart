@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_typography.dart';
+import '../../l10n/l10n.dart';
 
 class AppSearchBar extends StatelessWidget {
   final TextEditingController? controller;
-  final String hintText;
+  final String? hintText;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
   final bool readOnly;
@@ -14,7 +15,7 @@ class AppSearchBar extends StatelessWidget {
   const AppSearchBar({
     super.key,
     this.controller,
-    this.hintText = 'Search...',
+    this.hintText,
     this.onChanged,
     this.onTap,
     this.readOnly = false,
@@ -41,7 +42,7 @@ class AppSearchBar extends StatelessWidget {
           color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
         ),
         decoration: InputDecoration(
-          hintText: hintText,
+          hintText: hintText ?? context.l10n.commonSearchHint,
           hintStyle: AppTypography.bodyMedium.copyWith(
             color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
           ),

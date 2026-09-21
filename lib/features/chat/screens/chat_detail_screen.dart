@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import '../providers/chat_provider.dart';
 import '../domain/message_model.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../l10n/l10n.dart';
 
 class ChatDetailScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -71,10 +73,11 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     final currentUserId = ref.watch(authProvider).user?.id;
     final theme = Theme.of(context);
     final messages = state.messages;
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.chatName ?? 'Chat'),
+        title: Text(widget.chatName ?? l10n.navChat),
       ),
       body: Column(
         children: [
@@ -84,7 +87,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                 : state.error != null && messages.isEmpty
                     ? Center(
                         child: Text(
-                          'Failed to load messages',
+                          l10n.chatMessagesLoadError,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.error,
                           ),
@@ -93,7 +96,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                     : messages.isEmpty
                         ? Center(
                             child: Text(
-                              'No messages yet\nStart the conversation!',
+                              l10n.chatMessagesEmpty,
                               textAlign: TextAlign.center,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.textTheme.bodySmall?.color,
@@ -122,13 +125,13 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                             },
                           ),
           ),
-          _buildInputBar(theme),
+          _buildInputBar(theme, l10n),
         ],
       ),
     );
   }
 
-  Widget _buildInputBar(ThemeData theme) {
+  Widget _buildInputBar(ThemeData theme, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -148,7 +151,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
               child: TextField(
                 controller: _controller,
                 decoration: InputDecoration(
-                  hintText: 'Type a message...',
+                  hintText: l10n.chatInputHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
                     borderSide: BorderSide.none,
