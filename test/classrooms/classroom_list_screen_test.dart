@@ -1,4 +1,4 @@
-import 'package:efe_mobile/core/api/cursor_pagination.dart';
+import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
@@ -12,12 +12,16 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../helpers/localized_app.dart';
 
 class _FakeClassroomRepository implements ClassroomRepository {
+  _FakeClassroomRepository({this.total = 1});
+
+  final int total;
   final List<Map<String, Object?>> calls = [];
 
   @override
-  Future<CursorPagination<ClassroomModel>> getClassrooms({
+  Future<PageResult<ClassroomModel>> getClassrooms({
     String? search,
-    String? cursor,
+    int page = 1,
+    int limit = 20,
     String? branch,
     String? level,
     String? year,
@@ -25,16 +29,26 @@ class _FakeClassroomRepository implements ClassroomRepository {
   }) async {
     calls.add({
       'search': search,
-      'cursor': cursor,
+      'page': page,
       'branch': branch,
       'level': level,
       'year': year,
       'status': status,
     });
-    return CursorPagination(
-      data: const [ClassroomModel(id: 'room-1', name: 'A2 A')],
-      hasMore: false,
-      total: 1,
+    if (total == 0) return PageResult.empty(perPage: limit);
+    final offset = (page - 1) * limit;
+    final count = (total - offset).clamp(0, limit);
+    return PageResult(
+      data: List.generate(
+        count,
+        (i) => ClassroomModel(
+          id: 'room-${offset + i + 1}',
+          name: 'Clase ${offset + i + 1}',
+        ),
+      ),
+      page: page,
+      perPage: limit,
+      total: total,
     );
   }
 
@@ -47,8 +61,11 @@ class _FakeClassroomRepository implements ClassroomRepository {
       Future.value(const ClassroomFilters());
 }
 
-Future<_FakeClassroomRepository> _pumpScreen(WidgetTester tester) async {
-  final repository = _FakeClassroomRepository();
+Future<_FakeClassroomRepository> _pumpScreen(
+  WidgetTester tester, {
+  int total = 1,
+}) async {
+  final repository = _FakeClassroomRepository(total: total);
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
@@ -72,7 +89,7 @@ void main() {
       (tester) async {
     final repository = await _pumpScreen(tester);
 
-    expect(find.text('A2 A'), findsOneWidget);
+    expect(find.text('Clase 1'), findsOneWidget);
     expect(find.text('Sucursal: Reconquista'), findsNothing);
 
     await tester.tap(find.byIcon(PhosphorIconsRegular.faders));
@@ -94,7 +111,7 @@ void main() {
 
     await _pumpScreen(tester);
 
-    expect(find.text('A2 A'), findsOneWidget);
+    expect(find.text('Clase 1'), findsOneWidget);
 
     await tester.tap(find.byIcon(PhosphorIconsRegular.faders));
     await tester.pumpAndSettle();
@@ -117,5 +134,45 @@ void main() {
 
     expect(repository.calls.last['branch'], isNull);
     expect(find.text('Sucursal: Reconquista'), findsNothing);
+  });
+
+  testWidgets('shows numbered pagination and requests the tapped page',
+      (tester) async {
+    final repository = await _pumpScreen(tester, total: 57);
+
+    expect(find.text('Mostrando 1–20 de 57'), findsOneWidget);
+    expect(find.text('Clase 1'), findsOneWidget);
+
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
+
+    expect(repository.calls.last['page'], 2);
+    expect(find.text('Clase 21'), findsOneWidget);
+    expect(find.text('Mostrando 21–40 de 57'), findsOneWidget);
+  });
+
+  testWidgets('goes back to page 1 when a filter is applied', (tester) async {
+    final repository = await _pumpScreen(tester, total: 57);
+
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
+    expect(repository.calls.last['page'], 2);
+
+    await tester.tap(find.byIcon(PhosphorIconsRegular.faders));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Reconquista'));
+    await tester.pump();
+    await tester.tap(find.text('Aplicar filtros'));
+    await tester.pumpAndSettle();
+
+    expect(repository.calls.last['page'], 1);
+    expect(repository.calls.last['branch'], 'Reconquista');
+  });
+
+  testWidgets('hides pagination when everything fits in one page',
+      (tester) async {
+    await _pumpScreen(tester, total: 3);
+
+    expect(find.textContaining('Mostrando'), findsNothing);
   });
 }

@@ -9,6 +9,7 @@ import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/classroom_provider.dart';
@@ -29,23 +30,10 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
   final _searchController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose();
     _searchController.dispose();
     super.dispose();
-  }
-
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200) {
-      ref.read(classroomListProvider.notifier).loadMore();
-    }
   }
 
   ClassroomFilterSelection _selectionFrom(ClassroomListState state) {
@@ -74,6 +62,11 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
         _scrollController.jumpTo(0);
       }
     });
+  }
+
+  Future<void> _goToPage(int page) async {
+    await ref.read(classroomListProvider.notifier).goToPage(page);
+    _scrollToTop();
   }
 
   Future<void> _openFilters() async {
@@ -130,11 +123,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
               ),
             ),
           Expanded(
-            child: RefreshIndicator(
-              onRefresh: () =>
-                  ref.read(classroomListProvider.notifier).refresh(),
-              child: _buildBody(listState),
-            ),
+            child: _buildBody(listState),
           ),
         ],
       ),
@@ -144,11 +133,11 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
   Widget _buildBody(ClassroomListState state) {
     final l10n = context.l10n;
 
-    if (state.isLoading && state.pagination.data.isEmpty) {
+    if (state.isLoading && state.page.data.isEmpty) {
       return const ListShimmer();
     }
 
-    if (state.error != null && state.pagination.data.isEmpty) {
+    if (state.error != null && state.page.data.isEmpty) {
       return ErrorView(
         message: l10n.classroomsLoadError,
         detail: state.error,
@@ -156,7 +145,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
       );
     }
 
-    if (state.pagination.data.isEmpty) {
+    if (state.page.data.isEmpty) {
       final filtered = state.hasActiveFilters;
       return EmptyState(
         icon: Icons.class_outlined,
@@ -173,24 +162,39 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
       );
     }
 
-    return ListView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      itemCount:
-          state.pagination.data.length + (state.pagination.hasMore ? 1 : 0),
-      itemBuilder: (context, index) {
-        if (index == state.pagination.data.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        final classroom = state.pagination.data[index];
-        return ClassroomCard(
-          classroom: classroom,
-          onTap: () => context.push('/classrooms/${classroom.id}'),
-        );
-      },
+    return Column(
+      children: [
+        if (state.isLoading)
+          const LinearProgressIndicator(minHeight: 2),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () =>
+                ref.read(classroomListProvider.notifier).refresh(),
+            child: ListView.builder(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              itemCount: state.page.data.length,
+              itemBuilder: (context, index) {
+                final classroom = state.page.data[index];
+                return ClassroomCard(
+                  classroom: classroom,
+                  onTap: () => context.push('/classrooms/${classroom.id}'),
+                );
+              },
+            ),
+          ),
+        ),
+        PaginationBar(
+          page: state.page.page,
+          totalPages: state.page.totalPages,
+          from: state.page.firstItem,
+          to: state.page.lastItem,
+          total: state.page.total,
+          enabled: !state.isLoading,
+          onPageChanged: _goToPage,
+        ),
+      ],
     );
   }
 }
