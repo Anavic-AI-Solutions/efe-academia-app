@@ -12,6 +12,7 @@ class QualificationModel with _$QualificationModel {
     @Default('') String classroomName,
     @Default(0.0) double score,
     @Default('') String type,
+    @Default('') String period,
     @Default('') String description,
     @Default('') String date,
   }) = _QualificationModel;
@@ -26,8 +27,9 @@ class QualificationModel with _$QualificationModel {
       classroomName: attrs['classroom_name'] ?? '',
       score: _parseDouble(attrs['score']),
       type: attrs['type'] ?? '',
+      period: attrs['period']?.toString() ?? '',
       description: attrs['description'] ?? '',
-      date: attrs['date'] ?? '',
+      date: attrs['date']?.toString() ?? attrs['created_at']?.toString() ?? '',
     );
   }
 

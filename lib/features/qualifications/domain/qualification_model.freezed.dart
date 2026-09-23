@@ -23,6 +23,7 @@ mixin _$QualificationModel {
   String get classroomName => throw _privateConstructorUsedError;
   double get score => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
+  String get period => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
 
@@ -47,6 +48,7 @@ abstract class $QualificationModelCopyWith<$Res> {
       String classroomName,
       double score,
       String type,
+      String period,
       String description,
       String date});
 }
@@ -73,6 +75,7 @@ class _$QualificationModelCopyWithImpl<$Res, $Val extends QualificationModel>
     Object? classroomName = null,
     Object? score = null,
     Object? type = null,
+    Object? period = null,
     Object? description = null,
     Object? date = null,
   }) {
@@ -105,6 +108,10 @@ class _$QualificationModelCopyWithImpl<$Res, $Val extends QualificationModel>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
+      period: null == period
+          ? _value.period
+          : period // ignore: cast_nullable_to_non_nullable
+              as String,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -133,6 +140,7 @@ abstract class _$$QualificationModelImplCopyWith<$Res>
       String classroomName,
       double score,
       String type,
+      String period,
       String description,
       String date});
 }
@@ -157,6 +165,7 @@ class __$$QualificationModelImplCopyWithImpl<$Res>
     Object? classroomName = null,
     Object? score = null,
     Object? type = null,
+    Object? period = null,
     Object? description = null,
     Object? date = null,
   }) {
@@ -189,6 +198,10 @@ class __$$QualificationModelImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
+      period: null == period
+          ? _value.period
+          : period // ignore: cast_nullable_to_non_nullable
+              as String,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -212,6 +225,7 @@ class _$QualificationModelImpl implements _QualificationModel {
       this.classroomName = '',
       this.score = 0.0,
       this.type = '',
+      this.period = '',
       this.description = '',
       this.date = ''});
 
@@ -237,6 +251,9 @@ class _$QualificationModelImpl implements _QualificationModel {
   final String type;
   @override
   @JsonKey()
+  final String period;
+  @override
+  @JsonKey()
   final String description;
   @override
   @JsonKey()
@@ -244,7 +261,7 @@ class _$QualificationModelImpl implements _QualificationModel {
 
   @override
   String toString() {
-    return 'QualificationModel(id: $id, studentId: $studentId, classroomId: $classroomId, studentName: $studentName, classroomName: $classroomName, score: $score, type: $type, description: $description, date: $date)';
+    return 'QualificationModel(id: $id, studentId: $studentId, classroomId: $classroomId, studentName: $studentName, classroomName: $classroomName, score: $score, type: $type, period: $period, description: $description, date: $date)';
   }
 
   @override
@@ -263,6 +280,7 @@ class _$QualificationModelImpl implements _QualificationModel {
                 other.classroomName == classroomName) &&
             (identical(other.score, score) || other.score == score) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.period, period) || other.period == period) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.date, date) || other.date == date));
@@ -270,7 +288,7 @@ class _$QualificationModelImpl implements _QualificationModel {
 
   @override
   int get hashCode => Object.hash(runtimeType, id, studentId, classroomId,
-      studentName, classroomName, score, type, description, date);
+      studentName, classroomName, score, type, period, description, date);
 
   /// Create a copy of QualificationModel
   /// with the given fields replaced by the non-null parameter values.
@@ -291,6 +309,7 @@ abstract class _QualificationModel implements QualificationModel {
       final String classroomName,
       final double score,
       final String type,
+      final String period,
       final String description,
       final String date}) = _$QualificationModelImpl;
 
@@ -308,6 +327,8 @@ abstract class _QualificationModel implements QualificationModel {
   double get score;
   @override
   String get type;
+  @override
+  String get period;
   @override
   String get description;
   @override

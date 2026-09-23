@@ -25,6 +25,7 @@ mixin _$StudentModel {
   String get branch => throw _privateConstructorUsedError;
   String get avatarUrl => throw _privateConstructorUsedError;
   List<String> get classroomNames => throw _privateConstructorUsedError;
+  int get classroomCount => throw _privateConstructorUsedError;
 
   /// Create a copy of StudentModel
   /// with the given fields replaced by the non-null parameter values.
@@ -48,7 +49,8 @@ abstract class $StudentModelCopyWith<$Res> {
       String identityNumber,
       String branch,
       String avatarUrl,
-      List<String> classroomNames});
+      List<String> classroomNames,
+      int classroomCount});
 }
 
 /// @nodoc
@@ -75,6 +77,7 @@ class _$StudentModelCopyWithImpl<$Res, $Val extends StudentModel>
     Object? branch = null,
     Object? avatarUrl = null,
     Object? classroomNames = null,
+    Object? classroomCount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -113,6 +116,10 @@ class _$StudentModelCopyWithImpl<$Res, $Val extends StudentModel>
           ? _value.classroomNames
           : classroomNames // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      classroomCount: null == classroomCount
+          ? _value.classroomCount
+          : classroomCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -134,7 +141,8 @@ abstract class _$$StudentModelImplCopyWith<$Res>
       String identityNumber,
       String branch,
       String avatarUrl,
-      List<String> classroomNames});
+      List<String> classroomNames,
+      int classroomCount});
 }
 
 /// @nodoc
@@ -159,6 +167,7 @@ class __$$StudentModelImplCopyWithImpl<$Res>
     Object? branch = null,
     Object? avatarUrl = null,
     Object? classroomNames = null,
+    Object? classroomCount = null,
   }) {
     return _then(_$StudentModelImpl(
       id: null == id
@@ -197,6 +206,10 @@ class __$$StudentModelImplCopyWithImpl<$Res>
           ? _value._classroomNames
           : classroomNames // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      classroomCount: null == classroomCount
+          ? _value.classroomCount
+          : classroomCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -213,7 +226,8 @@ class _$StudentModelImpl implements _StudentModel {
       this.identityNumber = '',
       this.branch = '',
       this.avatarUrl = '',
-      final List<String> classroomNames = const []})
+      final List<String> classroomNames = const [],
+      this.classroomCount = 0})
       : _classroomNames = classroomNames;
 
   @override
@@ -249,8 +263,12 @@ class _$StudentModelImpl implements _StudentModel {
   }
 
   @override
+  @JsonKey()
+  final int classroomCount;
+
+  @override
   String toString() {
-    return 'StudentModel(id: $id, fullname: $fullname, email: $email, year: $year, status: $status, identityNumber: $identityNumber, branch: $branch, avatarUrl: $avatarUrl, classroomNames: $classroomNames)';
+    return 'StudentModel(id: $id, fullname: $fullname, email: $email, year: $year, status: $status, identityNumber: $identityNumber, branch: $branch, avatarUrl: $avatarUrl, classroomNames: $classroomNames, classroomCount: $classroomCount)';
   }
 
   @override
@@ -270,7 +288,9 @@ class _$StudentModelImpl implements _StudentModel {
             (identical(other.avatarUrl, avatarUrl) ||
                 other.avatarUrl == avatarUrl) &&
             const DeepCollectionEquality()
-                .equals(other._classroomNames, _classroomNames));
+                .equals(other._classroomNames, _classroomNames) &&
+            (identical(other.classroomCount, classroomCount) ||
+                other.classroomCount == classroomCount));
   }
 
   @override
@@ -284,7 +304,8 @@ class _$StudentModelImpl implements _StudentModel {
       identityNumber,
       branch,
       avatarUrl,
-      const DeepCollectionEquality().hash(_classroomNames));
+      const DeepCollectionEquality().hash(_classroomNames),
+      classroomCount);
 
   /// Create a copy of StudentModel
   /// with the given fields replaced by the non-null parameter values.
@@ -305,7 +326,8 @@ abstract class _StudentModel implements StudentModel {
       final String identityNumber,
       final String branch,
       final String avatarUrl,
-      final List<String> classroomNames}) = _$StudentModelImpl;
+      final List<String> classroomNames,
+      final int classroomCount}) = _$StudentModelImpl;
 
   @override
   String get id;
@@ -325,6 +347,8 @@ abstract class _StudentModel implements StudentModel {
   String get avatarUrl;
   @override
   List<String> get classroomNames;
+  @override
+  int get classroomCount;
 
   /// Create a copy of StudentModel
   /// with the given fields replaced by the non-null parameter values.
