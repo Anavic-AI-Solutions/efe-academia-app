@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/pagination/paged_list_notifier.dart';
-import '../../../../core/widgets/empty_state.dart';
-import '../../../../core/widgets/error_view.dart';
-import '../../../../core/widgets/loading_shimmer.dart';
-import '../../../../core/widgets/pagination_bar.dart';
+import '../pagination/paged_list_notifier.dart';
+import 'empty_state.dart';
+import 'error_view.dart';
+import 'loading_shimmer.dart';
+import 'pagination_bar.dart';
 
 class PagedTabList<T> extends StatelessWidget {
   final PagedListState<T> state;

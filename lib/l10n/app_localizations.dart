@@ -689,29 +689,29 @@ abstract class AppLocalizations {
   /// **'Estado: {value}'**
   String classroomsFilterChipStatus(String value);
 
-  /// No description provided for @classroomsPaginationShowing.
+  /// No description provided for @paginationShowing.
   ///
   /// In es, this message translates to:
   /// **'Mostrando {from}–{to} de {total}'**
-  String classroomsPaginationShowing(int from, int to, int total);
+  String paginationShowing(int from, int to, int total);
 
-  /// No description provided for @classroomsPaginationPrevious.
+  /// No description provided for @paginationPrevious.
   ///
   /// In es, this message translates to:
   /// **'Página anterior'**
-  String get classroomsPaginationPrevious;
+  String get paginationPrevious;
 
-  /// No description provided for @classroomsPaginationNext.
+  /// No description provided for @paginationNext.
   ///
   /// In es, this message translates to:
   /// **'Página siguiente'**
-  String get classroomsPaginationNext;
+  String get paginationNext;
 
-  /// No description provided for @classroomsPaginationPage.
+  /// No description provided for @paginationPage.
   ///
   /// In es, this message translates to:
   /// **'Página {page}'**
-  String classroomsPaginationPage(int page);
+  String paginationPage(int page);
 
   /// No description provided for @classroomsTabSummary.
   ///

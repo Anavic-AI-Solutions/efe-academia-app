@@ -66,7 +66,7 @@ class PaginationBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                l10n.classroomsPaginationShowing(from, to, total),
+                l10n.paginationShowing(from, to, total),
                 style: AppTypography.labelSmall.copyWith(
                   color: isDark
                       ? AppColors.darkTextTertiary
@@ -82,7 +82,7 @@ class PaginationBar extends StatelessWidget {
                         : null,
                     icon: const Icon(PhosphorIconsRegular.caretLeft),
                     iconSize: 18,
-                    tooltip: l10n.classroomsPaginationPrevious,
+                    tooltip: l10n.paginationPrevious,
                     color: isDark
                         ? AppColors.darkTextSecondary
                         : AppColors.lightTextSecondary,
@@ -135,7 +135,7 @@ class PaginationBar extends StatelessWidget {
                         : null,
                     icon: const Icon(PhosphorIconsRegular.caretRight),
                     iconSize: 18,
-                    tooltip: l10n.classroomsPaginationNext,
+                    tooltip: l10n.paginationNext,
                     color: isDark
                         ? AppColors.darkTextSecondary
                         : AppColors.lightTextSecondary,
@@ -179,7 +179,7 @@ class _PageNumber extends StatelessWidget {
     return Semantics(
       button: true,
       selected: active,
-      label: l10n.classroomsPaginationPage(number),
+      label: l10n.paginationPage(number),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: InkResponse(

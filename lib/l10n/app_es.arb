@@ -169,8 +169,8 @@
       }
     }
   },
-  "classroomsPaginationShowing": "Mostrando {from}–{to} de {total}",
-  "@classroomsPaginationShowing": {
+  "paginationShowing": "Mostrando {from}–{to} de {total}",
+  "@paginationShowing": {
     "placeholders": {
       "from": {
         "type": "int"
@@ -183,10 +183,10 @@
       }
     }
   },
-  "classroomsPaginationPrevious": "Página anterior",
-  "classroomsPaginationNext": "Página siguiente",
-  "classroomsPaginationPage": "Página {page}",
-  "@classroomsPaginationPage": {
+  "paginationPrevious": "Página anterior",
+  "paginationNext": "Página siguiente",
+  "paginationPage": "Página {page}",
+  "@paginationPage": {
     "placeholders": {
       "page": {
         "type": "int"

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/widgets/paged_tab_list.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../students/domain/student_model.dart';
+import '../../../students/screens/widgets/student_tile.dart';
 import '../../domain/material_model.dart';
 import '../../domain/professor_model.dart';
 import '../../providers/classroom_provider.dart';
 import 'material_tile.dart';
-import 'paged_tab_list.dart';
 import 'professor_tile.dart';
-import 'student_tile.dart';
 
 class ClassroomStudentsTab extends ConsumerWidget {
   final String classroomId;

@@ -4,6 +4,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/info_row.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/stat_card.dart';
 import '../../../../l10n/l10n.dart';
@@ -72,10 +73,10 @@ class ClassroomSummaryTab extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Column(
             children: [
-              _InfoRow(label: l10n.classroomsShift, value: classroom.shift),
-              _InfoRow(label: l10n.classroomsDay, value: classroom.day),
-              _InfoRow(label: l10n.classroomsHour, value: classroom.hour),
-              _InfoRow(
+              InfoRow(label: l10n.classroomsShift, value: classroom.shift),
+              InfoRow(label: l10n.classroomsDay, value: classroom.day),
+              InfoRow(label: l10n.classroomsHour, value: classroom.hour),
+              InfoRow(
                 label: l10n.classroomsCourseDays,
                 value: classroom.courseDays > 0 ? '${classroom.courseDays}' : '',
                 isLast: true,
@@ -90,14 +91,14 @@ class ClassroomSummaryTab extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Column(
             children: [
-              _InfoRow(label: l10n.classroomsLevel, value: classroom.level),
-              _InfoRow(label: l10n.classroomsGrade, value: classroom.grade),
-              _InfoRow(label: l10n.classroomsBook, value: classroom.book),
-              _InfoRow(
+              InfoRow(label: l10n.classroomsLevel, value: classroom.level),
+              InfoRow(label: l10n.classroomsGrade, value: classroom.grade),
+              InfoRow(label: l10n.classroomsBook, value: classroom.book),
+              InfoRow(
                 label: l10n.classroomsCommission,
                 value: classroom.commission,
               ),
-              _InfoRow(
+              InfoRow(
                 label: l10n.classroomsYear,
                 value: classroom.year,
                 isLast: true,
@@ -112,8 +113,8 @@ class ClassroomSummaryTab extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Column(
             children: [
-              _InfoRow(label: l10n.classroomsBranch, value: classroom.branch),
-              _InfoRow(
+              InfoRow(label: l10n.classroomsBranch, value: classroom.branch),
+              InfoRow(
                 label: l10n.classroomsRoom,
                 value: classroom.room,
                 isLast: true,
@@ -121,66 +122,6 @@ class ClassroomSummaryTab extends StatelessWidget {
             ],
           ),
         ),
-      ],
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final bool isLast;
-
-  const _InfoRow({
-    required this.label,
-    required this.value,
-    this.isLast = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 4,
-                child: Text(
-                  label,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextTertiary
-                        : AppColors.lightTextTertiary,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 6,
-                child: Text(
-                  value.isNotEmpty ? value : '—',
-                  textAlign: TextAlign.right,
-                  style: AppTypography.titleSmall.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextPrimary
-                        : AppColors.lightTextPrimary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (!isLast)
-          Divider(
-            height: 1,
-            indent: 16,
-            endIndent: 16,
-            color: isDark ? AppColors.darkDivider : AppColors.lightDivider,
-          ),
       ],
     );
   }

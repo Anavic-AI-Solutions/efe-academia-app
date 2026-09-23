@@ -4,7 +4,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/avatar.dart';
-import '../../../students/domain/student_model.dart';
+import '../../domain/student_model.dart';
 
 class StudentTile extends StatelessWidget {
   final StudentModel student;

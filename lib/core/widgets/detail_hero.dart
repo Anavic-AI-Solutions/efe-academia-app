@@ -1,0 +1,194 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_typography.dart';
+
+class DetailHeroChip {
+  final IconData icon;
+  final String label;
+
+  const DetailHeroChip({required this.icon, required this.label});
+}
+
+class DetailHero extends StatelessWidget {
+  final Widget leading;
+  final String title;
+  final String status;
+  final List<DetailHeroChip> chips;
+  final String fallbackRoute;
+
+  const DetailHero({
+    super.key,
+    required this.leading,
+    required this.title,
+    this.status = '',
+    this.chips = const [],
+    this.fallbackRoute = '/dashboard',
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient:
+            isDark ? AppColors.primaryGradientDark : AppColors.primaryGradient,
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 4, 20, 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () {
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  } else {
+                    context.go(fallbackRoute);
+                  }
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                iconSize: 20,
+                color: Colors.white,
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    leading,
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: AppTypography.headlineMedium.copyWith(
+                              color: Colors.white,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          if (status.isNotEmpty || chips.isNotEmpty) ...[
+                            const SizedBox(height: 10),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                if (status.isNotEmpty)
+                                  _StatusPill(status: status),
+                                for (final chip in chips)
+                                  _MetaChip(icon: chip.icon, label: chip.label),
+                              ],
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailHeroIcon extends StatelessWidget {
+  final IconData icon;
+  final double size;
+
+  const DetailHeroIcon({super.key, required this.icon, this.size = 52});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.16),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Icon(icon, color: Colors.white, size: size / 2),
+    );
+  }
+}
+
+class _StatusPill extends StatelessWidget {
+  final String status;
+
+  const _StatusPill({required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    final normalized = status.toLowerCase();
+    final color = normalized == 'active'
+        ? AppColors.success
+        : normalized == 'archived' || normalized == 'inactive'
+            ? AppColors.error
+            : Colors.white70;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.18),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            status,
+            style: AppTypography.labelSmall.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MetaChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _MetaChip({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.14),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12, color: Colors.white70),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: AppTypography.labelSmall.copyWith(color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+}

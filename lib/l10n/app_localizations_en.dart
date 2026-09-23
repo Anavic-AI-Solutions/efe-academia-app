@@ -344,18 +344,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String classroomsPaginationShowing(int from, int to, int total) {
+  String paginationShowing(int from, int to, int total) {
     return 'Showing $from–$to of $total';
   }
 
   @override
-  String get classroomsPaginationPrevious => 'Previous page';
+  String get paginationPrevious => 'Previous page';
 
   @override
-  String get classroomsPaginationNext => 'Next page';
+  String get paginationNext => 'Next page';
 
   @override
-  String classroomsPaginationPage(int page) {
+  String paginationPage(int page) {
     return 'Page $page';
   }
 
