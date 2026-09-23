@@ -2,10 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
 import '../../../core/api/page_pagination.dart';
+import '../../../core/pagination/paged_list_notifier.dart';
+import '../../students/domain/student_model.dart';
 import '../data/classroom_api.dart';
 import '../data/classroom_repository.dart';
 import '../domain/classroom_filters.dart';
 import '../domain/classroom_model.dart';
+import '../domain/material_model.dart';
+import '../domain/professor_model.dart';
 
 // ---------------------------------------------------------------------------
 // Providers
@@ -157,4 +161,38 @@ final classroomDetailProvider =
     FutureProvider.family<ClassroomModel, String>((ref, id) async {
   final repository = ref.watch(classroomRepositoryProvider);
   return repository.getClassroom(id);
+});
+
+// ---------------------------------------------------------------------------
+// Related paged lists
+// ---------------------------------------------------------------------------
+
+final classroomStudentsProvider = StateNotifierProvider.family<
+    PagedListNotifier<StudentModel>,
+    PagedListState<StudentModel>,
+    String>((ref, classroomId) {
+  final repository = ref.watch(classroomRepositoryProvider);
+  return PagedListNotifier<StudentModel>(
+    (page) => repository.getClassroomStudents(classroomId, page: page),
+  );
+});
+
+final classroomProfessorsProvider = StateNotifierProvider.family<
+    PagedListNotifier<ProfessorModel>,
+    PagedListState<ProfessorModel>,
+    String>((ref, classroomId) {
+  final repository = ref.watch(classroomRepositoryProvider);
+  return PagedListNotifier<ProfessorModel>(
+    (page) => repository.getClassroomProfessors(classroomId, page: page),
+  );
+});
+
+final classroomMaterialsProvider = StateNotifierProvider.family<
+    PagedListNotifier<MaterialModel>,
+    PagedListState<MaterialModel>,
+    String>((ref, classroomId) {
+  final repository = ref.watch(classroomRepositoryProvider);
+  return PagedListNotifier<MaterialModel>(
+    (page) => repository.getClassroomMaterials(classroomId, page: page),
+  );
 });
