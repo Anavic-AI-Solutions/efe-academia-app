@@ -7,7 +7,7 @@ class ClassroomApi {
 
   Future<Response> getClassrooms({
     String? search,
-    String? cursor,
+    int page = 1,
     int limit = 20,
     String? branch,
     String? level,
@@ -16,7 +16,7 @@ class ClassroomApi {
   }) =>
       _client.get('/classrooms', queryParameters: {
         if (search != null && search.isNotEmpty) 'search': search,
-        if (cursor != null) 'cursor': cursor,
+        'page': page,
         if (branch != null && branch.isNotEmpty) 'branch': branch,
         if (level != null && level.isNotEmpty) 'level': level,
         if (year != null && year.isNotEmpty) 'year': year,

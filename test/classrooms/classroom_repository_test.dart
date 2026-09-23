@@ -16,7 +16,7 @@ class _FakeClassroomApi implements ClassroomApi {
   @override
   Future<Response> getClassrooms({
     String? search,
-    String? cursor,
+    int page = 1,
     int limit = 20,
     String? branch,
     String? level,
@@ -25,7 +25,7 @@ class _FakeClassroomApi implements ClassroomApi {
   }) async {
     lastQuery = {
       'search': search,
-      'cursor': cursor,
+      'page': page,
       'limit': limit,
       'branch': branch,
       'level': level,
@@ -40,7 +40,7 @@ class _FakeClassroomApi implements ClassroomApi {
           'attributes': {'name': 'A2 A', 'level': 'A2'},
         },
       ],
-      'meta': {'cursor': 'next-cursor', 'has_more': true, 'total': 3},
+      'meta': {'cursor': 'next-cursor', 'has_more': true, 'total': 57},
     });
   }
 
@@ -63,13 +63,13 @@ class _FakeClassroomApi implements ClassroomApi {
 
 void main() {
   group('ClassroomRepository', () {
-    test('forwards filters, search and cursor to the api', () async {
+    test('forwards filters, search and page to the api', () async {
       final api = _FakeClassroomApi();
       final repository = ClassroomRepository(api);
 
       await repository.getClassrooms(
         search: 'A2',
-        cursor: 'cursor-1',
+        page: 3,
         branch: 'Vera',
         level: 'A2',
         year: '2026',
@@ -77,23 +77,24 @@ void main() {
       );
 
       expect(api.lastQuery?['search'], 'A2');
-      expect(api.lastQuery?['cursor'], 'cursor-1');
+      expect(api.lastQuery?['page'], 3);
       expect(api.lastQuery?['branch'], 'Vera');
       expect(api.lastQuery?['level'], 'A2');
       expect(api.lastQuery?['year'], '2026');
       expect(api.lastQuery?['status'], 'archived');
     });
 
-    test('parses classrooms and pagination meta from the response', () async {
+    test('parses classrooms and page meta from the response', () async {
       final repository = ClassroomRepository(_FakeClassroomApi());
 
-      final result = await repository.getClassrooms(branch: 'Vera');
+      final result = await repository.getClassrooms(page: 2, limit: 20);
 
       expect(result.data.single.id, 'room-1');
       expect(result.data.single.level, 'A2');
-      expect(result.nextCursor, 'next-cursor');
-      expect(result.hasMore, isTrue);
-      expect(result.total, 3);
+      expect(result.page, 2);
+      expect(result.perPage, 20);
+      expect(result.total, 57);
+      expect(result.totalPages, 3);
     });
 
     test('getFilters parses filter options', () async {
