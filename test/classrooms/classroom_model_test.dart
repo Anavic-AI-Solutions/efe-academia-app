@@ -34,6 +34,63 @@ void main() {
 
       expect(model.level, '');
     });
+
+    test('parses extended attributes', () {
+      final model = ClassroomModel.fromJson({
+        'type': 'classrooms',
+        'id': 'abc-123',
+        'attributes': {
+          'name': 'A2 A',
+          'grade': '1',
+          'book': 'Libro 1',
+          'commission': 'A',
+          'course_days': 3,
+          'period_1_days': 2,
+          'period_2_days': 2,
+          'period_3_days': 3,
+          'is_active': false,
+          'is_archivated': true,
+        },
+      });
+
+      expect(model.grade, '1');
+      expect(model.book, 'Libro 1');
+      expect(model.commission, 'A');
+      expect(model.courseDays, 3);
+      expect(model.period1Days, 2);
+      expect(model.period2Days, 2);
+      expect(model.period3Days, 3);
+      expect(model.isActive, isFalse);
+    });
+
+    test('counts students from the relationships when present', () {
+      final model = ClassroomModel.fromJson({
+        'type': 'classrooms',
+        'id': 'abc-123',
+        'attributes': {'name': 'A2 A', 'student_count': 1},
+        'relationships': {
+          'students': {
+            'data': [
+              {'type': 'students', 'id': 's1'},
+              {'type': 'students', 'id': 's2'},
+              {'type': 'students', 'id': 's3'},
+            ],
+          },
+        },
+      });
+
+      expect(model.studentCount, 3);
+    });
+
+    test('defaults to active when is_active is missing', () {
+      final model = ClassroomModel.fromJson({
+        'type': 'classrooms',
+        'id': 'abc-123',
+        'attributes': {'name': 'A2 A'},
+      });
+
+      expect(model.isActive, isTrue);
+    });
   });
 
   group('ClassroomFilters', () {

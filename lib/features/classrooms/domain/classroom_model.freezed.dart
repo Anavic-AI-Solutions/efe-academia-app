@@ -27,6 +27,14 @@ mixin _$ClassroomModel {
   String get year => throw _privateConstructorUsedError;
   String get branch => throw _privateConstructorUsedError;
   String get level => throw _privateConstructorUsedError;
+  String get grade => throw _privateConstructorUsedError;
+  String get book => throw _privateConstructorUsedError;
+  String get commission => throw _privateConstructorUsedError;
+  int get courseDays => throw _privateConstructorUsedError;
+  int get period1Days => throw _privateConstructorUsedError;
+  int get period2Days => throw _privateConstructorUsedError;
+  int get period3Days => throw _privateConstructorUsedError;
+  bool get isActive => throw _privateConstructorUsedError;
   int get studentCount => throw _privateConstructorUsedError;
 
   /// Create a copy of ClassroomModel
@@ -54,6 +62,14 @@ abstract class $ClassroomModelCopyWith<$Res> {
       String year,
       String branch,
       String level,
+      String grade,
+      String book,
+      String commission,
+      int courseDays,
+      int period1Days,
+      int period2Days,
+      int period3Days,
+      bool isActive,
       int studentCount});
 }
 
@@ -83,6 +99,14 @@ class _$ClassroomModelCopyWithImpl<$Res, $Val extends ClassroomModel>
     Object? year = null,
     Object? branch = null,
     Object? level = null,
+    Object? grade = null,
+    Object? book = null,
+    Object? commission = null,
+    Object? courseDays = null,
+    Object? period1Days = null,
+    Object? period2Days = null,
+    Object? period3Days = null,
+    Object? isActive = null,
     Object? studentCount = null,
   }) {
     return _then(_value.copyWith(
@@ -130,6 +154,38 @@ class _$ClassroomModelCopyWithImpl<$Res, $Val extends ClassroomModel>
           ? _value.level
           : level // ignore: cast_nullable_to_non_nullable
               as String,
+      grade: null == grade
+          ? _value.grade
+          : grade // ignore: cast_nullable_to_non_nullable
+              as String,
+      book: null == book
+          ? _value.book
+          : book // ignore: cast_nullable_to_non_nullable
+              as String,
+      commission: null == commission
+          ? _value.commission
+          : commission // ignore: cast_nullable_to_non_nullable
+              as String,
+      courseDays: null == courseDays
+          ? _value.courseDays
+          : courseDays // ignore: cast_nullable_to_non_nullable
+              as int,
+      period1Days: null == period1Days
+          ? _value.period1Days
+          : period1Days // ignore: cast_nullable_to_non_nullable
+              as int,
+      period2Days: null == period2Days
+          ? _value.period2Days
+          : period2Days // ignore: cast_nullable_to_non_nullable
+              as int,
+      period3Days: null == period3Days
+          ? _value.period3Days
+          : period3Days // ignore: cast_nullable_to_non_nullable
+              as int,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       studentCount: null == studentCount
           ? _value.studentCount
           : studentCount // ignore: cast_nullable_to_non_nullable
@@ -158,6 +214,14 @@ abstract class _$$ClassroomModelImplCopyWith<$Res>
       String year,
       String branch,
       String level,
+      String grade,
+      String book,
+      String commission,
+      int courseDays,
+      int period1Days,
+      int period2Days,
+      int period3Days,
+      bool isActive,
       int studentCount});
 }
 
@@ -185,6 +249,14 @@ class __$$ClassroomModelImplCopyWithImpl<$Res>
     Object? year = null,
     Object? branch = null,
     Object? level = null,
+    Object? grade = null,
+    Object? book = null,
+    Object? commission = null,
+    Object? courseDays = null,
+    Object? period1Days = null,
+    Object? period2Days = null,
+    Object? period3Days = null,
+    Object? isActive = null,
     Object? studentCount = null,
   }) {
     return _then(_$ClassroomModelImpl(
@@ -232,6 +304,38 @@ class __$$ClassroomModelImplCopyWithImpl<$Res>
           ? _value.level
           : level // ignore: cast_nullable_to_non_nullable
               as String,
+      grade: null == grade
+          ? _value.grade
+          : grade // ignore: cast_nullable_to_non_nullable
+              as String,
+      book: null == book
+          ? _value.book
+          : book // ignore: cast_nullable_to_non_nullable
+              as String,
+      commission: null == commission
+          ? _value.commission
+          : commission // ignore: cast_nullable_to_non_nullable
+              as String,
+      courseDays: null == courseDays
+          ? _value.courseDays
+          : courseDays // ignore: cast_nullable_to_non_nullable
+              as int,
+      period1Days: null == period1Days
+          ? _value.period1Days
+          : period1Days // ignore: cast_nullable_to_non_nullable
+              as int,
+      period2Days: null == period2Days
+          ? _value.period2Days
+          : period2Days // ignore: cast_nullable_to_non_nullable
+              as int,
+      period3Days: null == period3Days
+          ? _value.period3Days
+          : period3Days // ignore: cast_nullable_to_non_nullable
+              as int,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       studentCount: null == studentCount
           ? _value.studentCount
           : studentCount // ignore: cast_nullable_to_non_nullable
@@ -255,6 +359,14 @@ class _$ClassroomModelImpl implements _ClassroomModel {
       this.year = '',
       this.branch = '',
       this.level = '',
+      this.grade = '',
+      this.book = '',
+      this.commission = '',
+      this.courseDays = 0,
+      this.period1Days = 0,
+      this.period2Days = 0,
+      this.period3Days = 0,
+      this.isActive = true,
       this.studentCount = 0});
 
   @override
@@ -291,11 +403,35 @@ class _$ClassroomModelImpl implements _ClassroomModel {
   final String level;
   @override
   @JsonKey()
+  final String grade;
+  @override
+  @JsonKey()
+  final String book;
+  @override
+  @JsonKey()
+  final String commission;
+  @override
+  @JsonKey()
+  final int courseDays;
+  @override
+  @JsonKey()
+  final int period1Days;
+  @override
+  @JsonKey()
+  final int period2Days;
+  @override
+  @JsonKey()
+  final int period3Days;
+  @override
+  @JsonKey()
+  final bool isActive;
+  @override
+  @JsonKey()
   final int studentCount;
 
   @override
   String toString() {
-    return 'ClassroomModel(id: $id, name: $name, description: $description, status: $status, shift: $shift, day: $day, hour: $hour, room: $room, year: $year, branch: $branch, level: $level, studentCount: $studentCount)';
+    return 'ClassroomModel(id: $id, name: $name, description: $description, status: $status, shift: $shift, day: $day, hour: $hour, room: $room, year: $year, branch: $branch, level: $level, grade: $grade, book: $book, commission: $commission, courseDays: $courseDays, period1Days: $period1Days, period2Days: $period2Days, period3Days: $period3Days, isActive: $isActive, studentCount: $studentCount)';
   }
 
   @override
@@ -315,13 +451,48 @@ class _$ClassroomModelImpl implements _ClassroomModel {
             (identical(other.year, year) || other.year == year) &&
             (identical(other.branch, branch) || other.branch == branch) &&
             (identical(other.level, level) || other.level == level) &&
+            (identical(other.grade, grade) || other.grade == grade) &&
+            (identical(other.book, book) || other.book == book) &&
+            (identical(other.commission, commission) ||
+                other.commission == commission) &&
+            (identical(other.courseDays, courseDays) ||
+                other.courseDays == courseDays) &&
+            (identical(other.period1Days, period1Days) ||
+                other.period1Days == period1Days) &&
+            (identical(other.period2Days, period2Days) ||
+                other.period2Days == period2Days) &&
+            (identical(other.period3Days, period3Days) ||
+                other.period3Days == period3Days) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
             (identical(other.studentCount, studentCount) ||
                 other.studentCount == studentCount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, description, status,
-      shift, day, hour, room, year, branch, level, studentCount);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        name,
+        description,
+        status,
+        shift,
+        day,
+        hour,
+        room,
+        year,
+        branch,
+        level,
+        grade,
+        book,
+        commission,
+        courseDays,
+        period1Days,
+        period2Days,
+        period3Days,
+        isActive,
+        studentCount
+      ]);
 
   /// Create a copy of ClassroomModel
   /// with the given fields replaced by the non-null parameter values.
@@ -346,6 +517,14 @@ abstract class _ClassroomModel implements ClassroomModel {
       final String year,
       final String branch,
       final String level,
+      final String grade,
+      final String book,
+      final String commission,
+      final int courseDays,
+      final int period1Days,
+      final int period2Days,
+      final int period3Days,
+      final bool isActive,
       final int studentCount}) = _$ClassroomModelImpl;
 
   @override
@@ -370,6 +549,22 @@ abstract class _ClassroomModel implements ClassroomModel {
   String get branch;
   @override
   String get level;
+  @override
+  String get grade;
+  @override
+  String get book;
+  @override
+  String get commission;
+  @override
+  int get courseDays;
+  @override
+  int get period1Days;
+  @override
+  int get period2Days;
+  @override
+  int get period3Days;
+  @override
+  bool get isActive;
   @override
   int get studentCount;
 

@@ -16,11 +16,21 @@ class ClassroomModel with _$ClassroomModel {
     @Default('') String year,
     @Default('') String branch,
     @Default('') String level,
+    @Default('') String grade,
+    @Default('') String book,
+    @Default('') String commission,
+    @Default(0) int courseDays,
+    @Default(0) int period1Days,
+    @Default(0) int period2Days,
+    @Default(0) int period3Days,
+    @Default(true) bool isActive,
     @Default(0) int studentCount,
   }) = _ClassroomModel;
 
   factory ClassroomModel.fromJson(Map<String, dynamic> json) {
     final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final relationships = json['relationships'] as Map<String, dynamic>?;
+    final students = relationships?['students']?['data'] as List<dynamic>?;
     return ClassroomModel(
       id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
       name: attrs['name'] ?? '',
@@ -33,7 +43,17 @@ class ClassroomModel with _$ClassroomModel {
       year: attrs['year'] ?? '',
       branch: attrs['branch'] ?? '',
       level: attrs['level'] ?? '',
-      studentCount: _parseInt(attrs['student_count']),
+      grade: attrs['grade'] ?? '',
+      book: attrs['book'] ?? '',
+      commission: attrs['commission'] ?? '',
+      courseDays: _parseInt(attrs['course_days']),
+      period1Days: _parseInt(attrs['period_1_days']),
+      period2Days: _parseInt(attrs['period_2_days']),
+      period3Days: _parseInt(attrs['period_3_days']),
+      isActive: attrs['is_active'] as bool? ??
+          !((attrs['is_archivated'] as bool?) ?? false),
+      studentCount:
+          students?.length ?? _parseInt(attrs['student_count']),
     );
   }
 
