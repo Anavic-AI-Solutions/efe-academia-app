@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:efe_mobile/core/api/cursor_pagination.dart';
+import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
@@ -10,34 +10,35 @@ import 'package:flutter_test/flutter_test.dart';
 ClassroomModel _classroom(String id, {String name = 'Room'}) =>
     ClassroomModel(id: id, name: name);
 
-CursorPagination<ClassroomModel> _page(
+PageResult<ClassroomModel> _page(
   List<ClassroomModel> data, {
-  bool hasMore = false,
-  String? nextCursor,
+  int page = 1,
+  int total = 0,
 }) =>
-    CursorPagination(
+    PageResult(
       data: data,
-      hasMore: hasMore,
-      nextCursor: nextCursor,
+      page: page,
+      perPage: 20,
+      total: total == 0 ? data.length : total,
     );
 
 class _FakeClassroomRepository implements ClassroomRepository {
   final List<Map<String, Object?>> calls = [];
-  final List<Future<CursorPagination<ClassroomModel>> Function()> _responses =
-      [];
+  final List<Future<PageResult<ClassroomModel>> Function()> _responses = [];
 
-  void enqueue(CursorPagination<ClassroomModel> page) {
+  void enqueue(PageResult<ClassroomModel> page) {
     _responses.add(() => Future.value(page));
   }
 
-  void enqueueFuture(Future<CursorPagination<ClassroomModel>> Function() fn) {
+  void enqueueFuture(Future<PageResult<ClassroomModel>> Function() fn) {
     _responses.add(fn);
   }
 
   @override
-  Future<CursorPagination<ClassroomModel>> getClassrooms({
+  Future<PageResult<ClassroomModel>> getClassrooms({
     String? search,
-    String? cursor,
+    int page = 1,
+    int limit = 20,
     String? branch,
     String? level,
     String? year,
@@ -45,7 +46,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
   }) {
     calls.add({
       'search': search,
-      'cursor': cursor,
+      'page': page,
       'branch': branch,
       'level': level,
       'year': year,
@@ -68,7 +69,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
 void main() {
   group('ClassroomListNotifier', () {
-    test('applyFilters forwards filters, clears the cursor and reloads',
+    test('applyFilters forwards filters, resets to page 1 and reloads',
         () async {
       final repository = _FakeClassroomRepository();
       repository.enqueue(_page([_classroom('1')]));
@@ -81,35 +82,46 @@ void main() {
       expect(repository.calls.last['branch'], 'Vera');
       expect(repository.calls.last['level'], 'A2');
       expect(repository.calls.last['year'], '2026');
-      expect(repository.calls.last['cursor'], isNull);
+      expect(repository.calls.last['page'], 1);
       expect(notifier.state.branch, 'Vera');
-      expect(notifier.state.pagination.data.single.name, 'Vera Room');
+      expect(notifier.state.page.data.single.name, 'Vera Room');
       expect(notifier.state.hasActiveFilters, isTrue);
     });
 
-    test('loadMore keeps filters and cursor, and appends the page', () async {
+    test('goToPage keeps filters and fetches the requested page', () async {
       final repository = _FakeClassroomRepository();
-      repository.enqueue(_page([_classroom('1')]));
+      repository.enqueue(_page([_classroom('1')], total: 57));
       final notifier = ClassroomListNotifier(repository);
       await pumpEventQueue();
 
       repository.enqueue(
-        _page([_classroom('2')], hasMore: true, nextCursor: 'cursor-2'),
+        _page([_classroom('1')], page: 1, total: 57),
       );
       await notifier.applyFilters(branch: 'Vera');
-
-      repository.enqueue(_page([_classroom('3')]));
-      await notifier.loadMore();
+      repository.enqueue(_page([_classroom('21')], page: 2, total: 57));
+      await notifier.goToPage(2);
 
       expect(repository.calls.last['branch'], 'Vera');
-      expect(repository.calls.last['cursor'], 'cursor-2');
-      expect(
-        notifier.state.pagination.data.map((c) => c.id).toList(),
-        ['2', '3'],
-      );
+      expect(repository.calls.last['page'], 2);
+      expect(notifier.state.page.page, 2);
+      expect(notifier.state.page.data.single.id, '21');
+      expect(notifier.state.page.totalPages, 3);
     });
 
-    test('search keeps the active filters', () async {
+    test('goToPage ignores out-of-range and current pages', () async {
+      final repository = _FakeClassroomRepository();
+      repository.enqueue(_page([_classroom('1')], total: 57));
+      final notifier = ClassroomListNotifier(repository);
+      await pumpEventQueue();
+
+      await notifier.goToPage(1);
+      await notifier.goToPage(0);
+      await notifier.goToPage(9);
+
+      expect(repository.calls.length, 1);
+    });
+
+    test('search keeps the active filters and resets the page', () async {
       final repository = _FakeClassroomRepository();
       repository.enqueue(_page(const []));
       final notifier = ClassroomListNotifier(repository);
@@ -123,7 +135,7 @@ void main() {
 
       expect(repository.calls.last['search'], 'A2');
       expect(repository.calls.last['branch'], 'Vera');
-      expect(repository.calls.last['cursor'], isNull);
+      expect(repository.calls.last['page'], 1);
     });
 
     test('clearFilters resets the active filters and reloads', () async {
@@ -145,12 +157,12 @@ void main() {
 
     test('ignores a stale response that resolves after newer filters', () async {
       final repository = _FakeClassroomRepository();
-      final initial = Completer<CursorPagination<ClassroomModel>>();
+      final initial = Completer<PageResult<ClassroomModel>>();
       repository.enqueueFuture(() => initial.future);
       final notifier = ClassroomListNotifier(repository);
       await pumpEventQueue();
 
-      final filtered = Completer<CursorPagination<ClassroomModel>>();
+      final filtered = Completer<PageResult<ClassroomModel>>();
       repository.enqueueFuture(() => filtered.future);
       final applyFuture = notifier.applyFilters(branch: 'Vera');
 
@@ -161,7 +173,7 @@ void main() {
       await pumpEventQueue();
 
       expect(
-        notifier.state.pagination.data.map((c) => c.id).toList(),
+        notifier.state.page.data.map((c) => c.id).toList(),
         ['filtered'],
       );
       expect(notifier.state.isLoading, isFalse);
