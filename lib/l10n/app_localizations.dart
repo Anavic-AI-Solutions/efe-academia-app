@@ -323,6 +323,30 @@ abstract class AppLocalizations {
   /// **'Tema'**
   String get profileTheme;
 
+  /// No description provided for @profileSelectTheme.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar tema'**
+  String get profileSelectTheme;
+
+  /// No description provided for @profileThemeLight.
+  ///
+  /// In es, this message translates to:
+  /// **'Claro'**
+  String get profileThemeLight;
+
+  /// No description provided for @profileThemeDark.
+  ///
+  /// In es, this message translates to:
+  /// **'Oscuro'**
+  String get profileThemeDark;
+
+  /// No description provided for @profileThemeSystem.
+  ///
+  /// In es, this message translates to:
+  /// **'Sistema'**
+  String get profileThemeSystem;
+
   /// No description provided for @profileLanguage.
   ///
   /// In es, this message translates to:
@@ -664,6 +688,132 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Estado: {value}'**
   String classroomsFilterChipStatus(String value);
+
+  /// No description provided for @classroomsPaginationShowing.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrando {from}–{to} de {total}'**
+  String classroomsPaginationShowing(int from, int to, int total);
+
+  /// No description provided for @classroomsPaginationPrevious.
+  ///
+  /// In es, this message translates to:
+  /// **'Página anterior'**
+  String get classroomsPaginationPrevious;
+
+  /// No description provided for @classroomsPaginationNext.
+  ///
+  /// In es, this message translates to:
+  /// **'Página siguiente'**
+  String get classroomsPaginationNext;
+
+  /// No description provided for @classroomsPaginationPage.
+  ///
+  /// In es, this message translates to:
+  /// **'Página {page}'**
+  String classroomsPaginationPage(int page);
+
+  /// No description provided for @classroomsTabSummary.
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen'**
+  String get classroomsTabSummary;
+
+  /// No description provided for @classroomsTabStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Estudiantes'**
+  String get classroomsTabStudents;
+
+  /// No description provided for @classroomsTabProfessors.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesores'**
+  String get classroomsTabProfessors;
+
+  /// No description provided for @classroomsTabMaterials.
+  ///
+  /// In es, this message translates to:
+  /// **'Materiales'**
+  String get classroomsTabMaterials;
+
+  /// No description provided for @classroomsSectionSchedule.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario'**
+  String get classroomsSectionSchedule;
+
+  /// No description provided for @classroomsSectionAcademic.
+  ///
+  /// In es, this message translates to:
+  /// **'Académico'**
+  String get classroomsSectionAcademic;
+
+  /// No description provided for @classroomsSectionLocation.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación'**
+  String get classroomsSectionLocation;
+
+  /// No description provided for @classroomsGrade.
+  ///
+  /// In es, this message translates to:
+  /// **'Grado'**
+  String get classroomsGrade;
+
+  /// No description provided for @classroomsBook.
+  ///
+  /// In es, this message translates to:
+  /// **'Libro'**
+  String get classroomsBook;
+
+  /// No description provided for @classroomsCommission.
+  ///
+  /// In es, this message translates to:
+  /// **'Comisión'**
+  String get classroomsCommission;
+
+  /// No description provided for @classroomsCourseDays.
+  ///
+  /// In es, this message translates to:
+  /// **'Días de cursada'**
+  String get classroomsCourseDays;
+
+  /// No description provided for @classroomsNoDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin descripción'**
+  String get classroomsNoDescription;
+
+  /// No description provided for @classroomsNoStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin estudiantes'**
+  String get classroomsNoStudents;
+
+  /// No description provided for @classroomsNoProfessors.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin profesores'**
+  String get classroomsNoProfessors;
+
+  /// No description provided for @classroomsNoMaterials.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin materiales'**
+  String get classroomsNoMaterials;
+
+  /// No description provided for @classroomsRelatedLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los datos'**
+  String get classroomsRelatedLoadError;
+
+  /// No description provided for @classroomsMaterialDownloads.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} descargas'**
+  String classroomsMaterialDownloads(int count);
 
   /// No description provided for @studentsTitle.
   ///

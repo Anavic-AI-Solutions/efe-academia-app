@@ -73,6 +73,10 @@
   "profileNotifications": "Notificaciones",
   "profilePreferences": "Preferencias",
   "profileTheme": "Tema",
+  "profileSelectTheme": "Seleccionar tema",
+  "profileThemeLight": "Claro",
+  "profileThemeDark": "Oscuro",
+  "profileThemeSystem": "Sistema",
   "profileLanguage": "Idioma",
   "profileSelectLanguage": "Seleccionar idioma",
   "profileAbout": "Acerca de",
@@ -162,6 +166,54 @@
     "placeholders": {
       "value": {
         "type": "String"
+      }
+    }
+  },
+  "classroomsPaginationShowing": "Mostrando {from}–{to} de {total}",
+  "@classroomsPaginationShowing": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "classroomsPaginationPrevious": "Página anterior",
+  "classroomsPaginationNext": "Página siguiente",
+  "classroomsPaginationPage": "Página {page}",
+  "@classroomsPaginationPage": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      }
+    }
+  },
+  "classroomsTabSummary": "Resumen",
+  "classroomsTabStudents": "Estudiantes",
+  "classroomsTabProfessors": "Profesores",
+  "classroomsTabMaterials": "Materiales",
+  "classroomsSectionSchedule": "Horario",
+  "classroomsSectionAcademic": "Académico",
+  "classroomsSectionLocation": "Ubicación",
+  "classroomsGrade": "Grado",
+  "classroomsBook": "Libro",
+  "classroomsCommission": "Comisión",
+  "classroomsCourseDays": "Días de cursada",
+  "classroomsNoDescription": "Sin descripción",
+  "classroomsNoStudents": "Sin estudiantes",
+  "classroomsNoProfessors": "Sin profesores",
+  "classroomsNoMaterials": "Sin materiales",
+  "classroomsRelatedLoadError": "No se pudieron cargar los datos",
+  "classroomsMaterialDownloads": "{count} descargas",
+  "@classroomsMaterialDownloads": {
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
     }
   },

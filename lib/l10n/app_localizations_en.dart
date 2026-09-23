@@ -151,6 +151,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileTheme => 'Theme';
 
   @override
+  String get profileSelectTheme => 'Select theme';
+
+  @override
+  String get profileThemeLight => 'Light';
+
+  @override
+  String get profileThemeDark => 'Dark';
+
+  @override
+  String get profileThemeSystem => 'System';
+
+  @override
   String get profileLanguage => 'Language';
 
   @override
@@ -329,6 +341,75 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String classroomsFilterChipStatus(String value) {
     return 'Status: $value';
+  }
+
+  @override
+  String classroomsPaginationShowing(int from, int to, int total) {
+    return 'Showing $from–$to of $total';
+  }
+
+  @override
+  String get classroomsPaginationPrevious => 'Previous page';
+
+  @override
+  String get classroomsPaginationNext => 'Next page';
+
+  @override
+  String classroomsPaginationPage(int page) {
+    return 'Page $page';
+  }
+
+  @override
+  String get classroomsTabSummary => 'Summary';
+
+  @override
+  String get classroomsTabStudents => 'Students';
+
+  @override
+  String get classroomsTabProfessors => 'Professors';
+
+  @override
+  String get classroomsTabMaterials => 'Materials';
+
+  @override
+  String get classroomsSectionSchedule => 'Schedule';
+
+  @override
+  String get classroomsSectionAcademic => 'Academic';
+
+  @override
+  String get classroomsSectionLocation => 'Location';
+
+  @override
+  String get classroomsGrade => 'Grade';
+
+  @override
+  String get classroomsBook => 'Book';
+
+  @override
+  String get classroomsCommission => 'Commission';
+
+  @override
+  String get classroomsCourseDays => 'Course days';
+
+  @override
+  String get classroomsNoDescription => 'No description';
+
+  @override
+  String get classroomsNoStudents => 'No students';
+
+  @override
+  String get classroomsNoProfessors => 'No professors';
+
+  @override
+  String get classroomsNoMaterials => 'No materials';
+
+  @override
+  String get classroomsRelatedLoadError => 'Could not load data';
+
+  @override
+  String classroomsMaterialDownloads(int count) {
+    return '$count downloads';
   }
 
   @override

@@ -151,6 +151,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileTheme => 'Tema';
 
   @override
+  String get profileSelectTheme => 'Seleccionar tema';
+
+  @override
+  String get profileThemeLight => 'Claro';
+
+  @override
+  String get profileThemeDark => 'Oscuro';
+
+  @override
+  String get profileThemeSystem => 'Sistema';
+
+  @override
   String get profileLanguage => 'Idioma';
 
   @override
@@ -329,6 +341,75 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String classroomsFilterChipStatus(String value) {
     return 'Estado: $value';
+  }
+
+  @override
+  String classroomsPaginationShowing(int from, int to, int total) {
+    return 'Mostrando $from–$to de $total';
+  }
+
+  @override
+  String get classroomsPaginationPrevious => 'Página anterior';
+
+  @override
+  String get classroomsPaginationNext => 'Página siguiente';
+
+  @override
+  String classroomsPaginationPage(int page) {
+    return 'Página $page';
+  }
+
+  @override
+  String get classroomsTabSummary => 'Resumen';
+
+  @override
+  String get classroomsTabStudents => 'Estudiantes';
+
+  @override
+  String get classroomsTabProfessors => 'Profesores';
+
+  @override
+  String get classroomsTabMaterials => 'Materiales';
+
+  @override
+  String get classroomsSectionSchedule => 'Horario';
+
+  @override
+  String get classroomsSectionAcademic => 'Académico';
+
+  @override
+  String get classroomsSectionLocation => 'Ubicación';
+
+  @override
+  String get classroomsGrade => 'Grado';
+
+  @override
+  String get classroomsBook => 'Libro';
+
+  @override
+  String get classroomsCommission => 'Comisión';
+
+  @override
+  String get classroomsCourseDays => 'Días de cursada';
+
+  @override
+  String get classroomsNoDescription => 'Sin descripción';
+
+  @override
+  String get classroomsNoStudents => 'Sin estudiantes';
+
+  @override
+  String get classroomsNoProfessors => 'Sin profesores';
+
+  @override
+  String get classroomsNoMaterials => 'Sin materiales';
+
+  @override
+  String get classroomsRelatedLoadError => 'No se pudieron cargar los datos';
+
+  @override
+  String classroomsMaterialDownloads(int count) {
+    return '$count descargas';
   }
 
   @override
