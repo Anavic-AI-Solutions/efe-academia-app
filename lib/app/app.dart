@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import 'locale/locale_provider.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
+import 'theme/theme_provider.dart';
 
 class EfeApp extends ConsumerWidget {
   const EfeApp({super.key});
@@ -13,13 +14,14 @@ class EfeApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
       title: 'EFE',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

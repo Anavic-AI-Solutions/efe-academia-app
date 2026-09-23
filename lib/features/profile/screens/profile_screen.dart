@@ -8,6 +8,8 @@ import '../../../core/widgets/avatar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../app/locale/locale_provider.dart';
+import '../../../app/theme/theme_provider.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -21,6 +23,7 @@ class ProfileScreen extends ConsumerWidget {
     final isDark = theme.brightness == Brightness.dark;
     final l10n = context.l10n;
     final locale = ref.watch(localeProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return Scaffold(
       body: ListView(
@@ -45,14 +48,18 @@ class ProfileScreen extends ConsumerWidget {
                 Text(
                   user?.name ?? l10n.commonUser,
                   style: AppTypography.headlineMedium.copyWith(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   user?.email ?? '',
                   style: AppTypography.bodyMedium.copyWith(
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.lightTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -93,7 +100,15 @@ class ProfileScreen extends ConsumerWidget {
               _SettingsTile(
                 icon: PhosphorIconsRegular.moon,
                 title: l10n.profileTheme,
-                onTap: () {},
+                trailing: Text(
+                  _themeModeLabel(themeMode, l10n),
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: isDark
+                        ? AppColors.darkTextTertiary
+                        : AppColors.lightTextTertiary,
+                  ),
+                ),
+                onTap: () => _showThemeSheet(context, ref),
                 isDark: isDark,
               ),
               _SettingsTile(
@@ -104,7 +119,9 @@ class ProfileScreen extends ConsumerWidget {
                       ? l10n.languageEnglish
                       : l10n.languageSpanish,
                   style: AppTypography.bodyMedium.copyWith(
-                    color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                    color: isDark
+                        ? AppColors.darkTextTertiary
+                        : AppColors.lightTextTertiary,
                   ),
                 ),
                 onTap: () => _showLanguageSheet(context, ref),
@@ -242,6 +259,67 @@ class ProfileScreen extends ConsumerWidget {
       },
     );
   }
+
+  Future<void> _showThemeSheet(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
+    final current = ref.read(themeModeProvider);
+
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkSurface
+          : AppColors.lightSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                child: Text(
+                  l10n.profileSelectTheme,
+                  style: AppTypography.titleMedium,
+                ),
+              ),
+              for (final mode in const [
+                ThemeMode.light,
+                ThemeMode.dark,
+                ThemeMode.system,
+              ])
+                ListTile(
+                  title: Text(_themeModeLabel(mode, l10n)),
+                  trailing: current == mode
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: AppColors.primary,
+                        )
+                      : null,
+                  onTap: () {
+                    ref.read(themeModeProvider.notifier).setThemeMode(mode);
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+String _themeModeLabel(ThemeMode mode, AppLocalizations l10n) {
+  switch (mode) {
+    case ThemeMode.light:
+      return l10n.profileThemeLight;
+    case ThemeMode.dark:
+      return l10n.profileThemeDark;
+    case ThemeMode.system:
+      return l10n.profileThemeSystem;
+  }
 }
 
 class _RoleBadge extends StatelessWidget {
@@ -316,7 +394,8 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       title.toUpperCase(),
       style: AppTypography.labelSmall.copyWith(
-        color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+        color:
+            isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
         letterSpacing: 0.8,
       ),
     );
@@ -382,14 +461,18 @@ class _SettingsTile extends StatelessWidget {
           title: Text(
             title,
             style: AppTypography.bodyLarge.copyWith(
-              color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+              color: isDark
+                  ? AppColors.darkTextPrimary
+                  : AppColors.lightTextPrimary,
             ),
           ),
           trailing: trailing ??
               Icon(
                 PhosphorIconsRegular.caretRight,
                 size: 16,
-                color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                color: isDark
+                    ? AppColors.darkTextTertiary
+                    : AppColors.lightTextTertiary,
               ),
         ),
         if (showDivider)
