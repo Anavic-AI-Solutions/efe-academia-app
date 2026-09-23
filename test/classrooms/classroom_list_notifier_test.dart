@@ -4,7 +4,10 @@ import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
+import 'package:efe_mobile/features/classrooms/domain/material_model.dart';
+import 'package:efe_mobile/features/classrooms/domain/professor_model.dart';
 import 'package:efe_mobile/features/classrooms/providers/classroom_provider.dart';
+import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 ClassroomModel _classroom(String id, {String name = 'Room'}) =>
@@ -60,6 +63,30 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<ClassroomModel> getClassroom(String id) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<PageResult<StudentModel>> getClassroomStudents(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<PageResult<ProfessorModel>> getClassroomProfessors(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<PageResult<MaterialModel>> getClassroomMaterials(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
       Future.error(UnimplementedError());
 
   @override

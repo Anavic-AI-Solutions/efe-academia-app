@@ -44,6 +44,7 @@ class ClassroomDetailScreen extends ConsumerWidget {
               TabBar(
                 isScrollable: true,
                 tabAlignment: TabAlignment.start,
+                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
                 labelColor:
                     isDark ? const Color(0xFF6366F1) : AppColors.primary,
                 unselectedLabelColor: isDark
