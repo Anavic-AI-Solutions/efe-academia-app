@@ -1,10 +1,17 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
-import '../../../core/api/cursor_pagination.dart';
+import '../../../core/api/page_pagination.dart';
+import '../../../core/pagination/paged_list_notifier.dart';
+import '../../fees/domain/fee_model.dart';
+import '../../fees/providers/fee_provider.dart';
+import '../../qualifications/domain/qualification_model.dart';
+import '../../qualifications/providers/qualification_provider.dart';
+import '../data/absence_api.dart';
+import '../data/absence_repository.dart';
 import '../data/student_api.dart';
 import '../data/student_repository.dart';
+import '../domain/absence_model.dart';
 import '../domain/student_model.dart';
 
 // ---------------------------------------------------------------------------
@@ -19,6 +26,14 @@ final studentRepositoryProvider = Provider<StudentRepository>((ref) {
   return StudentRepository(ref.watch(studentApiProvider));
 });
 
+final absenceApiProvider = Provider<AbsenceApi>((ref) {
+  return AbsenceApi(ref.watch(apiClientProvider));
+});
+
+final absenceRepositoryProvider = Provider<AbsenceRepository>((ref) {
+  return AbsenceRepository(ref.watch(absenceApiProvider));
+});
+
 // ---------------------------------------------------------------------------
 // List State
 // ---------------------------------------------------------------------------
@@ -28,7 +43,7 @@ class StudentListState {
   static const statusActive = 'active';
   static const statusInactive = 'inactive';
 
-  final CursorPagination<StudentModel> pagination;
+  final PageResult<StudentModel> page;
   final bool isLoading;
   final String? error;
   final String search;
@@ -39,7 +54,7 @@ class StudentListState {
   final List<String> branchOptions;
 
   StudentListState({
-    CursorPagination<StudentModel>? pagination,
+    PageResult<StudentModel>? page,
     this.isLoading = false,
     this.error,
     this.search = '',
@@ -48,10 +63,10 @@ class StudentListState {
     this.branch,
     this.yearOptions = const [],
     this.branchOptions = const [],
-  }) : pagination = pagination ?? CursorPagination<StudentModel>.empty();
+  }) : page = page ?? PageResult<StudentModel>.empty();
 
   StudentListState copyWith({
-    CursorPagination<StudentModel>? pagination,
+    PageResult<StudentModel>? page,
     bool? isLoading,
     String? error,
     String? search,
@@ -65,7 +80,7 @@ class StudentListState {
     bool clearError = false,
   }) {
     return StudentListState(
-      pagination: pagination ?? this.pagination,
+      page: page ?? this.page,
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
       search: search ?? this.search,
@@ -84,6 +99,7 @@ class StudentListState {
 
 class StudentListNotifier extends StateNotifier<StudentListState> {
   final StudentRepository _repository;
+  int _requestId = 0;
 
   StudentListNotifier(this._repository) : super(StudentListState()) {
     load();
@@ -106,7 +122,8 @@ class StudentListNotifier extends StateNotifier<StudentListState> {
     state = state.copyWith(yearOptions: years, branchOptions: branches);
   }
 
-  Future<void> load() async {
+  Future<void> load({int page = 1}) async {
+    final requestId = ++_requestId;
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getStudents(
@@ -114,93 +131,51 @@ class StudentListNotifier extends StateNotifier<StudentListState> {
         status: _statusParam,
         year: state.year,
         branch: state.branch,
+        page: page,
       );
-      print(
-          '[Students] Loaded ${result.data.length} items (search="${state.search}", status=${state.status}, year=${state.year}, branch=${state.branch})');
-      state = state.copyWith(pagination: result, isLoading: false);
+      if (requestId != _requestId) return;
+      if (result.data.isEmpty && page > 1 && result.total > 0) {
+        await load(page: 1);
+        return;
+      }
+      state = state.copyWith(page: result, isLoading: false);
       _mergeFilterOptions(result.data);
     } catch (e) {
-      print('[Students] ERROR: $e');
+      if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  Future<void> refresh() async {
-    state = state.copyWith(isLoading: true, clearError: true);
-    try {
-      final result = await _repository.getStudents(
-        search: state.search,
-        status: _statusParam,
-        year: state.year,
-        branch: state.branch,
-      );
-      print('[Students] Refreshed ${result.data.length} items');
-      state = state.copyWith(pagination: result, isLoading: false);
-      _mergeFilterOptions(result.data);
-    } catch (e) {
-      print('[Students] refresh ERROR: $e');
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
-  }
+  Future<void> refresh() => load(page: state.page.page);
 
   Future<void> search(String value) async {
-    state = state.copyWith(
-      search: value,
-      pagination: CursorPagination<StudentModel>.empty(),
-    );
+    state = state.copyWith(search: value);
     await load();
   }
 
   Future<void> setStatus(String status) async {
     if (state.status == status) return;
-    state = state.copyWith(
-      status: status,
-      pagination: CursorPagination<StudentModel>.empty(),
-    );
+    state = state.copyWith(status: status);
     await load();
   }
 
   Future<void> setYear(String? year) async {
     if (state.year == year) return;
-    state = state.copyWith(
-      year: year,
-      clearYear: year == null,
-      pagination: CursorPagination<StudentModel>.empty(),
-    );
+    state = state.copyWith(year: year, clearYear: year == null);
     await load();
   }
 
   Future<void> setBranch(String? branch) async {
     if (state.branch == branch) return;
-    state = state.copyWith(
-      branch: branch,
-      clearBranch: branch == null,
-      pagination: CursorPagination<StudentModel>.empty(),
-    );
+    state = state.copyWith(branch: branch, clearBranch: branch == null);
     await load();
   }
 
-  Future<void> loadMore() async {
-    if (!state.pagination.hasMore || state.isLoading) return;
-    state = state.copyWith(isLoading: true);
-    try {
-      final result = await _repository.getStudents(
-        search: state.search,
-        status: _statusParam,
-        year: state.year,
-        branch: state.branch,
-        cursor: state.pagination.nextCursor,
-      );
-      state = state.copyWith(
-        pagination: result.copyWith(
-          data: [...state.pagination.data, ...result.data],
-        ),
-        isLoading: false,
-      );
-      _mergeFilterOptions(result.data);
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+  Future<void> goToPage(int page) {
+    if (page < 1 || page > state.page.totalPages || page == state.page.page) {
+      return Future.value();
     }
+    return load(page: page);
   }
 }
 
@@ -217,4 +192,38 @@ final studentDetailProvider =
     FutureProvider.family<StudentModel, String>((ref, id) async {
   final repository = ref.watch(studentRepositoryProvider);
   return repository.getStudent(id);
+});
+
+// ---------------------------------------------------------------------------
+// Related paged lists
+// ---------------------------------------------------------------------------
+
+final studentQualificationsProvider = StateNotifierProvider.family<
+    PagedListNotifier<QualificationModel>,
+    PagedListState<QualificationModel>,
+    String>((ref, studentId) {
+  final repository = ref.watch(qualificationRepositoryProvider);
+  return PagedListNotifier<QualificationModel>(
+    (page) => repository.getStudentQualifications(studentId, page: page),
+  );
+});
+
+final studentAbsencesProvider = StateNotifierProvider.family<
+    PagedListNotifier<AbsenceModel>,
+    PagedListState<AbsenceModel>,
+    String>((ref, studentId) {
+  final repository = ref.watch(absenceRepositoryProvider);
+  return PagedListNotifier<AbsenceModel>(
+    (page) => repository.getAbsences(studentId: studentId, page: page),
+  );
+});
+
+final studentFeesProvider = StateNotifierProvider.family<
+    PagedListNotifier<FeeModel>,
+    PagedListState<FeeModel>,
+    String>((ref, studentId) {
+  final repository = ref.watch(feeRepositoryProvider);
+  return PagedListNotifier<FeeModel>(
+    (page) => repository.getStudentFees(studentId, page: page),
+  );
 });

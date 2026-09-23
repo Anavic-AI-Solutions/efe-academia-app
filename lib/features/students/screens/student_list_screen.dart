@@ -9,6 +9,7 @@ import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/student_provider.dart';
@@ -26,23 +27,23 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
   final _searchController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose();
     _searchController.dispose();
     super.dispose();
   }
 
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200) {
-      ref.read(studentListProvider.notifier).loadMore();
-    }
+  void _scrollToTop() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(0);
+      }
+    });
+  }
+
+  Future<void> _goToPage(int page) async {
+    await ref.read(studentListProvider.notifier).goToPage(page);
+    _scrollToTop();
   }
 
   @override
@@ -120,10 +121,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
             ),
           ),
           Expanded(
-            child: RefreshIndicator(
-              onRefresh: () => notifier.refresh(),
-              child: _buildBody(listState),
-            ),
+            child: _buildBody(listState),
           ),
         ],
       ),
@@ -133,11 +131,11 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
   Widget _buildBody(StudentListState state) {
     final l10n = context.l10n;
 
-    if (state.isLoading && state.pagination.data.isEmpty) {
+    if (state.isLoading && state.page.data.isEmpty) {
       return const ListShimmer();
     }
 
-    if (state.error != null && state.pagination.data.isEmpty) {
+    if (state.error != null && state.page.data.isEmpty) {
       return ErrorView(
         message: l10n.studentsLoadError,
         detail: state.error,
@@ -145,7 +143,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
       );
     }
 
-    if (state.pagination.data.isEmpty) {
+    if (state.page.data.isEmpty) {
       return EmptyState(
         icon: Icons.people_outline,
         title: l10n.studentsEmptyTitle,
@@ -155,23 +153,38 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
       );
     }
 
-    return ListView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      itemCount: state.pagination.data.length + (state.pagination.hasMore ? 1 : 0),
-      itemBuilder: (context, index) {
-        if (index == state.pagination.data.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        final student = state.pagination.data[index];
-        return StudentCard(
-          student: student,
-          onTap: () => context.push('/students/${student.id}'),
-        );
-      },
+    return Column(
+      children: [
+        if (state.isLoading)
+          const LinearProgressIndicator(minHeight: 2),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () => ref.read(studentListProvider.notifier).refresh(),
+            child: ListView.builder(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              itemCount: state.page.data.length,
+              itemBuilder: (context, index) {
+                final student = state.page.data[index];
+                return StudentCard(
+                  student: student,
+                  onTap: () => context.push('/students/${student.id}'),
+                );
+              },
+            ),
+          ),
+        ),
+        PaginationBar(
+          page: state.page.page,
+          totalPages: state.page.totalPages,
+          from: state.page.firstItem,
+          to: state.page.lastItem,
+          total: state.page.total,
+          enabled: !state.isLoading,
+          onPageChanged: _goToPage,
+        ),
+      ],
     );
   }
 }
