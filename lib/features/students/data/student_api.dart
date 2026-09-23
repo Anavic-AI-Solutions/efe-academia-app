@@ -10,7 +10,7 @@ class StudentApi {
     String? status,
     String? year,
     String? branch,
-    String? cursor,
+    int page = 1,
     int limit = 20,
   }) =>
       _client.get('/students', queryParameters: {
@@ -18,7 +18,7 @@ class StudentApi {
         if (status != null && status.isNotEmpty) 'status': status,
         if (year != null && year.isNotEmpty) 'year': year,
         if (branch != null && branch.isNotEmpty) 'branch': branch,
-        if (cursor != null) 'cursor': cursor,
+        'page': page,
         'per_page': limit,
       });
 

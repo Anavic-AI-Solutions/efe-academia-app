@@ -10,6 +10,7 @@ class QualificationApi {
     String? classroomId,
     String? search,
     String? cursor,
+    int? page,
     int limit = 20,
   }) =>
       _client.get('/qualifications', queryParameters: {
@@ -17,6 +18,7 @@ class QualificationApi {
         if (classroomId != null) 'classroom_id': classroomId,
         if (search != null && search.isNotEmpty) 'search': search,
         if (cursor != null) 'cursor': cursor,
+        if (page != null) 'page': page,
         'per_page': limit,
       });
 

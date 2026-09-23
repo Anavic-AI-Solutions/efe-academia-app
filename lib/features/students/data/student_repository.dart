@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../../core/api/api_exception.dart';
-import '../../../core/api/cursor_pagination.dart';
+import '../../../core/api/page_pagination.dart';
 import '../domain/student_model.dart';
 import 'student_api.dart';
 
@@ -10,12 +10,13 @@ class StudentRepository {
 
   StudentRepository(this._api);
 
-  Future<CursorPagination<StudentModel>> getStudents({
+  Future<PageResult<StudentModel>> getStudents({
     String? search,
     String? status,
     String? year,
     String? branch,
-    String? cursor,
+    int page = 1,
+    int limit = 20,
   }) async {
     try {
       final response = await _api.getStudents(
@@ -23,18 +24,14 @@ class StudentRepository {
         status: status,
         year: year,
         branch: branch,
-        cursor: cursor,
+        page: page,
+        limit: limit,
       );
-      final data = response.data;
-      final items = (data['data'] as List)
-          .map((e) => StudentModel.fromJson(e))
-          .toList();
-      final meta = data['meta'] ?? {};
-      return CursorPagination(
-        data: items,
-        nextCursor: meta['cursor'],
-        hasMore: meta['has_more'] ?? false,
-        total: meta['total'],
+      return PageResult.fromJson(
+        response.data,
+        page: page,
+        perPage: limit,
+        parse: StudentModel.fromJson,
       );
     } on DioException catch (e) {
       throw _handleDioError(e);

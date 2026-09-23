@@ -43,6 +43,41 @@ void main() {
       expect(page.lastItem, 41);
     });
 
+    test('fromJson parses the items and the meta total', () {
+      final result = PageResult<String>.fromJson(
+        {
+          'data': [
+            {'name': 'a'},
+            {'name': 'b'},
+          ],
+          'meta': {'total': 57},
+        },
+        page: 2,
+        perPage: 20,
+        parse: (json) => json['name'] as String,
+      );
+
+      expect(result.data, ['a', 'b']);
+      expect(result.page, 2);
+      expect(result.perPage, 20);
+      expect(result.total, 57);
+    });
+
+    test('fromJson falls back to the item count without meta', () {
+      final result = PageResult<String>.fromJson(
+        {
+          'data': [
+            {'name': 'a'},
+          ],
+        },
+        page: 1,
+        perPage: 20,
+        parse: (json) => json['name'] as String,
+      );
+
+      expect(result.total, 1);
+    });
+
     test('copyWith replaces only the provided fields', () {
       const page = PageResult<int>(
         data: [1],

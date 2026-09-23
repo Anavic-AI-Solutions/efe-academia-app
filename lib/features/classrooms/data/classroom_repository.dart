@@ -33,10 +33,10 @@ class ClassroomRepository {
         year: year,
         status: status,
       );
-      return _parsePage(
+      return PageResult.fromJson(
         response.data,
         page: page,
-        limit: limit,
+        perPage: limit,
         parse: ClassroomModel.fromJson,
       );
     } on DioException catch (e) {
@@ -55,10 +55,10 @@ class ClassroomRepository {
         page: page,
         limit: limit,
       );
-      return _parsePage(
+      return PageResult.fromJson(
         response.data,
         page: page,
-        limit: limit,
+        perPage: limit,
         parse: StudentModel.fromJson,
       );
     } on DioException catch (e) {
@@ -77,10 +77,10 @@ class ClassroomRepository {
         page: page,
         limit: limit,
       );
-      return _parsePage(
+      return PageResult.fromJson(
         response.data,
         page: page,
-        limit: limit,
+        perPage: limit,
         parse: ProfessorModel.fromJson,
       );
     } on DioException catch (e) {
@@ -99,10 +99,10 @@ class ClassroomRepository {
         page: page,
         limit: limit,
       );
-      return _parsePage(
+      return PageResult.fromJson(
         response.data,
         page: page,
-        limit: limit,
+        perPage: limit,
         parse: MaterialModel.fromJson,
       );
     } on DioException catch (e) {
@@ -126,24 +126,6 @@ class ClassroomRepository {
     } on DioException catch (e) {
       throw _handleDioError(e);
     }
-  }
-
-  PageResult<T> _parsePage<T>(
-    dynamic body, {
-    required int page,
-    required int limit,
-    required T Function(Map<String, dynamic>) parse,
-  }) {
-    final items = (body['data'] as List)
-        .map((e) => parse(e as Map<String, dynamic>))
-        .toList();
-    final meta = body['meta'] ?? {};
-    return PageResult(
-      data: items,
-      page: page,
-      perPage: limit,
-      total: (meta['total'] as num?)?.toInt() ?? items.length,
-    );
   }
 
   ApiException _handleDioError(DioException e) {

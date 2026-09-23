@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/cursor_pagination.dart';
+import '../../../core/api/page_pagination.dart';
 import '../domain/qualification_model.dart';
 import 'qualification_api.dart';
 
@@ -33,6 +34,28 @@ class QualificationRepository {
         nextCursor: meta['cursor'],
         hasMore: meta['has_more'] ?? false,
         total: meta['total'],
+      );
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<PageResult<QualificationModel>> getStudentQualifications(
+    String studentId, {
+    int page = 1,
+    int limit = 20,
+  }) async {
+    try {
+      final response = await _api.getQualifications(
+        studentId: studentId,
+        page: page,
+        limit: limit,
+      );
+      return PageResult.fromJson(
+        response.data,
+        page: page,
+        perPage: limit,
+        parse: QualificationModel.fromJson,
       );
     } on DioException catch (e) {
       throw _handleDioError(e);

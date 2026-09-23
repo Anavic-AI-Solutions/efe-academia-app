@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/cursor_pagination.dart';
+import '../../../core/api/page_pagination.dart';
 import '../domain/fee_model.dart';
 import 'fee_api.dart';
 
@@ -41,6 +42,28 @@ class FeeRepository {
     try {
       final response = await _api.getFee(id);
       return FeeModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<PageResult<FeeModel>> getStudentFees(
+    String studentAppId, {
+    int page = 1,
+    int limit = 20,
+  }) async {
+    try {
+      final response = await _api.getFees(
+        studentAppId: studentAppId,
+        page: page,
+        limit: limit,
+      );
+      return PageResult.fromJson(
+        response.data,
+        page: page,
+        perPage: limit,
+        parse: FeeModel.fromJson,
+      );
     } on DioException catch (e) {
       throw _handleDioError(e);
     }

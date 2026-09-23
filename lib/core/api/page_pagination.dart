@@ -28,6 +28,24 @@ class PageResult<T> {
         total: 0,
       );
 
+  factory PageResult.fromJson(
+    dynamic body, {
+    required int page,
+    required int perPage,
+    required T Function(Map<String, dynamic>) parse,
+  }) {
+    final items = (body['data'] as List)
+        .map((e) => parse(e as Map<String, dynamic>))
+        .toList();
+    final meta = body['meta'] ?? {};
+    return PageResult<T>(
+      data: items,
+      page: page,
+      perPage: perPage,
+      total: (meta['total'] as num?)?.toInt() ?? items.length,
+    );
+  }
+
   PageResult<T> copyWith({
     List<T>? data,
     int? page,
