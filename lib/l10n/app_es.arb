@@ -267,6 +267,14 @@
   "studentsSectionInstitutional": "Institucional",
   "studentsRelatedLoadError": "No se pudieron cargar los datos",
   "studentsGradeTitle": "Nota",
+  "studentsGradePeriod": "Período {period}",
+  "@studentsGradePeriod": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
   "studentsAbsenceTitle": "Inasistencia",
   "studentsAbsenceJustified": "Justificada",
   "studentsAbsenceUnjustified": "Sin justificar",

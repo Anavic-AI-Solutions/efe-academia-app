@@ -153,6 +153,7 @@
   "studentsSectionInstitutional": "Institutional",
   "studentsRelatedLoadError": "Could not load data",
   "studentsGradeTitle": "Grade",
+  "studentsGradePeriod": "Period {period}",
   "studentsAbsenceTitle": "Absence",
   "studentsAbsenceJustified": "Justified",
   "studentsAbsenceUnjustified": "Unjustified",

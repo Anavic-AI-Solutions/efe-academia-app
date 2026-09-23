@@ -516,6 +516,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentsGradeTitle => 'Nota';
 
   @override
+  String studentsGradePeriod(String period) {
+    return 'Período $period';
+  }
+
+  @override
   String get studentsAbsenceTitle => 'Inasistencia';
 
   @override

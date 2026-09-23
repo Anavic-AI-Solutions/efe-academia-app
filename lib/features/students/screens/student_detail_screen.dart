@@ -9,6 +9,7 @@ import '../../../l10n/l10n.dart';
 import '../providers/student_provider.dart';
 import 'widgets/student_detail_header.dart';
 import 'widgets/student_info_tab.dart';
+import 'widgets/student_related_tabs.dart';
 
 class StudentDetailScreen extends ConsumerWidget {
   final String studentId;
@@ -63,9 +64,9 @@ class StudentDetailScreen extends ConsumerWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    _PlaceholderTab(message: l10n.studentsNoGrades),
-                    _PlaceholderTab(message: l10n.studentsNoAbsences),
-                    _PlaceholderTab(message: l10n.studentsNoFees),
+                    StudentGradesTab(studentId: studentId),
+                    StudentAbsencesTab(studentId: studentId),
+                    StudentFeesTab(studentId: studentId),
                     StudentInfoTab(student: student),
                   ],
                 ),
@@ -73,22 +74,6 @@ class StudentDetailScreen extends ConsumerWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _PlaceholderTab extends StatelessWidget {
-  final String message;
-
-  const _PlaceholderTab({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        message,
-        style: const TextStyle(color: Colors.grey),
       ),
     );
   }

@@ -1013,6 +1013,12 @@ abstract class AppLocalizations {
   /// **'Nota'**
   String get studentsGradeTitle;
 
+  /// No description provided for @studentsGradePeriod.
+  ///
+  /// In es, this message translates to:
+  /// **'Período {period}'**
+  String studentsGradePeriod(String period);
+
   /// No description provided for @studentsAbsenceTitle.
   ///
   /// In es, this message translates to:

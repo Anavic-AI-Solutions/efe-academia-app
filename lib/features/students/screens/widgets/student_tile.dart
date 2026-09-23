@@ -4,6 +4,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/avatar.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../domain/student_model.dart';
 
 class StudentTile extends StatelessWidget {
@@ -63,40 +64,9 @@ class StudentTile extends StatelessWidget {
           ),
           if (student.status.isNotEmpty) ...[
             const SizedBox(width: 8),
-            _StatusBadge(status: student.status),
+            StatusBadge(status: student.status),
           ],
         ],
-      ),
-    );
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  final String status;
-
-  const _StatusBadge({required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    final normalized = status.toLowerCase();
-    final color = normalized == 'active'
-        ? AppColors.success
-        : normalized == 'inactive'
-            ? AppColors.error
-            : AppColors.lightTextTertiary;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        status,
-        style: AppTypography.labelSmall.copyWith(
-          color: color,
-          fontWeight: FontWeight.w600,
-        ),
       ),
     );
   }
