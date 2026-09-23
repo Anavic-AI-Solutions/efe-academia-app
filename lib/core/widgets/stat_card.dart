@@ -50,6 +50,8 @@ class StatCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: AppTypography.headlineLarge.copyWith(
               color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
               fontSize: 24,
@@ -58,6 +60,8 @@ class StatCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: AppTypography.bodySmall.copyWith(
               color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
             ),

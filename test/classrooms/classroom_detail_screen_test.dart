@@ -1,0 +1,138 @@
+import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
+import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
+import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
+import 'package:efe_mobile/features/classrooms/domain/material_model.dart';
+import 'package:efe_mobile/features/classrooms/domain/professor_model.dart';
+import 'package:efe_mobile/features/classrooms/providers/classroom_provider.dart';
+import 'package:efe_mobile/features/classrooms/screens/classroom_detail_screen.dart';
+import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../helpers/localized_app.dart';
+
+class _FakeClassroomRepository implements ClassroomRepository {
+  _FakeClassroomRepository({this.classroom, this.fails = false});
+
+  final ClassroomModel? classroom;
+  final bool fails;
+
+  @override
+  Future<ClassroomModel> getClassroom(String id) async {
+    if (fails) throw Exception('boom');
+    return classroom!;
+  }
+
+  @override
+  Future<PageResult<ClassroomModel>> getClassrooms({
+    String? search,
+    int page = 1,
+    int limit = 20,
+    String? branch,
+    String? level,
+    String? year,
+    String? status,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<PageResult<StudentModel>> getClassroomStudents(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) async =>
+      PageResult.empty(perPage: limit);
+
+  @override
+  Future<PageResult<ProfessorModel>> getClassroomProfessors(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) async =>
+      PageResult.empty(perPage: limit);
+
+  @override
+  Future<PageResult<MaterialModel>> getClassroomMaterials(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) async =>
+      PageResult.empty(perPage: limit);
+
+  @override
+  Future<ClassroomFilters> getFilters() =>
+      Future.value(const ClassroomFilters());
+}
+
+Future<void> _pumpDetail(
+  WidgetTester tester,
+  _FakeClassroomRepository repository,
+) async {
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        classroomRepositoryProvider.overrideWithValue(repository),
+      ],
+      child: localizedApp(
+        home: const ClassroomDetailScreen(classroomId: 'c1'),
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+const _classroom = ClassroomModel(
+  id: 'c1',
+  name: 'A2 A',
+  description: 'Curso de enfermería',
+  status: 'active',
+  shift: 'Mañana',
+  day: 'Lunes',
+  hour: '08:00',
+  room: 'Aula 3',
+  year: '2026',
+  branch: 'Reconquista',
+  level: 'A2',
+  grade: 'Primero',
+  book: 'Libro 1',
+  commission: 'A',
+  courseDays: 3,
+  studentCount: 24,
+);
+
+void main() {
+  testWidgets('renders the hero header, tabs and summary sections',
+      (tester) async {
+    await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
+
+    expect(find.text('A2 A'), findsOneWidget);
+    expect(find.text('active'), findsOneWidget);
+    expect(find.text('Reconquista'), findsOneWidget);
+    expect(find.text('Resumen'), findsOneWidget);
+    expect(find.text('Estudiantes'), findsWidgets);
+    expect(find.text('Profesores'), findsOneWidget);
+    expect(find.text('Materiales'), findsOneWidget);
+
+    expect(find.text('24'), findsOneWidget);
+    expect(find.text('Aula 3'), findsWidgets);
+    expect(find.text('Mañana'), findsWidgets);
+    expect(find.text('Curso de enfermería'), findsOneWidget);
+
+    await tester.drag(find.byType(ListView).first, const Offset(0, -320));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Primero'), findsOneWidget);
+    expect(find.text('Libro 1'), findsOneWidget);
+    expect(find.text('A'), findsOneWidget);
+    expect(find.text('3'), findsOneWidget);
+  });
+
+  testWidgets('shows the error view when the classroom fails to load',
+      (tester) async {
+    await _pumpDetail(tester, _FakeClassroomRepository(fails: true));
+
+    expect(find.text('No se pudo cargar la clase'), findsOneWidget);
+  });
+}
