@@ -8,6 +8,7 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_detail_header.dart';
+import 'widgets/classroom_related_tabs.dart';
 import 'widgets/classroom_summary_tab.dart';
 
 class ClassroomDetailScreen extends ConsumerWidget {
@@ -63,31 +64,15 @@ class ClassroomDetailScreen extends ConsumerWidget {
                 child: TabBarView(
                   children: [
                     ClassroomSummaryTab(classroom: classroom),
-                    _PlaceholderTab(message: l10n.classroomsNoStudents),
-                    _PlaceholderTab(message: l10n.classroomsNoProfessors),
-                    _PlaceholderTab(message: l10n.classroomsNoMaterials),
+                    ClassroomStudentsTab(classroomId: classroomId),
+                    ClassroomProfessorsTab(classroomId: classroomId),
+                    ClassroomMaterialsTab(classroomId: classroomId),
                   ],
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _PlaceholderTab extends StatelessWidget {
-  final String message;
-
-  const _PlaceholderTab({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        message,
-        style: const TextStyle(color: Colors.grey),
       ),
     );
   }

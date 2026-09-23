@@ -14,10 +14,19 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/localized_app.dart';
 
 class _FakeClassroomRepository implements ClassroomRepository {
-  _FakeClassroomRepository({this.classroom, this.fails = false});
+  _FakeClassroomRepository({
+    this.classroom,
+    this.fails = false,
+    this.students = const [],
+    this.professors = const [],
+    this.materials = const [],
+  });
 
   final ClassroomModel? classroom;
   final bool fails;
+  final List<StudentModel> students;
+  final List<ProfessorModel> professors;
+  final List<MaterialModel> materials;
 
   @override
   Future<ClassroomModel> getClassroom(String id) async {
@@ -43,7 +52,12 @@ class _FakeClassroomRepository implements ClassroomRepository {
     int page = 1,
     int limit = 20,
   }) async =>
-      PageResult.empty(perPage: limit);
+      PageResult(
+        data: students,
+        page: page,
+        perPage: limit,
+        total: students.length,
+      );
 
   @override
   Future<PageResult<ProfessorModel>> getClassroomProfessors(
@@ -51,7 +65,12 @@ class _FakeClassroomRepository implements ClassroomRepository {
     int page = 1,
     int limit = 20,
   }) async =>
-      PageResult.empty(perPage: limit);
+      PageResult(
+        data: professors,
+        page: page,
+        perPage: limit,
+        total: professors.length,
+      );
 
   @override
   Future<PageResult<MaterialModel>> getClassroomMaterials(
@@ -59,7 +78,12 @@ class _FakeClassroomRepository implements ClassroomRepository {
     int page = 1,
     int limit = 20,
   }) async =>
-      PageResult.empty(perPage: limit);
+      PageResult(
+        data: materials,
+        page: page,
+        perPage: limit,
+        total: materials.length,
+      );
 
   @override
   Future<ClassroomFilters> getFilters() =>
@@ -79,6 +103,13 @@ Future<void> _pumpDetail(
         home: const ClassroomDetailScreen(classroomId: 'c1'),
       ),
     ),
+  );
+  await tester.pumpAndSettle();
+}
+
+Future<void> _openTab(WidgetTester tester, String label) async {
+  await tester.tap(
+    find.descendant(of: find.byType(TabBar), matching: find.text(label)),
   );
   await tester.pumpAndSettle();
 }
@@ -134,5 +165,73 @@ void main() {
     await _pumpDetail(tester, _FakeClassroomRepository(fails: true));
 
     expect(find.text('No se pudo cargar la clase'), findsOneWidget);
+  });
+
+  testWidgets('lists students on the students tab', (tester) async {
+    await _pumpDetail(
+      tester,
+      _FakeClassroomRepository(
+        classroom: _classroom,
+        students: const [
+          StudentModel(
+            id: 's1',
+            fullname: 'Ana Gómez',
+            email: 'ana@example.com',
+            status: 'active',
+          ),
+        ],
+      ),
+    );
+
+    await _openTab(tester, 'Estudiantes');
+
+    expect(find.text('Ana Gómez'), findsOneWidget);
+    expect(find.text('ana@example.com'), findsOneWidget);
+  });
+
+  testWidgets('shows empty states for related tabs', (tester) async {
+    await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
+
+    await _openTab(tester, 'Estudiantes');
+    expect(find.text('Sin estudiantes'), findsOneWidget);
+
+    await _openTab(tester, 'Profesores');
+    expect(find.text('Sin profesores'), findsOneWidget);
+
+    await _openTab(tester, 'Materiales');
+    expect(find.text('Sin materiales'), findsOneWidget);
+  });
+
+  testWidgets('lists professors and materials when present', (tester) async {
+    await _pumpDetail(
+      tester,
+      _FakeClassroomRepository(
+        classroom: _classroom,
+        professors: const [
+          ProfessorModel(
+            id: 'p1',
+            fullname: 'Ana Pérez',
+            specialty: 'Matemática',
+          ),
+        ],
+        materials: const [
+          MaterialModel(
+            id: 'm1',
+            name: 'Apunte 1',
+            category: 'teoria',
+            downloadCount: 4,
+          ),
+        ],
+      ),
+    );
+
+    await _openTab(tester, 'Profesores');
+    expect(find.text('Ana Pérez'), findsOneWidget);
+    expect(find.text('Matemática'), findsOneWidget);
+
+    await _openTab(tester, 'Materiales');
+    expect(find.text('Apunte 1'), findsOneWidget);
+    expect(find.text('teoria'), findsOneWidget);
+    expect(find.text('4 descargas'), findsOneWidget);
   });
 }
