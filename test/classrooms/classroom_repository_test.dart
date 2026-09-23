@@ -11,6 +11,7 @@ Response<dynamic> _response(Object? data) => Response(
 
 class _FakeClassroomApi implements ClassroomApi {
   Map<String, dynamic>? lastQuery;
+  Map<String, dynamic>? lastRelated;
   int filtersCalls = 0;
 
   @override
@@ -57,6 +58,73 @@ class _FakeClassroomApi implements ClassroomApi {
         'years': ['2026'],
         'statuses': ['active', 'archived'],
       },
+    });
+  }
+
+  @override
+  Future<Response> getClassroomStudents(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) async {
+    lastRelated = {'kind': 'students', 'id': id, 'page': page, 'limit': limit};
+    return _response({
+      'data': [
+        {
+          'type': 'students',
+          'id': 's1',
+          'attributes': {'fullname': 'Ana', 'email': 'ana@example.com'},
+        },
+      ],
+      'meta': {'cursor': null, 'has_more': false, 'total': 1},
+    });
+  }
+
+  @override
+  Future<Response> getClassroomProfessors(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) async {
+    lastRelated = {
+      'kind': 'professors',
+      'id': id,
+      'page': page,
+      'limit': limit,
+    };
+    return _response({
+      'data': [
+        {
+          'type': 'professor_data',
+          'id': 'p1',
+          'attributes': {'fullname': 'Ana Pérez', 'specialty': 'Matemática'},
+        },
+      ],
+      'meta': {'cursor': null, 'has_more': false, 'total': 1},
+    });
+  }
+
+  @override
+  Future<Response> getClassroomMaterials(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) async {
+    lastRelated = {
+      'kind': 'materials',
+      'id': id,
+      'page': page,
+      'limit': limit,
+    };
+    return _response({
+      'data': [
+        {
+          'type': 'materials',
+          'id': 'm1',
+          'attributes': {'name': 'Apunte 1', 'download_count': 4},
+        },
+      ],
+      'meta': {'cursor': null, 'has_more': false, 'total': 1},
     });
   }
 }
@@ -106,6 +174,53 @@ void main() {
       expect(filters.levels, ['A2']);
       expect(filters.years, ['2026']);
       expect(filters.statuses, ['active', 'archived']);
+    });
+
+    test('getClassroomStudents forwards pagination and parses students',
+        () async {
+      final api = _FakeClassroomApi();
+      final repository = ClassroomRepository(api);
+
+      final result =
+          await repository.getClassroomStudents('c1', page: 2, limit: 10);
+
+      expect(api.lastRelated?['kind'], 'students');
+      expect(api.lastRelated?['id'], 'c1');
+      expect(api.lastRelated?['page'], 2);
+      expect(api.lastRelated?['limit'], 10);
+      expect(result.data.single.fullname, 'Ana');
+      expect(result.page, 2);
+      expect(result.perPage, 10);
+      expect(result.total, 1);
+    });
+
+    test('getClassroomProfessors forwards pagination and parses professors',
+        () async {
+      final api = _FakeClassroomApi();
+      final repository = ClassroomRepository(api);
+
+      final result =
+          await repository.getClassroomProfessors('c1', page: 3, limit: 5);
+
+      expect(api.lastRelated?['kind'], 'professors');
+      expect(api.lastRelated?['page'], 3);
+      expect(result.data.single.fullname, 'Ana Pérez');
+      expect(result.data.single.specialty, 'Matemática');
+      expect(result.page, 3);
+      expect(result.perPage, 5);
+    });
+
+    test('getClassroomMaterials forwards pagination and parses materials',
+        () async {
+      final api = _FakeClassroomApi();
+      final repository = ClassroomRepository(api);
+
+      final result = await repository.getClassroomMaterials('c1', page: 1);
+
+      expect(api.lastRelated?['kind'], 'materials');
+      expect(result.data.single.name, 'Apunte 1');
+      expect(result.data.single.downloadCount, 4);
+      expect(result.total, 1);
     });
   });
 }

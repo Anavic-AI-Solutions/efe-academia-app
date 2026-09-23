@@ -29,4 +29,34 @@ class ClassroomApi {
 
   Future<Response> getClassroomFilters() =>
       _client.get('/classrooms/filters');
+
+  Future<Response> getClassroomStudents(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      _client.get('/classrooms/$id/students', queryParameters: {
+        'page': page,
+        'per_page': limit,
+      });
+
+  Future<Response> getClassroomProfessors(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      _client.get('/classrooms/$id/professors', queryParameters: {
+        'page': page,
+        'per_page': limit,
+      });
+
+  Future<Response> getClassroomMaterials(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      _client.get('/classrooms/$id/materials', queryParameters: {
+        'page': page,
+        'per_page': limit,
+      });
 }
