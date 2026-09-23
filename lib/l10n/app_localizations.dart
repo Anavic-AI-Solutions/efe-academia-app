@@ -989,6 +989,48 @@ abstract class AppLocalizations {
   /// **'Clases'**
   String get studentsInfoClassrooms;
 
+  /// No description provided for @studentsSectionPersonal.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos personales'**
+  String get studentsSectionPersonal;
+
+  /// No description provided for @studentsSectionInstitutional.
+  ///
+  /// In es, this message translates to:
+  /// **'Institucional'**
+  String get studentsSectionInstitutional;
+
+  /// No description provided for @studentsRelatedLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los datos'**
+  String get studentsRelatedLoadError;
+
+  /// No description provided for @studentsGradeTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nota'**
+  String get studentsGradeTitle;
+
+  /// No description provided for @studentsAbsenceTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Inasistencia'**
+  String get studentsAbsenceTitle;
+
+  /// No description provided for @studentsAbsenceJustified.
+  ///
+  /// In es, this message translates to:
+  /// **'Justificada'**
+  String get studentsAbsenceJustified;
+
+  /// No description provided for @studentsAbsenceUnjustified.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin justificar'**
+  String get studentsAbsenceUnjustified;
+
   /// No description provided for @feesTitle.
   ///
   /// In es, this message translates to:

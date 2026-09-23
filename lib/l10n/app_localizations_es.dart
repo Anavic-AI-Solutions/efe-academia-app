@@ -504,6 +504,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentsInfoClassrooms => 'Clases';
 
   @override
+  String get studentsSectionPersonal => 'Datos personales';
+
+  @override
+  String get studentsSectionInstitutional => 'Institucional';
+
+  @override
+  String get studentsRelatedLoadError => 'No se pudieron cargar los datos';
+
+  @override
+  String get studentsGradeTitle => 'Nota';
+
+  @override
+  String get studentsAbsenceTitle => 'Inasistencia';
+
+  @override
+  String get studentsAbsenceJustified => 'Justificada';
+
+  @override
+  String get studentsAbsenceUnjustified => 'Sin justificar';
+
+  @override
   String get feesTitle => 'Cuotas';
 
   @override
