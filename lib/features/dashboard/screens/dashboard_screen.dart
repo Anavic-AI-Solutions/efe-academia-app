@@ -14,6 +14,7 @@ import '../../../app/theme/app_typography.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/dashboard_provider.dart';
+import 'professor_home_screen.dart';
 import 'widgets/quick_action_grid.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -21,9 +22,14 @@ class DashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dashboardState = ref.watch(dashboardProvider);
     final authState = ref.watch(authProvider);
     final user = authState.user;
+
+    if (user?.role == 'professor') {
+      return const ProfessorHomeScreen();
+    }
+
+    final dashboardState = ref.watch(dashboardProvider);
     final l10n = context.l10n;
 
     return Scaffold(
@@ -216,6 +222,16 @@ class DashboardScreen extends ConsumerWidget {
             ],
           ),
         ),
+        IconButton(
+          onPressed: () => context.push('/search'),
+          tooltip: l10n.dashboardSearch,
+          icon: Icon(
+            PhosphorIconsRegular.magnifyingGlass,
+            color: isDark
+                ? AppColors.darkTextSecondary
+                : AppColors.lightTextSecondary,
+          ),
+        ),
       ],
     );
   }
@@ -224,7 +240,7 @@ class DashboardScreen extends ConsumerWidget {
     final l10n = context.l10n;
 
     return SizedBox(
-      height: 110,
+      height: 136,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [

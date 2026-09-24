@@ -24,7 +24,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navHome => 'Inicio';
 
   @override
-  String get navClasses => 'Clases';
+  String get navClasses => 'Aulas';
 
   @override
   String get navChat => 'Chat';
@@ -707,4 +707,138 @@ class AppLocalizationsEs extends AppLocalizations {
   String searchNoResultsSubtitle(String query) {
     return 'No se encontraron resultados para \"$query\"';
   }
+
+  @override
+  String get professorGreetingMorning => 'Buen día';
+
+  @override
+  String get professorGreetingAfternoon => 'Buenas tardes';
+
+  @override
+  String get professorGreetingEvening => 'Buenas noches';
+
+  @override
+  String professorHomeTitle(String name) {
+    return 'Prof. $name';
+  }
+
+  @override
+  String get professorStatClassrooms => 'Aulas';
+
+  @override
+  String get professorStatStudents => 'Alumnos';
+
+  @override
+  String get professorStatAbsences => 'Ausentes';
+
+  @override
+  String get professorMyClassrooms => 'Mis aulas';
+
+  @override
+  String get professorMyClassroomsEmpty => 'Todavía no tenés aulas asignadas';
+
+  @override
+  String professorStudentsCount(int count) {
+    return '$count alumnos';
+  }
+
+  @override
+  String get professorTakeAttendance => 'Tomar asistencia';
+
+  @override
+  String get professorLoadGrade => 'Cargar nota';
+
+  @override
+  String get professorLoadError => 'No se pudo cargar el inicio';
+
+  @override
+  String attendanceTitle(String classroom) {
+    return 'Asistencia · $classroom';
+  }
+
+  @override
+  String attendanceSubtitle(String date, int count) {
+    return '$date · $count alumnos';
+  }
+
+  @override
+  String get attendancePresent => 'P';
+
+  @override
+  String get attendanceAbsent => 'A';
+
+  @override
+  String get attendanceToday => 'Hoy';
+
+  @override
+  String get attendanceSave => 'Guardar asistencia';
+
+  @override
+  String get attendanceSaved => 'Asistencia guardada';
+
+  @override
+  String get attendanceLoadError => 'No se pudo cargar la asistencia';
+
+  @override
+  String get attendanceSaveError => 'No se pudo guardar la asistencia';
+
+  @override
+  String get attendanceEmpty => 'Este aula no tiene alumnos';
+
+  @override
+  String get attendanceUnsavedTitle => 'Cambios sin guardar';
+
+  @override
+  String get attendanceUnsavedMessage => 'Si salís ahora, se perderán los cambios de asistencia.';
+
+  @override
+  String get attendanceUnsavedStay => 'Seguir acá';
+
+  @override
+  String get attendanceUnsavedLeave => 'Salir sin guardar';
+
+  @override
+  String get gradesTitle => 'Calificaciones';
+
+  @override
+  String get gradesClassroomAverage => 'Promedio del aula';
+
+  @override
+  String get gradesLoadGrade => '+ Cargar calificación';
+
+  @override
+  String get gradesLoadError => 'No se pudieron cargar las calificaciones';
+
+  @override
+  String get gradeFormTitle => 'Cargar calificación';
+
+  @override
+  String get gradeFormStudent => 'Alumno';
+
+  @override
+  String get gradeFormType => 'Tipo';
+
+  @override
+  String get gradeFormPeriod => 'Período';
+
+  @override
+  String get gradeFormScore => 'Nota';
+
+  @override
+  String get gradeFormScoreHint => 'Ej: 8.5';
+
+  @override
+  String get gradeFormDescription => 'Descripción (opcional)';
+
+  @override
+  String get gradeFormSave => 'Guardar';
+
+  @override
+  String get gradeFormScoreInvalid => 'Ingresá una nota entre 0 y 10';
+
+  @override
+  String get gradeFormSaved => 'Calificación guardada';
+
+  @override
+  String get gradeFormError => 'No se pudo guardar la calificación';
 }

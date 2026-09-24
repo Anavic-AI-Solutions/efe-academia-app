@@ -24,4 +24,25 @@ class QualificationApi {
 
   Future<Response> getQualification(String id) =>
       _client.get('/qualifications/$id');
+
+  Future<Response> getClassroomGradesSummary(String classroomId) =>
+      _client.get('/classrooms/$classroomId/grades-summary');
+
+  Future<Response> createQualification({
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? description,
+  }) =>
+      _client.post('/qualifications', data: {
+        'student_id': studentId,
+        'classroom_id': classroomId,
+        'score': score,
+        'type': type,
+        'period': period,
+        if (description != null && description.isNotEmpty)
+          'description': description,
+      });
 }

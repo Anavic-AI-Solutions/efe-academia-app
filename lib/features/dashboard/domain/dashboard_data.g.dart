@@ -8,6 +8,7 @@ part of 'dashboard_data.dart';
 
 _$DashboardDataImpl _$$DashboardDataImplFromJson(Map<String, dynamic> json) =>
     _$DashboardDataImpl(
+      role: json['role'] as String? ?? '',
       totalStudents: (json['totalStudents'] as num?)?.toInt() ?? 0,
       totalClassrooms: (json['totalClassrooms'] as num?)?.toInt() ?? 0,
       totalProfessors: (json['totalProfessors'] as num?)?.toInt() ?? 0,
@@ -15,10 +16,17 @@ _$DashboardDataImpl _$$DashboardDataImplFromJson(Map<String, dynamic> json) =>
       monthlyRevenue: (json['monthlyRevenue'] as num?)?.toDouble() ?? 0.0,
       pendingFees: (json['pendingFees'] as num?)?.toInt() ?? 0,
       unreadNotifications: (json['unreadNotifications'] as num?)?.toInt() ?? 0,
+      absencesToday: (json['absencesToday'] as num?)?.toInt() ?? 0,
+      classrooms: (json['classrooms'] as List<dynamic>?)
+              ?.map((e) =>
+                  ProfessorClassroomSummary.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$DashboardDataImplToJson(_$DashboardDataImpl instance) =>
     <String, dynamic>{
+      'role': instance.role,
       'totalStudents': instance.totalStudents,
       'totalClassrooms': instance.totalClassrooms,
       'totalProfessors': instance.totalProfessors,
@@ -26,4 +34,6 @@ Map<String, dynamic> _$$DashboardDataImplToJson(_$DashboardDataImpl instance) =>
       'monthlyRevenue': instance.monthlyRevenue,
       'pendingFees': instance.pendingFees,
       'unreadNotifications': instance.unreadNotifications,
+      'absencesToday': instance.absencesToday,
+      'classrooms': instance.classrooms,
     };

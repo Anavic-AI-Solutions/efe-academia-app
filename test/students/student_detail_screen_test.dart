@@ -4,6 +4,7 @@ import 'package:efe_mobile/features/fees/data/fee_repository.dart';
 import 'package:efe_mobile/features/fees/domain/fee_model.dart';
 import 'package:efe_mobile/features/fees/providers/fee_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
+import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
 import 'package:efe_mobile/features/students/data/absence_repository.dart';
@@ -66,6 +67,23 @@ class _FakeQualificationRepository implements QualificationRepository {
     String? classroomId,
     String? search,
     String? cursor,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<ClassroomGradesSummary> getClassroomGradesSummary(
+    String classroomId,
+  ) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> createQualification({
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? description,
   }) =>
       Future.error(UnimplementedError());
 }

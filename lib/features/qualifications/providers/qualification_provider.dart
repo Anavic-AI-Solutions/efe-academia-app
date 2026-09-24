@@ -4,6 +4,7 @@ import '../../../core/api/api_provider.dart';
 import '../../../core/api/cursor_pagination.dart';
 import '../data/qualification_api.dart';
 import '../data/qualification_repository.dart';
+import '../domain/classroom_grades_summary.dart';
 import '../domain/qualification_model.dart';
 
 // ---------------------------------------------------------------------------
@@ -113,3 +114,16 @@ final qualificationListProvider =
         (ref) {
   return QualificationListNotifier(ref.watch(qualificationRepositoryProvider));
 });
+
+// ---------------------------------------------------------------------------
+// Classroom grades summary
+// ---------------------------------------------------------------------------
+
+final classroomGradesProvider =
+    FutureProvider.autoDispose.family<ClassroomGradesSummary, String>(
+  (ref, classroomId) {
+    return ref
+        .watch(qualificationRepositoryProvider)
+        .getClassroomGradesSummary(classroomId);
+  },
+);

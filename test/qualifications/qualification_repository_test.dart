@@ -46,6 +46,21 @@ class _FakeQualificationApi implements QualificationApi {
 
   @override
   Future<Response> getQualification(String id) async => _response({});
+
+  @override
+  Future<Response> getClassroomGradesSummary(String classroomId) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<Response> createQualification({
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? description,
+  }) =>
+      Future.error(UnimplementedError());
 }
 
 void main() {

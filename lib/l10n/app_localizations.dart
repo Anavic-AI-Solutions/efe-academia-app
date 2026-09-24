@@ -128,7 +128,7 @@ abstract class AppLocalizations {
   /// No description provided for @navClasses.
   ///
   /// In es, this message translates to:
-  /// **'Clases'**
+  /// **'Aulas'**
   String get navClasses;
 
   /// No description provided for @navChat.
@@ -1378,6 +1378,258 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se encontraron resultados para \"{query}\"'**
   String searchNoResultsSubtitle(String query);
+
+  /// No description provided for @professorGreetingMorning.
+  ///
+  /// In es, this message translates to:
+  /// **'Buen día'**
+  String get professorGreetingMorning;
+
+  /// No description provided for @professorGreetingAfternoon.
+  ///
+  /// In es, this message translates to:
+  /// **'Buenas tardes'**
+  String get professorGreetingAfternoon;
+
+  /// No description provided for @professorGreetingEvening.
+  ///
+  /// In es, this message translates to:
+  /// **'Buenas noches'**
+  String get professorGreetingEvening;
+
+  /// No description provided for @professorHomeTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Prof. {name}'**
+  String professorHomeTitle(String name);
+
+  /// No description provided for @professorStatClassrooms.
+  ///
+  /// In es, this message translates to:
+  /// **'Aulas'**
+  String get professorStatClassrooms;
+
+  /// No description provided for @professorStatStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos'**
+  String get professorStatStudents;
+
+  /// No description provided for @professorStatAbsences.
+  ///
+  /// In es, this message translates to:
+  /// **'Ausentes'**
+  String get professorStatAbsences;
+
+  /// No description provided for @professorMyClassrooms.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis aulas'**
+  String get professorMyClassrooms;
+
+  /// No description provided for @professorMyClassroomsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenés aulas asignadas'**
+  String get professorMyClassroomsEmpty;
+
+  /// No description provided for @professorStudentsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} alumnos'**
+  String professorStudentsCount(int count);
+
+  /// No description provided for @professorTakeAttendance.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar asistencia'**
+  String get professorTakeAttendance;
+
+  /// No description provided for @professorLoadGrade.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar nota'**
+  String get professorLoadGrade;
+
+  /// No description provided for @professorLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar el inicio'**
+  String get professorLoadError;
+
+  /// No description provided for @attendanceTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Asistencia · {classroom}'**
+  String attendanceTitle(String classroom);
+
+  /// No description provided for @attendanceSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'{date} · {count} alumnos'**
+  String attendanceSubtitle(String date, int count);
+
+  /// No description provided for @attendancePresent.
+  ///
+  /// In es, this message translates to:
+  /// **'P'**
+  String get attendancePresent;
+
+  /// No description provided for @attendanceAbsent.
+  ///
+  /// In es, this message translates to:
+  /// **'A'**
+  String get attendanceAbsent;
+
+  /// No description provided for @attendanceToday.
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy'**
+  String get attendanceToday;
+
+  /// No description provided for @attendanceSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar asistencia'**
+  String get attendanceSave;
+
+  /// No description provided for @attendanceSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Asistencia guardada'**
+  String get attendanceSaved;
+
+  /// No description provided for @attendanceLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar la asistencia'**
+  String get attendanceLoadError;
+
+  /// No description provided for @attendanceSaveError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar la asistencia'**
+  String get attendanceSaveError;
+
+  /// No description provided for @attendanceEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Este aula no tiene alumnos'**
+  String get attendanceEmpty;
+
+  /// No description provided for @attendanceUnsavedTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambios sin guardar'**
+  String get attendanceUnsavedTitle;
+
+  /// No description provided for @attendanceUnsavedMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Si salís ahora, se perderán los cambios de asistencia.'**
+  String get attendanceUnsavedMessage;
+
+  /// No description provided for @attendanceUnsavedStay.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguir acá'**
+  String get attendanceUnsavedStay;
+
+  /// No description provided for @attendanceUnsavedLeave.
+  ///
+  /// In es, this message translates to:
+  /// **'Salir sin guardar'**
+  String get attendanceUnsavedLeave;
+
+  /// No description provided for @gradesTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Calificaciones'**
+  String get gradesTitle;
+
+  /// No description provided for @gradesClassroomAverage.
+  ///
+  /// In es, this message translates to:
+  /// **'Promedio del aula'**
+  String get gradesClassroomAverage;
+
+  /// No description provided for @gradesLoadGrade.
+  ///
+  /// In es, this message translates to:
+  /// **'+ Cargar calificación'**
+  String get gradesLoadGrade;
+
+  /// No description provided for @gradesLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar las calificaciones'**
+  String get gradesLoadError;
+
+  /// No description provided for @gradeFormTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar calificación'**
+  String get gradeFormTitle;
+
+  /// No description provided for @gradeFormStudent.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno'**
+  String get gradeFormStudent;
+
+  /// No description provided for @gradeFormType.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo'**
+  String get gradeFormType;
+
+  /// No description provided for @gradeFormPeriod.
+  ///
+  /// In es, this message translates to:
+  /// **'Período'**
+  String get gradeFormPeriod;
+
+  /// No description provided for @gradeFormScore.
+  ///
+  /// In es, this message translates to:
+  /// **'Nota'**
+  String get gradeFormScore;
+
+  /// No description provided for @gradeFormScoreHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Ej: 8.5'**
+  String get gradeFormScoreHint;
+
+  /// No description provided for @gradeFormDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción (opcional)'**
+  String get gradeFormDescription;
+
+  /// No description provided for @gradeFormSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get gradeFormSave;
+
+  /// No description provided for @gradeFormScoreInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Ingresá una nota entre 0 y 10'**
+  String get gradeFormScoreInvalid;
+
+  /// No description provided for @gradeFormSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Calificación guardada'**
+  String get gradeFormSaved;
+
+  /// No description provided for @gradeFormError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar la calificación'**
+  String get gradeFormError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

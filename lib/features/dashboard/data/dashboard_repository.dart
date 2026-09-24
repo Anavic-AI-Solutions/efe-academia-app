@@ -1,4 +1,5 @@
 import '../domain/dashboard_data.dart';
+import '../domain/professor_classroom_summary.dart';
 import 'dashboard_api.dart';
 
 class DashboardRepository {
@@ -14,7 +15,9 @@ class DashboardRepository {
       return const DashboardData();
     }
 
-    // Extract metrics (snake_case from API)
+    final role = rawData['role']?.toString() ?? '';
+
+    // Metrics use role-specific keys (e.g. professors get classrooms_count).
     final metrics = rawData['metrics'];
     final m = metrics is Map<String, dynamic> ? metrics : rawData;
 
@@ -22,13 +25,52 @@ class DashboardRepository {
     final d = details is Map<String, dynamic> ? details : <String, dynamic>{};
 
     return DashboardData(
-      totalStudents: (m['total_students'] ?? m['totalStudents'] ?? 0) as int,
-      totalClassrooms: (m['total_classrooms'] ?? m['totalClassrooms'] ?? 0) as int,
-      totalProfessors: (m['total_professors'] ?? d['totalProfessors'] ?? 0) as int,
-      attendanceRate: (m['attendance_rate'] ?? d['attendanceRate'] ?? 0) as int,
-      monthlyRevenue: (m['total_owed'] ?? m['monthlyRevenue'] ?? 0).toDouble(),
-      pendingFees: (m['fees_overdue'] ?? m['pendingFees'] ?? 0) as int,
-      unreadNotifications: (m['open_tickets'] ?? m['unreadNotifications'] ?? 0) as int,
+      role: role,
+      totalStudents:
+          _asInt(m['total_students'] ?? m['totalStudents']),
+      totalClassrooms: _asInt(
+        m['classrooms_count'] ?? m['total_classrooms'] ?? m['totalClassrooms'],
+      ),
+      totalProfessors: _asInt(m['total_professors'] ?? d['totalProfessors']),
+      attendanceRate: _asInt(m['attendance_rate'] ?? d['attendanceRate']),
+      monthlyRevenue:
+          _asDouble(m['total_owed'] ?? m['monthlyRevenue'] ?? d['monthlyRevenue']),
+      pendingFees: _asInt(m['fees_overdue'] ?? m['pendingFees']),
+      unreadNotifications:
+          _asInt(m['open_tickets'] ?? m['unreadNotifications']),
+      absencesToday: _asInt(m['absences_today']),
+      classrooms: _parseClassrooms(m['classrooms_detail']),
     );
+  }
+
+  List<ProfessorClassroomSummary> _parseClassrooms(dynamic raw) {
+    if (raw is! List) return const [];
+
+    return raw
+        .whereType<Map<String, dynamic>>()
+        .map(
+          (item) => ProfessorClassroomSummary(
+            id: item['id']?.toString() ?? '',
+            name: item['name']?.toString() ?? '',
+            studentsCount: _asInt(item['students_count']),
+          ),
+        )
+        .where((classroom) => classroom.id.isNotEmpty)
+        .toList();
+  }
+
+  static int _asInt(dynamic value) {
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value) ?? 0;
+    return 0;
+  }
+
+  static double _asDouble(dynamic value) {
+    if (value is double) return value;
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
   }
 }

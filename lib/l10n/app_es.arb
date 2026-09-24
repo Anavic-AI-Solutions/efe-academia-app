@@ -5,7 +5,7 @@
   "commonSearchHint": "Buscar...",
   "commonUser": "Usuario",
   "navHome": "Inicio",
-  "navClasses": "Clases",
+  "navClasses": "Aulas",
   "navChat": "Chat",
   "navProfile": "Perfil",
   "authWelcomeBack": "Bienvenido de nuevo",
@@ -368,5 +368,78 @@
         "type": "String"
       }
     }
-  }
+  },
+  "professorGreetingMorning": "Buen día",
+  "professorGreetingAfternoon": "Buenas tardes",
+  "professorGreetingEvening": "Buenas noches",
+  "professorHomeTitle": "Prof. {name}",
+  "@professorHomeTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "professorStatClassrooms": "Aulas",
+  "professorStatStudents": "Alumnos",
+  "professorStatAbsences": "Ausentes",
+  "professorMyClassrooms": "Mis aulas",
+  "professorMyClassroomsEmpty": "Todavía no tenés aulas asignadas",
+  "professorStudentsCount": "{count} alumnos",
+  "@professorStudentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "professorTakeAttendance": "Tomar asistencia",
+  "professorLoadGrade": "Cargar nota",
+  "professorLoadError": "No se pudo cargar el inicio",
+  "attendanceTitle": "Asistencia · {classroom}",
+  "@attendanceTitle": {
+    "placeholders": {
+      "classroom": {
+        "type": "String"
+      }
+    }
+  },
+  "attendanceSubtitle": "{date} · {count} alumnos",
+  "@attendanceSubtitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "attendancePresent": "P",
+  "attendanceAbsent": "A",
+  "attendanceToday": "Hoy",
+  "attendanceSave": "Guardar asistencia",
+  "attendanceSaved": "Asistencia guardada",
+  "attendanceLoadError": "No se pudo cargar la asistencia",
+  "attendanceSaveError": "No se pudo guardar la asistencia",
+  "attendanceEmpty": "Este aula no tiene alumnos",
+  "attendanceUnsavedTitle": "Cambios sin guardar",
+  "attendanceUnsavedMessage": "Si salís ahora, se perderán los cambios de asistencia.",
+  "attendanceUnsavedStay": "Seguir acá",
+  "attendanceUnsavedLeave": "Salir sin guardar",
+  "gradesTitle": "Calificaciones",
+  "gradesClassroomAverage": "Promedio del aula",
+  "gradesLoadGrade": "+ Cargar calificación",
+  "gradesLoadError": "No se pudieron cargar las calificaciones",
+  "gradeFormTitle": "Cargar calificación",
+  "gradeFormStudent": "Alumno",
+  "gradeFormType": "Tipo",
+  "gradeFormPeriod": "Período",
+  "gradeFormScore": "Nota",
+  "gradeFormScoreHint": "Ej: 8.5",
+  "gradeFormDescription": "Descripción (opcional)",
+  "gradeFormSave": "Guardar",
+  "gradeFormScoreInvalid": "Ingresá una nota entre 0 y 10",
+  "gradeFormSaved": "Calificación guardada",
+  "gradeFormError": "No se pudo guardar la calificación"
 }

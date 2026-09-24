@@ -20,6 +20,7 @@ DashboardData _$DashboardDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DashboardData {
+  String get role => throw _privateConstructorUsedError;
   int get totalStudents => throw _privateConstructorUsedError;
   int get totalClassrooms => throw _privateConstructorUsedError;
   int get totalProfessors => throw _privateConstructorUsedError;
@@ -27,6 +28,9 @@ mixin _$DashboardData {
   double get monthlyRevenue => throw _privateConstructorUsedError;
   int get pendingFees => throw _privateConstructorUsedError;
   int get unreadNotifications => throw _privateConstructorUsedError;
+  int get absencesToday => throw _privateConstructorUsedError;
+  List<ProfessorClassroomSummary> get classrooms =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this DashboardData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,13 +49,16 @@ abstract class $DashboardDataCopyWith<$Res> {
       _$DashboardDataCopyWithImpl<$Res, DashboardData>;
   @useResult
   $Res call(
-      {int totalStudents,
+      {String role,
+      int totalStudents,
       int totalClassrooms,
       int totalProfessors,
       int attendanceRate,
       double monthlyRevenue,
       int pendingFees,
-      int unreadNotifications});
+      int unreadNotifications,
+      int absencesToday,
+      List<ProfessorClassroomSummary> classrooms});
 }
 
 /// @nodoc
@@ -69,6 +76,7 @@ class _$DashboardDataCopyWithImpl<$Res, $Val extends DashboardData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? role = null,
     Object? totalStudents = null,
     Object? totalClassrooms = null,
     Object? totalProfessors = null,
@@ -76,8 +84,14 @@ class _$DashboardDataCopyWithImpl<$Res, $Val extends DashboardData>
     Object? monthlyRevenue = null,
     Object? pendingFees = null,
     Object? unreadNotifications = null,
+    Object? absencesToday = null,
+    Object? classrooms = null,
   }) {
     return _then(_value.copyWith(
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
       totalStudents: null == totalStudents
           ? _value.totalStudents
           : totalStudents // ignore: cast_nullable_to_non_nullable
@@ -106,6 +120,14 @@ class _$DashboardDataCopyWithImpl<$Res, $Val extends DashboardData>
           ? _value.unreadNotifications
           : unreadNotifications // ignore: cast_nullable_to_non_nullable
               as int,
+      absencesToday: null == absencesToday
+          ? _value.absencesToday
+          : absencesToday // ignore: cast_nullable_to_non_nullable
+              as int,
+      classrooms: null == classrooms
+          ? _value.classrooms
+          : classrooms // ignore: cast_nullable_to_non_nullable
+              as List<ProfessorClassroomSummary>,
     ) as $Val);
   }
 }
@@ -119,13 +141,16 @@ abstract class _$$DashboardDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int totalStudents,
+      {String role,
+      int totalStudents,
       int totalClassrooms,
       int totalProfessors,
       int attendanceRate,
       double monthlyRevenue,
       int pendingFees,
-      int unreadNotifications});
+      int unreadNotifications,
+      int absencesToday,
+      List<ProfessorClassroomSummary> classrooms});
 }
 
 /// @nodoc
@@ -141,6 +166,7 @@ class __$$DashboardDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? role = null,
     Object? totalStudents = null,
     Object? totalClassrooms = null,
     Object? totalProfessors = null,
@@ -148,8 +174,14 @@ class __$$DashboardDataImplCopyWithImpl<$Res>
     Object? monthlyRevenue = null,
     Object? pendingFees = null,
     Object? unreadNotifications = null,
+    Object? absencesToday = null,
+    Object? classrooms = null,
   }) {
     return _then(_$DashboardDataImpl(
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
       totalStudents: null == totalStudents
           ? _value.totalStudents
           : totalStudents // ignore: cast_nullable_to_non_nullable
@@ -178,6 +210,14 @@ class __$$DashboardDataImplCopyWithImpl<$Res>
           ? _value.unreadNotifications
           : unreadNotifications // ignore: cast_nullable_to_non_nullable
               as int,
+      absencesToday: null == absencesToday
+          ? _value.absencesToday
+          : absencesToday // ignore: cast_nullable_to_non_nullable
+              as int,
+      classrooms: null == classrooms
+          ? _value._classrooms
+          : classrooms // ignore: cast_nullable_to_non_nullable
+              as List<ProfessorClassroomSummary>,
     ));
   }
 }
@@ -186,17 +226,24 @@ class __$$DashboardDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DashboardDataImpl implements _DashboardData {
   const _$DashboardDataImpl(
-      {this.totalStudents = 0,
+      {this.role = '',
+      this.totalStudents = 0,
       this.totalClassrooms = 0,
       this.totalProfessors = 0,
       this.attendanceRate = 0,
       this.monthlyRevenue = 0.0,
       this.pendingFees = 0,
-      this.unreadNotifications = 0});
+      this.unreadNotifications = 0,
+      this.absencesToday = 0,
+      final List<ProfessorClassroomSummary> classrooms = const []})
+      : _classrooms = classrooms;
 
   factory _$DashboardDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$DashboardDataImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final String role;
   @override
   @JsonKey()
   final int totalStudents;
@@ -218,10 +265,21 @@ class _$DashboardDataImpl implements _DashboardData {
   @override
   @JsonKey()
   final int unreadNotifications;
+  @override
+  @JsonKey()
+  final int absencesToday;
+  final List<ProfessorClassroomSummary> _classrooms;
+  @override
+  @JsonKey()
+  List<ProfessorClassroomSummary> get classrooms {
+    if (_classrooms is EqualUnmodifiableListView) return _classrooms;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_classrooms);
+  }
 
   @override
   String toString() {
-    return 'DashboardData(totalStudents: $totalStudents, totalClassrooms: $totalClassrooms, totalProfessors: $totalProfessors, attendanceRate: $attendanceRate, monthlyRevenue: $monthlyRevenue, pendingFees: $pendingFees, unreadNotifications: $unreadNotifications)';
+    return 'DashboardData(role: $role, totalStudents: $totalStudents, totalClassrooms: $totalClassrooms, totalProfessors: $totalProfessors, attendanceRate: $attendanceRate, monthlyRevenue: $monthlyRevenue, pendingFees: $pendingFees, unreadNotifications: $unreadNotifications, absencesToday: $absencesToday, classrooms: $classrooms)';
   }
 
   @override
@@ -229,6 +287,7 @@ class _$DashboardDataImpl implements _DashboardData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DashboardDataImpl &&
+            (identical(other.role, role) || other.role == role) &&
             (identical(other.totalStudents, totalStudents) ||
                 other.totalStudents == totalStudents) &&
             (identical(other.totalClassrooms, totalClassrooms) ||
@@ -242,20 +301,27 @@ class _$DashboardDataImpl implements _DashboardData {
             (identical(other.pendingFees, pendingFees) ||
                 other.pendingFees == pendingFees) &&
             (identical(other.unreadNotifications, unreadNotifications) ||
-                other.unreadNotifications == unreadNotifications));
+                other.unreadNotifications == unreadNotifications) &&
+            (identical(other.absencesToday, absencesToday) ||
+                other.absencesToday == absencesToday) &&
+            const DeepCollectionEquality()
+                .equals(other._classrooms, _classrooms));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      role,
       totalStudents,
       totalClassrooms,
       totalProfessors,
       attendanceRate,
       monthlyRevenue,
       pendingFees,
-      unreadNotifications);
+      unreadNotifications,
+      absencesToday,
+      const DeepCollectionEquality().hash(_classrooms));
 
   /// Create a copy of DashboardData
   /// with the given fields replaced by the non-null parameter values.
@@ -275,17 +341,22 @@ class _$DashboardDataImpl implements _DashboardData {
 
 abstract class _DashboardData implements DashboardData {
   const factory _DashboardData(
-      {final int totalStudents,
+      {final String role,
+      final int totalStudents,
       final int totalClassrooms,
       final int totalProfessors,
       final int attendanceRate,
       final double monthlyRevenue,
       final int pendingFees,
-      final int unreadNotifications}) = _$DashboardDataImpl;
+      final int unreadNotifications,
+      final int absencesToday,
+      final List<ProfessorClassroomSummary> classrooms}) = _$DashboardDataImpl;
 
   factory _DashboardData.fromJson(Map<String, dynamic> json) =
       _$DashboardDataImpl.fromJson;
 
+  @override
+  String get role;
   @override
   int get totalStudents;
   @override
@@ -300,6 +371,10 @@ abstract class _DashboardData implements DashboardData {
   int get pendingFees;
   @override
   int get unreadNotifications;
+  @override
+  int get absencesToday;
+  @override
+  List<ProfessorClassroomSummary> get classrooms;
 
   /// Create a copy of DashboardData
   /// with the given fields replaced by the non-null parameter values.

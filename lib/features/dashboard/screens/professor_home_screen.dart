@@ -1,0 +1,267 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/professor_colors.dart';
+import '../../../core/widgets/empty_state.dart';
+import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/loading_shimmer.dart';
+import '../../../l10n/l10n.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../../notifications/providers/notification_provider.dart';
+import '../domain/professor_classroom_summary.dart';
+import '../providers/dashboard_provider.dart';
+import 'widgets/professor_classroom_card.dart';
+import 'widgets/professor_home_header.dart';
+import 'widgets/professor_stats_row.dart';
+
+class ProfessorHomeScreen extends ConsumerStatefulWidget {
+  const ProfessorHomeScreen({super.key});
+
+  @override
+  ConsumerState<ProfessorHomeScreen> createState() =>
+      _ProfessorHomeScreenState();
+}
+
+class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
+  String? _selectedClassroomId;
+
+  @override
+  Widget build(BuildContext context) {
+    final dashboardState = ref.watch(dashboardProvider);
+    final user = ref.watch(authProvider).user;
+    final unreadCount = ref.watch(unreadCountProvider).valueOrNull ?? 0;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = context.l10n;
+
+    if (dashboardState.isLoading && dashboardState.data == null) {
+      return _buildLoading(context, isDark);
+    }
+
+    if (dashboardState.error != null && dashboardState.data == null) {
+      return ErrorView(
+        message: l10n.professorLoadError,
+        detail: dashboardState.error,
+        onRetry: () => ref.read(dashboardProvider.notifier).refresh(),
+      );
+    }
+
+    final data = dashboardState.data;
+    final classrooms = data?.classrooms ?? const <ProfessorClassroomSummary>[];
+    final selectedId = _selectedClassroomId ??
+        (classrooms.isNotEmpty ? classrooms.first.id : null);
+
+    return Scaffold(
+      backgroundColor:
+          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+      body: RefreshIndicator(
+        onRefresh: () => ref.read(dashboardProvider.notifier).refresh(),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            ProfessorHomeHeader(
+              name: user?.name ?? '',
+              avatarUrl: user?.avatarUrl,
+              unreadCount: unreadCount,
+              onNotifications: () => context.push('/notifications'),
+              onSearch: () => context.push('/search'),
+              child: ProfessorStatsRow(
+                classrooms: data?.totalClassrooms ?? 0,
+                students: data?.totalStudents ?? 0,
+                absences: data?.absencesToday ?? 0,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.professorMyClassrooms.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.6,
+                      color: ProfessorColors.sectionLabel,
+                    ),
+                  ),
+                  const SizedBox(height: 11),
+                  if (classrooms.isEmpty)
+                    EmptyState(
+                      icon: PhosphorIconsRegular.chalkboardTeacher,
+                      title: l10n.professorMyClassroomsEmpty,
+                    )
+                  else
+                    ...classrooms.map(
+                      (classroom) => Padding(
+                        padding: const EdgeInsets.only(bottom: 11),
+                        child: ProfessorClassroomCard(
+                          name: classroom.name,
+                          studentsCount: classroom.studentsCount,
+                          isSelected: classroom.id == selectedId,
+                          onTap: () => setState(
+                            () => _selectedClassroomId = classroom.id,
+                          ),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _ProfessorActionButton(
+                          label: l10n.professorTakeAttendance,
+                          color: ProfessorColors.primary,
+                          onPressed: selectedId == null
+                              ? null
+                              : () => context.go(
+                                    '/classrooms/$selectedId/attendance',
+                                  ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _ProfessorActionButton(
+                          label: l10n.professorLoadGrade,
+                          color: ProfessorColors.primarySoft,
+                          onPressed: selectedId == null
+                              ? null
+                              : () => context.go(
+                                    '/classrooms/$selectedId/grades',
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoading(BuildContext context, bool isDark) {
+    return Scaffold(
+      backgroundColor:
+          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+      body: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(
+              16,
+              MediaQuery.of(context).padding.top + 12,
+              16,
+              16,
+            ),
+            decoration: const BoxDecoration(
+              gradient: ProfessorColors.headerGradient,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+            ),
+            child: const Column(
+              children: [
+                Row(
+                  children: [
+                    LoadingShimmer(width: 36, height: 36, borderRadius: 18),
+                    SizedBox(width: 10),
+                    LoadingShimmer(width: 140, height: 14),
+                  ],
+                ),
+                SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: LoadingShimmer(
+                        width: double.infinity,
+                        height: 46,
+                        borderRadius: 12,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: LoadingShimmer(
+                        width: double.infinity,
+                        height: 46,
+                        borderRadius: 12,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: LoadingShimmer(
+                        width: double.infinity,
+                        height: 46,
+                        borderRadius: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                LoadingShimmer(
+                  width: double.infinity,
+                  height: 68,
+                  borderRadius: 16,
+                ),
+                SizedBox(height: 11),
+                LoadingShimmer(
+                  width: double.infinity,
+                  height: 68,
+                  borderRadius: 16,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProfessorActionButton extends StatelessWidget {
+  final String label;
+  final Color color;
+  final VoidCallback? onPressed;
+
+  const _ProfessorActionButton({
+    required this.label,
+    required this.color,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 44,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: color.withOpacity(0.4),
+          disabledForegroundColor: Colors.white,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
+        ),
+      ),
+    );
+  }
+}

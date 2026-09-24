@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/cursor_pagination.dart';
 import '../../../core/api/page_pagination.dart';
+import '../domain/classroom_grades_summary.dart';
 import '../domain/qualification_model.dart';
 import 'qualification_api.dart';
 
@@ -56,6 +57,39 @@ class QualificationRepository {
         page: page,
         perPage: limit,
         parse: QualificationModel.fromJson,
+      );
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<ClassroomGradesSummary> getClassroomGradesSummary(
+    String classroomId,
+  ) async {
+    try {
+      final response = await _api.getClassroomGradesSummary(classroomId);
+      return ClassroomGradesSummary.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<void> createQualification({
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? description,
+  }) async {
+    try {
+      await _api.createQualification(
+        studentId: studentId,
+        classroomId: classroomId,
+        score: score,
+        type: type,
+        period: period,
+        description: description,
       );
     } on DioException catch (e) {
       throw _handleDioError(e);

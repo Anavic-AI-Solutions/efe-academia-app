@@ -9,6 +9,8 @@ import '../features/auth/screens/forgot_password_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/classrooms/screens/classroom_list_screen.dart';
 import '../features/classrooms/screens/classroom_detail_screen.dart';
+import '../features/attendance/screens/attendance_screen.dart';
+import '../features/qualifications/screens/classroom_grades_screen.dart';
 import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
@@ -19,22 +21,29 @@ import '../features/news/screens/news_list_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../app/theme/app_colors.dart';
+import '../app/theme/professor_colors.dart';
 import '../l10n/l10n.dart';
 
 // ---------------------------------------------------------------------------
 // Custom Bottom Navigation Bar
 // ---------------------------------------------------------------------------
 
-class CustomBottomNav extends StatelessWidget {
+class CustomBottomNav extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
 
   const CustomBottomNav({super.key, required this.navigationShell});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final l10n = context.l10n;
+    final role = ref.watch(authProvider).user?.role;
+    final accent = role == 'professor'
+        ? ProfessorColors.primarySoft
+        : (isDark ? const Color(0xFF6366F1) : AppColors.primary);
+    final inactive =
+        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
 
     return Container(
       decoration: BoxDecoration(
@@ -51,7 +60,6 @@ class CustomBottomNav extends StatelessWidget {
         child: SizedBox(
           height: 64,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _NavItem(
                 icon: PhosphorIconsRegular.house,
@@ -62,7 +70,8 @@ class CustomBottomNav extends StatelessWidget {
                   0,
                   initialLocation: 0 == navigationShell.currentIndex,
                 ),
-                isDark: isDark,
+                accent: accent,
+                inactive: inactive,
               ),
               _NavItem(
                 icon: PhosphorIconsRegular.chalkboardTeacher,
@@ -73,9 +82,9 @@ class CustomBottomNav extends StatelessWidget {
                   1,
                   initialLocation: 1 == navigationShell.currentIndex,
                 ),
-                isDark: isDark,
+                accent: accent,
+                inactive: inactive,
               ),
-              _CenterSearchItem(onTap: () => context.push('/search')),
               _NavItem(
                 icon: PhosphorIconsRegular.chatCircle,
                 selectedIcon: PhosphorIconsFill.chatCircle,
@@ -85,7 +94,8 @@ class CustomBottomNav extends StatelessWidget {
                   2,
                   initialLocation: 2 == navigationShell.currentIndex,
                 ),
-                isDark: isDark,
+                accent: accent,
+                inactive: inactive,
               ),
               _NavItem(
                 icon: PhosphorIconsRegular.userCircle,
@@ -96,7 +106,8 @@ class CustomBottomNav extends StatelessWidget {
                   3,
                   initialLocation: 3 == navigationShell.currentIndex,
                 ),
-                isDark: isDark,
+                accent: accent,
+                inactive: inactive,
               ),
             ],
           ),
@@ -112,7 +123,8 @@ class _NavItem extends StatelessWidget {
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
-  final bool isDark;
+  final Color accent;
+  final Color inactive;
 
   const _NavItem({
     required this.icon,
@@ -120,86 +132,41 @@ class _NavItem extends StatelessWidget {
     required this.label,
     required this.isSelected,
     required this.onTap,
-    required this.isDark,
+    required this.accent,
+    required this.inactive,
   });
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected
-        ? (isDark ? const Color(0xFF6366F1) : AppColors.primary)
-        : (isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary);
+    final color = isSelected ? accent : inactive;
 
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        width: 64,
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               isSelected ? selectedIcon : icon,
-              size: 24,
+              size: 22,
               color: color,
             ),
             const SizedBox(height: 4),
-            Container(
-              width: 4,
-              height: 4,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: isSelected ? color : Colors.transparent,
-                shape: BoxShape.circle,
+                color: isSelected ? accent : Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CenterSearchItem extends StatelessWidget {
-  final VoidCallback onTap;
-
-  const _CenterSearchItem({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        width: 64,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: const BoxDecoration(
-                gradient: AppColors.primaryGradient,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x334F46E5),
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                PhosphorIconsFill.magnifyingGlass,
-                size: 20,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Container(
-              width: 4,
-              height: 4,
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                  color: isSelected ? Colors.white : inactive,
+                ),
               ),
             ),
           ],
@@ -277,6 +244,20 @@ final routerProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) => ClassroomDetailScreen(
                       classroomId: state.pathParameters['id']!,
                     ),
+                    routes: [
+                      GoRoute(
+                        path: 'attendance',
+                        builder: (context, state) => AttendanceScreen(
+                          classroomId: state.pathParameters['id']!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'grades',
+                        builder: (context, state) => ClassroomGradesScreen(
+                          classroomId: state.pathParameters['id']!,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

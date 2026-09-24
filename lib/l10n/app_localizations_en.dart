@@ -24,7 +24,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
-  String get navClasses => 'Classes';
+  String get navClasses => 'Classrooms';
 
   @override
   String get navChat => 'Chat';
@@ -707,4 +707,138 @@ class AppLocalizationsEn extends AppLocalizations {
   String searchNoResultsSubtitle(String query) {
     return 'No results found for \"$query\"';
   }
+
+  @override
+  String get professorGreetingMorning => 'Good morning';
+
+  @override
+  String get professorGreetingAfternoon => 'Good afternoon';
+
+  @override
+  String get professorGreetingEvening => 'Good evening';
+
+  @override
+  String professorHomeTitle(String name) {
+    return 'Prof. $name';
+  }
+
+  @override
+  String get professorStatClassrooms => 'Classrooms';
+
+  @override
+  String get professorStatStudents => 'Students';
+
+  @override
+  String get professorStatAbsences => 'Absent today';
+
+  @override
+  String get professorMyClassrooms => 'My classrooms';
+
+  @override
+  String get professorMyClassroomsEmpty => 'You have no classrooms assigned yet';
+
+  @override
+  String professorStudentsCount(int count) {
+    return '$count students';
+  }
+
+  @override
+  String get professorTakeAttendance => 'Take attendance';
+
+  @override
+  String get professorLoadGrade => 'Add grade';
+
+  @override
+  String get professorLoadError => 'Failed to load the home screen';
+
+  @override
+  String attendanceTitle(String classroom) {
+    return 'Attendance · $classroom';
+  }
+
+  @override
+  String attendanceSubtitle(String date, int count) {
+    return '$date · $count students';
+  }
+
+  @override
+  String get attendancePresent => 'P';
+
+  @override
+  String get attendanceAbsent => 'A';
+
+  @override
+  String get attendanceToday => 'Today';
+
+  @override
+  String get attendanceSave => 'Save attendance';
+
+  @override
+  String get attendanceSaved => 'Attendance saved';
+
+  @override
+  String get attendanceLoadError => 'Failed to load attendance';
+
+  @override
+  String get attendanceSaveError => 'Failed to save attendance';
+
+  @override
+  String get attendanceEmpty => 'This classroom has no students';
+
+  @override
+  String get attendanceUnsavedTitle => 'Unsaved changes';
+
+  @override
+  String get attendanceUnsavedMessage => 'If you leave now, attendance changes will be lost.';
+
+  @override
+  String get attendanceUnsavedStay => 'Stay';
+
+  @override
+  String get attendanceUnsavedLeave => 'Leave without saving';
+
+  @override
+  String get gradesTitle => 'Grades';
+
+  @override
+  String get gradesClassroomAverage => 'Classroom average';
+
+  @override
+  String get gradesLoadGrade => '+ Add grade';
+
+  @override
+  String get gradesLoadError => 'Failed to load grades';
+
+  @override
+  String get gradeFormTitle => 'Add grade';
+
+  @override
+  String get gradeFormStudent => 'Student';
+
+  @override
+  String get gradeFormType => 'Type';
+
+  @override
+  String get gradeFormPeriod => 'Period';
+
+  @override
+  String get gradeFormScore => 'Grade';
+
+  @override
+  String get gradeFormScoreHint => 'e.g. 8.5';
+
+  @override
+  String get gradeFormDescription => 'Description (optional)';
+
+  @override
+  String get gradeFormSave => 'Save';
+
+  @override
+  String get gradeFormScoreInvalid => 'Enter a grade between 0 and 10';
+
+  @override
+  String get gradeFormSaved => 'Grade saved';
+
+  @override
+  String get gradeFormError => 'Failed to save the grade';
 }
