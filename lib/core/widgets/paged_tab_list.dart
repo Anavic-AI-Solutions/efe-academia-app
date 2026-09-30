@@ -14,6 +14,7 @@ class PagedTabList<T> extends StatelessWidget {
   final IconData emptyIcon;
   final String emptyTitle;
   final String errorMessage;
+  final Color? accentColor;
 
   const PagedTabList({
     super.key,
@@ -24,6 +25,7 @@ class PagedTabList<T> extends StatelessWidget {
     required this.emptyIcon,
     required this.emptyTitle,
     required this.errorMessage,
+    this.accentColor,
   });
 
   @override
@@ -36,12 +38,17 @@ class PagedTabList<T> extends StatelessWidget {
       return ErrorView(
         message: errorMessage,
         detail: state.error,
+        accentColor: accentColor,
         onRetry: onRetry,
       );
     }
 
     if (state.page.data.isEmpty) {
-      return EmptyState(icon: emptyIcon, title: emptyTitle);
+      return EmptyState(
+        icon: emptyIcon,
+        title: emptyTitle,
+        accentColor: accentColor,
+      );
     }
 
     return Column(

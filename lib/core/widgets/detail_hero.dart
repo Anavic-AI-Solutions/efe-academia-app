@@ -17,6 +17,8 @@ class DetailHero extends StatelessWidget {
   final String status;
   final List<DetailHeroChip> chips;
   final String fallbackRoute;
+  final Gradient? gradient;
+  final Widget? bottom;
 
   const DetailHero({
     super.key,
@@ -25,6 +27,8 @@ class DetailHero extends StatelessWidget {
     this.status = '',
     this.chips = const [],
     this.fallbackRoute = '/dashboard',
+    this.gradient,
+    this.bottom,
   });
 
   @override
@@ -33,8 +37,10 @@ class DetailHero extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        gradient:
-            isDark ? AppColors.primaryGradientDark : AppColors.primaryGradient,
+        gradient: gradient ??
+            (isDark
+                ? AppColors.primaryGradientDark
+                : AppColors.primaryGradient),
       ),
       child: SafeArea(
         bottom: false,
@@ -94,6 +100,11 @@ class DetailHero extends StatelessWidget {
                   ],
                 ),
               ),
+              if (bottom != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, top: 14),
+                  child: bottom!,
+                ),
             ],
           ),
         ),

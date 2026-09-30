@@ -1,4 +1,7 @@
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/features/auth/data/auth_repository.dart';
+import 'package:efe_mobile/features/auth/domain/user_model.dart';
+import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
@@ -13,6 +16,41 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../helpers/localized_app.dart';
+
+class _FakeAuthRepository implements AuthRepository {
+  @override
+  Future<UserModel> getCurrentUser() async => const UserModel(
+        id: '1',
+        name: 'User Test',
+        email: 'user@test.com',
+        role: 'student',
+      );
+
+  @override
+  Future<bool> hasToken() async => true;
+
+  @override
+  Future<void> loadTokenIntoClient() async {}
+
+  @override
+  Future<UserModel> login({required String email, required String password}) =>
+      getCurrentUser();
+
+  @override
+  Future<UserModel> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) =>
+      getCurrentUser();
+
+  @override
+  Future<void> logout() async {}
+
+  @override
+  Future<void> forgotPassword(String email) async {}
+}
 
 class _FakeClassroomRepository implements ClassroomRepository {
   _FakeClassroomRepository({this.total = 1});
@@ -96,6 +134,7 @@ Future<_FakeClassroomRepository> _pumpScreen(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        authRepositoryProvider.overrideWithValue(_FakeAuthRepository()),
         classroomRepositoryProvider.overrideWithValue(repository),
         classroomFiltersProvider.overrideWith(
           (ref) => const ClassroomFilters(

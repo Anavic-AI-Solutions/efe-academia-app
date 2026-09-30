@@ -3,6 +3,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../app/theme/professor_colors.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/info_row.dart';
 import '../../../../core/widgets/section_header.dart';
@@ -12,8 +13,13 @@ import '../../domain/classroom_model.dart';
 
 class ClassroomSummaryTab extends StatelessWidget {
   final ClassroomModel classroom;
+  final bool isProfessor;
 
-  const ClassroomSummaryTab({super.key, required this.classroom});
+  const ClassroomSummaryTab({
+    super.key,
+    required this.classroom,
+    this.isProfessor = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +37,27 @@ class ClassroomSummaryTab extends StatelessWidget {
                 icon: PhosphorIconsRegular.users,
                 value: '${classroom.studentCount}',
                 label: l10n.classroomsStudents,
-                iconColor: const Color(0xFF3B82F6),
+                iconColor: isProfessor
+                    ? ProfessorColors.primary
+                    : const Color(0xFF3B82F6),
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.mapPin,
                 value: classroom.room.isNotEmpty ? classroom.room : '—',
                 label: l10n.classroomsRoom,
-                iconColor: const Color(0xFF10B981),
+                iconColor: isProfessor
+                    ? ProfessorColors.primarySoft
+                    : const Color(0xFF10B981),
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.clock,
                 value: classroom.shift.isNotEmpty ? classroom.shift : '—',
                 label: l10n.classroomsShift,
-                iconColor: const Color(0xFFF97316),
+                iconColor: isProfessor
+                    ? ProfessorColors.accent
+                    : const Color(0xFFF97316),
               ),
             ],
           ),

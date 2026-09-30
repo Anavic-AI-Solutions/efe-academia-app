@@ -154,6 +154,27 @@
   "studentsRelatedLoadError": "Could not load data",
   "studentsGradeTitle": "Grade",
   "studentsGradePeriod": "Period {period}",
+  "gradesGridTitle": "Grades by period",
+  "gradesGridPeriod": "Period",
+  "gradesGridPerformance": "Performance",
+  "gradesGridAttitude": "Attitude",
+  "gradesGridWritten": "Written",
+  "gradesGridOral": "Oral",
+  "gradesGridHomework": "Homework",
+  "gradesGridDiscipline": "Discipline",
+  "gradesGridParticipation": "Participation",
+  "gradesGridAttendance": "Attendance",
+  "gradesGridExam": "Midterm",
+  "gradesGridAverage": "Average",
+  "gradesGridTerm": "Term {term}",
+  "@gradesGridTerm": {
+    "placeholders": {
+      "term": {
+        "type": "int"
+      }
+    }
+  },
+  "gradesGridClassroomFallback": "Classroom",
   "studentsAbsenceTitle": "Absence",
   "studentsAbsenceJustified": "Justified",
   "studentsAbsenceUnjustified": "Unjustified",
@@ -223,6 +244,14 @@
   "professorStatAbsences": "Absent today",
   "professorMyClassrooms": "My classrooms",
   "professorMyClassroomsEmpty": "You have no classrooms assigned yet",
+  "professorClassroomsCount": "{count, plural, =0{No classrooms assigned} =1{1 classroom} other{{count} classrooms}}",
+  "@professorClassroomsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "professorStudentsCount": "{count} students",
   "professorTakeAttendance": "Take attendance",
   "professorLoadGrade": "Add grade",

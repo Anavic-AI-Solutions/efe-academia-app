@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/app_typography.dart';
+import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
@@ -12,10 +12,15 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/domain/user_model.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_card.dart';
+import 'widgets/classroom_filter_button.dart';
 import 'widgets/classroom_filter_chips.dart';
 import 'widgets/classroom_filter_sheet.dart';
+import 'widgets/professor_classroom_list_card.dart';
+import 'widgets/professor_classrooms_header.dart';
 
 class ClassroomListScreen extends ConsumerStatefulWidget {
   const ClassroomListScreen({super.key});
@@ -69,11 +74,12 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     _scrollToTop();
   }
 
-  Future<void> _openFilters() async {
+  Future<void> _openFilters(bool isProfessor) async {
     final state = ref.read(classroomListProvider);
     final selection = await showClassroomFilterSheet(
       context,
       initial: _selectionFrom(state),
+      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
     );
     if (selection == null) return;
     await _applySelection(selection);
@@ -84,16 +90,30 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final l10n = context.l10n;
     final listState = ref.watch(classroomListProvider);
     final selection = _selectionFrom(listState);
+    final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final horizontal = isProfessor ? 16.0 : 20.0;
 
     return Scaffold(
+      backgroundColor: isProfessor
+          ? (isDark ? AppColors.darkBackground : ProfessorColors.surface)
+          : null,
       body: Column(
         children: [
-          LargeTitleBar(
-            title: l10n.classroomsTitle,
-            showBackButton: false,
-          ),
+          if (isProfessor)
+            ProfessorClassroomsHeader(
+              subtitle: listState.isLoading && listState.page.total == 0
+                  ? ''
+                  : l10n.professorClassroomsCount(listState.page.total),
+            )
+          else
+            LargeTitleBar(
+              title: l10n.classroomsTitle,
+              showBackButton: false,
+            ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+            padding: EdgeInsets.fromLTRB(horizontal, isProfessor ? 12 : 0,
+                horizontal, 12),
             child: Row(
               children: [
                 Expanded(
@@ -105,9 +125,11 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                _FilterButton(
+                ClassroomFilterButton(
                   activeCount: selection.count,
-                  onTap: _openFilters,
+                  onTap: () => _openFilters(isProfessor),
+                  accentColor:
+                      isProfessor ? ProfessorColors.primarySoft : null,
                 ),
               ],
             ),
@@ -120,18 +142,21 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                 onChanged: _applySelection,
                 onClearAll: () =>
                     _applySelection(const ClassroomFilterSelection()),
+                accentColor:
+                    isProfessor ? ProfessorColors.primarySoft : null,
               ),
             ),
           Expanded(
-            child: _buildBody(listState),
+            child: _buildBody(listState, isProfessor: isProfessor),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody(ClassroomListState state) {
+  Widget _buildBody(ClassroomListState state, {bool isProfessor = false}) {
     final l10n = context.l10n;
+    final horizontal = isProfessor ? 16.0 : 20.0;
 
     if (state.isLoading && state.page.data.isEmpty) {
       return const ListShimmer();
@@ -141,24 +166,31 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
       return ErrorView(
         message: l10n.classroomsLoadError,
         detail: state.error,
+        accentColor: isProfessor ? ProfessorColors.primarySoft : null,
         onRetry: () => ref.read(classroomListProvider.notifier).refresh(),
       );
     }
 
     if (state.page.data.isEmpty) {
       final filtered = state.hasActiveFilters;
+      final searching = state.search.isNotEmpty;
       return EmptyState(
-        icon: Icons.class_outlined,
-        title: l10n.classroomsEmptyTitle,
+        icon: isProfessor
+            ? PhosphorIconsRegular.chalkboardTeacher
+            : Icons.class_outlined,
+        title: isProfessor && !filtered && !searching
+            ? l10n.professorMyClassroomsEmpty
+            : l10n.classroomsEmptyTitle,
         subtitle: filtered
             ? l10n.classroomsEmptyFiltered
-            : state.search.isNotEmpty
+            : searching
                 ? l10n.classroomsEmptySearch
-                : l10n.classroomsEmptySubtitle,
+                : (isProfessor ? null : l10n.classroomsEmptySubtitle),
         actionLabel: filtered ? l10n.classroomsClearFilters : null,
         onAction: filtered
             ? () => _applySelection(const ClassroomFilterSelection())
             : null,
+        accentColor: isProfessor ? ProfessorColors.primarySoft : null,
       );
     }
 
@@ -173,10 +205,20 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
             child: ListView.builder(
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: EdgeInsets.fromLTRB(horizontal, 0, horizontal, 20),
               itemCount: state.page.data.length,
               itemBuilder: (context, index) {
                 final classroom = state.page.data[index];
+                if (isProfessor) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 11),
+                    child: ProfessorClassroomListCard(
+                      classroom: classroom,
+                      onTap: () =>
+                          context.push('/classrooms/${classroom.id}'),
+                    ),
+                  );
+                }
                 return ClassroomCard(
                   classroom: classroom,
                   onTap: () => context.push('/classrooms/${classroom.id}'),
@@ -199,73 +241,3 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
   }
 }
 
-class _FilterButton extends StatelessWidget {
-  final int activeCount;
-  final VoidCallback onTap;
-
-  const _FilterButton({required this.activeCount, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final active = activeCount > 0;
-    final accent = isDark ? const Color(0xFF6366F1) : AppColors.primary;
-
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: active
-                  ? accent
-                  : (isDark
-                      ? AppColors.darkSearchFill
-                      : AppColors.lightSearchFill),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              PhosphorIconsRegular.faders,
-              size: 20,
-              color: active
-                  ? Colors.white
-                  : (isDark
-                      ? AppColors.darkTextSecondary
-                      : AppColors.lightTextSecondary),
-            ),
-          ),
-          if (active)
-            Positioned(
-              top: -2,
-              right: -2,
-              child: Container(
-                width: 18,
-                height: 18,
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.darkSurface
-                      : AppColors.lightSurface,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: accent, width: 1.5),
-                ),
-                child: Center(
-                  child: Text(
-                    '$activeCount',
-                    style: AppTypography.labelSmall.copyWith(
-                      color: accent,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}

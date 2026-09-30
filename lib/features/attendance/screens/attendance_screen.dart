@@ -131,6 +131,7 @@ class AttendanceScreen extends ConsumerWidget {
       return ErrorView(
         message: l10n.attendanceLoadError,
         detail: state.error,
+        accentColor: ProfessorColors.primarySoft,
         onRetry: () =>
             ref.read(attendanceProvider(classroomId).notifier).load(),
       );
@@ -142,6 +143,7 @@ class AttendanceScreen extends ConsumerWidget {
       return EmptyState(
         icon: PhosphorIconsRegular.users,
         title: l10n.attendanceEmpty,
+        accentColor: ProfessorColors.primarySoft,
       );
     }
 

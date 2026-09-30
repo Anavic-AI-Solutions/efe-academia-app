@@ -1019,6 +1019,90 @@ abstract class AppLocalizations {
   /// **'Período {period}'**
   String studentsGradePeriod(String period);
 
+  /// No description provided for @gradesGridTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Calificaciones por período'**
+  String get gradesGridTitle;
+
+  /// No description provided for @gradesGridPeriod.
+  ///
+  /// In es, this message translates to:
+  /// **'Período'**
+  String get gradesGridPeriod;
+
+  /// No description provided for @gradesGridPerformance.
+  ///
+  /// In es, this message translates to:
+  /// **'Desempeño'**
+  String get gradesGridPerformance;
+
+  /// No description provided for @gradesGridAttitude.
+  ///
+  /// In es, this message translates to:
+  /// **'Actitud'**
+  String get gradesGridAttitude;
+
+  /// No description provided for @gradesGridWritten.
+  ///
+  /// In es, this message translates to:
+  /// **'Escrito'**
+  String get gradesGridWritten;
+
+  /// No description provided for @gradesGridOral.
+  ///
+  /// In es, this message translates to:
+  /// **'Oral'**
+  String get gradesGridOral;
+
+  /// No description provided for @gradesGridHomework.
+  ///
+  /// In es, this message translates to:
+  /// **'Tareas'**
+  String get gradesGridHomework;
+
+  /// No description provided for @gradesGridDiscipline.
+  ///
+  /// In es, this message translates to:
+  /// **'Disciplina'**
+  String get gradesGridDiscipline;
+
+  /// No description provided for @gradesGridParticipation.
+  ///
+  /// In es, this message translates to:
+  /// **'Participación'**
+  String get gradesGridParticipation;
+
+  /// No description provided for @gradesGridAttendance.
+  ///
+  /// In es, this message translates to:
+  /// **'Asistencia'**
+  String get gradesGridAttendance;
+
+  /// No description provided for @gradesGridExam.
+  ///
+  /// In es, this message translates to:
+  /// **'Parcial'**
+  String get gradesGridExam;
+
+  /// No description provided for @gradesGridAverage.
+  ///
+  /// In es, this message translates to:
+  /// **'Promedio'**
+  String get gradesGridAverage;
+
+  /// No description provided for @gradesGridTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'{term}° Trimestre'**
+  String gradesGridTerm(int term);
+
+  /// No description provided for @gradesGridClassroomFallback.
+  ///
+  /// In es, this message translates to:
+  /// **'Aula'**
+  String get gradesGridClassroomFallback;
+
   /// No description provided for @studentsAbsenceTitle.
   ///
   /// In es, this message translates to:
@@ -1432,6 +1516,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Todavía no tenés aulas asignadas'**
   String get professorMyClassroomsEmpty;
+
+  /// No description provided for @professorClassroomsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =0{Sin aulas asignadas} =1{1 aula} other{{count} aulas}}'**
+  String professorClassroomsCount(int count);
 
   /// No description provided for @professorStudentsCount.
   ///

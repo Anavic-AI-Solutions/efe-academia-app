@@ -10,12 +10,14 @@ class ClassroomFilterChips extends StatelessWidget {
   final ClassroomFilterSelection selection;
   final ValueChanged<ClassroomFilterSelection> onChanged;
   final VoidCallback onClearAll;
+  final Color? accentColor;
 
   const ClassroomFilterChips({
     super.key,
     required this.selection,
     required this.onChanged,
     required this.onClearAll,
+    this.accentColor,
   });
 
   @override
@@ -24,6 +26,8 @@ class ClassroomFilterChips extends StatelessWidget {
 
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accent = accentColor ??
+        (isDark ? const Color(0xFF6366F1) : AppColors.primary);
 
     return SizedBox(
       height: 32,
@@ -34,16 +38,19 @@ class ClassroomFilterChips extends StatelessWidget {
           if (selection.branch != null)
             _ActiveFilterChip(
               label: l10n.classroomsFilterChipBranch(selection.branch!),
+              accent: accent,
               onRemove: () => onChanged(selection.copyWith(clearBranch: true)),
             ),
           if (selection.level != null)
             _ActiveFilterChip(
               label: l10n.classroomsFilterChipLevel(selection.level!),
+              accent: accent,
               onRemove: () => onChanged(selection.copyWith(clearLevel: true)),
             ),
           if (selection.year != null)
             _ActiveFilterChip(
               label: l10n.classroomsFilterChipYear(selection.year!),
+              accent: accent,
               onRemove: () => onChanged(selection.copyWith(clearYear: true)),
             ),
           if (selection.status != null)
@@ -51,6 +58,7 @@ class ClassroomFilterChips extends StatelessWidget {
               label: l10n.classroomsFilterChipStatus(
                 classroomStatusLabel(selection.status!, l10n),
               ),
+              accent: accent,
               onRemove: () => onChanged(selection.copyWith(clearStatus: true)),
             ),
           Center(
@@ -62,7 +70,7 @@ class ClassroomFilterChips extends StatelessWidget {
                 child: Text(
                   l10n.classroomsFilterClear,
                   style: AppTypography.labelMedium.copyWith(
-                    color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                    color: accent,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -78,14 +86,16 @@ class ClassroomFilterChips extends StatelessWidget {
 class _ActiveFilterChip extends StatelessWidget {
   final String label;
   final VoidCallback onRemove;
+  final Color accent;
 
-  const _ActiveFilterChip({required this.label, required this.onRemove});
+  const _ActiveFilterChip({
+    required this.label,
+    required this.onRemove,
+    required this.accent,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accent = isDark ? const Color(0xFF6366F1) : AppColors.primary;
-
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: Center(

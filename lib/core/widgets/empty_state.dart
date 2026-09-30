@@ -8,6 +8,7 @@ class EmptyState extends StatelessWidget {
   final String? subtitle;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final Color? accentColor;
 
   const EmptyState({
     super.key,
@@ -16,12 +17,15 @@ class EmptyState extends StatelessWidget {
     this.subtitle,
     this.actionLabel,
     this.onAction,
+    this.accentColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final accent =
+        accentColor ?? (isDark ? const Color(0xFF6366F1) : AppColors.primary);
 
     return Center(
       child: Padding(
@@ -33,13 +37,13 @@ class EmptyState extends StatelessWidget {
               width: 72,
               height: 72,
               decoration: BoxDecoration(
-                color: (isDark ? AppColors.primary : AppColors.primary).withOpacity(0.1),
+                color: accent.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
                 size: 32,
-                color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                color: accent,
               ),
             ),
             const SizedBox(height: 20),
@@ -67,7 +71,7 @@ class EmptyState extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onAction,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                    backgroundColor: accent,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),

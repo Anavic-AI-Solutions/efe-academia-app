@@ -1,4 +1,9 @@
+import 'package:efe_mobile/app/theme/professor_colors.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/empty_state.dart';
+import 'package:efe_mobile/features/auth/data/auth_repository.dart';
+import 'package:efe_mobile/features/auth/domain/user_model.dart';
+import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
@@ -7,11 +12,52 @@ import 'package:efe_mobile/features/classrooms/domain/professor_model.dart';
 import 'package:efe_mobile/features/classrooms/providers/classroom_provider.dart';
 import 'package:efe_mobile/features/classrooms/screens/classroom_detail_screen.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 import '../helpers/localized_app.dart';
+
+class _FakeAuthRepository implements AuthRepository {
+  _FakeAuthRepository({this.role = 'professor'});
+
+  final String role;
+
+  @override
+  Future<UserModel> getCurrentUser() async => UserModel(
+        id: '1',
+        name: 'Profe Test',
+        email: 'profe@test.com',
+        role: role,
+      );
+
+  @override
+  Future<bool> hasToken() async => true;
+
+  @override
+  Future<void> loadTokenIntoClient() async {}
+
+  @override
+  Future<UserModel> login({required String email, required String password}) =>
+      getCurrentUser();
+
+  @override
+  Future<UserModel> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) =>
+      getCurrentUser();
+
+  @override
+  Future<void> logout() async {}
+
+  @override
+  Future<void> forgotPassword(String email) async {}
+}
 
 class _FakeClassroomRepository implements ClassroomRepository {
   _FakeClassroomRepository({
@@ -97,6 +143,8 @@ Future<void> _pumpDetail(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        authRepositoryProvider
+            .overrideWithValue(_FakeAuthRepository(role: 'student')),
         classroomRepositoryProvider.overrideWithValue(repository),
       ],
       child: localizedApp(
@@ -110,6 +158,53 @@ Future<void> _pumpDetail(
 Future<void> _openTab(WidgetTester tester, String label) async {
   await tester.tap(
     find.descendant(of: find.byType(TabBar), matching: find.text(label)),
+  );
+  await tester.pumpAndSettle();
+}
+
+Future<void> _pumpProfessorDetail(
+  WidgetTester tester,
+  _FakeClassroomRepository repository,
+) async {
+  final router = GoRouter(
+    initialLocation: '/classrooms/c1',
+    routes: [
+      GoRoute(
+        path: '/classrooms/:id',
+        builder: (_, state) => ClassroomDetailScreen(
+          classroomId: state.pathParameters['id']!,
+        ),
+      ),
+      GoRoute(
+        path: '/classrooms/:id/attendance',
+        builder: (_, __) => const Scaffold(body: Text('pantalla asistencia')),
+      ),
+      GoRoute(
+        path: '/classrooms/:id/grades',
+        builder: (_, __) => const Scaffold(body: Text('pantalla notas')),
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
+  final container = ProviderContainer(
+    overrides: [
+      authRepositoryProvider.overrideWithValue(_FakeAuthRepository()),
+      classroomRepositoryProvider.overrideWithValue(repository),
+    ],
+  );
+  addTearDown(container.dispose);
+
+  await tester.pumpWidget(
+    UncontrolledProviderScope(
+      container: container,
+      child: MaterialApp.router(
+        routerConfig: router,
+        locale: const Locale('es', 'AR'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+    ),
   );
   await tester.pumpAndSettle();
 }
@@ -233,5 +328,80 @@ void main() {
     expect(find.text('Apunte 1'), findsOneWidget);
     expect(find.text('teoria'), findsOneWidget);
     expect(find.text('4 descargas'), findsOneWidget);
+  });
+
+  testWidgets('professor sees the attendance and grade actions',
+      (tester) async {
+    await _pumpProfessorDetail(
+      tester,
+      _FakeClassroomRepository(classroom: _classroom),
+    );
+
+    expect(find.text('Tomar asistencia'), findsOneWidget);
+    expect(find.text('Cargar nota'), findsOneWidget);
+
+    await tester.tap(find.text('Tomar asistencia'));
+    await tester.pumpAndSettle();
+    expect(find.text('pantalla asistencia'), findsOneWidget);
+  });
+
+  testWidgets('professor opens the grades screen from the hero',
+      (tester) async {
+    await _pumpProfessorDetail(
+      tester,
+      _FakeClassroomRepository(classroom: _classroom),
+    );
+
+    await tester.tap(find.text('Cargar nota'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('pantalla notas'), findsOneWidget);
+  });
+
+  testWidgets('non-professor detail keeps the generic hero without actions',
+      (tester) async {
+    await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
+
+    expect(find.text('Tomar asistencia'), findsNothing);
+    expect(find.text('Cargar nota'), findsNothing);
+  });
+
+  testWidgets('professor hero renders without overflow on a small phone',
+      (tester) async {
+    tester.view.physicalSize = const Size(320 * 3, 568 * 3);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await _pumpProfessorDetail(
+      tester,
+      _FakeClassroomRepository(classroom: _classroom),
+    );
+
+    expect(find.text('Tomar asistencia'), findsOneWidget);
+    expect(find.text('Cargar nota'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('professor related tabs use the blue empty accent',
+      (tester) async {
+    await _pumpProfessorDetail(
+      tester,
+      _FakeClassroomRepository(classroom: _classroom),
+    );
+
+    await _openTab(tester, 'Estudiantes');
+
+    final empty = tester.widget<EmptyState>(find.byType(EmptyState));
+    expect(empty.accentColor, ProfessorColors.primarySoft);
+  });
+
+  testWidgets('generic related tabs keep the default empty accent',
+      (tester) async {
+    await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
+
+    await _openTab(tester, 'Estudiantes');
+
+    final empty = tester.widget<EmptyState>(find.byType(EmptyState));
+    expect(empty.accentColor, isNull);
   });
 }

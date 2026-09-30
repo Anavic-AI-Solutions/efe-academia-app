@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/professor_colors.dart';
+import 'professor_gradient_header.dart';
 
 /// Gradient header shared by the professor screens (attendance, grades).
 class ProfessorScreenHeader extends StatelessWidget {
@@ -20,18 +21,7 @@ class ProfessorScreenHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: ProfessorColors.headerGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-      ),
-      padding: EdgeInsets.fromLTRB(
-        16,
-        MediaQuery.of(context).padding.top + 12,
-        16,
-        16,
-      ),
+    return ProfessorGradientHeader(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

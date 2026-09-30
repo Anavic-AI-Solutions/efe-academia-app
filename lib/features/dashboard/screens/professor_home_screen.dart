@@ -44,6 +44,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
       return ErrorView(
         message: l10n.professorLoadError,
         detail: dashboardState.error,
+        accentColor: ProfessorColors.primarySoft,
         onRetry: () => ref.read(dashboardProvider.notifier).refresh(),
       );
     }
@@ -93,6 +94,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                     EmptyState(
                       icon: PhosphorIconsRegular.chalkboardTeacher,
                       title: l10n.professorMyClassroomsEmpty,
+                      accentColor: ProfessorColors.primarySoft,
                     )
                   else
                     ...classrooms.map(

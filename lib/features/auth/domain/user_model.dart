@@ -30,3 +30,7 @@ class UserModel with _$UserModel {
     );
   }
 }
+
+extension UserModelRoleX on UserModel {
+  bool get isProfessor => role == 'professor';
+}

@@ -521,6 +521,50 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get gradesGridTitle => 'Calificaciones por período';
+
+  @override
+  String get gradesGridPeriod => 'Período';
+
+  @override
+  String get gradesGridPerformance => 'Desempeño';
+
+  @override
+  String get gradesGridAttitude => 'Actitud';
+
+  @override
+  String get gradesGridWritten => 'Escrito';
+
+  @override
+  String get gradesGridOral => 'Oral';
+
+  @override
+  String get gradesGridHomework => 'Tareas';
+
+  @override
+  String get gradesGridDiscipline => 'Disciplina';
+
+  @override
+  String get gradesGridParticipation => 'Participación';
+
+  @override
+  String get gradesGridAttendance => 'Asistencia';
+
+  @override
+  String get gradesGridExam => 'Parcial';
+
+  @override
+  String get gradesGridAverage => 'Promedio';
+
+  @override
+  String gradesGridTerm(int term) {
+    return '$term° Trimestre';
+  }
+
+  @override
+  String get gradesGridClassroomFallback => 'Aula';
+
+  @override
   String get studentsAbsenceTitle => 'Inasistencia';
 
   @override
@@ -736,6 +780,18 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get professorMyClassroomsEmpty => 'Todavía no tenés aulas asignadas';
+
+  @override
+  String professorClassroomsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aulas',
+      one: '1 aula',
+      zero: 'Sin aulas asignadas',
+    );
+    return '$_temp0';
+  }
 
   @override
   String professorStudentsCount(int count) {

@@ -9,6 +9,7 @@ class PillButton extends StatelessWidget {
   final bool isGradient;
   final IconData? icon;
   final double height;
+  final Color? color;
 
   const PillButton({
     super.key,
@@ -18,10 +19,13 @@ class PillButton extends StatelessWidget {
     this.isGradient = false,
     this.icon,
     this.height = 52,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
+    final baseColor = color ?? AppColors.primary;
+
     return SizedBox(
       width: double.infinity,
       height: height,
@@ -33,11 +37,10 @@ class PillButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isLoading ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: isGradient ? Colors.transparent : AppColors.primary,
+            backgroundColor: isGradient ? Colors.transparent : baseColor,
             foregroundColor: Colors.white,
-            disabledBackgroundColor: isGradient
-                ? AppColors.primary.withAlpha(128)
-                : AppColors.primary.withAlpha(128),
+            disabledBackgroundColor:
+                isGradient ? baseColor.withAlpha(128) : baseColor.withAlpha(128),
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24),

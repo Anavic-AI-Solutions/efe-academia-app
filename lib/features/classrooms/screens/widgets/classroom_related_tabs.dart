@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/theme/professor_colors.dart';
 import '../../../../core/widgets/paged_tab_list.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../students/domain/student_model.dart';
@@ -14,8 +15,13 @@ import 'professor_tile.dart';
 
 class ClassroomStudentsTab extends ConsumerWidget {
   final String classroomId;
+  final bool isProfessor;
 
-  const ClassroomStudentsTab({super.key, required this.classroomId});
+  const ClassroomStudentsTab({
+    super.key,
+    required this.classroomId,
+    this.isProfessor = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,6 +34,7 @@ class ClassroomStudentsTab extends ConsumerWidget {
       emptyIcon: Icons.school_outlined,
       emptyTitle: l10n.classroomsNoStudents,
       errorMessage: l10n.classroomsRelatedLoadError,
+      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
       onRetry: () => ref.read(provider.notifier).refresh(),
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, student) => StudentTile(
@@ -40,8 +47,13 @@ class ClassroomStudentsTab extends ConsumerWidget {
 
 class ClassroomProfessorsTab extends ConsumerWidget {
   final String classroomId;
+  final bool isProfessor;
 
-  const ClassroomProfessorsTab({super.key, required this.classroomId});
+  const ClassroomProfessorsTab({
+    super.key,
+    required this.classroomId,
+    this.isProfessor = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,6 +66,7 @@ class ClassroomProfessorsTab extends ConsumerWidget {
       emptyIcon: Icons.person_outline,
       emptyTitle: l10n.classroomsNoProfessors,
       errorMessage: l10n.classroomsRelatedLoadError,
+      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
       onRetry: () => ref.read(provider.notifier).refresh(),
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, professor) => ProfessorTile(professor: professor),
@@ -63,8 +76,13 @@ class ClassroomProfessorsTab extends ConsumerWidget {
 
 class ClassroomMaterialsTab extends ConsumerWidget {
   final String classroomId;
+  final bool isProfessor;
 
-  const ClassroomMaterialsTab({super.key, required this.classroomId});
+  const ClassroomMaterialsTab({
+    super.key,
+    required this.classroomId,
+    this.isProfessor = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,6 +95,7 @@ class ClassroomMaterialsTab extends ConsumerWidget {
       emptyIcon: Icons.folder_outlined,
       emptyTitle: l10n.classroomsNoMaterials,
       errorMessage: l10n.classroomsRelatedLoadError,
+      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
       onRetry: () => ref.read(provider.notifier).refresh(),
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, material) => MaterialTile(material: material),
