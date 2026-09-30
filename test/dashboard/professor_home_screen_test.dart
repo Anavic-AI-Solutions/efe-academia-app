@@ -18,6 +18,7 @@ import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
+import 'package:efe_mobile/features/dashboard/screens/widgets/professor_home_header.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
@@ -320,5 +321,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Todavía no tenés aulas asignadas'), findsOneWidget);
+  });
+
+  testWidgets('the enlarged home header renders without overflow at 320px',
+      (tester) async {
+    tester.view.physicalSize = const Size(320 * 3, 568 * 3);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await _pumpHome(tester);
+
+    expect(find.byType(ProfessorHomeHeader), findsOneWidget);
+    expect(find.text('Prof. Ileana Gómez'), findsOneWidget);
+    expect(find.text('78'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

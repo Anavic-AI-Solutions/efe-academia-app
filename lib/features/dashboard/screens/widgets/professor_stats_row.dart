@@ -27,14 +27,14 @@ class ProfessorStatsRow extends StatelessWidget {
             label: l10n.professorStatClassrooms,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         Expanded(
           child: _StatTile(
             value: '$students',
             label: l10n.professorStatStudents,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         Expanded(
           child: _StatTile(
             value: '$absences',
@@ -61,12 +61,12 @@ class _StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
         color: highlighted
             ? ProfessorColors.overlayStrong
             : ProfessorColors.overlay,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +76,7 @@ class _StatTile extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              fontSize: 17,
+              fontSize: 24,
               fontWeight: FontWeight.w900,
               color: ProfessorColors.onPrimary,
             ),
@@ -86,7 +86,7 @@ class _StatTile extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              fontSize: 9,
+              fontSize: 11,
               color: ProfessorColors.onPrimaryMuted,
             ),
           ),

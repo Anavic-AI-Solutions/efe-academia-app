@@ -4,6 +4,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../../app/theme/professor_colors.dart';
 import '../../../../core/widgets/avatar.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../professor/widgets/professor_gradient_header.dart';
 
 class ProfessorHomeHeader extends StatelessWidget {
   final String name;
@@ -34,17 +35,12 @@ class ProfessorHomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: ProfessorColors.headerGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-      ),
+    return ProfessorGradientHeader(
       padding: EdgeInsets.fromLTRB(
         16,
-        MediaQuery.of(context).padding.top + 12,
+        MediaQuery.of(context).padding.top + 20,
         16,
-        16,
+        24,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,10 +50,10 @@ class ProfessorHomeHeader extends StatelessWidget {
               AppAvatar(
                 imageUrl: avatarUrl,
                 name: name,
-                size: 36,
+                size: 48,
                 showBorder: true,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +61,7 @@ class ProfessorHomeHeader extends StatelessWidget {
                     Text(
                       _greeting(context),
                       style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: ProfessorColors.onPrimaryMuted,
                       ),
                     ),
@@ -74,7 +70,7 @@ class ProfessorHomeHeader extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 20,
                         fontWeight: FontWeight.w800,
                         color: ProfessorColors.onPrimary,
                       ),
@@ -87,14 +83,14 @@ class ProfessorHomeHeader extends StatelessWidget {
                 showDot: unreadCount > 0,
                 onTap: onNotifications,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 10),
               _HeaderIconButton(
                 icon: PhosphorIconsRegular.magnifyingGlass,
                 onTap: onSearch,
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 18),
           child,
         ],
       ),
@@ -122,21 +118,21 @@ class _HeaderIconButton extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Container(
-            width: 30,
-            height: 30,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               color: ProfessorColors.overlay,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, size: 16, color: ProfessorColors.onPrimary),
+            child: Icon(icon, size: 20, color: ProfessorColors.onPrimary),
           ),
           if (showDot)
             Positioned(
               top: -2,
               right: -2,
               child: Container(
-                width: 9,
-                height: 9,
+                width: 10,
+                height: 10,
                 decoration: const BoxDecoration(
                   color: ProfessorColors.onPrimary,
                   shape: BoxShape.circle,
