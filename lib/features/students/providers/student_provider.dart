@@ -5,8 +5,6 @@ import '../../../core/api/page_pagination.dart';
 import '../../../core/pagination/paged_list_notifier.dart';
 import '../../fees/domain/fee_model.dart';
 import '../../fees/providers/fee_provider.dart';
-import '../../qualifications/domain/qualification_model.dart';
-import '../../qualifications/providers/qualification_provider.dart';
 import '../data/absence_api.dart';
 import '../data/absence_repository.dart';
 import '../data/student_api.dart';
@@ -197,16 +195,6 @@ final studentDetailProvider =
 // ---------------------------------------------------------------------------
 // Related paged lists
 // ---------------------------------------------------------------------------
-
-final studentQualificationsProvider = StateNotifierProvider.family<
-    PagedListNotifier<QualificationModel>,
-    PagedListState<QualificationModel>,
-    String>((ref, studentId) {
-  final repository = ref.watch(qualificationRepositoryProvider);
-  return PagedListNotifier<QualificationModel>(
-    (page) => repository.getStudentQualifications(studentId, page: page),
-  );
-});
 
 final studentAbsencesProvider = StateNotifierProvider.family<
     PagedListNotifier<AbsenceModel>,

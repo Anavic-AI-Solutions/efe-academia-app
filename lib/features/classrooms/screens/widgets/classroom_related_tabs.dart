@@ -39,7 +39,9 @@ class ClassroomStudentsTab extends ConsumerWidget {
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, student) => StudentTile(
         student: student,
-        onTap: () => context.push('/students/${student.id}'),
+        onTap: () => context.push(
+          '/students/${student.id}?classroomId=$classroomId',
+        ),
       ),
     );
   }

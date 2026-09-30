@@ -183,6 +183,15 @@ Future<void> _pumpProfessorDetail(
         path: '/classrooms/:id/grades',
         builder: (_, __) => const Scaffold(body: Text('pantalla notas')),
       ),
+      GoRoute(
+        path: '/students/:id',
+        builder: (_, state) => Scaffold(
+          body: Text(
+            'alumno ${state.pathParameters['id']} '
+            'aula ${state.uri.queryParameters['classroomId']}',
+          ),
+        ),
+      ),
     ],
   );
   addTearDown(router.dispose);
@@ -403,5 +412,29 @@ void main() {
 
     final empty = tester.widget<EmptyState>(find.byType(EmptyState));
     expect(empty.accentColor, isNull);
+  });
+
+  testWidgets('opening a student carries the classroom of origin',
+      (tester) async {
+    await _pumpProfessorDetail(
+      tester,
+      _FakeClassroomRepository(
+        classroom: _classroom,
+        students: const [
+          StudentModel(
+            id: 's1',
+            fullname: 'Ana Gómez',
+            email: 'ana@example.com',
+            status: 'active',
+          ),
+        ],
+      ),
+    );
+
+    await _openTab(tester, 'Estudiantes');
+    await tester.tap(find.text('Ana Gómez'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('alumno s1 aula c1'), findsOneWidget);
   });
 }

@@ -298,6 +298,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: ':id',
             builder: (context, state) => StudentDetailScreen(
               studentId: state.pathParameters['id']!,
+              classroomId: state.uri.queryParameters['classroomId'],
             ),
           ),
         ],

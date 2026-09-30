@@ -37,5 +37,35 @@ void main() {
 
       expect(model.date, '01/04/2026');
     });
+
+    test('parses category, raw score label and nested classroom name', () {
+      final model = QualificationModel.fromJson({
+        'id': 'q2',
+        'student_id': 's1',
+        'classroom_id': 'c1',
+        'score': 'Excelente',
+        'type': 'Oral',
+        'category': 'Desempeño',
+        'period': '1',
+        'classroom': {'id': 'c1', 'name': '3G X'},
+      });
+
+      expect(model.category, 'Desempeño');
+      expect(model.scoreLabel, 'Excelente');
+      expect(model.classroomName, '3G X');
+      expect(model.score, 0.0);
+    });
+
+    test('prefers a plain classroom_name over the nested classroom', () {
+      final model = QualificationModel.fromJson({
+        'id': 'q3',
+        'score': '9',
+        'type': 'Escrito',
+        'classroom_name': 'A2 B',
+        'classroom': {'id': 'c1', 'name': '3G X'},
+      });
+
+      expect(model.classroomName, 'A2 B');
+    });
   });
 }
