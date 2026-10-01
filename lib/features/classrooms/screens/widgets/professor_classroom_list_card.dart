@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/l10n.dart';
-import '../../../professor/widgets/professor_card.dart';
 import '../../domain/classroom_model.dart';
 import 'classroom_filter_sheet.dart';
 
@@ -28,7 +28,7 @@ class ProfessorClassroomListCard extends StatelessWidget {
     final l10n = context.l10n;
     final status = classroom.status.toLowerCase();
 
-    return ProfessorCard(
+    return AppCard(
       onTap: onTap,
       child: Row(
         children: [

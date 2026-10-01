@@ -6,9 +6,9 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
-import '../../professor/widgets/professor_screen_header.dart';
 import '../domain/classroom_grades_summary.dart';
 import '../providers/qualification_provider.dart';
 import 'widgets/create_qualification_sheet.dart';
@@ -33,7 +33,7 @@ class ClassroomGradesScreen extends ConsumerWidget {
           isDark ? AppColors.darkBackground : AppColors.lightBackground,
       body: Column(
         children: [
-          ProfessorScreenHeader(
+          ScreenHeader(
             title: l10n.gradesTitle,
             subtitle: summary?.classroomName,
             onBack: () => _leave(context),

@@ -6,6 +6,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
@@ -153,22 +154,9 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
           isDark ? AppColors.darkBackground : AppColors.lightBackground,
       body: ListView(
         padding: EdgeInsets.zero,
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(
-              16,
-              MediaQuery.of(context).padding.top + 12,
-              16,
-              16,
-            ),
-            decoration: BoxDecoration(
-              gradient: isDark
-                  ? AppColors.primaryGradientDark
-                  : AppColors.primaryGradient,
-              borderRadius:
-                  const BorderRadius.vertical(bottom: Radius.circular(24)),
-            ),
-            child: const Column(
+        children: const [
+          GradientHeader(
+            child: Column(
               children: [
                 Row(
                   children: [
@@ -208,7 +196,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
               ],
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(16),
             child: Column(
               children: [

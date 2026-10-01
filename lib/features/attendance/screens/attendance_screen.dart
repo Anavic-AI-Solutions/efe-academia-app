@@ -6,9 +6,9 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
-import '../../professor/widgets/professor_screen_header.dart';
 import '../domain/attendance_day.dart';
 import '../providers/attendance_provider.dart';
 import 'widgets/attendance_student_row.dart';
@@ -79,7 +79,7 @@ class AttendanceScreen extends ConsumerWidget {
             isDark ? AppColors.darkBackground : AppColors.lightBackground,
         body: Column(
           children: [
-            ProfessorScreenHeader(
+            ScreenHeader(
               title: l10n.attendanceTitle(day?.classroomName ?? ''),
               subtitle: l10n.attendanceSubtitle(
                 _dateLabel(context, day?.date ?? ''),

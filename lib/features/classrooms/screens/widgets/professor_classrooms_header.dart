@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_typography.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/widgets/gradient_header.dart';
 import '../../../../l10n/l10n.dart';
-import '../../../professor/widgets/professor_gradient_header.dart';
 
 class ProfessorClassroomsHeader extends StatelessWidget {
   final String subtitle;
@@ -12,7 +12,7 @@ class ProfessorClassroomsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfessorGradientHeader(
+    return GradientHeader(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

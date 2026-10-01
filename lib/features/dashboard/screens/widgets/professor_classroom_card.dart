@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/widgets/app_card.dart';
 import '../../../../l10n/l10n.dart';
-import '../../../professor/widgets/professor_card.dart';
 
 class ProfessorClassroomCard extends StatelessWidget {
   final String name;
@@ -22,8 +22,8 @@ class ProfessorClassroomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return ProfessorCard(
-      isSelected: isSelected,
+    return AppCard(
+      selected: isSelected,
       onTap: onTap,
       child: Row(
         children: [
