@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:flutter/services.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../core/widgets/pill_button.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/auth_provider.dart';
 
@@ -39,7 +41,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final isLoading = authState.status == AuthStatus.loading;
-    final size = MediaQuery.of(context).size;
 
     ref.listen<AuthState>(authProvider, (prev, next) {
       if (next.status == AuthStatus.error && next.error != null) {
@@ -56,20 +57,15 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       }
     });
 
-    return Scaffold(
-      body: Container(
-        color: AppColors.lightBackground,
-        child: Column(
-          children: [
-            // Gradient header
-            Container(
-              width: double.infinity,
-              height: size.height * 0.32,
-              decoration: const BoxDecoration(
-                gradient: AppColors.primaryGradient,
-              ),
-              child: SafeArea(
-                bottom: false,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        body: Container(
+          color: AppColors.lightBackground,
+          child: Column(
+            children: [
+              // Gradient header with bottom radius 24
+              GradientHeader(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -93,23 +89,23 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: AppColors.onPrimary,
                         height: 1.25,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
 
-            // Form area
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: _submitted ? _buildSuccessState() : _buildFormState(isLoading),
+              // Form area
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: _submitted ? _buildSuccessState() : _buildFormState(isLoading),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

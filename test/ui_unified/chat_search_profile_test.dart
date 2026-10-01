@@ -329,6 +329,29 @@ void main() {
         tester.widget<PillButton>(find.widgetWithText(PillButton, 'Cerrar sesión'));
     expect(logout.color, AppColors.error);
     expect(logout.height, 46);
+    // Assert effective border radius is 13 (per brief: r13).
+    final elevated = tester.widget<ElevatedButton>(
+      find.descendant(
+        of: find.widgetWithText(PillButton, 'Cerrar sesión'),
+        matching: find.byType(ElevatedButton),
+      ),
+    );
+    final shape = elevated.style?.shape?.resolve({}) as RoundedRectangleBorder?;
+    expect(shape?.borderRadius, BorderRadius.circular(13));
+  });
+
+  testWidgets('profile language selector still opens from settings',
+      (tester) async {
+    tester.view.physicalSize = const Size(400 * 3, 900 * 3);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await _pumpProfile(tester);
+
+    await tester.tap(find.text('Idioma'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Seleccionar idioma'), findsOneWidget);
   });
 
   testWidgets('profile theme selector still opens from settings',
