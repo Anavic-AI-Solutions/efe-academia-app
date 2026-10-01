@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/qualification_provider.dart';
@@ -47,23 +49,14 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.qualificationsTitle),
-      ),
+      appBar: LargeTitleBar(title: l10n.qualificationsTitle),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: TextField(
+            child: AppSearchBar(
               controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.qualificationsSearchHint,
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                isDense: true,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
+              hintText: l10n.qualificationsSearchHint,
               onChanged: (value) =>
                   ref.read(qualificationListProvider.notifier).search(value),
             ),

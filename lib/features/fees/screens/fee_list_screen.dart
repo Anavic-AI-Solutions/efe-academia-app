@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/fee_provider.dart';
@@ -47,23 +49,14 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.feesTitle),
-      ),
+      appBar: LargeTitleBar(title: l10n.feesTitle),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: TextField(
+            child: AppSearchBar(
               controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.feesSearchHint,
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                isDense: true,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
+              hintText: l10n.feesSearchHint,
               onChanged: (value) =>
                   ref.read(feeListProvider.notifier).search(value),
             ),
