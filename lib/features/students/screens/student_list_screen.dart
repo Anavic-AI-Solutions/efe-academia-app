@@ -51,15 +51,17 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
     final l10n = context.l10n;
     final listState = ref.watch(studentListProvider);
     final notifier = ref.read(studentListProvider.notifier);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           LargeTitleBar(
             title: l10n.studentsTitle,
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: AppSearchBar(
               controller: _searchController,
               hintText: l10n.studentsSearchHint,
@@ -70,7 +72,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
             height: 36,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
                 _FilterChip(
                   label: l10n.studentsFilterAll,
@@ -97,7 +99,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
           ),
           const SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: Row(
               children: [
                 Expanded(
@@ -163,7 +165,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
             child: ListView.builder(
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
               itemCount: state.page.data.length,
               itemBuilder: (context, index) {
                 final student = state.page.data[index];
@@ -203,7 +205,7 @@ class _FilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final selectedColor = isDark ? const Color(0xFF6366F1) : AppColors.primary;
+    final selectedColor = AppColors.accentFor(isDark);
 
     return GestureDetector(
       onTap: onTap,
