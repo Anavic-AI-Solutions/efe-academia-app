@@ -263,8 +263,8 @@ void main() {
 
     await _openTab(tester, 'Información');
 
-    expect(find.text('Datos personales'), findsOneWidget);
-    expect(find.text('Institucional'), findsOneWidget);
+    expect(find.text('DATOS PERSONALES'), findsOneWidget);
+    expect(find.text('INSTITUCIONAL'), findsOneWidget);
     expect(find.text('ana@example.com'), findsOneWidget);
     expect(find.text('30111222'), findsOneWidget);
     expect(find.text('2026'), findsWidgets);
@@ -526,7 +526,7 @@ void main() {
     );
     await _openTab(tester, 'Información');
 
-    expect(find.text('Datos personales'), findsOneWidget);
+    expect(find.text('DATOS PERSONALES'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
-import '../../app/theme/app_typography.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
@@ -22,14 +21,17 @@ class SectionHeader extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: 20),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            title,
-            style: AppTypography.titleMedium.copyWith(
-              color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+            title.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.6,
+              color: AppColors.sectionLabel,
             ),
           ),
           if (actionLabel != null && onAction != null)
@@ -37,8 +39,10 @@ class SectionHeader extends StatelessWidget {
               onTap: onAction,
               child: Text(
                 actionLabel!,
-                style: AppTypography.labelLarge.copyWith(
-                  color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.accentFor(isDark),
                 ),
               ),
             ),

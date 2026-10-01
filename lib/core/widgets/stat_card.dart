@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
-import '../../app/theme/app_typography.dart';
 
 class StatCard extends StatelessWidget {
   final IconData icon;
@@ -29,9 +28,10 @@ class StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
+            color: const Color(0x59232D3C).withOpacity(isDark ? 0.3 : 0.12),
+            blurRadius: 24,
+            offset: const Offset(0, 10),
+            spreadRadius: -14,
           ),
         ],
       ),
@@ -42,7 +42,7 @@ class StatCard extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.1),
+              color: AppColors.chipFor(isDark),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: iconColor, size: 20),
@@ -52,9 +52,10 @@ class StatCard extends StatelessWidget {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTypography.headlineLarge.copyWith(
-              color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
-              fontSize: 24,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              color: AppColors.inkFor(isDark),
             ),
           ),
           const SizedBox(height: 2),
@@ -62,8 +63,9 @@ class StatCard extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTypography.bodySmall.copyWith(
-              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+            style: TextStyle(
+              fontSize: 12,
+              color: AppColors.mutedFor(isDark),
             ),
           ),
         ],
