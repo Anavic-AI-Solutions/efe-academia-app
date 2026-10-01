@@ -4,7 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../auth/providers/auth_provider.dart';
+import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/avatar.dart';
+import '../../../core/widgets/large_title_bar.dart';
+import '../../../core/widgets/pill_button.dart';
+import '../../../core/widgets/section_header.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../app/locale/locale_provider.dart';
@@ -26,14 +30,17 @@ class ProfileScreen extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.fromLTRB(
-          20,
-          MediaQuery.of(context).padding.top + 16,
-          20,
-          40,
-        ),
+      backgroundColor: AppColors.backgroundFor(isDark),
+      body: Column(
         children: [
+          LargeTitleBar(
+            title: l10n.navProfile,
+            showBackButton: false,
+          ),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
+              children: [
           // Profile header
           Center(
             child: Column(
@@ -70,13 +77,17 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 36),
 
           // Account section
-          _SectionLabel(title: l10n.profileAccount, isDark: isDark),
+          SectionHeader(
+            title: l10n.profileAccount,
+            padding: EdgeInsets.zero,
+          ),
           const SizedBox(height: 8),
-          _SettingsGroup(
-            isDark: isDark,
-            children: [
-              _SettingsTile(
-                icon: PhosphorIconsRegular.user,
+          AppCard(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Column(
+              children: [
+                _SettingsTile(
+                  icon: PhosphorIconsRegular.user,
                 title: l10n.profileEditProfile,
                 onTap: () {},
                 isDark: isDark,
@@ -87,18 +98,23 @@ class ProfileScreen extends ConsumerWidget {
                 onTap: () => context.push('/notifications'),
                 isDark: isDark,
               ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 24),
 
           // Preferences section
-          _SectionLabel(title: l10n.profilePreferences, isDark: isDark),
+          SectionHeader(
+            title: l10n.profilePreferences,
+            padding: EdgeInsets.zero,
+          ),
           const SizedBox(height: 8),
-          _SettingsGroup(
-            isDark: isDark,
-            children: [
-              _SettingsTile(
-                icon: PhosphorIconsRegular.moon,
+          AppCard(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Column(
+              children: [
+                _SettingsTile(
+                  icon: PhosphorIconsRegular.moon,
                 title: l10n.profileTheme,
                 trailing: Text(
                   _themeModeLabel(themeMode, l10n),
@@ -128,18 +144,23 @@ class ProfileScreen extends ConsumerWidget {
                 isDark: isDark,
                 showDivider: false,
               ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 24),
 
           // About section
-          _SectionLabel(title: l10n.profileAbout, isDark: isDark),
+          SectionHeader(
+            title: l10n.profileAbout,
+            padding: EdgeInsets.zero,
+          ),
           const SizedBox(height: 8),
-          _SettingsGroup(
-            isDark: isDark,
-            children: [
-              _SettingsTile(
-                icon: PhosphorIconsRegular.info,
+          AppCard(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Column(
+              children: [
+                _SettingsTile(
+                  icon: PhosphorIconsRegular.info,
                 title: l10n.profileAbout,
                 onTap: () {},
                 isDark: isDark,
@@ -151,53 +172,47 @@ class ProfileScreen extends ConsumerWidget {
                 isDark: isDark,
                 showDivider: false,
               ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 32),
 
           // Logout button
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () async {
-                final confirmed = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(l10n.profileLogout),
-                    content: Text(l10n.profileLogoutConfirm),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text(l10n.commonCancel),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: Text(
-                          l10n.profileLogout,
-                          style: const TextStyle(color: AppColors.error),
-                        ),
-                      ),
-                    ],
+          PillButton(
+            label: l10n.profileLogout,
+            icon: PhosphorIconsBold.power,
+            color: AppColors.error,
+            onPressed: () async {
+              final confirmed = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(l10n.profileLogout),
+                  content: Text(l10n.profileLogoutConfirm),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                );
-                if (confirmed == true && context.mounted) {
-                  await ref.read(authProvider.notifier).logout();
-                }
-              },
-              icon: const Icon(PhosphorIconsBold.power, size: 20),
-              label: Text(l10n.profileLogout),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.error,
-                side: BorderSide(color: AppColors.error.withOpacity(0.3)),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text(l10n.commonCancel),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: Text(
+                        l10n.profileLogout,
+                        style: const TextStyle(color: AppColors.error),
+                      ),
+                    ),
+                  ],
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-            ),
+              );
+              if (confirmed == true && context.mounted) {
+                await ref.read(authProvider.notifier).logout();
+              }
+            },
+          ),
+        ],
+      ),
           ),
         ],
       ),
@@ -383,52 +398,6 @@ class _RoleBadge extends StatelessWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  final String title;
-  final bool isDark;
-
-  const _SectionLabel({required this.title, required this.isDark});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title.toUpperCase(),
-      style: AppTypography.labelSmall.copyWith(
-        color:
-            isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
-        letterSpacing: 0.8,
-      ),
-    );
-  }
-}
-
-class _SettingsGroup extends StatelessWidget {
-  final List<Widget> children;
-  final bool isDark;
-
-  const _SettingsGroup({required this.children, required this.isDark});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: children,
-      ),
-    );
-  }
-}
-
 class _SettingsTile extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -456,7 +425,7 @@ class _SettingsTile extends StatelessWidget {
           leading: Icon(
             icon,
             size: 20,
-            color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+            color: AppColors.accentFor(isDark),
           ),
           title: Text(
             title,

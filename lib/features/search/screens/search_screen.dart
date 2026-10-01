@@ -4,8 +4,10 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../core/api/api_provider.dart';
 import '../../../core/api/api_client.dart';
+import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/large_title_bar.dart';
+import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
@@ -146,12 +148,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final l10n = context.l10n;
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           LargeTitleBar(
             title: l10n.searchTitle,
             bottom: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+              padding: const EdgeInsets.only(bottom: 8),
               child: AppSearchBar(
                 controller: _controller,
                 hintText: l10n.searchHint,
@@ -174,7 +177,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
           Expanded(
             child: state.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const ListShimmer()
                 : state.error != null
                     ? Center(
                         child: Column(
@@ -226,10 +229,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 subtitle:
                                     l10n.searchNoResultsSubtitle(state.query),
                               )
-                            : ListView.separated(
-                                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                            : ListView.builder(
+                                padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
                                 itemCount: state.results.length,
-                                separatorBuilder: (_, __) => const Divider(height: 1),
                                 itemBuilder: (context, index) {
                                   final result = state.results[index];
                                   return _SearchTile(
@@ -262,62 +264,61 @@ class _SearchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return AppCard(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: _getTypeColor().withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(
-                _getTypeIcon(),
-                color: _getTypeColor(),
-                size: 18,
-              ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: _getTypeColor().withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
             ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: Icon(
+              _getTypeIcon(),
+              color: _getTypeColor(),
+              size: 18,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  result.title,
+                  style: AppTypography.titleSmall.copyWith(
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
+                  ),
+                ),
+                if (result.subtitle.isNotEmpty) ...[
+                  const SizedBox(height: 2),
                   Text(
-                    result.title,
-                    style: AppTypography.titleSmall.copyWith(
+                    result.subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.bodySmall.copyWith(
                       color: isDark
-                          ? AppColors.darkTextPrimary
-                          : AppColors.lightTextPrimary,
+                          ? AppColors.darkTextSecondary
+                          : AppColors.lightTextSecondary,
                     ),
                   ),
-                  if (result.subtitle.isNotEmpty) ...[
-                    const SizedBox(height: 2),
-                    Text(
-                      result.subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTypography.bodySmall.copyWith(
-                        color: isDark
-                            ? AppColors.darkTextSecondary
-                            : AppColors.lightTextSecondary,
-                      ),
-                    ),
-                  ],
                 ],
-              ),
+              ],
             ),
-            if (result.route.isNotEmpty)
-              Icon(
-                PhosphorIconsRegular.caretRight,
-                size: 16,
-                color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
-              ),
-          ],
-        ),
+          ),
+          if (result.route.isNotEmpty)
+            Icon(
+              PhosphorIconsRegular.caretRight,
+              size: 16,
+              color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+            ),
+        ],
       ),
     );
   }
