@@ -38,7 +38,6 @@ class QuickActionGrid extends StatelessWidget {
       itemCount: actions.length,
       itemBuilder: (context, index) {
         final action = actions[index];
-        final color = action.color ?? AppColors.primary;
 
         return Material(
           color: Colors.transparent,
@@ -64,10 +63,10 @@ class QuickActionGrid extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: AppColors.chipFor(isDark),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(action.icon, color: color, size: 20),
+                    child: Icon(action.icon, color: AppColors.primary, size: 20),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
