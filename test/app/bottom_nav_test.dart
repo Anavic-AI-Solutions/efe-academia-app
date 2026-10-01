@@ -1,5 +1,5 @@
 import 'package:efe_mobile/app/router.dart';
-import 'package:efe_mobile/app/theme/professor_colors.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
@@ -112,7 +112,7 @@ void main() {
       ),
     );
     final decoration = activePill.decoration as BoxDecoration;
-    expect(decoration.color, ProfessorColors.primarySoft);
+    expect(decoration.color, AppColors.primarySoft);
 
     final inactivePill = tester.widget<AnimatedContainer>(
       find.ancestor(

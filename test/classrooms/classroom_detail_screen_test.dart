@@ -1,4 +1,4 @@
-import 'package:efe_mobile/app/theme/professor_colors.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/core/widgets/empty_state.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
@@ -401,7 +401,7 @@ void main() {
     await _openTab(tester, 'Estudiantes');
 
     final empty = tester.widget<EmptyState>(find.byType(EmptyState));
-    expect(empty.accentColor, ProfessorColors.primarySoft);
+    expect(empty.accentColor, AppColors.primarySoft);
   });
 
   testWidgets('generic related tabs keep the default empty accent',

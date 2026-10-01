@@ -3,7 +3,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/info_row.dart';
 import '../../../../core/widgets/section_header.dart';
@@ -38,7 +37,7 @@ class ClassroomSummaryTab extends StatelessWidget {
                 value: '${classroom.studentCount}',
                 label: l10n.classroomsStudents,
                 iconColor: isProfessor
-                    ? ProfessorColors.primary
+                    ? AppColors.primary
                     : const Color(0xFF3B82F6),
               ),
               const SizedBox(width: 12),
@@ -47,7 +46,7 @@ class ClassroomSummaryTab extends StatelessWidget {
                 value: classroom.room.isNotEmpty ? classroom.room : '—',
                 label: l10n.classroomsRoom,
                 iconColor: isProfessor
-                    ? ProfessorColors.primarySoft
+                    ? AppColors.primarySoft
                     : const Color(0xFF10B981),
               ),
               const SizedBox(width: 12),
@@ -56,7 +55,7 @@ class ClassroomSummaryTab extends StatelessWidget {
                 value: classroom.shift.isNotEmpty ? classroom.shift : '—',
                 label: l10n.classroomsShift,
                 iconColor: isProfessor
-                    ? ProfessorColors.accent
+                    ? AppColors.accent
                     : const Color(0xFFF97316),
               ),
             ],

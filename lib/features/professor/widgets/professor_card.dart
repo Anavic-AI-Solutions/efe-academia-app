@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 
 /// White rounded card shared by the professor screens.
 class ProfessorCard extends StatelessWidget {
@@ -29,13 +28,13 @@ class ProfessorCard extends StatelessWidget {
         color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isSelected ? ProfessorColors.primarySoft : Colors.transparent,
+          color: isSelected ? AppColors.primarySoft : Colors.transparent,
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
             color: isSelected
-                ? ProfessorColors.primarySoft.withOpacity(0.35)
+                ? AppColors.primarySoft.withOpacity(0.35)
                 : const Color(0x59232D3C).withOpacity(isDark ? 0.3 : 0.12),
             blurRadius: 24,
             offset: const Offset(0, 10),

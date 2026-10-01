@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../../app/theme/professor_colors.dart';
+import '../../../app/theme/app_colors.dart';
 import 'professor_gradient_header.dart';
 
 /// Gradient header shared by the professor screens (attendance, grades).
@@ -35,7 +35,7 @@ class ProfessorScreenHeader extends StatelessWidget {
                   child: Icon(
                     PhosphorIconsRegular.caretLeft,
                     size: 18,
-                    color: ProfessorColors.onPrimary,
+                    color: AppColors.onPrimary,
                   ),
                 ),
               ),
@@ -50,7 +50,7 @@ class ProfessorScreenHeader extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w800,
-                        color: ProfessorColors.onPrimary,
+                        color: AppColors.onPrimary,
                       ),
                     ),
                     if (subtitle != null)
@@ -60,7 +60,7 @@ class ProfessorScreenHeader extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 10,
-                          color: ProfessorColors.onPrimaryMuted,
+                          color: AppColors.onPrimaryMuted,
                         ),
                       ),
                   ],

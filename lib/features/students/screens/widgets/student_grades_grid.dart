@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../qualifications/domain/qualification_model.dart';
 import '../../domain/student_grade_grid.dart';
@@ -34,12 +33,12 @@ class StudentGradesGrid extends StatelessWidget {
     final rows = buildGradeGrid(qualifications);
 
     final headerColor = isProfessor
-        ? ProfessorColors.sectionLabel
+        ? AppColors.sectionLabel
         : (isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary);
     final valueColor = isProfessor
-        ? ProfessorColors.ink
+        ? AppColors.lightInk
         : (isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary);
-    final mutedColor = ProfessorColors.muted;
+    final mutedColor = AppColors.muted;
     final borderColor =
         isDark ? AppColors.darkBorder : AppColors.lightBorder;
 

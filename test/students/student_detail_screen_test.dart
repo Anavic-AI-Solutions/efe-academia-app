@@ -1,4 +1,4 @@
-import 'package:efe_mobile/app/theme/professor_colors.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/core/widgets/empty_state.dart';
@@ -480,9 +480,9 @@ void main() {
     expect(
       stats.map((stat) => stat.iconColor),
       [
-        ProfessorColors.primary,
-        ProfessorColors.primarySoft,
-        ProfessorColors.accent,
+        AppColors.primary,
+        AppColors.primarySoft,
+        AppColors.accent,
       ],
     );
   });
@@ -495,7 +495,7 @@ void main() {
     );
 
     final empty = tester.widget<EmptyState>(find.byType(EmptyState));
-    expect(empty.accentColor, ProfessorColors.primarySoft);
+    expect(empty.accentColor, AppColors.primarySoft);
   });
 
   testWidgets('generic student detail keeps the default accents',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../../../app/theme/professor_colors.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/detail_hero.dart';
 import '../../domain/classroom_model.dart';
 import '../../../../l10n/l10n.dart';
@@ -23,7 +23,7 @@ class ClassroomDetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DetailHero(
-      gradient: isProfessor ? ProfessorColors.headerGradient : null,
+      gradient: isProfessor ? AppColors.primaryGradient : null,
       leading: const DetailHeroIcon(
         icon: PhosphorIconsRegular.chalkboardTeacher,
       ),
@@ -90,9 +90,9 @@ class _HeroActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final background =
-        primary ? Colors.white : ProfessorColors.overlayStrong;
+        primary ? Colors.white : AppColors.overlayStrong;
     final foreground =
-        primary ? ProfessorColors.primary : ProfessorColors.onPrimary;
+        primary ? AppColors.primary : AppColors.onPrimary;
 
     return SizedBox(
       height: 40,

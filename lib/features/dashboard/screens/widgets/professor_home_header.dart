@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../../../app/theme/professor_colors.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/avatar.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../professor/widgets/professor_gradient_header.dart';
@@ -62,7 +62,7 @@ class ProfessorHomeHeader extends StatelessWidget {
                       _greeting(context),
                       style: const TextStyle(
                         fontSize: 12,
-                        color: ProfessorColors.onPrimaryMuted,
+                        color: AppColors.onPrimaryMuted,
                       ),
                     ),
                     Text(
@@ -72,7 +72,7 @@ class ProfessorHomeHeader extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
-                        color: ProfessorColors.onPrimary,
+                        color: AppColors.onPrimary,
                       ),
                     ),
                   ],
@@ -121,10 +121,10 @@ class _HeaderIconButton extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ProfessorColors.overlay,
+              color: AppColors.overlay,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, size: 20, color: ProfessorColors.onPrimary),
+            child: Icon(icon, size: 20, color: AppColors.onPrimary),
           ),
           if (showDot)
             Positioned(
@@ -134,7 +134,7 @@ class _HeaderIconButton extends StatelessWidget {
                 width: 10,
                 height: 10,
                 decoration: const BoxDecoration(
-                  color: ProfessorColors.onPrimary,
+                  color: AppColors.onPrimary,
                   shape: BoxShape.circle,
                 ),
               ),

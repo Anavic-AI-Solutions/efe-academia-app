@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../../../app/theme/professor_colors.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/info_row.dart';
 import '../../../../core/widgets/section_header.dart';
@@ -36,7 +36,7 @@ class StudentInfoTab extends StatelessWidget {
                 value: student.year.isNotEmpty ? student.year : '—',
                 label: l10n.studentsInfoYear,
                 iconColor: isProfessor
-                    ? ProfessorColors.primary
+                    ? AppColors.primary
                     : const Color(0xFF3B82F6),
               ),
               const SizedBox(width: 12),
@@ -45,7 +45,7 @@ class StudentInfoTab extends StatelessWidget {
                 value: student.branch.isNotEmpty ? student.branch : '—',
                 label: l10n.studentsInfoBranch,
                 iconColor: isProfessor
-                    ? ProfessorColors.primarySoft
+                    ? AppColors.primarySoft
                     : const Color(0xFF10B981),
               ),
               const SizedBox(width: 12),
@@ -54,7 +54,7 @@ class StudentInfoTab extends StatelessWidget {
                 value: '${student.classroomCount}',
                 label: l10n.studentsInfoClassrooms,
                 iconColor: isProfessor
-                    ? ProfessorColors.accent
+                    ? AppColors.accent
                     : const Color(0xFFF97316),
               ),
             ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/professor_colors.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../l10n/l10n.dart';
 
 class ProfessorStatsRow extends StatelessWidget {
@@ -64,8 +64,8 @@ class _StatTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
         color: highlighted
-            ? ProfessorColors.overlayStrong
-            : ProfessorColors.overlay,
+            ? AppColors.overlayStrong
+            : AppColors.overlay,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
@@ -78,7 +78,7 @@ class _StatTile extends StatelessWidget {
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w900,
-              color: ProfessorColors.onPrimary,
+              color: AppColors.onPrimary,
             ),
           ),
           Text(
@@ -87,7 +87,7 @@ class _StatTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 11,
-              color: ProfessorColors.onPrimaryMuted,
+              color: AppColors.onPrimaryMuted,
             ),
           ),
         ],

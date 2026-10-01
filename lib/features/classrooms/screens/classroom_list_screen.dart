@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
@@ -79,7 +78,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final selection = await showClassroomFilterSheet(
       context,
       initial: _selectionFrom(state),
-      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
+      accentColor: isProfessor ? AppColors.primarySoft : null,
     );
     if (selection == null) return;
     await _applySelection(selection);
@@ -96,7 +95,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
 
     return Scaffold(
       backgroundColor: isProfessor
-          ? (isDark ? AppColors.darkBackground : ProfessorColors.surface)
+          ? (isDark ? AppColors.darkBackground : AppColors.lightBackground)
           : null,
       body: Column(
         children: [
@@ -129,7 +128,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                   activeCount: selection.count,
                   onTap: () => _openFilters(isProfessor),
                   accentColor:
-                      isProfessor ? ProfessorColors.primarySoft : null,
+                      isProfessor ? AppColors.primarySoft : null,
                 ),
               ],
             ),
@@ -143,7 +142,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                 onClearAll: () =>
                     _applySelection(const ClassroomFilterSelection()),
                 accentColor:
-                    isProfessor ? ProfessorColors.primarySoft : null,
+                    isProfessor ? AppColors.primarySoft : null,
               ),
             ),
           Expanded(
@@ -166,7 +165,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
       return ErrorView(
         message: l10n.classroomsLoadError,
         detail: state.error,
-        accentColor: isProfessor ? ProfessorColors.primarySoft : null,
+        accentColor: isProfessor ? AppColors.primarySoft : null,
         onRetry: () => ref.read(classroomListProvider.notifier).refresh(),
       );
     }
@@ -190,7 +189,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
         onAction: filtered
             ? () => _applySelection(const ClassroomFilterSelection())
             : null,
-        accentColor: isProfessor ? ProfessorColors.primarySoft : null,
+        accentColor: isProfessor ? AppColors.primarySoft : null,
       );
     }
 

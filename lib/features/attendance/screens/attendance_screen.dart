@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
@@ -77,7 +76,7 @@ class AttendanceScreen extends ConsumerWidget {
       },
       child: Scaffold(
         backgroundColor:
-            isDark ? AppColors.darkBackground : ProfessorColors.surface,
+            isDark ? AppColors.darkBackground : AppColors.lightBackground,
         body: Column(
           children: [
             ProfessorScreenHeader(
@@ -131,7 +130,7 @@ class AttendanceScreen extends ConsumerWidget {
       return ErrorView(
         message: l10n.attendanceLoadError,
         detail: state.error,
-        accentColor: ProfessorColors.primarySoft,
+        accentColor: AppColors.primarySoft,
         onRetry: () =>
             ref.read(attendanceProvider(classroomId).notifier).load(),
       );
@@ -143,7 +142,7 @@ class AttendanceScreen extends ConsumerWidget {
       return EmptyState(
         icon: PhosphorIconsRegular.users,
         title: l10n.attendanceEmpty,
-        accentColor: ProfessorColors.primarySoft,
+        accentColor: AppColors.primarySoft,
       );
     }
 
@@ -232,10 +231,10 @@ class _SaveBar extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isSaving ? null : onSave,
             style: ElevatedButton.styleFrom(
-              backgroundColor: ProfessorColors.primary,
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               disabledBackgroundColor:
-                  ProfessorColors.primary.withOpacity(0.5),
+                  AppColors.primary.withOpacity(0.5),
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(13),

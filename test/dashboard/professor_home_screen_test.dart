@@ -1,5 +1,5 @@
 import 'package:efe_mobile/app/router.dart';
-import 'package:efe_mobile/app/theme/professor_colors.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/attendance/data/attendance_repository.dart';
@@ -274,7 +274,7 @@ void main() {
       find.ancestor(of: _navLabel('Aulas'), matching: find.byType(AnimatedContainer)),
     );
     expect((activePill.decoration as BoxDecoration).color,
-        ProfessorColors.primarySoft);
+        AppColors.primarySoft);
   });
 
   testWidgets('Cargar nota opens the classroom grades screen', (tester) async {

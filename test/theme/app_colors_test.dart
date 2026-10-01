@@ -19,4 +19,25 @@ void main() {
     expect(AppColors.gradeColor(null), AppColors.muted);
     expect(AppColors.formatGrade(null), '—');
   });
+
+  group('AppColors.gradeColor', () {
+    test('maps grades to the mockup color scale', () {
+      expect(AppColors.gradeColor(9.2), AppColors.gradeHigh);
+      expect(AppColors.gradeColor(8), AppColors.gradeHigh);
+      expect(AppColors.gradeColor(7.5), AppColors.gradeMid);
+      expect(AppColors.gradeColor(6), AppColors.gradeMid);
+      expect(AppColors.gradeColor(5.8), AppColors.gradeWarn);
+      expect(AppColors.gradeColor(4), AppColors.gradeWarn);
+      expect(AppColors.gradeColor(3.9), AppColors.gradeLow);
+      expect(AppColors.gradeColor(null), AppColors.muted);
+    });
+  });
+
+  group('AppColors.formatGrade', () {
+    test('formats grades with one decimal and empty grades with a dash', () {
+      expect(AppColors.formatGrade(9.2), '9.2');
+      expect(AppColors.formatGrade(10), '10.0');
+      expect(AppColors.formatGrade(null), '—');
+    });
+  });
 }

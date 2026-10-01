@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/theme/professor_colors.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../../core/widgets/loading_shimmer.dart';
@@ -32,7 +32,7 @@ class StudentGradesTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final accent = isProfessor ? ProfessorColors.primarySoft : null;
+    final accent = isProfessor ? AppColors.primarySoft : null;
     final gradesAsync = ref.watch(studentGradesProvider(studentId));
 
     return gradesAsync.when(
@@ -140,7 +140,7 @@ class StudentAbsencesTab extends ConsumerWidget {
       emptyIcon: Icons.event_busy_outlined,
       emptyTitle: l10n.studentsNoAbsences,
       errorMessage: l10n.studentsRelatedLoadError,
-      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
+      accentColor: isProfessor ? AppColors.primarySoft : null,
       onRetry: () => ref.read(provider.notifier).refresh(),
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, absence) => AbsenceTile(absence: absence),
@@ -169,7 +169,7 @@ class StudentFeesTab extends ConsumerWidget {
       emptyIcon: Icons.receipt_long_outlined,
       emptyTitle: l10n.studentsNoFees,
       errorMessage: l10n.studentsRelatedLoadError,
-      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
+      accentColor: isProfessor ? AppColors.primarySoft : null,
       onRetry: () => ref.read(provider.notifier).refresh(),
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, fee) => FeeTile(fee: fee),

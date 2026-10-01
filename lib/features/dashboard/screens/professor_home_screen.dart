@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
@@ -44,7 +43,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
       return ErrorView(
         message: l10n.professorLoadError,
         detail: dashboardState.error,
-        accentColor: ProfessorColors.primarySoft,
+        accentColor: AppColors.primarySoft,
         onRetry: () => ref.read(dashboardProvider.notifier).refresh(),
       );
     }
@@ -56,7 +55,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+          isDark ? AppColors.darkBackground : AppColors.lightBackground,
       body: RefreshIndicator(
         onRefresh: () => ref.read(dashboardProvider.notifier).refresh(),
         child: ListView(
@@ -86,7 +85,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.6,
-                      color: ProfessorColors.sectionLabel,
+                      color: AppColors.sectionLabel,
                     ),
                   ),
                   const SizedBox(height: 11),
@@ -94,7 +93,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                     EmptyState(
                       icon: PhosphorIconsRegular.chalkboardTeacher,
                       title: l10n.professorMyClassroomsEmpty,
-                      accentColor: ProfessorColors.primarySoft,
+                      accentColor: AppColors.primarySoft,
                     )
                   else
                     ...classrooms.map(
@@ -116,7 +115,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       Expanded(
                         child: _ProfessorActionButton(
                           label: l10n.professorTakeAttendance,
-                          color: ProfessorColors.primary,
+                          color: AppColors.primary,
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
@@ -128,7 +127,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       Expanded(
                         child: _ProfessorActionButton(
                           label: l10n.professorLoadGrade,
-                          color: ProfessorColors.primarySoft,
+                          color: AppColors.primarySoft,
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
@@ -151,7 +150,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
   Widget _buildLoading(BuildContext context, bool isDark) {
     return Scaffold(
       backgroundColor:
-          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+          isDark ? AppColors.darkBackground : AppColors.lightBackground,
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -162,9 +161,12 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
               16,
               16,
             ),
-            decoration: const BoxDecoration(
-              gradient: ProfessorColors.headerGradient,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+            decoration: BoxDecoration(
+              gradient: isDark
+                  ? AppColors.primaryGradientDark
+                  : AppColors.primaryGradient,
+              borderRadius:
+                  const BorderRadius.vertical(bottom: Radius.circular(24)),
             ),
             child: const Column(
               children: [

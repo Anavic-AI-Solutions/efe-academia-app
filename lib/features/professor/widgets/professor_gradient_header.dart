@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/theme/professor_colors.dart';
+import '../../../app/theme/app_colors.dart';
 
 /// Gradient container shared by the professor screens.
 class ProfessorGradientHeader extends StatelessWidget {
@@ -18,7 +18,7 @@ class ProfessorGradientHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
-        gradient: ProfessorColors.headerGradient,
+        gradient: AppColors.primaryGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       padding: padding ??

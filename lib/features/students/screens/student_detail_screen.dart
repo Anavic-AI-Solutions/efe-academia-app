@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
@@ -31,7 +30,7 @@ class StudentDetailScreen extends ConsumerWidget {
     final studentAsync = ref.watch(studentDetailProvider(studentId));
     final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
     final background = isProfessor
-        ? (isDark ? AppColors.darkBackground : ProfessorColors.surface)
+        ? (isDark ? AppColors.darkBackground : AppColors.lightBackground)
         : null;
 
     return studentAsync.when(
@@ -46,7 +45,7 @@ class StudentDetailScreen extends ConsumerWidget {
         body: ErrorView(
           message: l10n.studentsDetailLoadError,
           detail: e.toString(),
-          accentColor: isProfessor ? ProfessorColors.primarySoft : null,
+          accentColor: isProfessor ? AppColors.primarySoft : null,
           onRetry: () => ref.invalidate(studentDetailProvider(studentId)),
         ),
       ),
@@ -65,13 +64,13 @@ class StudentDetailScreen extends ConsumerWidget {
                 tabAlignment: TabAlignment.start,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 8),
                 labelColor: isProfessor
-                    ? ProfessorColors.primary
+                    ? AppColors.primary
                     : (isDark ? const Color(0xFF6366F1) : AppColors.primary),
                 unselectedLabelColor: isDark
                     ? AppColors.darkTextSecondary
                     : AppColors.lightTextSecondary,
                 indicatorColor: isProfessor
-                    ? ProfessorColors.primary
+                    ? AppColors.primary
                     : (isDark ? const Color(0xFF6366F1) : AppColors.primary),
                 labelStyle: AppTypography.titleSmall,
                 unselectedLabelStyle: AppTypography.titleSmall,

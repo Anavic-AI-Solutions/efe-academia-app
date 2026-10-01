@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../professor/widgets/professor_card.dart';
 
@@ -41,7 +40,7 @@ class ProfessorClassroomCard extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     color: isDark
                         ? AppColors.darkTextPrimary
-                        : ProfessorColors.ink,
+                        : AppColors.lightInk,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -49,7 +48,7 @@ class ProfessorClassroomCard extends StatelessWidget {
                   context.l10n.professorStudentsCount(studentsCount),
                   style: const TextStyle(
                     fontSize: 11,
-                    color: ProfessorColors.muted,
+                    color: AppColors.muted,
                   ),
                 ),
               ],
@@ -59,7 +58,7 @@ class ProfessorClassroomCard extends StatelessWidget {
             const Icon(
               Icons.check_circle_rounded,
               size: 20,
-              color: ProfessorColors.primarySoft,
+              color: AppColors.primarySoft,
             ),
         ],
       ),

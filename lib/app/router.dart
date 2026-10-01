@@ -21,7 +21,6 @@ import '../features/news/screens/news_list_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../app/theme/app_colors.dart';
-import '../app/theme/professor_colors.dart';
 import '../l10n/l10n.dart';
 
 // ---------------------------------------------------------------------------
@@ -40,7 +39,7 @@ class CustomBottomNav extends ConsumerWidget {
     final l10n = context.l10n;
     final role = ref.watch(authProvider).user?.role;
     final accent = role == 'professor'
-        ? ProfessorColors.primarySoft
+        ? AppColors.primarySoft
         : (isDark ? const Color(0xFF6366F1) : AppColors.primary);
     final inactive =
         isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
