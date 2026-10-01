@@ -7,8 +7,13 @@ import '../../../../l10n/l10n.dart';
 
 class ProfessorClassroomsHeader extends StatelessWidget {
   final String subtitle;
+  final String? title;
 
-  const ProfessorClassroomsHeader({super.key, required this.subtitle});
+  const ProfessorClassroomsHeader({
+    super.key,
+    required this.subtitle,
+    this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class ProfessorClassroomsHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            context.l10n.professorMyClassrooms,
+            title ?? context.l10n.professorMyClassrooms,
             style: AppTypography.headlineMedium.copyWith(
               color: AppColors.onPrimary,
               fontWeight: FontWeight.w800,

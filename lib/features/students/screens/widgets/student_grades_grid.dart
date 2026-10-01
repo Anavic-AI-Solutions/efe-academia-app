@@ -31,8 +31,8 @@ class StudentGradesGrid extends StatelessWidget {
     final rows = buildGradeGrid(qualifications);
 
     const headerColor = AppColors.sectionLabel;
-    const valueColor = AppColors.lightInk;
-    const mutedColor = AppColors.muted;
+    final valueColor = AppColors.inkFor(isDark);
+    final mutedColor = AppColors.mutedFor(isDark);
     final borderColor =
         isDark ? AppColors.darkBorder : AppColors.lightBorder;
 

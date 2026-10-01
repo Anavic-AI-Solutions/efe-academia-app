@@ -244,11 +244,20 @@ void main() {
     expect(find.textContaining('Mostrando'), findsNothing);
   });
 
-  testWidgets('uses the single blue system for every role', (tester) async {
+  testWidgets('student role sees the generic title with the unified cards',
+      (tester) async {
     await _pumpScreen(tester);
 
     expect(find.byType(ProfessorClassroomsHeader), findsOneWidget);
-    expect(find.text('Mis aulas'), findsOneWidget);
+    expect(find.text('Clases'), findsOneWidget);
+    expect(find.text('Mis aulas'), findsNothing);
     expect(find.byType(ProfessorClassroomListCard), findsOneWidget);
+  });
+
+  testWidgets('student role sees the generic empty copy', (tester) async {
+    await _pumpScreen(tester, total: 0);
+
+    expect(find.text('No se encontraron clases'), findsOneWidget);
+    expect(find.text('No hay clases disponibles'), findsOneWidget);
   });
 }

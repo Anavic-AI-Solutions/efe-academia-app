@@ -19,6 +19,8 @@ import 'package:efe_mobile/features/students/domain/absence_model.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:efe_mobile/features/students/screens/student_detail_screen.dart';
+import 'package:efe_mobile/features/students/screens/widgets/student_grades_grid.dart';
+import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -522,6 +524,24 @@ void main() {
     final tabBar = tester.widget<TabBar>(find.byType(TabBar));
     expect(tabBar.labelColor, AppColors.primary);
     expect(tabBar.indicatorColor, AppColors.primary);
+  });
+
+  testWidgets('grades grid uses dark ink in dark mode', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(),
+        locale: const Locale('es', 'AR'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: StudentGradesGrid(qualifications: []),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final title = tester.widget<Text>(find.text('Calificaciones por período'));
+    expect(title.style?.color, AppColors.darkTextPrimary);
   });
 
   testWidgets('professor info tab renders without overflow on a small phone',

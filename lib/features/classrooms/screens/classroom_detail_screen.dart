@@ -7,6 +7,7 @@ import '../../../app/theme/app_typography.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_detail_header.dart';
 import 'widgets/classroom_related_tabs.dart';
@@ -23,6 +24,8 @@ class ClassroomDetailScreen extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final classroomAsync = ref.watch(classroomDetailProvider(classroomId));
     final background = AppColors.backgroundFor(isDark);
+    final showActions =
+        ref.watch(authProvider).user?.role == 'professor';
 
     return classroomAsync.when(
       loading: () => Scaffold(
@@ -47,6 +50,7 @@ class ClassroomDetailScreen extends ConsumerWidget {
             children: [
               ClassroomDetailHeader(
                 classroom: classroom,
+                showActions: showActions,
                 onAttendance: () =>
                     context.push('/classrooms/$classroomId/attendance'),
                 onGrades: () =>

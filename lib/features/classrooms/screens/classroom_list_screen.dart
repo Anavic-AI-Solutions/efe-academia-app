@@ -10,6 +10,7 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_filter_button.dart';
 import 'widgets/classroom_filter_chips.dart';
@@ -85,12 +86,14 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final listState = ref.watch(classroomListProvider);
     final selection = _selectionFrom(listState);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isProf = ref.watch(authProvider).user?.role == 'professor';
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           ProfessorClassroomsHeader(
+            title: isProf ? l10n.professorMyClassrooms : l10n.classroomsTitle,
             subtitle: listState.isLoading && listState.page.total == 0
                 ? ''
                 : l10n.professorClassroomsCount(listState.page.total),
@@ -126,14 +129,14 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
               ),
             ),
           Expanded(
-            child: _buildBody(listState),
+            child: _buildBody(listState, isProf: isProf),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody(ClassroomListState state) {
+  Widget _buildBody(ClassroomListState state, {required bool isProf}) {
     final l10n = context.l10n;
 
     if (state.isLoading && state.page.data.isEmpty) {
@@ -154,13 +157,15 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
       return EmptyState(
         icon: PhosphorIconsRegular.chalkboardTeacher,
         title: !filtered && !searching
-            ? l10n.professorMyClassroomsEmpty
+            ? (isProf
+                ? l10n.professorMyClassroomsEmpty
+                : l10n.classroomsEmptyTitle)
             : l10n.classroomsEmptyTitle,
         subtitle: filtered
             ? l10n.classroomsEmptyFiltered
             : searching
                 ? l10n.classroomsEmptySearch
-                : null,
+                : (isProf ? null : l10n.classroomsEmptySubtitle),
         actionLabel: filtered ? l10n.classroomsClearFilters : null,
         onAction: filtered
             ? () => _applySelection(const ClassroomFilterSelection())

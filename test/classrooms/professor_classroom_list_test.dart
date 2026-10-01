@@ -210,13 +210,15 @@ void main() {
     expect(find.text('Todavía no tenés aulas asignadas'), findsOneWidget);
   });
 
-  testWidgets('other roles see the same unified list', (tester) async {
+  testWidgets('other roles see the same unified list with generic copy',
+      (tester) async {
     await _pumpScreen(tester, role: 'student');
 
     expect(find.byType(ProfessorClassroomsHeader), findsOneWidget);
+    expect(find.text('Clases'), findsOneWidget);
+    expect(find.text('Mis aulas'), findsNothing);
     expect(find.byType(ProfessorClassroomListCard), findsNWidgets(2));
     expect(find.byType(ClassroomCard), findsNothing);
-    expect(find.text('Mis aulas'), findsOneWidget);
   });
 
   testWidgets('renders without overflow on a small phone', (tester) async {

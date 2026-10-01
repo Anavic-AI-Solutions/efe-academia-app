@@ -366,12 +366,12 @@ void main() {
     expect(find.text('pantalla notas'), findsOneWidget);
   });
 
-  testWidgets('detail hero shows the attendance and grade actions',
+  testWidgets('detail hero hides the attendance and grade actions for other roles',
       (tester) async {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 
-    expect(find.text('Tomar asistencia'), findsOneWidget);
-    expect(find.text('Cargar nota'), findsOneWidget);
+    expect(find.text('Tomar asistencia'), findsNothing);
+    expect(find.text('Cargar nota'), findsNothing);
   });
 
   testWidgets('professor hero renders without overflow on a small phone',

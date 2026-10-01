@@ -9,6 +9,7 @@ import 'gradient_header.dart';
 /// Gradient header for home screens: avatar + greeting + action buttons.
 class HomeHeader extends StatelessWidget {
   final String name;
+  final String? title;
   final String? avatarUrl;
   final int unreadCount;
   final VoidCallback? onNotifications;
@@ -18,6 +19,7 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
     required this.name,
+    this.title,
     this.avatarUrl,
     required this.unreadCount,
     this.onNotifications,
@@ -62,7 +64,7 @@ class HomeHeader extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      l10n.professorHomeTitle(name),
+                      title ?? l10n.professorHomeTitle(name),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
