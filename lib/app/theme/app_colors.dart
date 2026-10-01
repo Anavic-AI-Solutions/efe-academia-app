@@ -79,7 +79,7 @@ class AppColors {
   static const Color roleBranch = Color(0xFFF97316);
   static const Color roleProfessor = primary;
   static const Color roleStudent = Color(0xFF10B981);
-  static const Color roleParent = Color(0xFF8B5CF6);
+  static const Color roleParent = primarySoft;
 
   // Brightness helpers
   static Color accentFor(bool isDark) => isDark ? accent : primary;

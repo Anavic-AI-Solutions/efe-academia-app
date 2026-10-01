@@ -216,7 +216,7 @@ class DashboardScreen extends ConsumerWidget {
                       QuickAction(
                         icon: PhosphorIconsRegular.newspaper,
                         label: l10n.dashboardNews,
-                        color: const Color(0xFF8B5CF6),
+                        color: AppColors.primary,
                         onTap: () => context.push('/news'),
                       ),
                       QuickAction(
