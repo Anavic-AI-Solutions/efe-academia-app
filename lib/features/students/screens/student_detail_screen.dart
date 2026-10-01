@@ -3,9 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/domain/user_model.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../providers/student_provider.dart';
 import 'widgets/student_detail_header.dart';
 import 'widgets/student_info_tab.dart';
@@ -26,23 +31,14 @@ class StudentDetailScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final studentAsync = ref.watch(studentDetailProvider(studentId));
-    final background = AppColors.backgroundFor(isDark);
+    final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
+    final background = isProfessor
+        ? (isDark ? AppColors.darkBackground : ProfessorColors.surface)
+        : null;
 
     return studentAsync.when(
-      loading: () => Scaffold(
-        backgroundColor: background,
-        appBar: AppBar(title: Text(l10n.studentsDetailFallbackTitle)),
-        body: const ListShimmer(itemCount: 5, itemHeight: 60),
-      ),
-      error: (e, _) => Scaffold(
-        backgroundColor: background,
-        appBar: AppBar(title: Text(l10n.studentsDetailFallbackTitle)),
-        body: ErrorView(
-          message: l10n.studentsDetailLoadError,
-          detail: e.toString(),
-          onRetry: () => ref.invalidate(studentDetailProvider(studentId)),
-        ),
-      ),
+      loading: () => _buildLoading(context, isDark, isProfessor, l10n),
+      error: (e, _) => _buildError(context, isDark, isProfessor, l10n, e, ref),
       data: (student) => DefaultTabController(
         length: 4,
         child: Scaffold(
@@ -56,11 +52,15 @@ class StudentDetailScreen extends ConsumerWidget {
                 isScrollable: true,
                 tabAlignment: TabAlignment.start,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 8),
-                labelColor: AppColors.accentFor(isDark),
+                labelColor: isProfessor
+                    ? ProfessorColors.primary
+                    : (isDark ? const Color(0xFF6366F1) : AppColors.primary),
                 unselectedLabelColor: isDark
                     ? AppColors.darkTextSecondary
                     : AppColors.lightTextSecondary,
-                indicatorColor: AppColors.accentFor(isDark),
+                indicatorColor: isProfessor
+                    ? ProfessorColors.primary
+                    : (isDark ? const Color(0xFF6366F1) : AppColors.primary),
                 labelStyle: AppTypography.titleSmall,
                 unselectedLabelStyle: AppTypography.titleSmall,
                 tabs: [
@@ -92,6 +92,45 @@ class StudentDetailScreen extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLoading(BuildContext context, bool isDark, bool isProfessor, AppLocalizations l10n) {
+    return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
+      body: Column(
+        children: [
+          ScreenHeader(
+            title: l10n.studentsDetailFallbackTitle,
+            subtitle: isProfessor ? 'Profesor' : null,
+          ),
+          Expanded(
+            child: ListShimmer(itemCount: 5, itemHeight: 60),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildError(BuildContext context, bool isDark, bool isProfessor, AppLocalizations l10n, Object error, WidgetRef ref) {
+    return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
+      body: Column(
+        children: [
+          ScreenHeader(
+            title: l10n.studentsDetailFallbackTitle,
+            subtitle: isProfessor ? 'Profesor' : null,
+          ),
+          Expanded(
+            child: ErrorView(
+              message: l10n.studentsDetailLoadError,
+              detail: error.toString(),
+              accentColor: isProfessor ? ProfessorColors.primarySoft : null,
+              onRetry: () => ref.invalidate(studentDetailProvider(studentId)),
+            ),
+          ),
+        ],
       ),
     );
   }
