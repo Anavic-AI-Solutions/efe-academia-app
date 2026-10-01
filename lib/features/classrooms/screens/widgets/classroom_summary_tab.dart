@@ -12,12 +12,10 @@ import '../../domain/classroom_model.dart';
 
 class ClassroomSummaryTab extends StatelessWidget {
   final ClassroomModel classroom;
-  final bool isProfessor;
 
   const ClassroomSummaryTab({
     super.key,
     required this.classroom,
-    this.isProfessor = false,
   });
 
   @override
@@ -25,7 +23,7 @@ class ClassroomSummaryTab extends StatelessWidget {
     final l10n = context.l10n;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       children: [
         SizedBox(
           height: 150,
@@ -36,27 +34,21 @@ class ClassroomSummaryTab extends StatelessWidget {
                 icon: PhosphorIconsRegular.users,
                 value: '${classroom.studentCount}',
                 label: l10n.classroomsStudents,
-                iconColor: isProfessor
-                    ? AppColors.primary
-                    : const Color(0xFF3B82F6),
+                iconColor: AppColors.primary,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.mapPin,
                 value: classroom.room.isNotEmpty ? classroom.room : '—',
                 label: l10n.classroomsRoom,
-                iconColor: isProfessor
-                    ? AppColors.primarySoft
-                    : const Color(0xFF10B981),
+                iconColor: AppColors.primarySoft,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.clock,
                 value: classroom.shift.isNotEmpty ? classroom.shift : '—',
                 label: l10n.classroomsShift,
-                iconColor: isProfessor
-                    ? AppColors.accent
-                    : const Color(0xFFF97316),
+                iconColor: AppColors.accent,
               ),
             ],
           ),

@@ -11,12 +11,10 @@ import '../../domain/student_model.dart';
 
 class StudentInfoTab extends StatelessWidget {
   final StudentModel student;
-  final bool isProfessor;
 
   const StudentInfoTab({
     super.key,
     required this.student,
-    this.isProfessor = false,
   });
 
   @override
@@ -24,7 +22,7 @@ class StudentInfoTab extends StatelessWidget {
     final l10n = context.l10n;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       children: [
         SizedBox(
           height: 150,
@@ -35,27 +33,21 @@ class StudentInfoTab extends StatelessWidget {
                 icon: PhosphorIconsRegular.calendarBlank,
                 value: student.year.isNotEmpty ? student.year : '—',
                 label: l10n.studentsInfoYear,
-                iconColor: isProfessor
-                    ? AppColors.primary
-                    : const Color(0xFF3B82F6),
+                iconColor: AppColors.primary,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.mapPin,
                 value: student.branch.isNotEmpty ? student.branch : '—',
                 label: l10n.studentsInfoBranch,
-                iconColor: isProfessor
-                    ? AppColors.primarySoft
-                    : const Color(0xFF10B981),
+                iconColor: AppColors.primarySoft,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.chalkboardTeacher,
                 value: '${student.classroomCount}',
                 label: l10n.studentsInfoClassrooms,
-                iconColor: isProfessor
-                    ? AppColors.accent
-                    : const Color(0xFFF97316),
+                iconColor: AppColors.accent,
               ),
             ],
           ),

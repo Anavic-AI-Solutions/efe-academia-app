@@ -1,4 +1,5 @@
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/empty_state.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
@@ -127,5 +128,12 @@ void main() {
 
     expect(find.text('Estudiante 1'), findsOneWidget);
     expect(find.text('Mostrando 1–20 de 57'), findsOneWidget);
+  });
+
+  testWidgets('empty state uses the default accent', (tester) async {
+    await _pumpScreen(tester, total: 0);
+
+    final empty = tester.widget<EmptyState>(find.byType(EmptyState));
+    expect(empty.accentColor, isNull);
   });
 }

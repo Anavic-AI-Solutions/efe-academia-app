@@ -9,6 +9,8 @@ import 'package:efe_mobile/features/classrooms/domain/material_model.dart';
 import 'package:efe_mobile/features/classrooms/domain/professor_model.dart';
 import 'package:efe_mobile/features/classrooms/providers/classroom_provider.dart';
 import 'package:efe_mobile/features/classrooms/screens/classroom_list_screen.dart';
+import 'package:efe_mobile/features/classrooms/screens/widgets/professor_classroom_list_card.dart';
+import 'package:efe_mobile/features/classrooms/screens/widgets/professor_classrooms_header.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -240,5 +242,13 @@ void main() {
     await _pumpScreen(tester, total: 3);
 
     expect(find.textContaining('Mostrando'), findsNothing);
+  });
+
+  testWidgets('uses the single blue system for every role', (tester) async {
+    await _pumpScreen(tester);
+
+    expect(find.byType(ProfessorClassroomsHeader), findsOneWidget);
+    expect(find.text('Mis aulas'), findsOneWidget);
+    expect(find.byType(ProfessorClassroomListCard), findsOneWidget);
   });
 }

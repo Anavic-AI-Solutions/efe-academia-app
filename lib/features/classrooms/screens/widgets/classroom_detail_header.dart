@@ -8,14 +8,12 @@ import '../../../../l10n/l10n.dart';
 
 class ClassroomDetailHeader extends StatelessWidget {
   final ClassroomModel classroom;
-  final bool isProfessor;
   final VoidCallback? onAttendance;
   final VoidCallback? onGrades;
 
   const ClassroomDetailHeader({
     super.key,
     required this.classroom,
-    this.isProfessor = false,
     this.onAttendance,
     this.onGrades,
   });
@@ -23,7 +21,6 @@ class ClassroomDetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DetailHero(
-      gradient: isProfessor ? AppColors.primaryGradient : null,
       leading: const DetailHeroIcon(
         icon: PhosphorIconsRegular.chalkboardTeacher,
       ),
@@ -47,29 +44,27 @@ class ClassroomDetailHeader extends StatelessWidget {
             label: classroom.year,
           ),
       ],
-      bottom: isProfessor
-          ? Row(
-              children: [
-                Expanded(
-                  child: _HeroActionButton(
-                    icon: PhosphorIconsRegular.checkSquare,
-                    label: context.l10n.professorTakeAttendance,
-                    primary: true,
-                    onPressed: onAttendance,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _HeroActionButton(
-                    icon: PhosphorIconsRegular.notePencil,
-                    label: context.l10n.professorLoadGrade,
-                    primary: false,
-                    onPressed: onGrades,
-                  ),
-                ),
-              ],
-            )
-          : null,
+      bottom: Row(
+        children: [
+          Expanded(
+            child: _HeroActionButton(
+              icon: PhosphorIconsRegular.checkSquare,
+              label: context.l10n.professorTakeAttendance,
+              primary: true,
+              onPressed: onAttendance,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: _HeroActionButton(
+              icon: PhosphorIconsRegular.notePencil,
+              label: context.l10n.professorLoadGrade,
+              primary: false,
+              onPressed: onGrades,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -487,7 +487,8 @@ void main() {
     );
   });
 
-  testWidgets('professor empty states use the blue accent', (tester) async {
+  testWidgets('related empty states use the default blue accent',
+      (tester) async {
     await _pumpDetail(
       tester,
       students: _FakeStudentRepository(student: _student),
@@ -495,11 +496,10 @@ void main() {
     );
 
     final empty = tester.widget<EmptyState>(find.byType(EmptyState));
-    expect(empty.accentColor, AppColors.primarySoft);
+    expect(empty.accentColor, isNull);
   });
 
-  testWidgets('generic student detail keeps the default accents',
-      (tester) async {
+  testWidgets('student detail uses the single blue system', (tester) async {
     await _pumpDetail(
       tester,
       students: _FakeStudentRepository(student: _student),
@@ -510,7 +510,18 @@ void main() {
 
     await _openTab(tester, 'Información');
     final stats = tester.widgetList<StatCard>(find.byType(StatCard)).toList();
-    expect(stats.first.iconColor, const Color(0xFF3B82F6));
+    expect(
+      stats.map((stat) => stat.iconColor),
+      [
+        AppColors.primary,
+        AppColors.primarySoft,
+        AppColors.accent,
+      ],
+    );
+
+    final tabBar = tester.widget<TabBar>(find.byType(TabBar));
+    expect(tabBar.labelColor, AppColors.primary);
+    expect(tabBar.indicatorColor, AppColors.primary);
   });
 
   testWidgets('professor info tab renders without overflow on a small phone',

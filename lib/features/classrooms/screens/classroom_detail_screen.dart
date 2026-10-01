@@ -7,8 +7,6 @@ import '../../../app/theme/app_typography.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
-import '../../auth/domain/user_model.dart';
-import '../../auth/providers/auth_provider.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_detail_header.dart';
 import 'widgets/classroom_related_tabs.dart';
@@ -24,10 +22,7 @@ class ClassroomDetailScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final classroomAsync = ref.watch(classroomDetailProvider(classroomId));
-    final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
-    final background = isProfessor
-        ? (isDark ? AppColors.darkBackground : AppColors.lightBackground)
-        : null;
+    final background = AppColors.backgroundFor(isDark);
 
     return classroomAsync.when(
       loading: () => Scaffold(
@@ -41,7 +36,6 @@ class ClassroomDetailScreen extends ConsumerWidget {
         body: ErrorView(
           message: l10n.classroomsDetailLoadError,
           detail: e.toString(),
-          accentColor: isProfessor ? AppColors.primarySoft : null,
           onRetry: () => ref.invalidate(classroomDetailProvider(classroomId)),
         ),
       ),
@@ -53,7 +47,6 @@ class ClassroomDetailScreen extends ConsumerWidget {
             children: [
               ClassroomDetailHeader(
                 classroom: classroom,
-                isProfessor: isProfessor,
                 onAttendance: () =>
                     context.push('/classrooms/$classroomId/attendance'),
                 onGrades: () =>
@@ -63,15 +56,11 @@ class ClassroomDetailScreen extends ConsumerWidget {
                 isScrollable: true,
                 tabAlignment: TabAlignment.start,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 8),
-                labelColor: isProfessor
-                    ? AppColors.primary
-                    : (isDark ? const Color(0xFF6366F1) : AppColors.primary),
+                labelColor: AppColors.accentFor(isDark),
                 unselectedLabelColor: isDark
                     ? AppColors.darkTextSecondary
                     : AppColors.lightTextSecondary,
-                indicatorColor: isProfessor
-                    ? AppColors.primary
-                    : (isDark ? const Color(0xFF6366F1) : AppColors.primary),
+                indicatorColor: AppColors.accentFor(isDark),
                 labelStyle: AppTypography.titleSmall,
                 unselectedLabelStyle: AppTypography.titleSmall,
                 tabs: [
@@ -86,19 +75,15 @@ class ClassroomDetailScreen extends ConsumerWidget {
                   children: [
                     ClassroomSummaryTab(
                       classroom: classroom,
-                      isProfessor: isProfessor,
                     ),
                     ClassroomStudentsTab(
                       classroomId: classroomId,
-                      isProfessor: isProfessor,
                     ),
                     ClassroomProfessorsTab(
                       classroomId: classroomId,
-                      isProfessor: isProfessor,
                     ),
                     ClassroomMaterialsTab(
                       classroomId: classroomId,
-                      isProfessor: isProfessor,
                     ),
                   ],
                 ),

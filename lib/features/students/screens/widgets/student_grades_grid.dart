@@ -11,13 +11,11 @@ import '../../domain/student_grade_grid.dart';
 class StudentGradesGrid extends StatelessWidget {
   final List<QualificationModel> qualifications;
   final String? classroomName;
-  final bool isProfessor;
 
   const StudentGradesGrid({
     super.key,
     required this.qualifications,
     this.classroomName,
-    this.isProfessor = false,
   });
 
   static const double _periodWidth = 86;
@@ -32,13 +30,9 @@ class StudentGradesGrid extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final rows = buildGradeGrid(qualifications);
 
-    final headerColor = isProfessor
-        ? AppColors.sectionLabel
-        : (isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary);
-    final valueColor = isProfessor
-        ? AppColors.lightInk
-        : (isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary);
-    final mutedColor = AppColors.muted;
+    const headerColor = AppColors.sectionLabel;
+    const valueColor = AppColors.lightInk;
+    const mutedColor = AppColors.muted;
     final borderColor =
         isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
