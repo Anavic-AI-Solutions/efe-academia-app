@@ -331,7 +331,7 @@ void main() {
 
     await _pumpHome(tester);
 
-    expect(find.byType(ProfessorHomeHeader), findsOneWidget);
+    expect(find.byType(HomeHeader), findsOneWidget);
     expect(find.text('Prof. Ileana Gómez'), findsOneWidget);
     expect(find.text('78'), findsOneWidget);
     expect(tester.takeException(), isNull);
