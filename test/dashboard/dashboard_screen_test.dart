@@ -50,37 +50,44 @@ class _FakeParentAuthRepository implements AuthRepository {
   Future<void> forgotPassword(String email) async {}
 }
 
+const _parentData = DashboardData(
+  role: 'parent',
+  totalStudents: 2,
+  totalClassrooms: 2,
+  pendingFees: 1,
+  classrooms: [
+    ProfessorClassroomSummary(
+      id: 'c1',
+      name: '3G X · 2026',
+      studentsCount: 24,
+    ),
+    ProfessorClassroomSummary(
+      id: 'c2',
+      name: '1G X · 2026',
+      studentsCount: 30,
+    ),
+  ],
+);
+
 class _FakeParentDashboardRepository implements DashboardRepository {
+  final DashboardData data;
+
+  const _FakeParentDashboardRepository([this.data = _parentData]);
+
   @override
-  Future<DashboardData> getDashboard() async => const DashboardData(
-        role: 'parent',
-        totalStudents: 2,
-        totalClassrooms: 2,
-        pendingFees: 1,
-        classrooms: [
-          ProfessorClassroomSummary(
-            id: 'c1',
-            name: '3G X · 2026',
-            studentsCount: 24,
-          ),
-          ProfessorClassroomSummary(
-            id: 'c2',
-            name: '1G X · 2026',
-            studentsCount: 30,
-          ),
-        ],
-      );
+  Future<DashboardData> getDashboard() async => data;
 }
 
 Future<void> _pumpParentHome(
   WidgetTester tester, {
   Brightness brightness = Brightness.light,
+  DashboardData data = _parentData,
 }) async {
   final container = ProviderContainer(
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeParentAuthRepository()),
       dashboardRepositoryProvider
-          .overrideWithValue(_FakeParentDashboardRepository()),
+          .overrideWithValue(_FakeParentDashboardRepository(data)),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );
@@ -107,7 +114,7 @@ void main() {
     expect(find.byType(HomeHeader), findsOneWidget);
     expect(find.byType(HeaderStatsRow), findsOneWidget);
     // section label en versalitas del sistema
-    final label = tester.widget<Text>(find.text('MIS AULAS'));
+    final label = tester.widget<Text>(find.text('CLASES'));
     expect(label.style?.color, AppColors.sectionLabel);
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
@@ -134,5 +141,16 @@ void main() {
     expect(find.byType(HomeHeader), findsOneWidget);
     expect(find.text('3G X · 2026'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('parent home empty classrooms uses neutral copy', (tester) async {
+    await _pumpParentHome(
+      tester,
+      data: const DashboardData(role: 'parent'),
+    );
+
+    expect(find.text('CLASES'), findsOneWidget);
+    expect(find.text('No se encontraron clases'), findsOneWidget);
+    expect(find.text('No hay clases disponibles'), findsOneWidget);
   });
 }

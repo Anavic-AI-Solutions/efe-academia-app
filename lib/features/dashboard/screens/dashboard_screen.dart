@@ -170,14 +170,15 @@ class DashboardScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 14),
                   SectionHeader(
-                    title: l10n.professorMyClassrooms,
+                    title: l10n.classroomsTitle,
                     padding: EdgeInsets.zero,
                   ),
                   const SizedBox(height: 11),
                   if (classrooms.isEmpty)
                     EmptyState(
                       icon: PhosphorIconsRegular.chalkboardTeacher,
-                      title: l10n.professorMyClassroomsEmpty,
+                      title: l10n.classroomsEmptyTitle,
+                      subtitle: l10n.classroomsEmptySubtitle,
                     )
                   else
                     ...classrooms.map(
