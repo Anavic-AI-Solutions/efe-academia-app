@@ -274,7 +274,7 @@ void main() {
       find.ancestor(of: _navLabel('Aulas'), matching: find.byType(AnimatedContainer)),
     );
     expect((activePill.decoration as BoxDecoration).color,
-        AppColors.primarySoft);
+        AppColors.primary);
   });
 
   testWidgets('Cargar nota opens the classroom grades screen', (tester) async {

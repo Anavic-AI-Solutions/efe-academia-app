@@ -41,6 +41,8 @@ class DetailHero extends StatelessWidget {
             (isDark
                 ? AppColors.primaryGradientDark
                 : AppColors.primaryGradient),
+        borderRadius:
+            const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: SafeArea(
         bottom: false,

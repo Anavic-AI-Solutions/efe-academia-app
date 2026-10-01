@@ -103,23 +103,27 @@ void main() {
   });
 
   testWidgets('active destination uses the accent pill', (tester) async {
-    await _pumpApp(tester, 'professor');
+    for (final role in ['parent', 'professor']) {
+      await _pumpApp(tester, role);
 
-    final activePill = tester.widget<AnimatedContainer>(
-      find.ancestor(
-        of: navLabel('Inicio'),
-        matching: find.byType(AnimatedContainer),
-      ),
-    );
-    final decoration = activePill.decoration as BoxDecoration;
-    expect(decoration.color, AppColors.primarySoft);
+      final activePill = tester.widget<AnimatedContainer>(
+        find.ancestor(
+          of: navLabel('Inicio'),
+          matching: find.byType(AnimatedContainer),
+        ),
+      );
+      final decoration = activePill.decoration as BoxDecoration;
+      expect(decoration.color, AppColors.primary, reason: 'role $role');
 
-    final inactivePill = tester.widget<AnimatedContainer>(
-      find.ancestor(
-        of: navLabel('Chat'),
-        matching: find.byType(AnimatedContainer),
-      ),
-    );
-    expect((inactivePill.decoration as BoxDecoration).color, Colors.transparent);
+      final inactivePill = tester.widget<AnimatedContainer>(
+        find.ancestor(
+          of: navLabel('Chat'),
+          matching: find.byType(AnimatedContainer),
+        ),
+      );
+      expect((inactivePill.decoration as BoxDecoration).color,
+          Colors.transparent,
+          reason: 'role $role');
+    }
   });
 }

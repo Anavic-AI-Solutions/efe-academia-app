@@ -37,12 +37,10 @@ class CustomBottomNav extends ConsumerWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final l10n = context.l10n;
-    final role = ref.watch(authProvider).user?.role;
-    final accent = role == 'professor'
-        ? AppColors.primarySoft
-        : (isDark ? const Color(0xFF6366F1) : AppColors.primary);
+    // Single unified accent for every role.
+    const accent = AppColors.primary;
     final inactive =
-        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+        isDark ? AppColors.darkTextSecondary : AppColors.navInactive;
 
     return Container(
       decoration: BoxDecoration(

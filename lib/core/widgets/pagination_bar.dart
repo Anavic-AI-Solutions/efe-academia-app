@@ -49,7 +49,7 @@ class PaginationBar extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final l10n = context.l10n;
-    final accent = isDark ? const Color(0xFF6366F1) : AppColors.primary;
+    final accent = AppColors.accentFor(isDark);
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
 

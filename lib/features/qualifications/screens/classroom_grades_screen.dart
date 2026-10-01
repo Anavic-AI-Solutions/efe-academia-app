@@ -45,7 +45,6 @@ class ClassroomGradesScreen extends ConsumerWidget {
                   ? EmptyState(
                       icon: PhosphorIconsRegular.users,
                       title: l10n.attendanceEmpty,
-                      accentColor: AppColors.primarySoft,
                     )
                   : RefreshIndicator(
                       onRefresh: () => ref.refresh(provider.future),
@@ -77,7 +76,6 @@ class ClassroomGradesScreen extends ConsumerWidget {
               error: (error, _) => ErrorView(
                 message: l10n.gradesLoadError,
                 detail: error.toString(),
-                accentColor: AppColors.primarySoft,
                 onRetry: () => ref.invalidate(provider),
               ),
             ),
