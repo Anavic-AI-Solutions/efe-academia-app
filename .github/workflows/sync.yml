@@ -1,0 +1,79 @@
+name: Auto Sync
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths:
+      - '**.dart'
+      - 'pubspec.yaml'
+      - '.github/workflows/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    name: Sync & Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Build Linux (verify)
+        run: flutter build linux --release
+
+      - name: Build Windows (verify)
+        run: flutter build windows --release
+
+      - name: Auto-tag version bump
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          VERSION=$(grep 'version:' pubspec.yaml | head -1 | awk '{print $2}')
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Tag v$VERSION already exists"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag "v$VERSION"
+            git push origin "v$VERSION"
+            echo "Created tag v$VERSION"
+          fi
+
+      - name: Create PR for upstream sync (if needed)
+        if: github.event_name == 'schedule'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: sync upstream changes'
+          title: 'chore: automated sync'
+          body: |
+            Automated sync from upstream.
+            Includes latest changes from master.
+          branch: auto-sync
+          delete-branch: true
