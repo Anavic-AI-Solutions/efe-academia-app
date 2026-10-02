@@ -44,7 +44,6 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
       return ErrorView(
         message: l10n.professorLoadError,
         detail: dashboardState.error,
-        accentColor: ProfessorColors.primarySoft,
         onRetry: () => ref.read(dashboardProvider.notifier).refresh(),
       );
     }
@@ -56,7 +55,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+          AppColors.backgroundFor(isDark),
       body: RefreshIndicator(
         onRefresh: () => ref.read(dashboardProvider.notifier).refresh(),
         child: ListView(
@@ -98,9 +97,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.6,
-                      color: isDark
-                          ? AppColors.darkTextTertiary
-                          : ProfessorColors.sectionLabel,
+                      color: AppColors.sectionLabel,
                     ),
                   ),
                   const SizedBox(height: 11),
@@ -108,7 +105,6 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                     EmptyState(
                       icon: PhosphorIconsRegular.chalkboardTeacher,
                       title: l10n.professorMyClassroomsEmpty,
-                      accentColor: ProfessorColors.primarySoft,
                     )
                   else
                     ...classrooms.map(
@@ -130,7 +126,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       Expanded(
                         child: _ProfessorActionButton(
                           label: l10n.professorTakeAttendance,
-                          color: ProfessorColors.primary,
+                          color: AppColors.primary,
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
@@ -142,7 +138,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       Expanded(
                         child: _ProfessorActionButton(
                           label: l10n.professorLoadGrade,
-                          color: ProfessorColors.primarySoft,
+                          color: AppColors.primarySoft,
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
@@ -165,7 +161,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
   Widget _buildLoading(BuildContext context, bool isDark) {
     return Scaffold(
       backgroundColor:
-          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+          AppColors.backgroundFor(isDark),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
