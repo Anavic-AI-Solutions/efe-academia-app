@@ -4,12 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
-import '../../professor/widgets/professor_screen_header.dart';
 import '../domain/attendance_day.dart';
 import '../providers/attendance_provider.dart';
 import 'widgets/attendance_student_row.dart';
@@ -77,10 +76,10 @@ class AttendanceScreen extends ConsumerWidget {
       },
       child: Scaffold(
         backgroundColor:
-            isDark ? AppColors.darkBackground : ProfessorColors.surface,
+            isDark ? AppColors.darkBackground : AppColors.lightBackground,
         body: Column(
           children: [
-            ProfessorScreenHeader(
+            ScreenHeader(
               title: l10n.attendanceTitle(day?.classroomName ?? ''),
               subtitle: l10n.attendanceSubtitle(
                 _dateLabel(context, day?.date ?? ''),
@@ -131,7 +130,6 @@ class AttendanceScreen extends ConsumerWidget {
       return ErrorView(
         message: l10n.attendanceLoadError,
         detail: state.error,
-        accentColor: ProfessorColors.primarySoft,
         onRetry: () =>
             ref.read(attendanceProvider(classroomId).notifier).load(),
       );
@@ -143,7 +141,6 @@ class AttendanceScreen extends ConsumerWidget {
       return EmptyState(
         icon: PhosphorIconsRegular.users,
         title: l10n.attendanceEmpty,
-        accentColor: ProfessorColors.primarySoft,
       );
     }
 
@@ -232,10 +229,10 @@ class _SaveBar extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isSaving ? null : onSave,
             style: ElevatedButton.styleFrom(
-              backgroundColor: ProfessorColors.primary,
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               disabledBackgroundColor:
-                  ProfessorColors.primary.withOpacity(0.5),
+                  AppColors.primary.withOpacity(0.5),
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(13),

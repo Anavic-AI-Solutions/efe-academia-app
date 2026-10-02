@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app/theme/professor_colors.dart';
+import '../../app/theme/app_colors.dart';
 
 /// Grade pill following the professor mockup: colored background + white text.
 class GradeBadge extends StatelessWidget {
@@ -17,16 +17,16 @@ class GradeBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: isEmpty
-            ? ProfessorColors.gradeEmptyBackground
-            : ProfessorColors.gradeColor(grade),
+            ? AppColors.gradeEmptyBackground
+            : AppColors.gradeColor(grade),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        ProfessorColors.formatGrade(grade),
+        AppColors.formatGrade(grade),
         style: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.w800,
-          color: isEmpty ? ProfessorColors.muted : Colors.white,
+          color: isEmpty ? AppColors.muted : Colors.white,
         ),
       ),
     );

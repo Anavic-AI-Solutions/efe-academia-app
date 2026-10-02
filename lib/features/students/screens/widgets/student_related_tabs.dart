@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../../core/widgets/loading_shimmer.dart';
@@ -20,19 +19,16 @@ import 'student_grades_grid.dart';
 class StudentGradesTab extends ConsumerWidget {
   final String studentId;
   final String? classroomId;
-  final bool isProfessor;
 
   const StudentGradesTab({
     super.key,
     required this.studentId,
     this.classroomId,
-    this.isProfessor = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final accent = isProfessor ? ProfessorColors.primarySoft : null;
     final gradesAsync = ref.watch(studentGradesProvider(studentId));
 
     return gradesAsync.when(
@@ -40,7 +36,6 @@ class StudentGradesTab extends ConsumerWidget {
       error: (error, _) => ErrorView(
         message: l10n.studentsRelatedLoadError,
         detail: error.toString(),
-        accentColor: accent,
         onRetry: () => ref.invalidate(studentGradesProvider(studentId)),
       ),
       data: (qualifications) {
@@ -49,18 +44,16 @@ class StudentGradesTab extends ConsumerWidget {
           return EmptyState(
             icon: Icons.grade_outlined,
             title: l10n.studentsNoGrades,
-            accentColor: accent,
           );
         }
 
         return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
           itemCount: sections.length,
           separatorBuilder: (_, __) => const SizedBox(height: 14),
           itemBuilder: (context, index) => StudentGradesGrid(
             qualifications: sections[index].qualifications,
             classroomName: sections[index].name,
-            isProfessor: isProfessor,
           ),
         );
       },
@@ -121,12 +114,10 @@ class _GradesSection {
 
 class StudentAbsencesTab extends ConsumerWidget {
   final String studentId;
-  final bool isProfessor;
 
   const StudentAbsencesTab({
     super.key,
     required this.studentId,
-    this.isProfessor = false,
   });
 
   @override
@@ -140,7 +131,6 @@ class StudentAbsencesTab extends ConsumerWidget {
       emptyIcon: Icons.event_busy_outlined,
       emptyTitle: l10n.studentsNoAbsences,
       errorMessage: l10n.studentsRelatedLoadError,
-      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
       onRetry: () => ref.read(provider.notifier).refresh(),
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, absence) => AbsenceTile(absence: absence),
@@ -150,12 +140,10 @@ class StudentAbsencesTab extends ConsumerWidget {
 
 class StudentFeesTab extends ConsumerWidget {
   final String studentId;
-  final bool isProfessor;
 
   const StudentFeesTab({
     super.key,
     required this.studentId,
-    this.isProfessor = false,
   });
 
   @override
@@ -169,7 +157,6 @@ class StudentFeesTab extends ConsumerWidget {
       emptyIcon: Icons.receipt_long_outlined,
       emptyTitle: l10n.studentsNoFees,
       errorMessage: l10n.studentsRelatedLoadError,
-      accentColor: isProfessor ? ProfessorColors.primarySoft : null,
       onRetry: () => ref.read(provider.notifier).refresh(),
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, fee) => FeeTile(fee: fee),

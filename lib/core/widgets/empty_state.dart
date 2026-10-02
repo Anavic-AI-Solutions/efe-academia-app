@@ -24,8 +24,7 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final accent =
-        accentColor ?? (isDark ? const Color(0xFF6366F1) : AppColors.primary);
+    final accent = accentColor ?? AppColors.accentFor(isDark);
 
     return Center(
       child: Padding(
@@ -74,10 +73,16 @@ class EmptyState extends StatelessWidget {
                     backgroundColor: accent,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(13),
                     ),
                   ),
-                  child: Text(actionLabel!),
+                  child: Text(
+                    actionLabel!,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
             ],

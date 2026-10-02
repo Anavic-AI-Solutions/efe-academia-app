@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/professor_colors.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/attendance_day.dart';
 
@@ -26,7 +26,7 @@ class AttendanceStudentRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(13),
         boxShadow: [
           BoxShadow(
-            color: (isAbsent ? ProfessorColors.absent : const Color(0xFF28325A))
+            color: (isAbsent ? AppColors.absent : const Color(0xFF28325A))
                 .withOpacity(0.24),
             blurRadius: 20,
             offset: const Offset(0, 8),
@@ -34,7 +34,7 @@ class AttendanceStudentRow extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: isAbsent ? ProfessorColors.absent.withOpacity(0.35) : Colors.transparent,
+          color: isAbsent ? AppColors.absent.withOpacity(0.35) : Colors.transparent,
           width: 1.5,
         ),
       ),
@@ -50,21 +50,21 @@ class AttendanceStudentRow extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: ProfessorColors.ink,
+                color: AppColors.lightInk,
               ),
             ),
           ),
           _StatusToggle(
             label: l10n.attendancePresent,
             isActive: !isAbsent,
-            activeColor: ProfessorColors.present,
+            activeColor: AppColors.present,
             onTap: isAbsent ? onToggle : null,
           ),
           const SizedBox(width: 3),
           _StatusToggle(
             label: l10n.attendanceAbsent,
             isActive: isAbsent,
-            activeColor: ProfessorColors.absent,
+            activeColor: AppColors.absent,
             onTap: isAbsent ? null : onToggle,
           ),
         ],
@@ -104,7 +104,7 @@ class _StudentAvatar extends StatelessWidget {
         style: const TextStyle(
           fontSize: 9,
           fontWeight: FontWeight.w800,
-          color: ProfessorColors.ink,
+          color: AppColors.lightInk,
         ),
       ),
     );
@@ -143,7 +143,7 @@ class _StatusToggle extends StatelessWidget {
           style: TextStyle(
             fontSize: 10,
             fontWeight: isActive ? FontWeight.w800 : FontWeight.w700,
-            color: isActive ? Colors.white : ProfessorColors.navInactive,
+            color: isActive ? Colors.white : AppColors.navInactive,
           ),
         ),
       ),

@@ -1,4 +1,4 @@
-import 'package:efe_mobile/app/theme/professor_colors.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/core/widgets/empty_state.dart';
@@ -19,6 +19,8 @@ import 'package:efe_mobile/features/students/domain/absence_model.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:efe_mobile/features/students/screens/student_detail_screen.dart';
+import 'package:efe_mobile/features/students/screens/widgets/student_grades_grid.dart';
+import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -263,8 +265,8 @@ void main() {
 
     await _openTab(tester, 'Información');
 
-    expect(find.text('Datos personales'), findsOneWidget);
-    expect(find.text('Institucional'), findsOneWidget);
+    expect(find.text('DATOS PERSONALES'), findsOneWidget);
+    expect(find.text('INSTITUCIONAL'), findsOneWidget);
     expect(find.text('ana@example.com'), findsOneWidget);
     expect(find.text('30111222'), findsOneWidget);
     expect(find.text('2026'), findsWidgets);
@@ -480,14 +482,15 @@ void main() {
     expect(
       stats.map((stat) => stat.iconColor),
       [
-        ProfessorColors.primary,
-        ProfessorColors.primarySoft,
-        ProfessorColors.accent,
+        AppColors.primary,
+        AppColors.primarySoft,
+        AppColors.accent,
       ],
     );
   });
 
-  testWidgets('professor empty states use the blue accent', (tester) async {
+  testWidgets('related empty states use the default blue accent',
+      (tester) async {
     await _pumpDetail(
       tester,
       students: _FakeStudentRepository(student: _student),
@@ -495,11 +498,10 @@ void main() {
     );
 
     final empty = tester.widget<EmptyState>(find.byType(EmptyState));
-    expect(empty.accentColor, ProfessorColors.primarySoft);
+    expect(empty.accentColor, isNull);
   });
 
-  testWidgets('generic student detail keeps the default accents',
-      (tester) async {
+  testWidgets('student detail uses the single blue system', (tester) async {
     await _pumpDetail(
       tester,
       students: _FakeStudentRepository(student: _student),
@@ -510,7 +512,36 @@ void main() {
 
     await _openTab(tester, 'Información');
     final stats = tester.widgetList<StatCard>(find.byType(StatCard)).toList();
-    expect(stats.first.iconColor, const Color(0xFF3B82F6));
+    expect(
+      stats.map((stat) => stat.iconColor),
+      [
+        AppColors.primary,
+        AppColors.primarySoft,
+        AppColors.accent,
+      ],
+    );
+
+    final tabBar = tester.widget<TabBar>(find.byType(TabBar));
+    expect(tabBar.labelColor, AppColors.primary);
+    expect(tabBar.indicatorColor, AppColors.primary);
+  });
+
+  testWidgets('grades grid uses dark ink in dark mode', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(),
+        locale: const Locale('es', 'AR'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: StudentGradesGrid(qualifications: []),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final title = tester.widget<Text>(find.text('Calificaciones por período'));
+    expect(title.style?.color, AppColors.darkTextPrimary);
   });
 
   testWidgets('professor info tab renders without overflow on a small phone',
@@ -526,7 +557,7 @@ void main() {
     );
     await _openTab(tester, 'Información');
 
-    expect(find.text('Datos personales'), findsOneWidget);
+    expect(find.text('DATOS PERSONALES'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

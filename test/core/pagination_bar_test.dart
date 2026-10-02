@@ -1,4 +1,7 @@
+import 'package:efe_mobile/app/theme/app_colors.dart';
+import 'package:efe_mobile/app/theme/app_theme.dart';
 import 'package:efe_mobile/core/widgets/pagination_bar.dart';
+import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -132,6 +135,46 @@ void main() {
       await tester.pump();
 
       expect(taps, isEmpty);
+    });
+
+    testWidgets('uses the unified accent in light and dark', (tester) async {
+      Widget bar(ThemeMode mode) => MaterialApp(
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: mode,
+            locale: testLocale,
+            localizationsDelegates:
+                AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(
+              body: PaginationBar(
+                page: 2,
+                totalPages: 5,
+                from: 21,
+                to: 40,
+                total: 57,
+                onPageChanged: (_) {},
+              ),
+            ),
+          );
+
+      await tester.pumpWidget(bar(ThemeMode.light));
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container &&
+            (w.decoration as BoxDecoration?)?.color ==
+                AppColors.primary),
+        findsOneWidget,
+      );
+
+      await tester.pumpWidget(bar(ThemeMode.dark));
+      await tester.pumpAndSettle();
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container &&
+            (w.decoration as BoxDecoration?)?.color == AppColors.accent),
+        findsOneWidget,
+      );
     });
   });
 }

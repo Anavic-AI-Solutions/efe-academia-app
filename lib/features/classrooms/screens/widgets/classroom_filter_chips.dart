@@ -26,8 +26,7 @@ class ClassroomFilterChips extends StatelessWidget {
 
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accent = accentColor ??
-        (isDark ? const Color(0xFF6366F1) : AppColors.primary);
+    final accent = accentColor ?? AppColors.accentFor(isDark);
 
     return SizedBox(
       height: 32,

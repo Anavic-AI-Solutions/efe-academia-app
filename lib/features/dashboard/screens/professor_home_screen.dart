@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
+import '../../../core/widgets/header_stats_row.dart';
+import '../../../core/widgets/home_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
@@ -14,8 +16,6 @@ import '../../notifications/providers/notification_provider.dart';
 import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
 import 'widgets/professor_classroom_card.dart';
-import 'widgets/professor_home_header.dart';
-import 'widgets/professor_stats_row.dart';
 
 class ProfessorHomeScreen extends ConsumerStatefulWidget {
   const ProfessorHomeScreen({super.key});
@@ -44,7 +44,6 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
       return ErrorView(
         message: l10n.professorLoadError,
         detail: dashboardState.error,
-        accentColor: ProfessorColors.primarySoft,
         onRetry: () => ref.read(dashboardProvider.notifier).refresh(),
       );
     }
@@ -55,24 +54,35 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
         (classrooms.isNotEmpty ? classrooms.first.id : null);
 
     return Scaffold(
-      backgroundColor:
-          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: RefreshIndicator(
         onRefresh: () => ref.read(dashboardProvider.notifier).refresh(),
         child: ListView(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
-            ProfessorHomeHeader(
+            HomeHeader(
               name: user?.name ?? '',
               avatarUrl: user?.avatarUrl,
               unreadCount: unreadCount,
               onNotifications: () => context.push('/notifications'),
               onSearch: () => context.push('/search'),
-              child: ProfessorStatsRow(
-                classrooms: data?.totalClassrooms ?? 0,
-                students: data?.totalStudents ?? 0,
-                absences: data?.absencesToday ?? 0,
+              child: HeaderStatsRow(
+                stats: [
+                  HeaderStat(
+                    value: '${data?.totalClassrooms ?? 0}',
+                    label: l10n.professorStatClassrooms,
+                  ),
+                  HeaderStat(
+                    value: '${data?.totalStudents ?? 0}',
+                    label: l10n.professorStatStudents,
+                  ),
+                  HeaderStat(
+                    value: '${data?.absencesToday ?? 0}',
+                    label: l10n.professorStatAbsences,
+                    highlighted: true,
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -86,7 +96,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.6,
-                      color: ProfessorColors.sectionLabel,
+                      color: AppColors.sectionLabel,
                     ),
                   ),
                   const SizedBox(height: 11),
@@ -94,7 +104,6 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                     EmptyState(
                       icon: PhosphorIconsRegular.chalkboardTeacher,
                       title: l10n.professorMyClassroomsEmpty,
-                      accentColor: ProfessorColors.primarySoft,
                     )
                   else
                     ...classrooms.map(
@@ -116,7 +125,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       Expanded(
                         child: _ProfessorActionButton(
                           label: l10n.professorTakeAttendance,
-                          color: ProfessorColors.primary,
+                          color: AppColors.primary,
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
@@ -128,7 +137,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       Expanded(
                         child: _ProfessorActionButton(
                           label: l10n.professorLoadGrade,
-                          color: ProfessorColors.primarySoft,
+                          color: AppColors.primarySoft,
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
@@ -151,21 +160,11 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
   Widget _buildLoading(BuildContext context, bool isDark) {
     return Scaffold(
       backgroundColor:
-          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+          isDark ? AppColors.darkBackground : AppColors.surface,
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(
-              16,
-              MediaQuery.of(context).padding.top + 12,
-              16,
-              16,
-            ),
-            decoration: const BoxDecoration(
-              gradient: ProfessorColors.headerGradient,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-            ),
+          GradientHeader(
             child: const Column(
               children: [
                 Row(

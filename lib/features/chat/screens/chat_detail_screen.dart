@@ -6,6 +6,9 @@ import 'package:intl/intl.dart';
 import '../providers/chat_provider.dart';
 import '../domain/message_model.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../../core/widgets/gradient_header.dart';
+import '../../../core/widgets/loading_shimmer.dart';
+import '../../../app/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 
@@ -72,18 +75,21 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     final state = ref.watch(messagesProvider(widget.chatId));
     final currentUserId = ref.watch(authProvider).user?.id;
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final messages = state.messages;
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.chatName ?? l10n.navChat),
-      ),
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
+          ScreenHeader(
+            title: widget.chatName ?? l10n.navChat,
+            onBack: () => Navigator.maybePop(context),
+          ),
           Expanded(
             child: state.isLoading && messages.isEmpty
-                ? const Center(child: CircularProgressIndicator())
+                ? const ListShimmer()
                 : state.error != null && messages.isEmpty
                     ? Center(
                         child: Text(
@@ -111,9 +117,10 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                             itemBuilder: (context, index) {
                               if (index == messages.length) {
                                 return const Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
+                                  padding: EdgeInsets.only(top: 4, bottom: 12),
+                                  child: LoadingShimmer(
+                                    width: double.infinity,
+                                    height: 68,
                                   ),
                                 );
                               }

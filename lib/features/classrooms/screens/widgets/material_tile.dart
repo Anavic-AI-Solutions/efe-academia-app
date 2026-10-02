@@ -16,7 +16,7 @@ class MaterialTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = context.l10n;
-    final accent = isDark ? const Color(0xFF6366F1) : AppColors.primary;
+    final accent = AppColors.accentFor(isDark);
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 10),

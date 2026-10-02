@@ -1,5 +1,5 @@
 import 'package:efe_mobile/app/router.dart';
-import 'package:efe_mobile/app/theme/professor_colors.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
@@ -103,23 +103,27 @@ void main() {
   });
 
   testWidgets('active destination uses the accent pill', (tester) async {
-    await _pumpApp(tester, 'professor');
+    for (final role in ['parent', 'professor']) {
+      await _pumpApp(tester, role);
 
-    final activePill = tester.widget<AnimatedContainer>(
-      find.ancestor(
-        of: navLabel('Inicio'),
-        matching: find.byType(AnimatedContainer),
-      ),
-    );
-    final decoration = activePill.decoration as BoxDecoration;
-    expect(decoration.color, ProfessorColors.primarySoft);
+      final activePill = tester.widget<AnimatedContainer>(
+        find.ancestor(
+          of: navLabel('Inicio'),
+          matching: find.byType(AnimatedContainer),
+        ),
+      );
+      final decoration = activePill.decoration as BoxDecoration;
+      expect(decoration.color, AppColors.primary, reason: 'role $role');
 
-    final inactivePill = tester.widget<AnimatedContainer>(
-      find.ancestor(
-        of: navLabel('Chat'),
-        matching: find.byType(AnimatedContainer),
-      ),
-    );
-    expect((inactivePill.decoration as BoxDecoration).color, Colors.transparent);
+      final inactivePill = tester.widget<AnimatedContainer>(
+        find.ancestor(
+          of: navLabel('Chat'),
+          matching: find.byType(AnimatedContainer),
+        ),
+      );
+      expect((inactivePill.decoration as BoxDecoration).color,
+          Colors.transparent,
+          reason: 'role $role');
+    }
   });
 }

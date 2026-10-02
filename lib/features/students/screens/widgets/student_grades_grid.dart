@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../qualifications/domain/qualification_model.dart';
 import '../../domain/student_grade_grid.dart';
@@ -12,13 +11,11 @@ import '../../domain/student_grade_grid.dart';
 class StudentGradesGrid extends StatelessWidget {
   final List<QualificationModel> qualifications;
   final String? classroomName;
-  final bool isProfessor;
 
   const StudentGradesGrid({
     super.key,
     required this.qualifications,
     this.classroomName,
-    this.isProfessor = false,
   });
 
   static const double _periodWidth = 86;
@@ -33,13 +30,9 @@ class StudentGradesGrid extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final rows = buildGradeGrid(qualifications);
 
-    final headerColor = isProfessor
-        ? ProfessorColors.sectionLabel
-        : (isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary);
-    final valueColor = isProfessor
-        ? ProfessorColors.ink
-        : (isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary);
-    final mutedColor = ProfessorColors.muted;
+    const headerColor = AppColors.sectionLabel;
+    final valueColor = AppColors.inkFor(isDark);
+    final mutedColor = AppColors.mutedFor(isDark);
     final borderColor =
         isDark ? AppColors.darkBorder : AppColors.lightBorder;
 

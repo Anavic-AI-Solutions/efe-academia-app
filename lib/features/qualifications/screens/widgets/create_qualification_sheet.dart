@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/classroom_grades_summary.dart';
 import '../../providers/qualification_provider.dart';
@@ -107,7 +106,7 @@ class _CreateQualificationSheetState
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final background = isDark ? AppColors.darkSurface : Colors.white;
     final textColor =
-        isDark ? AppColors.darkTextPrimary : ProfessorColors.ink;
+        isDark ? AppColors.darkTextPrimary : AppColors.lightInk;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
@@ -127,7 +126,7 @@ class _CreateQualificationSheetState
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: ProfessorColors.navInactive.withOpacity(0.4),
+                    color: AppColors.navInactive.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -233,7 +232,7 @@ class _CreateQualificationSheetState
                   l10n.gradeFormError,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: ProfessorColors.absent,
+                    color: AppColors.absent,
                   ),
                 ),
               ],
@@ -244,10 +243,10 @@ class _CreateQualificationSheetState
                 child: ElevatedButton(
                   onPressed: _isSaving ? null : _submit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ProfessorColors.primary,
+                    backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor:
-                        ProfessorColors.primary.withOpacity(0.5),
+                        AppColors.primary.withOpacity(0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),
@@ -283,7 +282,7 @@ class _CreateQualificationSheetState
       hintText: hint,
       isDense: true,
       filled: true,
-      fillColor: ProfessorColors.gradeEmptyBackground,
+      fillColor: AppColors.gradeEmptyBackground,
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -307,7 +306,7 @@ class _FieldLabel extends StatelessWidget {
         style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w700,
-          color: ProfessorColors.muted,
+          color: AppColors.muted,
         ),
       ),
     );

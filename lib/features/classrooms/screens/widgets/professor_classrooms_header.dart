@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_typography.dart';
-import '../../../../app/theme/professor_colors.dart';
+import '../../../../app/theme/app_colors.dart';
+import '../../../../core/widgets/gradient_header.dart';
 import '../../../../l10n/l10n.dart';
-import '../../../professor/widgets/professor_gradient_header.dart';
 
 class ProfessorClassroomsHeader extends StatelessWidget {
   final String subtitle;
+  final String? title;
 
-  const ProfessorClassroomsHeader({super.key, required this.subtitle});
+  const ProfessorClassroomsHeader({
+    super.key,
+    required this.subtitle,
+    this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ProfessorGradientHeader(
+    return GradientHeader(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            context.l10n.professorMyClassrooms,
+            title ?? context.l10n.professorMyClassrooms,
             style: AppTypography.headlineMedium.copyWith(
-              color: ProfessorColors.onPrimary,
+              color: AppColors.onPrimary,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -29,7 +34,7 @@ class ProfessorClassroomsHeader extends StatelessWidget {
               subtitle,
               style: const TextStyle(
                 fontSize: 11,
-                color: ProfessorColors.onPrimaryMuted,
+                color: AppColors.onPrimaryMuted,
               ),
             ),
           ],

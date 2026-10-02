@@ -1,3 +1,5 @@
+import 'package:efe_mobile/core/widgets/gradient_header.dart';
+import 'package:efe_mobile/core/widgets/pill_button.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
@@ -87,5 +89,40 @@ void main() {
     final data = await rootBundle.load(_logoAsset);
 
     expect(data.lengthInBytes, greaterThan(0));
+  });
+
+  testWidgets('header uses GradientHeader with bottom radius 24', (tester) async {
+    await _pumpLoginScreen(tester);
+
+    final container = tester.widget<Container>(
+      find.descendant(of: find.byType(GradientHeader), matching: find.byType(Container)),
+    );
+    final boxDecoration = container.decoration as BoxDecoration?;
+    expect(boxDecoration, isNotNull);
+    final radius = boxDecoration!.borderRadius!.resolve(TextDirection.ltr);
+    // GradientHeader uses BorderRadius.vertical(bottom: Radius.circular(24))
+    expect(radius.bottomLeft, const Radius.circular(24));
+    expect(radius.bottomRight, const Radius.circular(24));
+  });
+
+  testWidgets('login CTA is PillButton with height 46 and radius 13', (tester) async {
+    await _pumpLoginScreen(tester);
+
+    final pillButton = tester.widget<PillButton>(find.byType(PillButton));
+    expect(pillButton.height, 46);
+    // PillButton uses hardcoded BorderRadius.circular(13) internally
+    // We verify by checking the button renders with correct constraints
+    final buttonFinder = find.descendant(
+      of: find.byType(PillButton),
+      matching: find.byType(ElevatedButton),
+    );
+    final elevatedButton = tester.widget<ElevatedButton>(buttonFinder);
+    final shape = elevatedButton.style?.shape?.resolve({}) as RoundedRectangleBorder?;
+    expect(shape, isNotNull);
+    final borderRadius = shape!.borderRadius.resolve(TextDirection.ltr);
+    expect(borderRadius.topLeft, const Radius.circular(13));
+    expect(borderRadius.topRight, const Radius.circular(13));
+    expect(borderRadius.bottomLeft, const Radius.circular(13));
+    expect(borderRadius.bottomRight, const Radius.circular(13));
   });
 }

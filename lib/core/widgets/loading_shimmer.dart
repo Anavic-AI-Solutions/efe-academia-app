@@ -11,7 +11,7 @@ class LoadingShimmer extends StatelessWidget {
     super.key,
     required this.width,
     required this.height,
-    this.borderRadius = 12,
+    this.borderRadius = 16,
   });
 
   @override
@@ -40,14 +40,14 @@ class ListShimmer extends StatelessWidget {
   const ListShimmer({
     super.key,
     this.itemCount = 5,
-    this.itemHeight = 72,
+    this.itemHeight = 68,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: itemCount,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(bottom: 12),
         child: Row(

@@ -20,8 +20,7 @@ class ClassroomFilterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final active = activeCount > 0;
-    final accent = accentColor ??
-        (isDark ? const Color(0xFF6366F1) : AppColors.primary);
+    final accent = accentColor ?? AppColors.accentFor(isDark);
 
     return GestureDetector(
       onTap: onTap,

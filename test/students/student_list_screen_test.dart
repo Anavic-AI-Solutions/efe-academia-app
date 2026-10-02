@@ -1,4 +1,6 @@
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/empty_state.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
@@ -127,5 +129,37 @@ void main() {
 
     expect(find.text('Estudiante 1'), findsOneWidget);
     expect(find.text('Mostrando 1–20 de 57'), findsOneWidget);
+  });
+
+  testWidgets('empty state uses the default accent', (tester) async {
+    await _pumpScreen(tester, total: 0);
+
+    final empty = tester.widget<EmptyState>(find.byType(EmptyState));
+    expect(empty.accentColor, isNull);
+  });
+
+  testWidgets('dark mode uses dark background and accent chips',
+      (tester) async {
+    final repository = _FakeStudentRepository(total: 1);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          studentRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: localizedApp(
+          home: Theme(
+            data: ThemeData.dark(),
+            child: const StudentListScreen(),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+    expect(scaffold.backgroundColor, AppColors.darkBackground);
+
+    final activeChip = tester.widget<Text>(find.text('Activos'));
+    expect(activeChip.style?.color, AppColors.accentFor(true));
   });
 }

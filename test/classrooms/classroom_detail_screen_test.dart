@@ -1,4 +1,3 @@
-import 'package:efe_mobile/app/theme/professor_colors.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/core/widgets/empty_state.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
@@ -367,7 +366,7 @@ void main() {
     expect(find.text('pantalla notas'), findsOneWidget);
   });
 
-  testWidgets('non-professor detail keeps the generic hero without actions',
+  testWidgets('detail hero hides the attendance and grade actions for other roles',
       (tester) async {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 
@@ -391,21 +390,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('professor related tabs use the blue empty accent',
-      (tester) async {
-    await _pumpProfessorDetail(
-      tester,
-      _FakeClassroomRepository(classroom: _classroom),
-    );
-
-    await _openTab(tester, 'Estudiantes');
-
-    final empty = tester.widget<EmptyState>(find.byType(EmptyState));
-    expect(empty.accentColor, ProfessorColors.primarySoft);
-  });
-
-  testWidgets('generic related tabs keep the default empty accent',
-      (tester) async {
+  testWidgets('related tabs use the default empty accent', (tester) async {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 
     await _openTab(tester, 'Estudiantes');

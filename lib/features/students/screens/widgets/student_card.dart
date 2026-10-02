@@ -53,7 +53,7 @@ class StudentCard extends StatelessWidget {
                       ? student.classroomNames.join(', ')
                       : l10n.studentsNoClassroom,
                   style: AppTypography.bodySmall.copyWith(
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                    color: AppColors.mutedFor(isDark),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

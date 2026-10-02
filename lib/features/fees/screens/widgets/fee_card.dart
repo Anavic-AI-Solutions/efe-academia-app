@@ -18,6 +18,7 @@ class FeeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = context.l10n;
 
     return AppCard(
@@ -48,6 +49,7 @@ class FeeCard extends StatelessWidget {
                       : l10n.feesUnknownStudent,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
+                        color: AppColors.inkFor(isDark),
                       ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -56,7 +58,7 @@ class FeeCard extends StatelessWidget {
                 Text(
                   l10n.feesCardSubtitle(fee.numberFee, fee.month, fee.year),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey,
+                        color: AppColors.mutedFor(isDark),
                       ),
                 ),
               ],
@@ -70,6 +72,7 @@ class FeeCard extends StatelessWidget {
                 AppFormatters.formatCurrency(fee.total),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: AppColors.inkFor(isDark),
                     ),
               ),
               const SizedBox(height: 4),

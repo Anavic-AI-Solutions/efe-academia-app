@@ -4,6 +4,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/pill_button.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/auth_provider.dart';
@@ -40,6 +41,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final authState = ref.watch(authProvider);
     final isLoading = authState.status == AuthStatus.loading;
     final size = MediaQuery.of(context).size;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     ref.listen<AuthState>(authProvider, (prev, next) {
       if (next.status == AuthStatus.error && next.error != null) {
@@ -57,65 +59,55 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     });
 
     return Scaffold(
-      body: Container(
-        color: AppColors.lightBackground,
-        child: Column(
-          children: [
-            // Gradient header
-            Container(
-              width: double.infinity,
-              height: size.height * 0.32,
-              decoration: const BoxDecoration(
-                gradient: AppColors.primaryGradient,
-              ),
-              child: SafeArea(
-                bottom: false,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(
-                        PhosphorIconsRegular.lockKey,
-                        size: 32,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      context.l10n.authForgotPasswordTitle,
-                      style: const TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        height: 1.25,
-                      ),
-                    ),
-                  ],
+      backgroundColor: AppColors.backgroundFor(isDark),
+      body: Column(
+        children: [
+          // Gradient header
+          GradientHeader(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(
+                    color: AppColors.overlay,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(
+                    PhosphorIconsRegular.lockKey,
+                    size: 32,
+                    color: AppColors.onPrimary,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Text(
+                  context.l10n.authForgotPasswordTitle,
+                  style: const TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.onPrimary,
+                    height: 1.25,
+                  ),
+                ),
+              ],
             ),
+          ),
 
-            // Form area
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: _submitted ? _buildSuccessState() : _buildFormState(isLoading),
-              ),
+          // Form area
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: _submitted ? _buildSuccessState(isDark) : _buildFormState(isLoading, isDark),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildFormState(bool isLoading) {
+  Widget _buildFormState(bool isLoading, bool isDark) {
     final l10n = context.l10n;
 
     return Form(
@@ -127,14 +119,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           Text(
             l10n.authResetSubtitle,
             style: AppTypography.headlineMedium.copyWith(
-              color: AppColors.lightTextPrimary,
+              color: AppColors.inkFor(isDark),
             ),
           ),
           const SizedBox(height: 8),
           Text(
             l10n.authResetInstructions,
             style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.lightTextSecondary,
+              color: AppColors.mutedFor(isDark),
             ),
           ),
           const SizedBox(height: 28),
@@ -145,13 +137,17 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => _handleSubmit(),
             style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.lightTextPrimary,
+              color: AppColors.inkFor(isDark),
             ),
             decoration: InputDecoration(
               hintText: l10n.authEmailLabel,
-              prefixIcon: const Icon(
+              hintStyle: AppTypography.bodyMedium.copyWith(
+                color: AppColors.mutedFor(isDark),
+              ),
+              prefixIcon: Icon(
                 PhosphorIconsRegular.envelope,
                 size: 20,
+                color: AppColors.mutedFor(isDark),
               ),
             ),
             validator: (value) {
@@ -183,7 +179,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             child: Text(
               l10n.authBackToSignIn,
               style: AppTypography.labelLarge.copyWith(
-                color: AppColors.primary,
+                color: AppColors.accentFor(isDark),
               ),
             ),
           ),
@@ -192,7 +188,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     );
   }
 
-  Widget _buildSuccessState() {
+  Widget _buildSuccessState(bool isDark) {
     final l10n = context.l10n;
 
     return Column(
@@ -215,7 +211,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         Text(
           l10n.authCheckEmail,
           style: AppTypography.headlineMedium.copyWith(
-            color: AppColors.lightTextPrimary,
+            color: AppColors.inkFor(isDark),
           ),
           textAlign: TextAlign.center,
         ),
@@ -223,7 +219,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         Text(
           l10n.authResetLinkSent(_emailController.text.trim()),
           style: AppTypography.bodyMedium.copyWith(
-            color: AppColors.lightTextSecondary,
+            color: AppColors.mutedFor(isDark),
           ),
           textAlign: TextAlign.center,
         ),

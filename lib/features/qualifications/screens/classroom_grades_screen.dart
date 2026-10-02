@@ -4,12 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
-import '../../professor/widgets/professor_screen_header.dart';
 import '../domain/classroom_grades_summary.dart';
 import '../providers/qualification_provider.dart';
 import 'widgets/create_qualification_sheet.dart';
@@ -31,10 +30,10 @@ class ClassroomGradesScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor:
-          isDark ? AppColors.darkBackground : ProfessorColors.surface,
+          isDark ? AppColors.darkBackground : AppColors.lightBackground,
       body: Column(
         children: [
-          ProfessorScreenHeader(
+          ScreenHeader(
             title: l10n.gradesTitle,
             subtitle: summary?.classroomName,
             onBack: () => _leave(context),
@@ -46,7 +45,6 @@ class ClassroomGradesScreen extends ConsumerWidget {
                   ? EmptyState(
                       icon: PhosphorIconsRegular.users,
                       title: l10n.attendanceEmpty,
-                      accentColor: ProfessorColors.primarySoft,
                     )
                   : RefreshIndicator(
                       onRefresh: () => ref.refresh(provider.future),
@@ -78,7 +76,6 @@ class ClassroomGradesScreen extends ConsumerWidget {
               error: (error, _) => ErrorView(
                 message: l10n.gradesLoadError,
                 detail: error.toString(),
-                accentColor: ProfessorColors.primarySoft,
                 onRetry: () => ref.invalidate(provider),
               ),
             ),
@@ -134,7 +131,7 @@ class _AverageBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: ProfessorColors.overlay,
+        color: AppColors.overlay,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -145,15 +142,15 @@ class _AverageBox extends StatelessWidget {
             style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
-              color: ProfessorColors.onPrimaryMuted,
+              color: AppColors.onPrimaryMuted,
             ),
           ),
           Text(
-            ProfessorColors.formatGrade(average),
+            AppColors.formatGrade(average),
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w900,
-              color: ProfessorColors.onPrimary,
+              color: AppColors.onPrimary,
             ),
           ),
         ],
@@ -179,7 +176,7 @@ class _LoadGradeBar extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onTap,
             style: ElevatedButton.styleFrom(
-              backgroundColor: ProfessorColors.primary,
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               elevation: 0,
               shape: RoundedRectangleBorder(

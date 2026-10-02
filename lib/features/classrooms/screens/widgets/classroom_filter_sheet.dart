@@ -96,8 +96,7 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final accent = widget.accentColor ??
-        (isDark ? const Color(0xFF6366F1) : AppColors.primary);
+    final accent = widget.accentColor ?? AppColors.accentFor(isDark);
     final optionsAsync = ref.watch(classroomFiltersProvider);
 
     return Container(

@@ -18,7 +18,7 @@ class PillButton extends StatelessWidget {
     this.isLoading = false,
     this.isGradient = false,
     this.icon,
-    this.height = 52,
+    this.height = 46,
     this.color,
   });
 
@@ -32,7 +32,7 @@ class PillButton extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: isGradient ? AppColors.primaryGradient : null,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(13),
         ),
         child: ElevatedButton(
           onPressed: isLoading ? null : onPressed,
@@ -43,7 +43,7 @@ class PillButton extends StatelessWidget {
                 isGradient ? baseColor.withAlpha(128) : baseColor.withAlpha(128),
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(13),
             ),
             elevation: 0,
           ),
@@ -67,7 +67,8 @@ class PillButton extends StatelessWidget {
                       label,
                       style: AppTypography.labelLarge.copyWith(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ],

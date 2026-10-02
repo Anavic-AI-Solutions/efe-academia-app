@@ -3,7 +3,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/info_row.dart';
 import '../../../../core/widgets/section_header.dart';
@@ -13,12 +12,10 @@ import '../../domain/classroom_model.dart';
 
 class ClassroomSummaryTab extends StatelessWidget {
   final ClassroomModel classroom;
-  final bool isProfessor;
 
   const ClassroomSummaryTab({
     super.key,
     required this.classroom,
-    this.isProfessor = false,
   });
 
   @override
@@ -26,7 +23,7 @@ class ClassroomSummaryTab extends StatelessWidget {
     final l10n = context.l10n;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       children: [
         SizedBox(
           height: 150,
@@ -37,27 +34,21 @@ class ClassroomSummaryTab extends StatelessWidget {
                 icon: PhosphorIconsRegular.users,
                 value: '${classroom.studentCount}',
                 label: l10n.classroomsStudents,
-                iconColor: isProfessor
-                    ? ProfessorColors.primary
-                    : const Color(0xFF3B82F6),
+                iconColor: AppColors.primary,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.mapPin,
                 value: classroom.room.isNotEmpty ? classroom.room : '—',
                 label: l10n.classroomsRoom,
-                iconColor: isProfessor
-                    ? ProfessorColors.primarySoft
-                    : const Color(0xFF10B981),
+                iconColor: AppColors.primarySoft,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.clock,
                 value: classroom.shift.isNotEmpty ? classroom.shift : '—',
                 label: l10n.classroomsShift,
-                iconColor: isProfessor
-                    ? ProfessorColors.accent
-                    : const Color(0xFFF97316),
+                iconColor: AppColors.accent,
               ),
             ],
           ),
