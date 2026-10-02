@@ -2,6 +2,8 @@ import 'package:efe_mobile/app/router.dart';
 import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/header_stats_row.dart';
+import 'package:efe_mobile/core/widgets/home_header.dart';
 import 'package:efe_mobile/features/attendance/data/attendance_repository.dart';
 import 'package:efe_mobile/features/attendance/domain/attendance_day.dart';
 import 'package:efe_mobile/features/attendance/providers/attendance_provider.dart';
@@ -18,7 +20,6 @@ import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
-import 'package:efe_mobile/features/dashboard/screens/widgets/professor_home_header.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
@@ -28,6 +29,7 @@ import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _FakeAuthRepository implements AuthRepository {
