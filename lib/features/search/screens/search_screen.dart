@@ -324,18 +324,7 @@ class _SearchTile extends StatelessWidget {
   }
 
   Color _getTypeColor() {
-    switch (result.type) {
-      case 'student':
-        return const Color(0xFF3B82F6);
-      case 'classroom':
-        return const Color(0xFF10B981);
-      case 'news':
-        return const Color(0xFFF59E0B);
-      case 'event':
-        return const Color(0xFFEF4444);
-      default:
-        return AppColors.primary;
-    }
+    return AppColors.accentFor(isDark);
   }
 
   IconData _getTypeIcon() {

@@ -68,19 +68,19 @@ class ProfessorClassroomListCard extends StatelessWidget {
                     _schedule,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.muted,
+                      color: AppColors.mutedFor(isDark),
                     ),
                   ),
                 ],
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       PhosphorIconsRegular.mapPin,
                       size: 13,
-                      color: AppColors.muted,
+                      color: AppColors.mutedFor(isDark),
                     ),
                     const SizedBox(width: 3),
                     Flexible(
@@ -88,24 +88,24 @@ class ProfessorClassroomListCard extends StatelessWidget {
                         classroom.room.isNotEmpty ? classroom.room : '—',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
-                          color: AppColors.muted,
+                          color: AppColors.mutedFor(isDark),
                         ),
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Icon(
+                    Icon(
                       PhosphorIconsRegular.users,
                       size: 13,
-                      color: AppColors.muted,
+                      color: AppColors.mutedFor(isDark),
                     ),
                     const SizedBox(width: 3),
                     Text(
                       '${classroom.studentCount}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.muted,
+                        color: AppColors.mutedFor(isDark),
                       ),
                     ),
                   ],
@@ -120,10 +120,10 @@ class ProfessorClassroomListCard extends StatelessWidget {
               if (status.isNotEmpty)
                 StatusBadge(status: classroomStatusLabel(status, l10n)),
               const SizedBox(height: 8),
-              const Icon(
+              Icon(
                 PhosphorIconsRegular.caretRight,
                 size: 16,
-                color: AppColors.muted,
+                color: AppColors.mutedFor(isDark),
               ),
             ],
           ),

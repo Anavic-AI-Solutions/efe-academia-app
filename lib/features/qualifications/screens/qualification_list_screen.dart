@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
@@ -47,11 +48,13 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
   Widget build(BuildContext context) {
     final listState = ref.watch(qualificationListProvider);
     final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: LargeTitleBar(title: l10n.qualificationsTitle),
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
+          LargeTitleBar(title: l10n.qualificationsTitle),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: AppSearchBar(
@@ -100,15 +103,8 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount:
-          state.pagination.data.length + (state.pagination.hasMore ? 1 : 0),
+      itemCount: state.pagination.data.length,
       itemBuilder: (context, index) {
-        if (index == state.pagination.data.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
         final qualification = state.pagination.data[index];
         return QualificationCard(qualification: qualification);
       },

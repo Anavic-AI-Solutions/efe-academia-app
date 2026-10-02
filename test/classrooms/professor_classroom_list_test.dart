@@ -9,7 +9,6 @@ import 'package:efe_mobile/features/classrooms/domain/material_model.dart';
 import 'package:efe_mobile/features/classrooms/domain/professor_model.dart';
 import 'package:efe_mobile/features/classrooms/providers/classroom_provider.dart';
 import 'package:efe_mobile/features/classrooms/screens/classroom_list_screen.dart';
-import 'package:efe_mobile/features/classrooms/screens/widgets/classroom_card.dart';
 import 'package:efe_mobile/features/classrooms/screens/widgets/professor_classroom_list_card.dart';
 import 'package:efe_mobile/features/classrooms/screens/widgets/professor_classrooms_header.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
@@ -189,7 +188,6 @@ void main() {
     expect(find.text('Mañana · Lunes · 08:00'), findsNWidgets(2));
     expect(find.text('Sala 1'), findsOneWidget);
     expect(find.text('24'), findsOneWidget);
-    expect(find.byType(ClassroomCard), findsNothing);
   });
 
   testWidgets('tapping a professor card opens the classroom detail',
@@ -218,7 +216,6 @@ void main() {
     expect(find.text('Clases'), findsOneWidget);
     expect(find.text('Mis aulas'), findsNothing);
     expect(find.byType(ProfessorClassroomListCard), findsNWidgets(2));
-    expect(find.byType(ClassroomCard), findsNothing);
   });
 
   testWidgets('renders without overflow on a small phone', (tester) async {

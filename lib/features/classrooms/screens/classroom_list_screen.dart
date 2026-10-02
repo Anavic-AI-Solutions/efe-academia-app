@@ -96,7 +96,9 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
             title: isProf ? l10n.professorMyClassrooms : l10n.classroomsTitle,
             subtitle: listState.isLoading && listState.page.total == 0
                 ? ''
-                : l10n.professorClassroomsCount(listState.page.total),
+                : isProf
+                    ? l10n.professorClassroomsCount(listState.page.total)
+                    : '${listState.page.total} ${l10n.classroomsTitle.toLowerCase()}',
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),

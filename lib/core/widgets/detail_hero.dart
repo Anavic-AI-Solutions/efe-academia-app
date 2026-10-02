@@ -36,6 +36,7 @@ class DetailHero extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         gradient: gradient ??
             (isDark

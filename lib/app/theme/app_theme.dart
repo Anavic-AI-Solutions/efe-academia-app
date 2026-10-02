@@ -53,7 +53,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
         ),
         color: AppColors.lightSurface,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         shadowColor: Colors.black.withOpacity(0.04),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -188,7 +188,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
         ),
         color: AppColors.darkSurface,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,

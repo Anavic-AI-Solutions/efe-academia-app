@@ -198,49 +198,41 @@ class DashboardScreen extends ConsumerWidget {
                       QuickAction(
                         icon: PhosphorIconsRegular.chalkboardTeacher,
                         label: l10n.navClasses,
-                        color: const Color(0xFF3B82F6),
                         onTap: () => context.push('/classrooms'),
                       ),
                       QuickAction(
                         icon: PhosphorIconsRegular.users,
                         label: l10n.dashboardStudents,
-                        color: const Color(0xFF10B981),
                         onTap: () => context.push('/students'),
                       ),
                       QuickAction(
                         icon: PhosphorIconsRegular.bell,
                         label: l10n.profileNotifications,
-                        color: const Color(0xFFF97316),
                         onTap: () => context.push('/notifications'),
                       ),
                       QuickAction(
                         icon: PhosphorIconsRegular.newspaper,
                         label: l10n.dashboardNews,
-                        color: AppColors.primary,
                         onTap: () => context.push('/news'),
                       ),
                       QuickAction(
                         icon: PhosphorIconsRegular.calendarBlank,
                         label: l10n.dashboardEvents,
-                        color: const Color(0xFFEF4444),
                         onTap: () => context.push('/events'),
                       ),
                       QuickAction(
                         icon: PhosphorIconsRegular.currencyDollar,
                         label: l10n.dashboardFees,
-                        color: AppColors.primary,
                         onTap: () => context.push('/fees'),
                       ),
                       QuickAction(
                         icon: PhosphorIconsRegular.chatCircle,
                         label: l10n.navChat,
-                        color: const Color(0xFF06B6D4),
                         onTap: () => context.push('/chat'),
                       ),
                       QuickAction(
                         icon: PhosphorIconsRegular.magnifyingGlass,
                         label: l10n.dashboardSearch,
-                        color: const Color(0xFF64748B),
                         onTap: () => context.push('/search'),
                       ),
                     ],
@@ -351,9 +343,9 @@ class _ParentClassroomCard extends StatelessWidget {
                   context.l10n.professorStudentsCount(classroom.studentsCount),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
-                    color: AppColors.muted,
+                    color: AppColors.mutedFor(isDark),
                   ),
                 ),
               ],
