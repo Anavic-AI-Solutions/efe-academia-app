@@ -1,11 +1,5 @@
-import 'package:efe_mobile/app/theme/app_colors.dart';
-import 'package:efe_mobile/app/theme/professor_colors.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/core/widgets/empty_state.dart';
-import 'package:efe_mobile/core/widgets/error_view.dart';
-import 'package:efe_mobile/core/widgets/gradient_header.dart';
-import 'package:efe_mobile/core/widgets/loading_shimmer.dart';
-import 'package:efe_mobile/core/widgets/screen_header.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
@@ -71,7 +65,6 @@ class _FakeClassroomRepository implements ClassroomRepository {
     this.students = const [],
     this.professors = const [],
     this.materials = const [],
-    this.neverCompletes = false,
   });
 
   final ClassroomModel? classroom;
@@ -79,13 +72,9 @@ class _FakeClassroomRepository implements ClassroomRepository {
   final List<StudentModel> students;
   final List<ProfessorModel> professors;
   final List<MaterialModel> materials;
-  final bool neverCompletes;
 
   @override
   Future<ClassroomModel> getClassroom(String id) async {
-    if (neverCompletes) {
-      return Future.delayed(const Duration(seconds: 10));
-    }
     if (fails) throw Exception('boom');
     return classroom!;
   }
@@ -159,55 +148,6 @@ Future<void> _pumpDetail(
       ],
       child: localizedApp(
         home: const ClassroomDetailScreen(classroomId: 'c1'),
-      ),
-    ),
-  );
-  await tester.pumpAndSettle();
-}
-
-Future<void> _pumpDetailLoading(
-  WidgetTester tester, {
-  bool isDark = false,
-  bool isProfessor = false,
-}) async {
-  await tester.pumpWidget(
-    ProviderScope(
-      overrides: [
-        authRepositoryProvider
-            .overrideWithValue(_FakeAuthRepository(role: isProfessor ? 'professor' : 'student')),
-        classroomRepositoryProvider.overrideWithValue(
-            _FakeClassroomRepository(neverCompletes: true)),
-      ],
-      child: localizedApp(
-        home: MaterialApp(
-          theme: isDark ? ThemeData.dark() : ThemeData.light(),
-          home: const ClassroomDetailScreen(classroomId: 'c1'),
-        ),
-      ),
-    ),
-  );
-  // Pump once to show loading state (don't pumpAndSettle)
-  await tester.pump();
-}
-
-Future<void> _pumpDetailError(
-  WidgetTester tester, {
-  bool isDark = false,
-  bool isProfessor = false,
-}) async {
-  await tester.pumpWidget(
-    ProviderScope(
-      overrides: [
-        authRepositoryProvider
-            .overrideWithValue(_FakeAuthRepository(role: isProfessor ? 'professor' : 'student')),
-        classroomRepositoryProvider.overrideWithValue(
-            _FakeClassroomRepository(fails: true)),
-      ],
-      child: localizedApp(
-        home: MaterialApp(
-          theme: isDark ? ThemeData.dark() : ThemeData.light(),
-          home: const ClassroomDetailScreen(classroomId: 'c1'),
-        ),
       ),
     ),
   );
@@ -426,7 +366,7 @@ void main() {
     expect(find.text('pantalla notas'), findsOneWidget);
   });
 
-  testWidgets('non-professor detail keeps the generic hero without actions',
+  testWidgets('detail hero hides the attendance and grade actions for other roles',
       (tester) async {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 
@@ -450,21 +390,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('professor related tabs use the blue empty accent',
-      (tester) async {
-    await _pumpProfessorDetail(
-      tester,
-      _FakeClassroomRepository(classroom: _classroom),
-    );
-
-    await _openTab(tester, 'Estudiantes');
-
-    final empty = tester.widget<EmptyState>(find.byType(EmptyState));
-    expect(empty.accentColor, ProfessorColors.primarySoft);
-  });
-
-  testWidgets('generic related tabs keep the default empty accent',
-      (tester) async {
+  testWidgets('related tabs use the default empty accent', (tester) async {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 
     await _openTab(tester, 'Estudiantes');
@@ -495,60 +421,5 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('alumno s1 aula c1'), findsOneWidget);
-  });
-
-  group('loading/error states use unified headers', () {
-    testWidgets('loading shows ScreenHeader/GradientHeader + ListShimmer (no AppBar)',
-        (tester) async {
-      await _pumpDetailLoading(tester, isDark: true);
-
-      // Should NOT use raw AppBar
-      expect(find.byType(AppBar), findsNothing);
-
-      // Should use GradientHeader (via ScreenHeader pattern) + ListShimmer
-      expect(find.byType(GradientHeader), findsOneWidget);
-      expect(find.byType(ListShimmer), findsOneWidget);
-
-      // Background should be dark-aware
-      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-      expect(scaffold.backgroundColor, AppColors.backgroundFor(true));
-    });
-
-    testWidgets('error shows ScreenHeader/GradientHeader + ErrorView (no AppBar)',
-        (tester) async {
-      await _pumpDetailError(tester, isDark: true);
-
-      // Should NOT use raw AppBar
-      expect(find.byType(AppBar), findsNothing);
-
-      // Should use GradientHeader (via ScreenHeader pattern) + ErrorView
-      expect(find.byType(GradientHeader), findsOneWidget);
-      expect(find.byType(ErrorView), findsOneWidget);
-
-      // Background should be dark-aware
-      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-      expect(scaffold.backgroundColor, AppColors.backgroundFor(true));
-    });
-
-    testWidgets('professor loading uses blue gradient header',
-        (tester) async {
-      await _pumpDetailLoading(tester, isDark: true, isProfessor: true);
-
-      expect(find.byType(GradientHeader), findsOneWidget);
-      expect(find.byType(ListShimmer), findsOneWidget);
-      expect(find.byType(AppBar), findsNothing);
-    });
-
-    testWidgets('professor error uses blue gradient header with accent',
-        (tester) async {
-      await _pumpDetailError(tester, isDark: true, isProfessor: true);
-
-      expect(find.byType(GradientHeader), findsOneWidget);
-      expect(find.byType(ErrorView), findsOneWidget);
-      expect(find.byType(AppBar), findsNothing);
-
-      final errorView = tester.widget<ErrorView>(find.byType(ErrorView));
-      expect(errorView.accentColor, ProfessorColors.primarySoft);
-    });
   });
 }

@@ -30,7 +30,6 @@ import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 class _FakeAuthRepository implements AuthRepository {
   @override
@@ -339,13 +338,13 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('uses HomeHeader and HeaderStatsRow (not ProfessorHomeHeader/ProfessorStatsRow)',
+  testWidgets('uses HomeHeader and HeaderStatsRow (not HomeHeader/ProfessorStatsRow)',
       (tester) async {
     await _pumpHome(tester);
 
     expect(find.byType(HomeHeader), findsOneWidget);
     expect(find.byType(HeaderStatsRow), findsOneWidget);
-    expect(find.byType(ProfessorHomeHeader), findsNothing);
+    expect(find.byType(HomeHeader), findsNothing);
     // ProfessorStatsRow is not a widget type we can find directly, but we verify the stats are shown via HeaderStatsRow
     expect(find.text('3'), findsOneWidget); // classrooms
     expect(find.text('78'), findsOneWidget); // students
