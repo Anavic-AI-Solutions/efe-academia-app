@@ -338,4 +338,17 @@ void main() {
     expect(find.text('78'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('uses HomeHeader and HeaderStatsRow (not ProfessorHomeHeader/ProfessorStatsRow)',
+      (tester) async {
+    await _pumpHome(tester);
+
+    expect(find.byType(HomeHeader), findsOneWidget);
+    expect(find.byType(HeaderStatsRow), findsOneWidget);
+    expect(find.byType(ProfessorHomeHeader), findsNothing);
+    // ProfessorStatsRow is not a widget type we can find directly, but we verify the stats are shown via HeaderStatsRow
+    expect(find.text('3'), findsOneWidget); // classrooms
+    expect(find.text('78'), findsOneWidget); // students
+    expect(find.text('4'), findsOneWidget); // absences
+  });
 }

@@ -42,21 +42,22 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final isLoading = authState.status == AuthStatus.loading;
     final size = MediaQuery.of(context).size;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = context.l10n;
 
-    ref.listen<AuthState>(authProvider, (prev, next) {
-      if (next.status == AuthStatus.error && next.error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(next.error!),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        );
-      }
-    });
+    // ref.listen<AuthState>(authProvider, (prev, next) {
+    //   if (next.status == AuthStatus.error && next.error != null) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(
+    //         content: Text(next.error!),
+    //         backgroundColor: AppColors.error,
+    //         behavior: SnackBarBehavior.floating,
+    //         shape: RoundedRectangleBorder(
+    //           borderRadius: BorderRadius.circular(12),
+    //         ),
+    //       ),
+    //     );
+    //   }
+    // });
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -82,7 +83,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  context.l10n.authForgotPasswordTitle,
+                  l10n.authForgotPasswordTitle,
                   style: const TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,

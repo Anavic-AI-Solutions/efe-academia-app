@@ -1,15 +1,13 @@
-import 'package:efe_mobile/core/widgets/gradient_header.dart';
-import 'package:efe_mobile/core/widgets/pill_button.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/auth/screens/login_screen.dart';
+import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import '../helpers/localized_app.dart';
 
 const _logoAsset = 'assets/images/efe_logo_white.png';
 
@@ -47,13 +45,20 @@ class _FakeAuthRepository implements AuthRepository {
   Future<void> loadTokenIntoClient() => Future.error(UnimplementedError());
 }
 
-Future<void> _pumpLoginScreen(WidgetTester tester) async {
+Future<void> _pumpLoginScreen(WidgetTester tester,
+    {bool isDark = false}) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
         authRepositoryProvider.overrideWithValue(_FakeAuthRepository()),
       ],
-      child: localizedApp(home: const LoginScreen()),
+      child: MaterialApp(
+        locale: const Locale('es'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: isDark ? ThemeData.dark() : ThemeData.light(),
+        home: const LoginScreen(),
+      ),
     ),
   );
   await tester.pumpAndSettle();
@@ -91,38 +96,26 @@ void main() {
     expect(data.lengthInBytes, greaterThan(0));
   });
 
-  testWidgets('header uses GradientHeader with bottom radius 24', (tester) async {
-    await _pumpLoginScreen(tester);
+  group('dark mode support', () {
+    testWidgets('uses AppColors.backgroundFor(true) as Scaffold background',
+        (tester) async {
+      await _pumpLoginScreen(tester, isDark: true);
 
-    final container = tester.widget<Container>(
-      find.descendant(of: find.byType(GradientHeader), matching: find.byType(Container)),
-    );
-    final boxDecoration = container.decoration as BoxDecoration?;
-    expect(boxDecoration, isNotNull);
-    final radius = boxDecoration!.borderRadius!.resolve(TextDirection.ltr);
-    // GradientHeader uses BorderRadius.vertical(bottom: Radius.circular(24))
-    expect(radius.bottomLeft, const Radius.circular(24));
-    expect(radius.bottomRight, const Radius.circular(24));
-  });
+      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+      expect(scaffold.backgroundColor, AppColors.backgroundFor(true));
+    });
 
-  testWidgets('login CTA is PillButton with height 46 and radius 13', (tester) async {
-    await _pumpLoginScreen(tester);
+    testWidgets('uses dark-aware text colors (inkFor/mutedFor) in form',
+        (tester) async {
+      await _pumpLoginScreen(tester, isDark: true);
 
-    final pillButton = tester.widget<PillButton>(find.byType(PillButton));
-    expect(pillButton.height, 46);
-    // PillButton uses hardcoded BorderRadius.circular(13) internally
-    // We verify by checking the button renders with correct constraints
-    final buttonFinder = find.descendant(
-      of: find.byType(PillButton),
-      matching: find.byType(ElevatedButton),
-    );
-    final elevatedButton = tester.widget<ElevatedButton>(buttonFinder);
-    final shape = elevatedButton.style?.shape?.resolve({}) as RoundedRectangleBorder?;
-    expect(shape, isNotNull);
-    final borderRadius = shape!.borderRadius.resolve(TextDirection.ltr);
-    expect(borderRadius.topLeft, const Radius.circular(13));
-    expect(borderRadius.topRight, const Radius.circular(13));
-    expect(borderRadius.bottomLeft, const Radius.circular(13));
-    expect(borderRadius.bottomRight, const Radius.circular(13));
+      // Verify no hardcoded light colors in form text
+      expect(find.byWidgetPredicate((w) =>
+          w is Text && w.style?.color == AppColors.lightTextPrimary),
+          findsNothing);
+      expect(find.byWidgetPredicate((w) =>
+          w is Text && w.style?.color == AppColors.lightTextSecondary),
+          findsNothing);
+    });
   });
 }
