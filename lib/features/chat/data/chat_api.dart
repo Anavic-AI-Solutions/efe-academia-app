@@ -19,4 +19,10 @@ class ChatApi {
 
   Future<Response> sendMessage(String chatId, String body) =>
       _client.post('/chats/$chatId/messages', data: {'message': body});
+
+  Future<Response> createPrivateChat({required int withUserId}) =>
+      _client.post('/chats', data: {
+        'type': 'private',
+        'with_user_id': withUserId,
+      });
 }

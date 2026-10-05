@@ -369,6 +369,36 @@
       }
     }
   },
+  "chatNewTitle": "Nuevo chat",
+  "chatNewSearchHint": "Buscar persona…",
+  "chatNewEmptyTitle": "Sin personas vinculadas",
+  "chatNewEmptySubtitle": "Todavía no tenés personas con las que chatear",
+  "chatNewNoResults": "Sin resultados para «{query}»",
+  "@chatNewNoResults": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "chatNewStart": "Iniciar conversación",
+  "relationRoleStudent": "Alumno",
+  "relationRoleProfessor": "Profesor",
+  "relationRoleParent": "Padre/Madre",
+  "relationRoleAdmin": "Admin",
+  "chatTyping": "escribiendo…",
+  "chatOnline": "en línea",
+  "chatConnectionLost": "Sin conexión — tocá para reintentar",
+  "chatSendFailed": "No se pudo enviar",
+  "chatRetry": "Reintentar",
+  "chatUnreadLabel": "{count} mensajes sin leer",
+  "@chatUnreadLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "newsTitle": "Noticias",
   "newsErrorTitle": "No se pudieron cargar las noticias",
   "newsEmptyTitle": "No hay noticias",

@@ -61,6 +61,17 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
           LargeTitleBar(
             title: l10n.navChat,
             showBackButton: false,
+            actions: [
+              IconButton(
+                onPressed: () => context.push('/chat/new'),
+                tooltip: l10n.chatNewTitle,
+                icon: const Icon(
+                  PhosphorIconsRegular.plus,
+                  size: 22,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: state.isLoading && chats.isEmpty

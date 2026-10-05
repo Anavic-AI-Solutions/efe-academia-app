@@ -62,7 +62,8 @@ import 'app_localizations_es.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,7 +84,8 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -1379,6 +1382,102 @@ abstract class AppLocalizations {
   /// **'{count}m'**
   String chatTimeMinutesShort(int count);
 
+  /// No description provided for @chatNewTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo chat'**
+  String get chatNewTitle;
+
+  /// No description provided for @chatNewSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar persona…'**
+  String get chatNewSearchHint;
+
+  /// No description provided for @chatNewEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin personas vinculadas'**
+  String get chatNewEmptyTitle;
+
+  /// No description provided for @chatNewEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenés personas con las que chatear'**
+  String get chatNewEmptySubtitle;
+
+  /// No description provided for @chatNewNoResults.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin resultados para «{query}»'**
+  String chatNewNoResults(String query);
+
+  /// No description provided for @chatNewStart.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar conversación'**
+  String get chatNewStart;
+
+  /// No description provided for @relationRoleStudent.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno'**
+  String get relationRoleStudent;
+
+  /// No description provided for @relationRoleProfessor.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor'**
+  String get relationRoleProfessor;
+
+  /// No description provided for @relationRoleParent.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre/Madre'**
+  String get relationRoleParent;
+
+  /// No description provided for @relationRoleAdmin.
+  ///
+  /// In es, this message translates to:
+  /// **'Admin'**
+  String get relationRoleAdmin;
+
+  /// No description provided for @chatTyping.
+  ///
+  /// In es, this message translates to:
+  /// **'escribiendo…'**
+  String get chatTyping;
+
+  /// No description provided for @chatOnline.
+  ///
+  /// In es, this message translates to:
+  /// **'en línea'**
+  String get chatOnline;
+
+  /// No description provided for @chatConnectionLost.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión — tocá para reintentar'**
+  String get chatConnectionLost;
+
+  /// No description provided for @chatSendFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo enviar'**
+  String get chatSendFailed;
+
+  /// No description provided for @chatRetry.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get chatRetry;
+
+  /// No description provided for @chatUnreadLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} mensajes sin leer'**
+  String chatUnreadLabel(int count);
+
   /// No description provided for @newsTitle.
   ///
   /// In es, this message translates to:
@@ -1722,7 +1821,8 @@ abstract class AppLocalizations {
   String get gradeFormError;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -1731,25 +1831,25 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'es': return AppLocalizationsEs();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
   }
 
   throw FlutterError(
-    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
-  );
+      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }

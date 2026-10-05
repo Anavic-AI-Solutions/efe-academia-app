@@ -69,7 +69,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authCheckEmail => 'Revisá tu correo';
 
   @override
-  String get authResetInstructions => 'Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
+  String get authResetInstructions =>
+      'Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
 
   @override
   String authResetLinkSent(String email) {
@@ -89,7 +90,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get validationInvalidEmail => 'Correo electrónico inválido';
 
   @override
-  String get validationPasswordLength => 'La contraseña debe tener al menos 8 caracteres';
+  String get validationPasswordLength =>
+      'La contraseña debe tener al menos 8 caracteres';
 
   @override
   String get validationPasswordsDoNotMatch => 'Las contraseñas no coinciden';
@@ -178,7 +180,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileLogout => 'Cerrar sesión';
 
   @override
-  String get profileLogoutConfirm => '¿Estás seguro de que querés cerrar sesión?';
+  String get profileLogoutConfirm =>
+      '¿Estás seguro de que querés cerrar sesión?';
 
   @override
   String get languageSpanish => 'Español';
@@ -321,7 +324,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomsFiltersLoadError => 'No se pudieron cargar los filtros';
 
   @override
-  String get classroomsFiltersLoadErrorDetail => 'Revisá tu conexión e intentá de nuevo.';
+  String get classroomsFiltersLoadErrorDetail =>
+      'Revisá tu conexión e intentá de nuevo.';
 
   @override
   String classroomsFilterChipBranch(String value) {
@@ -453,7 +457,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentsEmptySearch => 'Probá con otro término de búsqueda';
 
   @override
-  String get studentsEmptyFilters => 'Ningún estudiante coincide con los filtros seleccionados';
+  String get studentsEmptyFilters =>
+      'Ningún estudiante coincide con los filtros seleccionados';
 
   @override
   String get studentsDetailFallbackTitle => 'Estudiante';
@@ -644,13 +649,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get qualificationsSearchHint => 'Buscar calificaciones...';
 
   @override
-  String get qualificationsLoadError => 'No se pudieron cargar las calificaciones';
+  String get qualificationsLoadError =>
+      'No se pudieron cargar las calificaciones';
 
   @override
   String get qualificationsEmptyTitle => 'No se encontraron calificaciones';
 
   @override
-  String get qualificationsEmptySearchSubtitle => 'Probá con otro término de búsqueda';
+  String get qualificationsEmptySearchSubtitle =>
+      'Probá con otro término de búsqueda';
 
   @override
   String get qualificationsEmptySubtitle => 'No hay calificaciones disponibles';
@@ -665,7 +672,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get notificationsMarkAllRead => 'Marcar todas como leídas';
 
   @override
-  String get notificationsLoadError => 'No se pudieron cargar las notificaciones';
+  String get notificationsLoadError =>
+      'No se pudieron cargar las notificaciones';
 
   @override
   String get notificationsEmptyTitle => 'No hay notificaciones';
@@ -695,7 +703,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatMessagesLoadError => 'No se pudieron cargar los mensajes';
 
   @override
-  String get chatMessagesEmpty => 'Todavía no hay mensajes\n¡Iniciá la conversación!';
+  String get chatMessagesEmpty =>
+      'Todavía no hay mensajes\n¡Iniciá la conversación!';
 
   @override
   String get chatInputHint => 'Escribí un mensaje...';
@@ -706,6 +715,59 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String chatTimeMinutesShort(int count) {
     return '${count}m';
+  }
+
+  @override
+  String get chatNewTitle => 'Nuevo chat';
+
+  @override
+  String get chatNewSearchHint => 'Buscar persona…';
+
+  @override
+  String get chatNewEmptyTitle => 'Sin personas vinculadas';
+
+  @override
+  String get chatNewEmptySubtitle =>
+      'Todavía no tenés personas con las que chatear';
+
+  @override
+  String chatNewNoResults(String query) {
+    return 'Sin resultados para «$query»';
+  }
+
+  @override
+  String get chatNewStart => 'Iniciar conversación';
+
+  @override
+  String get relationRoleStudent => 'Alumno';
+
+  @override
+  String get relationRoleProfessor => 'Profesor';
+
+  @override
+  String get relationRoleParent => 'Padre/Madre';
+
+  @override
+  String get relationRoleAdmin => 'Admin';
+
+  @override
+  String get chatTyping => 'escribiendo…';
+
+  @override
+  String get chatOnline => 'en línea';
+
+  @override
+  String get chatConnectionLost => 'Sin conexión — tocá para reintentar';
+
+  @override
+  String get chatSendFailed => 'No se pudo enviar';
+
+  @override
+  String get chatRetry => 'Reintentar';
+
+  @override
+  String chatUnreadLabel(int count) {
+    return '$count mensajes sin leer';
   }
 
   @override
@@ -845,7 +907,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get attendanceUnsavedTitle => 'Cambios sin guardar';
 
   @override
-  String get attendanceUnsavedMessage => 'Si salís ahora, se perderán los cambios de asistencia.';
+  String get attendanceUnsavedMessage =>
+      'Si salís ahora, se perderán los cambios de asistencia.';
 
   @override
   String get attendanceUnsavedStay => 'Seguir acá';

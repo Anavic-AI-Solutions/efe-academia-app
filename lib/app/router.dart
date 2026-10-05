@@ -15,6 +15,7 @@ import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
 import '../features/chat/screens/chat_detail_screen.dart';
+import '../features/relations/screens/new_chat_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/notifications/screens/notification_list_screen.dart';
 import '../features/news/screens/news_list_screen.dart';
@@ -266,6 +267,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: '/chat',
                 builder: (context, state) => const ChatListScreen(),
                 routes: [
+                  GoRoute(
+                    path: 'new',
+                    builder: (context, state) => const NewChatScreen(),
+                  ),
                   GoRoute(
                     path: ':id',
                     builder: (context, state) => ChatDetailScreen(
