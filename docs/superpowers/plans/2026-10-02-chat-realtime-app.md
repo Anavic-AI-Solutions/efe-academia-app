@@ -463,7 +463,9 @@ Run: `flutter test test/features/chat/realtime_messages_test.dart` → FAIL.
 
 - [ ] **Step 4: Implementar el backfill en reconexión**
 
-`MessagesNotifier` registra en `addReconnectListener` (y lo remueve en `ref.onDispose`) una función que: toma el `id` del último mensaje visible, llama `getMessages(chatId, cursor: id)` y fusiona con `appendIncoming` (la deduplicación hace el trabajo). Si no hay mensajes, refresca con `load()`.
+**No** registrar el listener dentro de `MessagesNotifier` (eso haría que `features/chat/providers/chat_provider.dart` importe `core/realtime/realtime_providers.dart`, que a su vez ya importa `chat_provider.dart` → ciclo de imports entre librerías). En su lugar:
+- `MessagesNotifier` expone `Future<void> backfill()`: toma el `id` del último mensaje visible, llama `getMessages(chatId, cursor: id)` y fusiona con `appendIncoming` (la deduplicación hace el trabajo). Si no hay mensajes, `load()`.
+- `chat_detail_screen.dart` es quien registra `service.addReconnectListener(() => notifier.backfill())` en `initState` y lo remueve en `dispose` (el widget sí puede importar ambos mundos sin ciclo).
 
 - [ ] **Step 5: Escribir los tests de widgets y hacerlos fallar**
 
@@ -478,7 +480,7 @@ Run: `flutter test test/features/chat/chat_detail_widgets_test.dart` → FAIL.
 
 - [ ] **Step 6: Conectar la pantalla**
 
-`chat_detail_screen.dart`: en `initState` llamar `markRead(chatId)` (invalida el badge), crear `RealtimeService.watchChat(chatId: ..., onMessage: notifier.appendIncoming, onRead: notifier.applyReadReceipt, onTyping: notifier.setTyping)` y cancelarlo en `dispose`; fila de typing animada arriba de la barra de input (claves `chatTyping`); ✓✓ en burbujas propias cuando `id <= lastReadMessageId`; burbuja fallida con `chatSendFailed` + `chatRetry`; enviar `whisper('client-typing', ...)` con throttle de 2 s mientras se tipea (y `{'typing': false}` al enviar/limpiar).
+`chat_detail_screen.dart`: en `initState` llamar `markRead(chatId)` (invalida el badge), crear `RealtimeService.watchChat(chatId: ..., onMessage: notifier.appendIncoming, onRead: notifier.applyReadReceipt, onTyping: notifier.setTyping)` y cancelarlo en `dispose`; fila de typing animada arriba de la barra de input (claves `chatTyping`); ✓✓ en burbujas propias cuando `id <= lastReadMessageId`; burbuja fallida con `chatSendFailed` + `chatRetry`; enviar `whisper('typing', ...)` con throttle de 2 s mientras se tipea (y `{'typing': false}` al enviar/limpiar). **OJO:** el paquete `laravel_reverb` prefija `client-` en `whisper()`/`listenForWhisper()`, así que el argumento correcto es `'typing'`; usar `'client-typing'` produciría el wire `client-client-typing` y el indicador nunca llegaría.
 
 - [ ] **Step 7: Correr todos los tests de chat y el analyze**
 
