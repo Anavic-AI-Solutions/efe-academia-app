@@ -72,6 +72,18 @@ class RealtimeService {
         .listen('.notification.sent', (_) => onNotification());
   }
 
+  /// Envía el whisper `client-typing` al canal presence del chat.
+  ///
+  /// `whisper()` antepone el prefijo `client-` del protocolo, por eso el
+  /// evento va como `'typing'`. Reutiliza el handle ya suscrito por
+  /// [watchChat], así que no crea una segunda suscripción. Sin socket, el
+  /// paquete descarta el envío (best-effort).
+  void sendTyping({required String chatId, required bool typing}) {
+    _reverb
+        .presence('public.chat.$chatId')
+        .whisper('typing', {'typing': typing});
+  }
+
   /// Registra un listener de resync; devuelve la función que lo remueve.
   VoidCallback addReconnectListener(void Function() listener) {
     _reconnectListeners.add(listener);

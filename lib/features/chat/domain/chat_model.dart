@@ -13,17 +13,24 @@ class ChatModel with _$ChatModel {
   }) = _ChatModel;
 
   factory ChatModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ??
+        json['data']?['attributes'] as Map<String, dynamic>? ??
+        json;
     final lastMessage = attrs['last_message'];
     return ChatModel(
-      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ??
+          json['id']?.toString() ??
+          attrs['id']?.toString() ??
+          '',
       name: attrs['name'] ?? '',
       lastMessage: lastMessage is Map<String, dynamic>
           ? (lastMessage['body']?.toString() ?? '')
           : (lastMessage?.toString() ?? ''),
       unreadCount: attrs['unread_count'] ?? 0,
       lastMessageAt: _parseDate(
-            lastMessage is Map<String, dynamic> ? lastMessage['created_at'] : null,
+            lastMessage is Map<String, dynamic>
+                ? lastMessage['created_at']
+                : null,
           ) ??
           _parseDate(attrs['updated_at']),
     );

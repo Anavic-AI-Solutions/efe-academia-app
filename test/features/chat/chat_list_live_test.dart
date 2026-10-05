@@ -128,6 +128,9 @@ class _FakeRealtimeService implements RealtimeService {
     return () => reconnectListeners.remove(listener);
   }
 
+  @override
+  void sendTyping({required String chatId, required bool typing}) {}
+
   void emitNotification() => onNotification?.call();
 }
 

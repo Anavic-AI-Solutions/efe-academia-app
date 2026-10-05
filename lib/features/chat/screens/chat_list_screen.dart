@@ -161,8 +161,7 @@ class _ChatTile extends StatelessWidget {
                     color: isDark
                         ? AppColors.darkTextPrimary
                         : AppColors.lightTextPrimary,
-                    fontWeight:
-                        hasUnread ? FontWeight.w700 : FontWeight.w600,
+                    fontWeight: hasUnread ? FontWeight.w700 : FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -178,8 +177,7 @@ class _ChatTile extends StatelessWidget {
                         : (isDark
                             ? AppColors.darkTextTertiary
                             : AppColors.lightTextTertiary),
-                    fontWeight:
-                        hasUnread ? FontWeight.w500 : FontWeight.normal,
+                    fontWeight: hasUnread ? FontWeight.w500 : FontWeight.normal,
                   ),
                 ),
               ],
