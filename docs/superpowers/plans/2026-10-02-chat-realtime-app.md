@@ -397,7 +397,11 @@ Run: `flutter test test/features/chat/chat_list_live_test.dart test/features/cha
 
 - [ ] **Step 5: Conectar el coordinador y el badge de la nav**
 
-En `realtime_providers.dart`: `watchNotifications(onNotification: ...)` → `refreshFirstPage()` + invalidar `chatUnreadCountProvider` (debounced ~500 ms). En `CustomBottomNav` (`router.dart:85-96`, ítem de Chat), envolver el ícono con `BadgeCounter` usando el total; ocultarlo cuando sea `0`.
+**5a — Montar el coordinador (hallazgo de la revisión de la Tarea 2):** en `lib/app/app.dart`, dentro de `build` de `EfeApp`, agregar `ref.watch(realtimeCoordinatorProvider);`. El coordinador usa `ref.listen(authProvider)`, que solo está activo mientras el provider esté vivo; sin este `watch` la app nunca conecta, ni se suscribe, ni hace arranque en frío (los tests lo montan a mano y no lo detectan).
+
+**5b — Cablear el resync:** en `realtime_providers.dart`, sobreescribir `realtimeResyncProvider` (o registrar el listener que la Tarea 2 dejó inyectable) para que llame a `refreshFirstPage()` del `ChatListNotifier` + invalide `chatUnreadCountProvider`. `watchNotifications(onNotification: ...)` → lo mismo (debounced ~500 ms).
+
+**5c — Badge:** en `CustomBottomNav` (`router.dart:85-96`, ítem de Chat), envolver el ícono con `BadgeCounter` usando `chatUnreadCountProvider`; ocultarlo cuando sea `0`.
 
 - [ ] **Step 6: Correr los tests y el analyze**
 
