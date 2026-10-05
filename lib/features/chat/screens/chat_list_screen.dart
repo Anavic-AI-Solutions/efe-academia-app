@@ -11,6 +11,7 @@ import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/realtime/realtime_providers.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../l10n/app_localizations.dart';
@@ -53,6 +54,9 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     final chats = state.chats;
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    // El chat sigue funcionando por REST sin socket; el aviso solo informa y
+    // permite reintentar el handshake a mano.
+    final realtimeReady = ref.watch(realtimeReadyProvider);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -73,6 +77,10 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
               ),
             ],
           ),
+          if (!realtimeReady)
+            _ConnectionBanner(
+              onTap: () => ref.read(realtimeServiceProvider).connect(),
+            ),
           Expanded(
             child: state.isLoading && chats.isEmpty
                 ? const ListShimmer()
@@ -119,6 +127,37 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                           ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ConnectionBanner extends StatelessWidget {
+  const _ConnectionBanner({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Material(
+      key: const Key('chatConnectionBanner'),
+      color: AppColors.mutedFor(isDark),
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text(
+            context.l10n.chatConnectionLost,
+            textAlign: TextAlign.center,
+            style: AppTypography.bodySmall.copyWith(
+              color: isDark ? AppColors.darkBackground : Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -78,7 +78,7 @@ final realtimeReadyProvider = Provider<bool>((ref) {
   final connection = ref.watch(realtimeConnectionProvider);
   return auth.status == AuthStatus.authenticated &&
       auth.user != null &&
-      connection.value == ReverbState.connected;
+      connection.valueOrNull == ReverbState.connected;
 });
 
 /// Coordinador único del ciclo de vida realtime ligado a `authProvider`.

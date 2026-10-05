@@ -173,8 +173,33 @@ flutter clean && flutter pub get
 | Variable | Descripción | Requerida |
 |----------|-------------|-----------|
 | `API_BASE_URL` | Base URL del backend API | Sí |
+| `REVERB_HOST` | Host del servidor Reverb (ver tabla por plataforma) | Para chat en vivo |
+| `REVERB_PORT` | Puerto de Reverb (`8081` por defecto en el backend) | Para chat en vivo |
+| `REVERB_APP_KEY` | App key de Reverb; debe coincidir con la del backend | Para chat en vivo |
+| `REVERB_SCHEME` | `http` o `https` según el backend | Para chat en vivo |
 | `FIREBASE_MESSAGING_KEY` | Para push notifications | No |
 | `SENTRY_DSN` | Error tracking | No |
+
+### Realtime (chat en vivo)
+
+El chat en vivo usa Laravel Reverb por WebSocket. Copiá los valores
+`REVERB_*` del `.env` del backend y ajustá **solo** `REVERB_HOST` según
+dónde corra la app:
+
+| Plataforma | `REVERB_HOST` |
+|------------|---------------|
+| Simulador iOS / Web / Desktop | `localhost` |
+| Emulador Android | `10.0.2.2` |
+| Dispositivo físico (Android/iOS) | IP de la LAN de la máquina que corre el backend (ej. `192.168.1.50`) |
+
+El backend debe tener Reverb y la cola de trabajos corriendo. Sin el socket la
+app sigue funcionando por REST (listar, enviar y abrir chats), pero sin
+mensajes en vivo ni badge automático:
+
+```bash
+php artisan reverb:start
+php artisan queue:listen --tries=1
+```
 
 ## Contribuir
 
