@@ -562,6 +562,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.9.0"
+  laravel_reverb:
+    dependency: "direct main"
+    description:
+      name: laravel_reverb
+      sha256: "4ab5053e3dac4f958b66a62b571762771a3a9643b00f06d7de15ff4471b491da"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.1"
   leak_tracker:
     dependency: transitive
     description:
