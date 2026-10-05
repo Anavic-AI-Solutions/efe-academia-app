@@ -413,11 +413,13 @@ void main() {
     await tester.pump();
     expect(harness.service.typingWhispers, hasLength(1));
 
+    // Unmount while the 2 s throttle is still armed and end the test before it
+    // fires. If dispose forgot to cancel it, flutter_test reports the leaked
+    // timer ("A Timer is still pending even after the widget tree was
+    // disposed") and this test fails.
     await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pump(const Duration(seconds: 3));
+    await tester.pump(const Duration(milliseconds: 500));
 
-    // Dispose cancelled the pending 2s throttle: no whisper was sent after
-    // the screen went away and the binding reports no leaked timer.
     expect(harness.service.typingWhispers, hasLength(1));
   });
 

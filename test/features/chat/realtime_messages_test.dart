@@ -191,6 +191,22 @@ void main() {
     expect(notifier.state.typingUserId, isNull);
   });
 
+  test('dispose cancels the typing timeout timer', () async {
+    final repository = _FakeChatRepository();
+    final notifier = await _notifier(
+      repository,
+      typingTimeout: const Duration(milliseconds: 30),
+    );
+    notifier.setTyping({'user_id': '2', 'typing': true});
+    expect(notifier.state.typingUserId, '2');
+
+    notifier.dispose();
+
+    // Without the cancel in dispose, the timer would fire _clearTyping on a
+    // disposed notifier and the uncaught StateError would fail this test.
+    await Future<void>.delayed(const Duration(milliseconds: 60));
+  });
+
   test('setTyping shows the realistic payload and ignores another user stop',
       () async {
     final repository = _FakeChatRepository();
