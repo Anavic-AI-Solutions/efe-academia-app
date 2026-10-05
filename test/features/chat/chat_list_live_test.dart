@@ -129,7 +129,11 @@ class _FakeRealtimeService implements RealtimeService {
   }
 
   @override
-  void sendTyping({required String chatId, required bool typing}) {}
+  void sendTyping({
+    required String chatId,
+    required bool typing,
+    required String userId,
+  }) {}
 
   void emitNotification() => onNotification?.call();
 }

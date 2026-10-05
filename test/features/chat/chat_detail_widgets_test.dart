@@ -96,8 +96,8 @@ class _FakeSubscription implements Subscription {
 /// Records the chat channel wiring and lets the test emit realtime events.
 class _FakeRealtimeService implements RealtimeService {
   final List<String> watchedChats = <String>[];
-  final List<({String chatId, bool typing})> typingWhispers =
-      <({String chatId, bool typing})>[];
+  final List<({String chatId, bool typing, String userId})> typingWhispers =
+      <({String chatId, bool typing, String userId})>[];
   final Set<void Function()> reconnectListeners = <void Function()>{};
 
   late _FakeSubscription chatSubscription;
@@ -145,8 +145,18 @@ class _FakeRealtimeService implements RealtimeService {
   }
 
   @override
-  void sendTyping({required String chatId, required bool typing}) {
-    typingWhispers.add((chatId: chatId, typing: typing));
+  void sendTyping({
+    required String chatId,
+    required bool typing,
+    required String userId,
+  }) {
+    typingWhispers.add((chatId: chatId, typing: typing, userId: userId));
+  }
+
+  void fireReconnect() {
+    for (final listener in List<void Function()>.of(reconnectListeners)) {
+      listener();
+    }
   }
 }
 
@@ -178,9 +188,11 @@ class _FakeChatApi implements ChatApi {
 }
 
 class _FakeChatRepository implements ChatRepository {
-  _FakeChatRepository(this.messages);
+  _FakeChatRepository(this.messages, {this.backfillMessages = const []});
 
   final List<MessageModel> messages;
+  final List<MessageModel> backfillMessages;
+  final List<String?> messageCursors = <String?>[];
   Future<MessageModel> Function(String body)? onSendMessage;
   int sendCalls = 0;
 
@@ -192,8 +204,13 @@ class _FakeChatRepository implements ChatRepository {
   Future<CursorPagination<MessageModel>> getMessages(
     String chatId, {
     String? cursor,
-  }) async =>
-      CursorPagination<MessageModel>(data: messages, hasMore: false);
+  }) async {
+    messageCursors.add(cursor);
+    return CursorPagination<MessageModel>(
+      data: cursor == null ? messages : backfillMessages,
+      hasMore: false,
+    );
+  }
 
   @override
   Future<MessageModel> sendMessage(String chatId, String body) {
@@ -243,12 +260,15 @@ class _Harness {
 Future<_Harness> _pumpDetail(
   WidgetTester tester, {
   List<MessageModel> messages = const [],
+  List<MessageModel> backfillMessages = const [],
   Future<MessageModel> Function(String body)? onSendMessage,
 }) async {
   final service = _FakeRealtimeService();
   final api = _FakeChatApi();
-  final repository = _FakeChatRepository(messages)
-    ..onSendMessage = onSendMessage;
+  final repository = _FakeChatRepository(
+    messages,
+    backfillMessages: backfillMessages,
+  )..onSendMessage = onSendMessage;
   final auth = _TestAuthNotifier()..signIn(_me);
   final container = ProviderContainer(
     overrides: [
@@ -368,7 +388,8 @@ void main() {
 
     await tester.enterText(find.byType(TextField), 'ho');
     await tester.pump();
-    expect(harness.service.typingWhispers, [(chatId: 'c1', typing: true)]);
+    expect(harness.service.typingWhispers,
+        [(chatId: 'c1', typing: true, userId: '7')]);
 
     await tester.enterText(find.byType(TextField), 'hola');
     await tester.pump();
@@ -380,8 +401,42 @@ void main() {
     await tester.pump();
 
     expect(harness.service.typingWhispers, [
-      (chatId: 'c1', typing: true),
-      (chatId: 'c1', typing: false),
+      (chatId: 'c1', typing: true, userId: '7'),
+      (chatId: 'c1', typing: false, userId: '7'),
     ]);
+  });
+
+  testWidgets('cancels the typing throttle timer on dispose', (tester) async {
+    final harness = await _pumpDetail(tester);
+
+    await tester.enterText(find.byType(TextField), 'hola');
+    await tester.pump();
+    expect(harness.service.typingWhispers, hasLength(1));
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(seconds: 3));
+
+    // Dispose cancelled the pending 2s throttle: no whisper was sent after
+    // the screen went away and the binding reports no leaked timer.
+    expect(harness.service.typingWhispers, hasLength(1));
+  });
+
+  testWidgets('reconnect triggers the backfill of missed messages',
+      (tester) async {
+    final harness = await _pumpDetail(
+      tester,
+      messages: [
+        _message('1', senderId: '2', body: 'viejo'),
+        _message('2', senderId: '7', body: 'mío'),
+      ],
+      backfillMessages: [_message('3', senderId: '2', body: 'perdido')],
+    );
+
+    harness.service.fireReconnect();
+    await tester.pump();
+    await tester.pump();
+
+    expect(harness.repository.messageCursors, [null, '2']);
+    expect(find.text('perdido'), findsOneWidget);
   });
 }

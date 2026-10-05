@@ -33,8 +33,7 @@ void main() {
       expect(chat.name, 'Carolina Pelaez');
       expect(chat.lastMessage, 'Hola, prueba de reparacion');
       expect(chat.unreadCount, 0);
-      expect(chat.lastMessageAt,
-          DateTime.parse('2026-09-15T21:05:17.000000Z'));
+      expect(chat.lastMessageAt, DateTime.parse('2026-09-15T21:05:17.000000Z'));
     });
 
     test('tolerates a null last_message', () {
@@ -54,8 +53,7 @@ void main() {
       expect(chat.id, '7');
       expect(chat.lastMessage, '');
       expect(chat.unreadCount, 3);
-      expect(chat.lastMessageAt,
-          DateTime.parse('2026-09-15T21:05:17.000000Z'));
+      expect(chat.lastMessageAt, DateTime.parse('2026-09-15T21:05:17.000000Z'));
     });
   });
 
@@ -84,8 +82,22 @@ void main() {
       expect(message.body, 'Prueba envio mobile');
       expect(message.senderId, '53');
       expect(message.senderName, 'Test Admin 3');
-      expect(message.createdAt,
-          DateTime.parse('2026-09-15T21:13:11.000000Z'));
+      expect(message.createdAt, DateTime.parse('2026-09-15T21:13:11.000000Z'));
+    });
+
+    test('parses the flat broadcast payload with user_id and user_name', () {
+      final message = MessageModel.fromJson({
+        'id': 9,
+        'conversation_id': 1,
+        'body': 'hola',
+        'created_at': '2026-10-05T12:00:00+00:00',
+        'user_id': 53,
+        'user_name': 'Test Admin 3',
+      });
+
+      expect(message.id, '9');
+      expect(message.senderId, '53');
+      expect(message.senderName, 'Test Admin 3');
     });
   });
 }

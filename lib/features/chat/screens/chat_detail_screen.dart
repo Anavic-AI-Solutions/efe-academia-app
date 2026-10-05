@@ -108,10 +108,14 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   }
 
   void _sendTyping(bool typing) {
+    final userId = ref.read(authProvider).user?.id;
+    if (userId == null || userId.isEmpty) return;
     try {
-      ref
-          .read(realtimeServiceProvider)
-          .sendTyping(chatId: widget.chatId, typing: typing);
+      ref.read(realtimeServiceProvider).sendTyping(
+            chatId: widget.chatId,
+            typing: typing,
+            userId: userId,
+          );
     } catch (e) {
       debugPrint('[Chat:${widget.chatId}] typing no disponible: $e');
     }

@@ -337,16 +337,18 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
   }
 
   /// Indicador transitorio: un whisper `typing: true` expira solo tras
-  /// [typingTimeout]; `typing: false` lo limpia al instante.
+  /// [typingTimeout]; un `typing: false` del mismo usuario lo limpia al
+  /// instante. Un `false` de otro usuario no apaga el indicador ajeno.
   void setTyping(Map<String, dynamic> event) {
-    _typingTimer?.cancel();
-    _typingTimer = null;
+    final userId = event['user_id']?.toString();
     if (event['typing'] == false) {
-      _clearTyping();
+      if (userId == null || userId.isEmpty || userId == state.typingUserId) {
+        _clearTyping();
+      }
       return;
     }
-    final userId = event['user_id']?.toString();
     if (userId == null || userId.isEmpty) return;
+    _typingTimer?.cancel();
     _typingTimer = Timer(typingTimeout, _clearTyping);
     state = state.copyWith(typingUserId: userId);
   }
@@ -442,7 +444,11 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
   void _replaceOptimistic(String tempId, MessageModel message) {
     final data =
         state.messages.where((m) => m.id != tempId).toList(growable: true);
-    if (message.id.isNotEmpty && !data.any((m) => m.id == message.id)) {
+    // Si el broadcast propio llegó antes que la respuesta del POST, el id
+    // real ya está en la lista: se descarta la burbuja temporal sin duplicar.
+    final alreadyPresent =
+        message.id.isNotEmpty && data.any((m) => m.id == message.id);
+    if (!alreadyPresent && message.id.isNotEmpty) {
       data.add(message);
     }
     final statuses = Map<String, MessageStatus>.of(state.statuses)

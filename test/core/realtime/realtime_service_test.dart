@@ -88,6 +88,29 @@ void main() {
     subscription.cancel();
   });
 
+  test('sendTyping whispers client-typing with the sender user id', () async {
+    await service.connect();
+    final subscription = service.watchChat(
+      chatId: '1',
+      onMessage: (_) {},
+      onRead: (_) {},
+      onTyping: (_) {},
+    );
+    await pumpEventQueue();
+
+    service.sendTyping(chatId: '1', typing: true, userId: '7');
+    await pumpEventQueue();
+
+    // wire event name: the protocol's `client-` prefix plus the bare event.
+    final whisper = fake.sent.lastWhere(
+      (frame) => frame['event'] == 'client-typing',
+    );
+    expect(whisper['channel'], chatChannel);
+    expect(whisper['data'], {'typing': true, 'user_id': '7'});
+
+    subscription.cancel();
+  });
+
   test('watchNotifications fires on notification.sent', () async {
     await service.connect();
     var notifications = 0;

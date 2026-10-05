@@ -24,10 +24,15 @@ class MessageModel with _$MessageModel {
           attrs['id']?.toString() ??
           '',
       body: attrs['body'] ?? '',
-      senderId:
-          sender?['id']?.toString() ?? attrs['sender_id']?.toString() ?? '',
-      senderName:
-          sender?['fullname'] ?? sender?['name'] ?? attrs['sender_name'] ?? '',
+      senderId: sender?['id']?.toString() ??
+          attrs['sender_id']?.toString() ??
+          attrs['user_id']?.toString() ??
+          '',
+      senderName: sender?['fullname'] ??
+          sender?['name'] ??
+          attrs['sender_name'] ??
+          attrs['user_name'] ??
+          '',
       isMe: attrs['is_me'] ?? false,
       createdAt: DateTime.tryParse(attrs['created_at'] ?? '') ?? DateTime.now(),
     );

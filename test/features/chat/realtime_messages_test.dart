@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/features/chat/data/chat_repository.dart';
 import 'package:efe_mobile/features/chat/domain/chat_model.dart';
@@ -187,6 +189,83 @@ void main() {
     notifier.setTyping({'user_id': '2', 'typing': true});
     notifier.setTyping({'user_id': '2', 'typing': false});
     expect(notifier.state.typingUserId, isNull);
+  });
+
+  test('setTyping shows the realistic payload and ignores another user stop',
+      () async {
+    final repository = _FakeChatRepository();
+    final notifier = await _notifier(repository);
+
+    notifier.setTyping({'user_id': '2', 'typing': true});
+    expect(notifier.state.typingUserId, '2');
+
+    // A `typing: false` for a different user must not clear the indicator.
+    notifier.setTyping({'user_id': '9', 'typing': false});
+    expect(notifier.state.typingUserId, '2');
+
+    notifier.setTyping({'user_id': '2', 'typing': false});
+    expect(notifier.state.typingUserId, isNull);
+  });
+
+  test('appendIncoming reads the flat user_id/user_name broadcast payload',
+      () async {
+    final repository = _FakeChatRepository();
+    final notifier = await _notifier(repository);
+
+    await notifier.appendIncoming({
+      'id': 9,
+      'conversation_id': 1,
+      'body': 'hola',
+      'created_at': '2026-10-05T12:00:00Z',
+      'user_id': 53,
+      'user_name': 'Test Admin 3',
+    });
+
+    final message = notifier.state.messages.single;
+    expect(message.senderId, '53');
+    expect(message.senderName, 'Test Admin 3');
+  });
+
+  test('send publishes a sending bubble and settles it as sent', () async {
+    final repository = _FakeChatRepository();
+    final completer = Completer<MessageModel>();
+    repository.onSendMessage = (chatId, body) => completer.future;
+    final notifier = await _notifier(repository);
+
+    final pending = notifier.send('hola');
+
+    final optimistic = notifier.state.messages.single;
+    expect(optimistic.body, 'hola');
+    expect(notifier.state.statusOf(optimistic.id), MessageStatus.sending);
+    expect(notifier.state.isOwn(optimistic.id), isTrue);
+
+    completer.complete(_message('42', body: 'hola', senderId: '7'));
+    await pending;
+
+    expect(notifier.state.messages.single.id, '42');
+    expect(notifier.state.statusOf('42'), MessageStatus.sent);
+    expect(notifier.state.isOwn('42'), isTrue);
+  });
+
+  test('a server echo arriving first replaces the optimistic bubble', () async {
+    final repository = _FakeChatRepository();
+    final completer = Completer<MessageModel>();
+    repository.onSendMessage = (chatId, body) => completer.future;
+    final notifier = await _notifier(repository);
+
+    final pending = notifier.send('hola');
+    final tempId = notifier.state.messages.single.id;
+    await notifier.appendIncoming(_incoming('42', body: 'hola'));
+    // The echo and the in-flight optimistic bubble coexist for now.
+    expect(notifier.state.messages.map((m) => m.id), ['42', tempId]);
+
+    completer.complete(_message('42', body: 'hola', senderId: '7'));
+    await pending;
+
+    // The temp bubble is dropped, never duplicated alongside the echo.
+    expect(notifier.state.messages.map((m) => m.id), ['42']);
+    expect(notifier.state.isOwn(tempId), isFalse);
+    expect(notifier.state.isOwn('42'), isTrue);
   });
 
   test('send failure marks the message as failed and retrySend re-sends it',

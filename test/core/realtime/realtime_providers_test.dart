@@ -150,7 +150,11 @@ class _FakeRealtimeService implements RealtimeService {
   }
 
   @override
-  void sendTyping({required String chatId, required bool typing}) {}
+  void sendTyping({
+    required String chatId,
+    required bool typing,
+    required String userId,
+  }) {}
 
   void fireReconnect() {
     for (final listener in List<void Function()>.of(reconnectListeners)) {
