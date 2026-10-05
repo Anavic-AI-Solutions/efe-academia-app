@@ -498,8 +498,9 @@ git commit -m "feat(chat): mensajes en vivo, resync, typing y confirmación de l
 
 **Files:**
 - Modify: `lib/features/chat/screens/chat_list_screen.dart` (banner de estado)
+- Modify: `lib/app/app.dart` (lifecycle: refresh en resume — hallazgo de la revisión de la Tarea 5)
 - Modify: `README.md` (variables `REVERB_*` y host por plataforma)
-- Test: `test/features/chat/connection_banner_test.dart`
+- Test: `test/features/chat/connection_banner_test.dart`, `test/app/app_lifecycle_refresh_test.dart`
 
 - [ ] **Step 1: Test del banner (fallando)**
 
@@ -514,6 +515,8 @@ Run: `flutter test test/features/chat/connection_banner_test.dart` → FAIL.
 - [ ] **Step 2: Implementar el banner**
 
 Bajo el `LargeTitleBar` de `chat_list_screen.dart`, un contenedor con `mutedFor(isDark)` y `context.l10n.chatConnectionLost`, visible solo si `realtimeReadyProvider == false`; al tocar, `service.connect()`. Nunca bloquea el scroll ni el envío (la app sigue funcionando por REST).
+
+**2b — Refresh en resume (hallazgo de la revisión de la Tarea 5):** `ChatUnreadCountController.refresh()` existe y está testeado, pero nadie lo llama en producción. En `lib/app/app.dart`, observar el ciclo de vida de la app (`WidgetsBindingObserver`) y al volver a `resumed` llamar `chatUnreadCountControllerProvider.refresh()` y `refreshFirstPage()` del chat list. Test: `test/app/app_lifecycle_refresh_test.dart` — simular el cambio de estado de ciclo de vida y verificar que el refresh del contador se dispara (con `ChatApi` falso).
 
 - [ ] **Step 3: Documentar configuración en el README**
 
