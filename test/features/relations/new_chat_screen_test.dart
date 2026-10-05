@@ -87,6 +87,12 @@ class _FakeChatApi implements ChatApi {
   @override
   Future<Response> sendMessage(String chatId, String body) =>
       Future.error(UnimplementedError());
+
+  @override
+  Future<int> getUnreadCount() => Future.error(UnimplementedError());
+
+  @override
+  Future<void> markRead(String chatId) => Future.error(UnimplementedError());
 }
 
 Response<dynamic> _createdChatResponse(String id) => Response(

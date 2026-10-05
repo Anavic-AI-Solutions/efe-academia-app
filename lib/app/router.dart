@@ -15,6 +15,7 @@ import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
 import '../features/chat/screens/chat_detail_screen.dart';
+import '../features/chat/providers/chat_provider.dart';
 import '../features/relations/screens/new_chat_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/notifications/screens/notification_list_screen.dart';
@@ -22,6 +23,7 @@ import '../features/news/screens/news_list_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../app/theme/app_colors.dart';
+import '../core/widgets/badge_counter.dart';
 import '../l10n/l10n.dart';
 
 // ---------------------------------------------------------------------------
@@ -42,6 +44,8 @@ class CustomBottomNav extends ConsumerWidget {
     const accent = AppColors.primary;
     final inactive =
         isDark ? AppColors.darkTextSecondary : AppColors.navInactive;
+    // Hidden (0) while loading or on error.
+    final unreadChats = ref.watch(chatUnreadCountProvider).valueOrNull ?? 0;
 
     return Container(
       decoration: BoxDecoration(
@@ -87,6 +91,7 @@ class CustomBottomNav extends ConsumerWidget {
                 icon: PhosphorIconsRegular.chatCircle,
                 selectedIcon: PhosphorIconsFill.chatCircle,
                 label: l10n.navChat,
+                badgeCount: unreadChats,
                 isSelected: navigationShell.currentIndex == 2,
                 onTap: () => navigationShell.goBranch(
                   2,
@@ -119,6 +124,7 @@ class _NavItem extends StatelessWidget {
   final IconData icon;
   final IconData selectedIcon;
   final String label;
+  final int badgeCount;
   final bool isSelected;
   final VoidCallback onTap;
   final Color accent;
@@ -128,6 +134,7 @@ class _NavItem extends StatelessWidget {
     required this.icon,
     required this.selectedIcon,
     required this.label,
+    this.badgeCount = 0,
     required this.isSelected,
     required this.onTap,
     required this.accent,
@@ -145,10 +152,13 @@ class _NavItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              isSelected ? selectedIcon : icon,
-              size: 22,
-              color: color,
+            BadgeCounter(
+              count: badgeCount,
+              child: Icon(
+                isSelected ? selectedIcon : icon,
+                size: 22,
+                color: color,
+              ),
             ),
             const SizedBox(height: 4),
             AnimatedContainer(

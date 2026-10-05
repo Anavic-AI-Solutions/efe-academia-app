@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/app_localizations.dart';
+import '../core/realtime/realtime_providers.dart';
 import 'locale/locale_provider.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
@@ -12,6 +13,9 @@ class EfeApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Mounts the realtime coordinator: it owns the socket lifecycle tied to
+    // the session, so without this watch the app never connects.
+    ref.watch(realtimeCoordinatorProvider);
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeProvider);
     final themeMode = ref.watch(themeModeProvider);

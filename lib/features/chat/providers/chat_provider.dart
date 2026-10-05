@@ -86,6 +86,17 @@ class ChatListNotifier extends StateNotifier<ChatListState> {
     }
   }
 
+  /// Refresca la primera página sin activar el estado de carga, para que los
+  /// refrescos disparados por realtime no hagan parpadear la lista visible.
+  Future<void> refreshFirstPage() async {
+    try {
+      final result = await _repository.getChats();
+      state = state.copyWith(pagination: result, clearError: true);
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
+
   Future<void> loadMore() async {
     if (!state.pagination.hasMore || state.isLoading) return;
     state = state.copyWith(isLoading: true);
@@ -110,6 +121,40 @@ final chatListProvider =
     StateNotifierProvider<ChatListNotifier, ChatListState>((ref) {
   return ChatListNotifier(ref.watch(chatRepositoryProvider));
 });
+
+// ---------------------------------------------------------------------------
+// Unread Count
+// ---------------------------------------------------------------------------
+
+/// Contador global de mensajes sin leer (badge de la nav).
+final chatUnreadCountProvider = FutureProvider<int>((ref) {
+  return ref.watch(chatApiProvider).getUnreadCount();
+});
+
+/// Acciones sobre el contador: abrir un chat y refrescarlo a mano.
+class ChatUnreadCountController {
+  ChatUnreadCountController(this._ref);
+
+  final Ref _ref;
+
+  /// Marca el chat como leído y, solo si el POST tuvo éxito, invalida el
+  /// badge para que se relea el contador.
+  Future<void> markRead(String chatId) async {
+    try {
+      await _ref.read(chatApiProvider).markRead(chatId);
+    } catch (_) {
+      // El badge conserva su valor; el próximo refresh lo reconcilia.
+      return;
+    }
+    _ref.invalidate(chatUnreadCountProvider);
+  }
+
+  /// Fuerza la relectura del contador sin depender del WebSocket.
+  void refresh() => _ref.invalidate(chatUnreadCountProvider);
+}
+
+final chatUnreadCountControllerProvider = Provider<ChatUnreadCountController>(
+    (ref) => ChatUnreadCountController(ref));
 
 // ---------------------------------------------------------------------------
 // Messages State
@@ -216,6 +261,7 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
 }
 
 final messagesProvider =
-    StateNotifierProvider.family<MessagesNotifier, MessagesState, String>((ref, chatId) {
+    StateNotifierProvider.family<MessagesNotifier, MessagesState, String>(
+        (ref, chatId) {
   return MessagesNotifier(ref.watch(chatRepositoryProvider), chatId);
 });

@@ -6,15 +6,36 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laravel_reverb/laravel_reverb.dart';
 
 import '../../features/auth/providers/auth_provider.dart';
+import '../../features/chat/providers/chat_provider.dart';
 import '../api/api_provider.dart';
 import 'realtime_service.dart';
 
+/// Ventana de agrupación de los refrescos disparados por realtime.
+///
+/// Los tests la sobreescriben a [Duration.zero] para no depender del reloj.
+final realtimeResyncDebounceProvider = Provider<Duration>(
+  (ref) => const Duration(milliseconds: 500),
+);
+
 /// Hook global de resync, disparado en cada reconexión y en cada notificación.
 ///
-/// Hasta que la Tarea 5 conecte la lista de chats y el contador de no leídos,
-/// el valor por defecto es un no-op; el coordinador lo resuelve por provider
-/// para que los tests puedan inyectar un espía.
-final realtimeResyncProvider = Provider<void Function()>((ref) => () {});
+/// Refresca la primera página de la lista de chats y el contador de no leídos.
+/// Una ráfaga de notificaciones se agrupa con un debounce para no disparar una
+/// petición por evento. El coordinador lo resuelve por provider para que los
+/// tests puedan inyectar un espía.
+final realtimeResyncProvider = Provider<void Function()>((ref) {
+  final debounce = ref.watch(realtimeResyncDebounceProvider);
+  Timer? timer;
+  ref.onDispose(() => timer?.cancel());
+
+  return () {
+    timer?.cancel();
+    timer = Timer(debounce, () {
+      ref.read(chatListProvider.notifier).refreshFirstPage();
+      ref.invalidate(chatUnreadCountProvider);
+    });
+  };
+});
 
 /// Servicio de producción, construido desde `.env` + [secureStorageProvider].
 ///
