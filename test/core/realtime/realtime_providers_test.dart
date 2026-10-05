@@ -203,6 +203,22 @@ class _Harness {
 }
 
 void main() {
+  group('broadcastingAuthEndpoint', () {
+    test('appends the Sanctum broadcasting route to the API base url', () {
+      expect(
+        broadcastingAuthEndpoint('http://host:8000/api/v1'),
+        'http://host:8000/api/v1/broadcasting/auth',
+      );
+    });
+
+    test('normalizes a trailing slash before appending the route', () {
+      expect(
+        broadcastingAuthEndpoint('http://host:8000/api/v1/'),
+        'http://host:8000/api/v1/broadcasting/auth',
+      );
+    });
+  });
+
   test('connecting is requested when the session becomes authenticated',
       () async {
     final harness = _Harness();

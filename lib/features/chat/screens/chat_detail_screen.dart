@@ -76,7 +76,12 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
           .watchChat(
             chatId: widget.chatId,
             onMessage: notifier.appendIncoming,
-            onRead: notifier.applyReadReceipt,
+            // El backend reenvía el recibo al lector; ignorar los propios
+            // evita pintar ✓✓ en mensajes que el otro usuario no leyó (B4).
+            onRead: (event) => notifier.applyReadReceipt(
+              event,
+              currentUserId: ref.read(authProvider).user?.id,
+            ),
             onTyping: notifier.setTyping,
           )
           .cancel;

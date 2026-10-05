@@ -37,15 +37,26 @@ final realtimeResyncProvider = Provider<void Function()>((ref) {
   };
 });
 
+/// Endpoint de autorización de canales a partir de la base de la API.
+///
+/// El backend expone la ruta Sanctum `/api/v1/broadcasting/auth`; la ruta web
+/// `/broadcasting/auth` autentica solo con sesión de cookie y responde 403 a
+/// un Bearer. Normaliza la barra final para no duplicarla.
+String broadcastingAuthEndpoint(String apiBaseUrl) {
+  final base = apiBaseUrl.endsWith('/')
+      ? apiBaseUrl.substring(0, apiBaseUrl.length - 1)
+      : apiBaseUrl;
+  return '$base/broadcasting/auth';
+}
+
 /// Servicio de producción, construido desde `.env` + [secureStorageProvider].
 ///
 /// Los tests lo reemplazan por un fake; por eso el coordinador nunca toca el
 /// `Reverb` directamente.
 final realtimeServiceProvider = Provider<RealtimeService>((ref) {
   final storage = ref.watch(secureStorageProvider);
-  final apiUrl = Uri.parse(
-    dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1',
-  );
+  final apiBaseUrl =
+      dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1';
   final scheme = dotenv.env['REVERB_SCHEME'] ?? 'http';
   final useTls = scheme == 'https' || scheme == 'wss';
 
@@ -55,7 +66,10 @@ final realtimeServiceProvider = Provider<RealtimeService>((ref) {
       port: int.tryParse(dotenv.env['REVERB_PORT'] ?? '') ?? 8080,
       appKey: dotenv.env['REVERB_APP_KEY'] ?? '',
       useTls: useTls,
-      authEndpoint: '${apiUrl.origin}/broadcasting/auth',
+      authEndpoint: broadcastingAuthEndpoint(apiBaseUrl),
+      onError: (error, stackTrace) {
+        debugPrint('[Realtime] $error');
+      },
       // Leído en cada intento para que un token refrescado se use sin
       // recrear el cliente.
       authHeaders: () async {

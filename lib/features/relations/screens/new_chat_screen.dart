@@ -36,6 +36,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   Timer? _debounce;
   int? _creatingUserId;
   String? _createError;
+  bool _createFailed = false;
   RelationModel? _lastTapped;
 
   @override
@@ -60,6 +61,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
       _creatingUserId = relation.userId;
       _lastTapped = relation;
       _createError = null;
+      _createFailed = false;
     });
     try {
       final response = await ref
@@ -69,7 +71,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
       if (!mounted) return;
       setState(() => _creatingUserId = null);
       if (chatId.isEmpty) {
-        setState(() => _createError = 'invalid_response');
+        setState(() => _createFailed = true);
         return;
       }
       context.push(
@@ -125,7 +127,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   }
 
   Widget _buildBody(RelationsState state, AppLocalizations l10n, bool isDark) {
-    if (_createError != null) {
+    if (_createFailed || _createError != null) {
       return ErrorView(
         message: l10n.chatLoadError,
         detail: _createError,

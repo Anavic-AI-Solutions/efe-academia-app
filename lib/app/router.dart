@@ -154,6 +154,7 @@ class _NavItem extends StatelessWidget {
           children: [
             BadgeCounter(
               count: badgeCount,
+              showCount: true,
               child: Icon(
                 isSelected ? selectedIcon : icon,
                 size: 22,

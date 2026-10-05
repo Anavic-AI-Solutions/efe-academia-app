@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -305,9 +306,11 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
         chatId,
         cursor: state.pagination.nextCursor,
       );
+      // La página pedida puede solaparse con mensajes que llegaron en vivo:
+      // se fusiona por id para no duplicar.
       state = state.copyWith(
         pagination: result.copyWith(
-          data: [...state.pagination.data, ...result.data],
+          data: _mergeMessages(state.messages, result.data),
         ),
         isLoading: false,
       );
@@ -326,8 +329,15 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
   }
 
   /// Marca como leídos los mensajes propios con id <= `last_read_message_id`.
-  /// Los recibos viejos se ignoran para no retroceder el marcador.
-  void applyReadReceipt(Map<String, dynamic> event) {
+  /// Los recibos viejos se ignoran para no retroceder el marcador y los
+  /// propios se descartan: el backend reenvía el evento al lector (spec B4).
+  void applyReadReceipt(Map<String, dynamic> event, {String? currentUserId}) {
+    final readerId = event['user_id'] ?? event['userId'];
+    if (currentUserId != null &&
+        readerId != null &&
+        readerId.toString() == currentUserId) {
+      return;
+    }
     final raw = event['last_read_message_id'] ?? event['lastReadMessageId'];
     final value = raw is int ? raw : int.tryParse('$raw');
     if (value == null) return;
@@ -359,7 +369,8 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
     String? cursor;
     for (final message in state.messages.reversed) {
       if (int.tryParse(message.id) != null) {
-        cursor = message.id;
+        // El backend espera el id crudo codificado en base64.
+        cursor = base64Encode(utf8.encode(message.id));
         break;
       }
     }
@@ -415,12 +426,28 @@ class MessagesNotifier extends StateNotifier<MessagesState> {
   }
 
   void _merge(MessageModel message) {
+    if (message.id.isEmpty) return;
     if (state.messages.any((m) => m.id == message.id)) return;
     state = state.copyWith(
       pagination: state.pagination.copyWith(
-        data: _sorted([...state.messages, message]),
+        data: _mergeMessages(state.messages, [message]),
       ),
     );
+  }
+
+  /// Fusiona [incoming] sobre [current] descartando duplicados por id y
+  /// manteniendo el orden ascendente.
+  List<MessageModel> _mergeMessages(
+    List<MessageModel> current,
+    List<MessageModel> incoming,
+  ) {
+    final merged = [...current];
+    final ids = current.map((m) => m.id).toSet();
+    for (final message in incoming) {
+      if (message.id.isEmpty || !ids.add(message.id)) continue;
+      merged.add(message);
+    }
+    return _sorted(merged);
   }
 
   List<MessageModel> _sorted(List<MessageModel> messages) =>

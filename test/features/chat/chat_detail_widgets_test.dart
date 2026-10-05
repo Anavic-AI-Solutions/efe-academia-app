@@ -333,6 +333,32 @@ void main() {
     expect(find.byIcon(PhosphorIconsFill.checks), findsOneWidget);
   });
 
+  testWidgets('ignores the read receipt broadcast from the current user',
+      (tester) async {
+    final harness = await _pumpDetail(
+      tester,
+      messages: [
+        _message('1', senderId: '2', body: 'ajeno'),
+        _message('2', senderId: '7', body: 'mío'),
+      ],
+    );
+
+    // The reader receives their own MessagesRead; it must not paint ✓✓.
+    harness.service.onRead?.call({
+      'user_id': '7',
+      'last_read_message_id': '2',
+    });
+    await tester.pump();
+    expect(find.byIcon(PhosphorIconsFill.checks), findsNothing);
+
+    harness.service.onRead?.call({
+      'user_id': '2',
+      'last_read_message_id': '2',
+    });
+    await tester.pump();
+    expect(find.byIcon(PhosphorIconsFill.checks), findsOneWidget);
+  });
+
   testWidgets('shows the failed state with retry on an unsent message',
       (tester) async {
     final harness = await _pumpDetail(
@@ -438,7 +464,7 @@ void main() {
     await tester.pump();
     await tester.pump();
 
-    expect(harness.repository.messageCursors, [null, '2']);
+    expect(harness.repository.messageCursors, [null, 'Mg==']);
     expect(find.text('perdido'), findsOneWidget);
   });
 }

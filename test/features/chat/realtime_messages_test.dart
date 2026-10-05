@@ -129,7 +129,7 @@ void main() {
 
     await notifier.backfill();
 
-    expect(repository.messageCursors, [null, '2']);
+    expect(repository.messageCursors, [null, 'Mg==']);
     expect(notifier.state.messages.map((m) => m.id), ['1', '2', '3', '4']);
   });
 
@@ -171,6 +171,52 @@ void main() {
     // An older receipt must not move the marker backwards.
     notifier.applyReadReceipt({'last_read_message_id': '1'});
     expect(notifier.state.lastReadMessageId, 2);
+  });
+
+  test('applyReadReceipt ignores the receipt coming from the current user',
+      () async {
+    final repository = _FakeChatRepository();
+    final notifier = await _notifier(repository);
+    await notifier.appendIncoming(_incoming('1'));
+
+    // The backend echoes MessagesRead to the reader; spec B4 says to ignore it.
+    notifier.applyReadReceipt(
+      {'user_id': '7', 'last_read_message_id': '1'},
+      currentUserId: '7',
+    );
+    expect(notifier.state.lastReadMessageId, isNull);
+    expect(notifier.state.isRead('1'), isFalse);
+
+    notifier.applyReadReceipt(
+      {'user_id': '2', 'last_read_message_id': '1'},
+      currentUserId: '7',
+    );
+    expect(notifier.state.lastReadMessageId, 1);
+    expect(notifier.state.isRead('1'), isTrue);
+  });
+
+  test('loadMore merges the fetched page with live appends without duplicates',
+      () async {
+    final repository = _FakeChatRepository()
+      ..onGetMessages = (chatId, cursor) async {
+        if (cursor == null) {
+          return CursorPagination<MessageModel>(
+            data: [_message('1'), _message('2')],
+            nextCursor: 'Mg==',
+            hasMore: true,
+          );
+        }
+        // The page can repeat ids that already arrived over the live channel.
+        return _page([_message('2'), _message('3'), _message('4')]);
+      };
+    final notifier = await _notifier(repository);
+    await notifier.appendIncoming(_incoming('3'));
+
+    await notifier.loadMore();
+
+    expect(notifier.state.messages.map((m) => m.id), ['1', '2', '3', '4']);
+    expect(notifier.state.pagination.nextCursor, isNull);
+    expect(notifier.state.pagination.hasMore, isFalse);
   });
 
   test('typing event is cleared after the timeout', () async {
