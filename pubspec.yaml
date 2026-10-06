@@ -21,6 +21,7 @@ dependencies:
   cached_network_image: ^3.3.0
   file_picker: ^6.0.0
   open_file: ^3.3.0
+  path: ^1.9.0
   connectivity_plus: ^5.0.0
   shimmer: ^3.0.0
   easy_refresh: ^3.0.0
