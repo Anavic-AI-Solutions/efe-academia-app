@@ -14,6 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Configure app (preprod)
+        shell: bash
+        run: |
+          cat > .env <<'EOF'
+          API_BASE_URL=https://preprod.efeacademia.com/api/v1
+          REVERB_HOST=preprod.efeacademia.com
+          REVERB_PORT=8181
+          REVERB_APP_KEY=
+          REVERB_SCHEME=https
+          EOF
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -44,6 +55,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Configure app (preprod)
+        shell: bash
+        run: |
+          cat > .env <<'EOF'
+          API_BASE_URL=https://preprod.efeacademia.com/api/v1
+          REVERB_HOST=preprod.efeacademia.com
+          REVERB_PORT=8181
+          REVERB_APP_KEY=
+          REVERB_SCHEME=https
+          EOF
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.x'
@@ -69,6 +91,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download Linux artifact
         uses: actions/download-artifact@v4
         with:
@@ -83,9 +107,14 @@ jobs:
 
       - name: Get version
         id: version
+        shell: bash
         run: |
-          VERSION=$(grep 'version:' pubspec.yaml | head -1 | awk '{print $2}')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          VERSION=$(grep '^version:' pubspec.yaml | head -1 | awk '{print $2}' | cut -d'+' -f1)
+          if [ -z "$VERSION" ]; then
+            echo "No se pudo extraer la versión de pubspec.yaml"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
