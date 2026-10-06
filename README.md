@@ -174,7 +174,7 @@ flutter clean && flutter pub get
 |----------|-------------|-----------|
 | `API_BASE_URL` | Base URL del backend API | Sí |
 | `REVERB_HOST` | Host del servidor Reverb (ver tabla por plataforma) | Para chat en vivo |
-| `REVERB_PORT` | Puerto de Reverb (`8081` por defecto en el backend) | Para chat en vivo |
+| `REVERB_PORT` | Puerto de Reverb (`8181` en el backend actual) | Para chat en vivo |
 | `REVERB_APP_KEY` | App key de Reverb; debe coincidir con la del backend | Para chat en vivo |
 | `REVERB_SCHEME` | `http` o `https` según el backend | Para chat en vivo |
 | `FIREBASE_MESSAGING_KEY` | Para push notifications | No |

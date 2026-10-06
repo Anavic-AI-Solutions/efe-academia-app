@@ -49,6 +49,15 @@ String broadcastingAuthEndpoint(String apiBaseUrl) {
   return '$base/broadcasting/auth';
 }
 
+/// En el emulador Android `localhost` es el propio dispositivo, no la máquina
+/// de desarrollo: se traduce al alias del host, `10.0.2.2`. Un host explícito
+/// (IP de LAN, dominio) se respeta tal cual.
+String resolveRealtimeHost(String host, {required bool isAndroid}) {
+  if (!isAndroid) return host;
+  if (host == 'localhost' || host == '127.0.0.1') return '10.0.2.2';
+  return host;
+}
+
 /// Servicio de producción, construido desde `.env` + [secureStorageProvider].
 ///
 /// Los tests lo reemplazan por un fake; por eso el coordinador nunca toca el
@@ -59,11 +68,15 @@ final realtimeServiceProvider = Provider<RealtimeService>((ref) {
       dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1';
   final scheme = dotenv.env['REVERB_SCHEME'] ?? 'http';
   final useTls = scheme == 'https' || scheme == 'wss';
+  final host = resolveRealtimeHost(
+    dotenv.env['REVERB_HOST'] ?? 'localhost',
+    isAndroid: defaultTargetPlatform == TargetPlatform.android,
+  );
 
   return RealtimeService(
     reverb: Reverb(
-      host: dotenv.env['REVERB_HOST'] ?? 'localhost',
-      port: int.tryParse(dotenv.env['REVERB_PORT'] ?? '') ?? 8080,
+      host: host,
+      port: int.tryParse(dotenv.env['REVERB_PORT'] ?? '') ?? 8181,
       appKey: dotenv.env['REVERB_APP_KEY'] ?? '',
       useTls: useTls,
       authEndpoint: broadcastingAuthEndpoint(apiBaseUrl),
@@ -120,7 +133,13 @@ final realtimeCoordinatorProvider = Provider<void>((ref) {
       onNotification: resync,
     );
     activeUserId = userId;
-    await service.connect();
+    try {
+      await service.connect();
+    } catch (_) {
+      // El primer intento puede fallar (Reverb caído): el paquete reintenta
+      // con backoff y reporta por `onError`. No debe escapar como excepción
+      // no controlada, porque el chat sigue funcionando por REST.
+    }
   }
 
   Future<void> stopSession() async {

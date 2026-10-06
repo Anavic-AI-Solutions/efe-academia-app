@@ -102,9 +102,15 @@ class _FakeRealtimeService implements RealtimeService {
   @override
   Stream<ReverbState> get states => _states.stream;
 
+  /// Cuando es `true`, [connect] falla como un Reverb caído.
+  bool connectThrows = false;
+
   @override
   Future<void> connect() async {
     connectCalls++;
+    if (connectThrows) {
+      throw Exception('connection refused');
+    }
     connected = true;
   }
 
@@ -217,6 +223,56 @@ void main() {
         'http://host:8000/api/v1/broadcasting/auth',
       );
     });
+  });
+
+  group('resolveRealtimeHost', () {
+    test('maps localhost to the Android emulator host alias', () {
+      expect(
+        resolveRealtimeHost('localhost', isAndroid: true),
+        '10.0.2.2',
+      );
+      expect(
+        resolveRealtimeHost('127.0.0.1', isAndroid: true),
+        '10.0.2.2',
+      );
+    });
+
+    test('keeps an explicit LAN host on Android', () {
+      expect(
+        resolveRealtimeHost('192.168.1.20', isAndroid: true),
+        '192.168.1.20',
+      );
+    });
+
+    test('keeps localhost on iOS and desktop', () {
+      expect(
+        resolveRealtimeHost('localhost', isAndroid: false),
+        'localhost',
+      );
+    });
+  });
+
+  test('a failing connect does not surface as an unhandled error', () async {
+    final harness = _Harness();
+    harness.service.connectThrows = true;
+    harness.mountCoordinator();
+    await pumpEventQueue();
+
+    harness.auth.signIn(
+      const UserModel(id: '7', name: 'Profe', email: 'p@test.com'),
+    );
+    await pumpEventQueue();
+
+    // El intento se hizo; el fallo quedó contenido (el coordinador no explota
+    // y el chat sigue por REST).
+    expect(harness.service.connectCalls, greaterThanOrEqualTo(1));
+    expect(harness.service.isConnected, isFalse);
+
+    // Un siguiente login/estado puede reconectar normalmente.
+    harness.service.connectThrows = false;
+    harness.service.emitState(ReverbState.disconnected);
+    await harness.service.connect();
+    expect(harness.service.isConnected, isTrue);
   });
 
   test('connecting is requested when the session becomes authenticated',
