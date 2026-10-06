@@ -90,9 +90,11 @@ de GitHub a la que el equipo le haya dado acceso.
 
 ### Paso 4 — Iniciar sesión
 
-1. En el campo **Correo electrónico**, escribí tu correo.
-2. En el campo **Contraseña**, escribí tu contraseña (el ojo 👁️ al final
-   del campo muestra/oculta los caracteres).
+1. En el campo **Correo electrónico**, escribí la dirección que te dio el
+   equipo (placeholders de ejemplo: `[EMAIL]`).
+2. En el campo **Contraseña**, escribí la contraseña otorgada
+   (`[CONTRASEÑA]`; el ojo 👁️ al final del campo muestra/oculta los
+   caracteres).
 3. Tocá el botón **Iniciar sesión**.
 4. La app valida los datos y te lleva a la **pantalla de Inicio** con las
    estadísticas del día. ¡Listo, ya estás adentro! 🎉

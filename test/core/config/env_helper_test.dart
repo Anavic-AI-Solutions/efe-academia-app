@@ -40,5 +40,10 @@ void main() {
     test('valores con = y líneas sin = se descartan', () {
       expect(EnvHelper.parseEnvContent('A=x=y\nmal'), {'A': 'x=y'});
     });
+    test('descarta líneas que empiezan con = y comentarios con espacio', () {
+      expect(EnvHelper.parseEnvContent('=vacio\n  # comentario\nA=1'), {
+        'A': '1',
+      });
+    });
   });
 }
