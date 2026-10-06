@@ -2,6 +2,11 @@
 
 Aplicación móvil Flutter para la gestión integral de escuelas de enfermería: asistencia, calificaciones, aulas, estudiantes, chat, noticias, eventos, notificaciones y cuotas.
 
+## Guía de instalación y uso (usuarios)
+
+¿Querés instalar la app y entrar por primera vez? Seguí la
+[Guía de instalación y uso](docs/GUIA_INSTALACION_Y_USO.md) (Windows).
+
 ## Características principales
 
 - **Asistencia**: Registro diario por aula con estados presente/ausente

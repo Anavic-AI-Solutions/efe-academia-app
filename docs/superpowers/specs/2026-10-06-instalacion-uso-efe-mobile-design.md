@@ -104,10 +104,17 @@ Cambios:
 5. Guía: recorrer el flujo Android en el emulador; Windows se revisa de forma
    estática (no hay Windows en este entorno).
 
+## Ajuste posterior (aprobado en sesión)
+
+El usuario decidió **descartar todo lo relativo al APK de Android**: se quita
+la sección Android de la guía, el job `build-android` del workflow y el APK
+de los entregables. La guía y el skill quedan **solo para Windows**. Se
+mantiene el bump a `1.0.1+2`, el `.env` de preprod en los builds de
+escritorio, el tag limpio y el release con los 2 artefactos de escritorio.
+
 ## Fuera de alcance
 
 - Chat en vivo (Reverb) configurado para preprod.
-- Firma de release de Android con keystore propia (se mantiene la firma debug;
-  alcanza para sideload).
+- Firma de release con keystore propia.
 - Capturas reales de Windows.
 - Publicación en Play Store.

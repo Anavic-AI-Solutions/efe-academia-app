@@ -1,5 +1,11 @@
 # Guía de instalación y uso de EFE Mobile — Implementation Plan
 
+> **Ajuste posterior (2026-10-06):** el usuario decidió descartar todo lo del
+> APK. Queda vigente: Task 1 (EnvHelper) ✅, Task 2 sin el job `build-android`
+> (solo desktop + tag limpio), **Task 3 cancelada** (emulador/capturas), Task 4
+> guía **solo Windows** (sin capturas), Task 5 skill **solo Windows**, Task 6
+> merge/release con 2 artefactos. Ver spec para el detalle.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Publicar guía humana + skill de agente para instalar EFE Mobile (Windows/Android) desde los releases de GitHub y llegar a la interfaz logueada contra preprod, con el APK publicado en el release.
