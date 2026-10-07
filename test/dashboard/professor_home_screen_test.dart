@@ -20,6 +20,7 @@ import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
+import 'package:efe_mobile/features/dashboard/screens/widgets/professor_stats_row.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
@@ -344,7 +345,7 @@ void main() {
 
     expect(find.byType(HomeHeader), findsOneWidget);
     expect(find.byType(HeaderStatsRow), findsOneWidget);
-    expect(find.byType(HomeHeader), findsNothing);
+    expect(find.byType(ProfessorStatsRow), findsNothing);
     // ProfessorStatsRow is not a widget type we can find directly, but we verify the stats are shown via HeaderStatsRow
     expect(find.text('3'), findsOneWidget); // classrooms
     expect(find.text('78'), findsOneWidget); // students
