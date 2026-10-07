@@ -26,7 +26,9 @@ class ClassroomDetailScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final classroomAsync = ref.watch(classroomDetailProvider(classroomId));
-    final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
+    final user = ref.watch(authProvider).user;
+    final isProfessor = user?.isProfessor ?? false;
+    final canManageMaterials = user?.canManageMaterials ?? false;
     final accent = AppColors.accentFor(isDark);
 
     return classroomAsync.when(
@@ -43,8 +45,7 @@ class ClassroomDetailScreen extends ConsumerWidget {
                 showActions: isProfessor,
                 onAttendance: () =>
                     context.push('/classrooms/$classroomId/attendance'),
-                onGrades: () =>
-                    context.push('/classrooms/$classroomId/grades'),
+                onGrades: () => context.push('/classrooms/$classroomId/grades'),
               ),
               TabBar(
                 isScrollable: true,
@@ -78,6 +79,7 @@ class ClassroomDetailScreen extends ConsumerWidget {
                     ),
                     ClassroomMaterialsTab(
                       classroomId: classroomId,
+                      canManage: canManageMaterials,
                     ),
                   ],
                 ),
@@ -89,7 +91,8 @@ class ClassroomDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildLoading(BuildContext context, bool isDark, AppLocalizations l10n) {
+  Widget _buildLoading(
+      BuildContext context, bool isDark, AppLocalizations l10n) {
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
@@ -105,7 +108,8 @@ class ClassroomDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildError(BuildContext context, bool isDark, AppLocalizations l10n, Object error, WidgetRef ref) {
+  Widget _buildError(BuildContext context, bool isDark, AppLocalizations l10n,
+      Object error, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
@@ -117,7 +121,8 @@ class ClassroomDetailScreen extends ConsumerWidget {
             child: ErrorView(
               message: l10n.classroomsDetailLoadError,
               detail: error.toString(),
-              onRetry: () => ref.invalidate(classroomDetailProvider(classroomId)),
+              onRetry: () =>
+                  ref.invalidate(classroomDetailProvider(classroomId)),
             ),
           ),
         ],

@@ -1984,6 +1984,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo cargar el material'**
   String get materialFormDetailError;
+
+  /// No description provided for @materialsAdd.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar material'**
+  String get materialsAdd;
+
+  /// No description provided for @materialsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Material publicado'**
+  String get materialsCreated;
+
+  /// No description provided for @materialsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Material actualizado'**
+  String get materialsUpdated;
+
+  /// No description provided for @materialsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Material eliminado'**
+  String get materialsDeleted;
+
+  /// No description provided for @materialsDeleteError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo eliminar el material'**
+  String get materialsDeleteError;
+
+  /// No description provided for @materialsEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar'**
+  String get materialsEdit;
+
+  /// No description provided for @materialsDelete.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get materialsDelete;
+
+  /// No description provided for @materialsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Eliminar material?'**
+  String get materialsDeleteTitle;
+
+  /// No description provided for @materialsDeleteMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'También se borran sus archivos.'**
+  String get materialsDeleteMessage;
+
+  /// No description provided for @materialsDeleteCancel.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get materialsDeleteCancel;
+
+  /// No description provided for @materialsDeleteConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get materialsDeleteConfirm;
+
+  /// No description provided for @materialsStudentCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 alumno} other{{count} alumnos}}'**
+  String materialsStudentCount(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

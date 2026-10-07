@@ -1033,4 +1033,48 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get materialFormDetailError => 'No se pudo cargar el material';
+
+  @override
+  String get materialsAdd => 'Cargar material';
+
+  @override
+  String get materialsCreated => 'Material publicado';
+
+  @override
+  String get materialsUpdated => 'Material actualizado';
+
+  @override
+  String get materialsDeleted => 'Material eliminado';
+
+  @override
+  String get materialsDeleteError => 'No se pudo eliminar el material';
+
+  @override
+  String get materialsEdit => 'Editar';
+
+  @override
+  String get materialsDelete => 'Eliminar';
+
+  @override
+  String get materialsDeleteTitle => '¿Eliminar material?';
+
+  @override
+  String get materialsDeleteMessage => 'También se borran sus archivos.';
+
+  @override
+  String get materialsDeleteCancel => 'Cancelar';
+
+  @override
+  String get materialsDeleteConfirm => 'Eliminar';
+
+  @override
+  String materialsStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos',
+      one: '1 alumno',
+    );
+    return '$_temp0';
+  }
 }

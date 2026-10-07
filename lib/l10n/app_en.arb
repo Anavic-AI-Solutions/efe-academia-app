@@ -328,5 +328,24 @@
   "materialFormFileTooLarge": "Each file can weigh up to 50 MB",
   "materialFormStudentsRequired": "Choose at least one student",
   "materialFormError": "Could not save the material",
-  "materialFormDetailError": "Could not load the material"
+  "materialFormDetailError": "Could not load the material",
+  "materialsAdd": "Add material",
+  "materialsCreated": "Material published",
+  "materialsUpdated": "Material updated",
+  "materialsDeleted": "Material deleted",
+  "materialsDeleteError": "Could not delete the material",
+  "materialsEdit": "Edit",
+  "materialsDelete": "Delete",
+  "materialsDeleteTitle": "Delete material?",
+  "materialsDeleteMessage": "Its files will also be deleted.",
+  "materialsDeleteCancel": "Cancel",
+  "materialsDeleteConfirm": "Delete",
+  "materialsStudentCount": "{count, plural, =1{1 student} other{{count} students}}",
+  "@materialsStudentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

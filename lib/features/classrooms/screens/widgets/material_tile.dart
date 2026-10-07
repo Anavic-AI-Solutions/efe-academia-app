@@ -9,8 +9,17 @@ import '../../domain/material_model.dart';
 
 class MaterialTile extends StatelessWidget {
   final MaterialModel material;
+  final bool canManage;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
-  const MaterialTile({super.key, required this.material});
+  const MaterialTile({
+    super.key,
+    required this.material,
+    this.canManage = false,
+    this.onEdit,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +93,28 @@ class MaterialTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                     ],
+                    if (material.visibility == 'specific') ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: accent.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          l10n.materialsStudentCount(
+                            material.studentIds.length,
+                          ),
+                          style: AppTypography.labelSmall.copyWith(
+                            color: accent,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
                     Icon(
                       PhosphorIconsRegular.downloadSimple,
                       size: 13,
@@ -105,6 +136,32 @@ class MaterialTile extends StatelessWidget {
               ],
             ),
           ),
+          if (canManage)
+            PopupMenuButton<String>(
+              icon: Icon(
+                PhosphorIconsRegular.dotsThreeVertical,
+                size: 18,
+                color: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.lightTextSecondary,
+              ),
+              tooltip: l10n.materialsEdit,
+              padding: EdgeInsets.zero,
+              onSelected: (value) {
+                if (value == 'edit') onEdit?.call();
+                if (value == 'delete') onDelete?.call();
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'edit',
+                  child: Text(l10n.materialsEdit),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Text(l10n.materialsDelete),
+                ),
+              ],
+            ),
         ],
       ),
     );
