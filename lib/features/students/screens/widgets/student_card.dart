@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/avatar.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
@@ -62,38 +64,12 @@ class StudentCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          _StatusBadge(status: student.status),
+          if (student.status.isNotEmpty)
+            StatusBadge(
+              status: student.status,
+              label: studentStatusLabel(student.status, l10n),
+            ),
         ],
-      ),
-    );
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  final String status;
-
-  const _StatusBadge({required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = status.toLowerCase() == 'active'
-        ? AppColors.success
-        : status.toLowerCase() == 'inactive'
-            ? AppColors.error
-            : AppColors.lightTextTertiary;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        status,
-        style: AppTypography.labelSmall.copyWith(
-          color: color,
-          fontWeight: FontWeight.w600,
-        ),
       ),
     );
   }

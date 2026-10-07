@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/avatar.dart';
 import '../../../../core/widgets/status_badge.dart';
+import '../../../../l10n/l10n.dart';
 import '../../domain/student_model.dart';
 
 class StudentTile extends StatelessWidget {
@@ -64,7 +66,10 @@ class StudentTile extends StatelessWidget {
           ),
           if (student.status.isNotEmpty) ...[
             const SizedBox(width: 8),
-            StatusBadge(status: student.status),
+            StatusBadge(
+              status: student.status,
+              label: studentStatusLabel(student.status, context.l10n),
+            ),
           ],
         ],
       ),
