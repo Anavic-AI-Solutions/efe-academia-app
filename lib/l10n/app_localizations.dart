@@ -1864,6 +1864,126 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo guardar la calificación'**
   String get gradeFormError;
+
+  /// No description provided for @materialFormTitleNew.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo material'**
+  String get materialFormTitleNew;
+
+  /// No description provided for @materialFormTitleEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar material'**
+  String get materialFormTitleEdit;
+
+  /// No description provided for @materialFormName.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get materialFormName;
+
+  /// No description provided for @materialFormCategory.
+  ///
+  /// In es, this message translates to:
+  /// **'Categoría'**
+  String get materialFormCategory;
+
+  /// No description provided for @materialFormDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción (opcional)'**
+  String get materialFormDescription;
+
+  /// No description provided for @materialFormFiles.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivos'**
+  String get materialFormFiles;
+
+  /// No description provided for @materialFormPickFiles.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir archivos'**
+  String get materialFormPickFiles;
+
+  /// No description provided for @materialFormVisibility.
+  ///
+  /// In es, this message translates to:
+  /// **'Visibilidad'**
+  String get materialFormVisibility;
+
+  /// No description provided for @materialFormVisibilityAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Todos'**
+  String get materialFormVisibilityAll;
+
+  /// No description provided for @materialFormVisibilitySpecific.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos específicos'**
+  String get materialFormVisibilitySpecific;
+
+  /// No description provided for @materialFormAvailableUntil.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible hasta (opcional)'**
+  String get materialFormAvailableUntil;
+
+  /// No description provided for @materialFormClearDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Quitar fecha'**
+  String get materialFormClearDate;
+
+  /// No description provided for @materialFormSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get materialFormSave;
+
+  /// No description provided for @materialFormNameRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Ingresá un nombre'**
+  String get materialFormNameRequired;
+
+  /// No description provided for @materialFormFilesRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí al menos un archivo'**
+  String get materialFormFilesRequired;
+
+  /// No description provided for @materialFormFilesTooMany.
+  ///
+  /// In es, this message translates to:
+  /// **'Máximo 10 archivos'**
+  String get materialFormFilesTooMany;
+
+  /// No description provided for @materialFormFileTooLarge.
+  ///
+  /// In es, this message translates to:
+  /// **'Cada archivo puede pesar hasta 50 MB'**
+  String get materialFormFileTooLarge;
+
+  /// No description provided for @materialFormStudentsRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí al menos un alumno'**
+  String get materialFormStudentsRequired;
+
+  /// No description provided for @materialFormError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar el material'**
+  String get materialFormError;
+
+  /// No description provided for @materialFormDetailError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar el material'**
+  String get materialFormDetailError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -973,4 +973,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gradeFormError => 'Failed to save the grade';
+
+  @override
+  String get materialFormTitleNew => 'New material';
+
+  @override
+  String get materialFormTitleEdit => 'Edit material';
+
+  @override
+  String get materialFormName => 'Name';
+
+  @override
+  String get materialFormCategory => 'Category';
+
+  @override
+  String get materialFormDescription => 'Description (optional)';
+
+  @override
+  String get materialFormFiles => 'Files';
+
+  @override
+  String get materialFormPickFiles => 'Choose files';
+
+  @override
+  String get materialFormVisibility => 'Visibility';
+
+  @override
+  String get materialFormVisibilityAll => 'Everyone';
+
+  @override
+  String get materialFormVisibilitySpecific => 'Specific students';
+
+  @override
+  String get materialFormAvailableUntil => 'Available until (optional)';
+
+  @override
+  String get materialFormClearDate => 'Clear date';
+
+  @override
+  String get materialFormSave => 'Save';
+
+  @override
+  String get materialFormNameRequired => 'Enter a name';
+
+  @override
+  String get materialFormFilesRequired => 'Choose at least one file';
+
+  @override
+  String get materialFormFilesTooMany => 'Maximum 10 files';
+
+  @override
+  String get materialFormFileTooLarge => 'Each file can weigh up to 50 MB';
+
+  @override
+  String get materialFormStudentsRequired => 'Choose at least one student';
+
+  @override
+  String get materialFormError => 'Could not save the material';
+
+  @override
+  String get materialFormDetailError => 'Could not load the material';
 }

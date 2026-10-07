@@ -973,4 +973,64 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gradeFormError => 'No se pudo guardar la calificación';
+
+  @override
+  String get materialFormTitleNew => 'Nuevo material';
+
+  @override
+  String get materialFormTitleEdit => 'Editar material';
+
+  @override
+  String get materialFormName => 'Nombre';
+
+  @override
+  String get materialFormCategory => 'Categoría';
+
+  @override
+  String get materialFormDescription => 'Descripción (opcional)';
+
+  @override
+  String get materialFormFiles => 'Archivos';
+
+  @override
+  String get materialFormPickFiles => 'Elegir archivos';
+
+  @override
+  String get materialFormVisibility => 'Visibilidad';
+
+  @override
+  String get materialFormVisibilityAll => 'Todos';
+
+  @override
+  String get materialFormVisibilitySpecific => 'Alumnos específicos';
+
+  @override
+  String get materialFormAvailableUntil => 'Disponible hasta (opcional)';
+
+  @override
+  String get materialFormClearDate => 'Quitar fecha';
+
+  @override
+  String get materialFormSave => 'Guardar';
+
+  @override
+  String get materialFormNameRequired => 'Ingresá un nombre';
+
+  @override
+  String get materialFormFilesRequired => 'Elegí al menos un archivo';
+
+  @override
+  String get materialFormFilesTooMany => 'Máximo 10 archivos';
+
+  @override
+  String get materialFormFileTooLarge => 'Cada archivo puede pesar hasta 50 MB';
+
+  @override
+  String get materialFormStudentsRequired => 'Elegí al menos un alumno';
+
+  @override
+  String get materialFormError => 'No se pudo guardar el material';
+
+  @override
+  String get materialFormDetailError => 'No se pudo cargar el material';
 }
