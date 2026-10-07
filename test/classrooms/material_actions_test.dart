@@ -193,6 +193,7 @@ class _FakeMaterialRepository implements MaterialRepository {
     String? visibility,
     String? availableUntil,
     List<String>? studentIds,
+    bool clearAvailableUntil = false,
   }) async =>
       detail ?? sharedMaterials.first;
 

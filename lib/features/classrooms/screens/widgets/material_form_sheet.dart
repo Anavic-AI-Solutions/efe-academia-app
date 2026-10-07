@@ -126,7 +126,9 @@ class _MaterialFormSheetState extends ConsumerState<MaterialFormSheet> {
       setState(() {
         _nameController.text = detail.name;
         _descriptionController.text = detail.description;
-        _category = detail.category.isEmpty ? null : detail.category;
+        _category = materialCategories.contains(detail.category)
+            ? detail.category
+            : null;
         _visibility = detail.visibility.isEmpty ? 'all' : detail.visibility;
         _studentIds
           ..clear()
@@ -272,6 +274,7 @@ class _MaterialFormSheetState extends ConsumerState<MaterialFormSheet> {
           category: _category,
           visibility: _visibility,
           availableUntil: _availableUntil?.toIso8601String(),
+          clearAvailableUntil: _availableUntil == null,
           studentIds: _visibility == 'specific' ? _studentIds.toList() : null,
         );
         if (_files.isNotEmpty) {
@@ -409,19 +412,24 @@ class _MaterialFormSheetState extends ConsumerState<MaterialFormSheet> {
         const SizedBox(height: 12),
         _FieldLabel(label: l10n.materialFormCategory),
         DropdownButtonFormField<String>(
-          value: _category,
+          value: _category ?? '',
           isExpanded: true,
-          hint: Text(l10n.materialFormCategory),
           decoration: _inputDecoration(),
-          items: materialCategories
-              .map(
-                (category) => DropdownMenuItem(
-                  value: category,
-                  child: Text(category),
-                ),
-              )
-              .toList(),
-          onChanged: (value) => setState(() => _category = value),
+          items: [
+            DropdownMenuItem(
+              value: '',
+              child: Text(l10n.materialFormCategoryNone),
+            ),
+            ...materialCategories.map(
+              (category) => DropdownMenuItem(
+                value: category,
+                child: Text(category),
+              ),
+            ),
+          ],
+          onChanged: (value) => setState(
+            () => _category = (value == null || value.isEmpty) ? null : value,
+          ),
         ),
         const SizedBox(height: 12),
         _FieldLabel(label: l10n.materialFormDescription),

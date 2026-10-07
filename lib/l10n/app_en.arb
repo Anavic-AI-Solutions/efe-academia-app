@@ -313,6 +313,7 @@
   "materialFormTitleEdit": "Edit material",
   "materialFormName": "Name",
   "materialFormCategory": "Category",
+  "materialFormCategoryNone": "No category",
   "materialFormDescription": "Description (optional)",
   "materialFormFiles": "Files",
   "materialFormPickFiles": "Choose files",

@@ -32,8 +32,7 @@ class MaterialRepository {
         'description': description,
       if (type != null && type.isNotEmpty) 'type': type,
       if (category != null && category.isNotEmpty) 'category': category,
-      if (visibility != null && visibility.isNotEmpty)
-        'visibility': visibility,
+      if (visibility != null && visibility.isNotEmpty) 'visibility': visibility,
       if (availableUntil != null && availableUntil.isNotEmpty)
         'available_until': availableUntil,
       if (studentIds.isNotEmpty) 'student_ids': studentIds,
@@ -55,17 +54,19 @@ class MaterialRepository {
     String? visibility,
     String? availableUntil,
     List<String>? studentIds,
+
+    /// En edición, envía `available_until: null` para limpiar la fecha.
+    bool clearAvailableUntil = false,
   }) async {
     final data = <String, dynamic>{
       if (name != null && name.isNotEmpty) 'name': name,
-      if (description != null && description.isNotEmpty)
-        'description': description,
+      if (description != null) 'description': description,
       if (type != null && type.isNotEmpty) 'type': type,
       if (category != null && category.isNotEmpty) 'category': category,
-      if (visibility != null && visibility.isNotEmpty)
-        'visibility': visibility,
+      if (visibility != null && visibility.isNotEmpty) 'visibility': visibility,
       if (availableUntil != null && availableUntil.isNotEmpty)
         'available_until': availableUntil,
+      if (clearAvailableUntil) 'available_until': null,
       if (studentIds != null) 'student_ids': studentIds,
     };
     try {

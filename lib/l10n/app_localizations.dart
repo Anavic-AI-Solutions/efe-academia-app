@@ -1889,6 +1889,12 @@ abstract class AppLocalizations {
   /// **'Categoría'**
   String get materialFormCategory;
 
+  /// No description provided for @materialFormCategoryNone.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin categoría'**
+  String get materialFormCategoryNone;
+
   /// No description provided for @materialFormDescription.
   ///
   /// In es, this message translates to:

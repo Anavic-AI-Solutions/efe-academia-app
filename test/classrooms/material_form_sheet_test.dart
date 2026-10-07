@@ -26,6 +26,10 @@ class _FakeMaterialRepository implements MaterialRepository {
   String? lastUpdateType;
   String? lastUpdateVisibility;
   List<String>? lastUpdateStudentIds;
+  String? lastUpdateCategory;
+  String? lastDescription;
+  String? lastAvailableUntil;
+  bool? lastClearAvailableUntil;
   String? lastReplaceId;
   MaterialModel? detail;
   List<StudentModel> students = const [];
@@ -64,11 +68,16 @@ class _FakeMaterialRepository implements MaterialRepository {
     String? visibility,
     String? availableUntil,
     List<String>? studentIds,
+    bool clearAvailableUntil = false,
   }) async {
     lastUpdateName = name;
     lastUpdateType = type;
     lastUpdateVisibility = visibility;
     lastUpdateStudentIds = studentIds;
+    lastUpdateCategory = category;
+    lastDescription = description;
+    lastAvailableUntil = availableUntil;
+    lastClearAvailableUntil = clearAvailableUntil;
     return detail ?? MaterialModel(id: id, name: name ?? '');
   }
 
@@ -360,5 +369,74 @@ void main() {
 
     expect(find.text(es.materialFormError), findsOneWidget);
     expect(find.byType(MaterialFormSheet), findsOneWidget);
+  });
+
+  testWidgets(
+      'editar con fecha limpiada y descripción vacía las manda al repositorio',
+      (tester) async {
+    final repo = _FakeMaterialRepository()
+      ..detail = const MaterialModel(
+        id: 'm1',
+        name: 'Apunte',
+        description: 'Descarga',
+        availableUntil: '2026-12-31T10:00:00',
+      );
+    await pumpSheetModal(
+      tester,
+      repo: repo,
+      material: const MaterialModel(id: 'm1', name: 'Apunte'),
+    );
+
+    await _tapVisible(tester, find.text(es.materialFormClearDate));
+    await tester.enterText(find.byType(TextField).last, '');
+    await _tapVisible(
+      tester,
+      find.widgetWithText(ElevatedButton, es.materialFormSave),
+    );
+
+    expect(repo.lastDescription, '');
+    expect(repo.lastClearAvailableUntil, isTrue);
+  });
+
+  testWidgets('editar un material con categoría legada fuera de las 6 no rompe',
+      (tester) async {
+    final repo = _FakeMaterialRepository()
+      ..detail =
+          const MaterialModel(id: 'm1', name: 'Apunte', category: 'teoria');
+    await pumpSheetModal(
+      tester,
+      repo: repo,
+      material: const MaterialModel(id: 'm1', name: 'Apunte'),
+    );
+
+    expect(tester.takeException(), isNull);
+    await _tapVisible(
+      tester,
+      find.widgetWithText(ElevatedButton, es.materialFormSave),
+    );
+
+    expect(repo.lastUpdateCategory, isNull);
+  });
+
+  testWidgets('la categoría se puede deseleccionar con la opción vacía',
+      (tester) async {
+    final repo = _FakeMaterialRepository();
+    await pumpSheetModal(
+      tester,
+      repo: repo,
+      pickFiles: () async => [_byteFile('guia.pdf')],
+    );
+
+    await tester.enterText(find.byType(TextField).first, 'Guía');
+    await _tapVisible(tester, find.byType(DropdownButtonFormField<String>));
+    await _tapVisible(tester, find.text('Exámenes').last);
+    await _tapVisible(tester, find.byType(DropdownButtonFormField<String>));
+    await _tapVisible(tester, find.text('Sin categoría').last);
+    await _tapVisible(
+      tester,
+      find.widgetWithText(ElevatedButton, es.materialFormSave),
+    );
+
+    expect(repo.lastCreateCategory, isNull);
   });
 }

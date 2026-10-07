@@ -987,6 +987,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get materialFormCategory => 'Category';
 
   @override
+  String get materialFormCategoryNone => 'No category';
+
+  @override
   String get materialFormDescription => 'Description (optional)';
 
   @override

@@ -41,7 +41,10 @@ class _FakeMaterialApi implements MaterialApi {
   Future<Response> updateMaterial(String id, Map<String, dynamic> data) async {
     lastUpdateData = data;
     return _response({
-      'data': {'id': id, 'attributes': {'name': 'Guía'}},
+      'data': {
+        'id': id,
+        'attributes': {'name': 'Guía'}
+      },
     });
   }
 
@@ -50,7 +53,10 @@ class _FakeMaterialApi implements MaterialApi {
     lastReplacePath = '/materials/$id/upload';
     lastReplaceData = data;
     return _response({
-      'data': {'id': id, 'attributes': {'name': 'Guía'}},
+      'data': {
+        'id': id,
+        'attributes': {'name': 'Guía'}
+      },
     });
   }
 
@@ -108,8 +114,7 @@ class _ThrowingMaterialApi implements MaterialApi {
       Future.error(UnimplementedError());
 
   @override
-  Future<Response> getMaterial(String id) =>
-      Future.error(UnimplementedError());
+  Future<Response> getMaterial(String id) => Future.error(UnimplementedError());
 }
 
 class _FakeClassroomApi implements ClassroomApi {
@@ -153,8 +158,7 @@ class _FakeClassroomApi implements ClassroomApi {
       Future.error(UnimplementedError());
 
   @override
-  Future<Response> getClassroomFilters() =>
-      Future.error(UnimplementedError());
+  Future<Response> getClassroomFilters() => Future.error(UnimplementedError());
 
   @override
   Future<Response> getClassroomProfessors(
@@ -217,8 +221,7 @@ void main() {
       expect(material.publicUrl, 'https://example.com/guia.pdf');
     });
 
-    test('createMaterial usa fromFile cuando el archivo tiene path',
-        () async {
+    test('createMaterial usa fromFile cuando el archivo tiene path', () async {
       final tmp = File('${Directory.systemTemp.path}/efe_material_test.txt');
       await tmp.writeAsString('hola');
       addTearDown(() => tmp.delete());
@@ -253,6 +256,21 @@ void main() {
       });
     });
 
+    test(
+        'updateMaterial manda descripción vacía y available_until null al limpiar',
+        () async {
+      final api = _FakeMaterialApi();
+      final repository = MaterialRepository(api, _FakeClassroomApi());
+
+      await repository.updateMaterial(
+        'm1',
+        description: '',
+        clearAvailableUntil: true,
+      );
+
+      expect(api.lastUpdateData, {'description': '', 'available_until': null});
+    });
+
     test('replaceFiles va al endpoint de upload con files[]', () async {
       final api = _FakeMaterialApi();
       final repository = MaterialRepository(api, _FakeClassroomApi());
@@ -285,8 +303,7 @@ void main() {
 
     test('getClassroomStudents recorre todas las páginas', () async {
       final classroomApi = _FakeClassroomApi();
-      final repository =
-          MaterialRepository(_FakeMaterialApi(), classroomApi);
+      final repository = MaterialRepository(_FakeMaterialApi(), classroomApi);
 
       final students = await repository.getClassroomStudents('c1');
 
