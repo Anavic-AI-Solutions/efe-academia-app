@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/formatters.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/fee_model.dart';
@@ -76,41 +78,13 @@ class FeeCard extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 4),
-              _StatusBadge(status: fee.status),
+              StatusBadge(
+                status: fee.status,
+                label: feeStatusLabel(fee.status, l10n),
+              ),
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  final String status;
-
-  const _StatusBadge({required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = status.toLowerCase() == 'paid'
-        ? AppColors.success
-        : status.toLowerCase() == 'partial'
-            ? AppColors.warning
-            : AppColors.error;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        status,
-        style: TextStyle(
-          color: color,
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-        ),
       ),
     );
   }

@@ -444,7 +444,7 @@ void main() {
     await _openTab(tester, 'Cuotas');
     expect(find.text('Cuota #1 · 3 2026'), findsOneWidget);
     expect(find.textContaining('25.000'), findsOneWidget);
-    expect(find.text('pending'), findsOneWidget);
+    expect(find.text('Pendiente'), findsOneWidget);
   });
 
   testWidgets('shows empty states for related tabs', (tester) async {

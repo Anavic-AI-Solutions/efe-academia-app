@@ -12,9 +12,9 @@ void main() {
   testWidgets('StudentCard muestra el estado normalizado', (tester) async {
     await tester.pumpWidget(
       localizedApp(
-        home: Scaffold(
+        home: const Scaffold(
           body: StudentCard(
-            student: const StudentModel(id: 's1', status: 'approved'),
+            student: StudentModel(id: 's1', status: 'approved'),
           ),
         ),
       ),
@@ -28,8 +28,8 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       localizedApp(
-        home: Scaffold(
-          body: StudentCard(student: const StudentModel(id: 's1')),
+        home: const Scaffold(
+          body: StudentCard(student: StudentModel(id: 's1')),
         ),
       ),
     );
@@ -41,9 +41,9 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       localizedApp(
-        home: Scaffold(
+        home: const Scaffold(
           body: StudentCard(
-            student: const StudentModel(id: 's1', status: 'active'),
+            student: StudentModel(id: 's1', status: 'active'),
           ),
         ),
       ),
@@ -56,9 +56,9 @@ void main() {
   testWidgets('StudentTile muestra el estado normalizado', (tester) async {
     await tester.pumpWidget(
       localizedApp(
-        home: Scaffold(
+        home: const Scaffold(
           body: StudentTile(
-            student: const StudentModel(id: 's1', status: 'pending'),
+            student: StudentModel(id: 's1', status: 'pending'),
           ),
         ),
       ),
@@ -71,9 +71,9 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       localizedApp(
-        home: Scaffold(
+        home: const Scaffold(
           body: StudentDetailHeader(
-            student: const StudentModel(id: 's1', status: 'rejected'),
+            student: StudentModel(id: 's1', status: 'rejected'),
           ),
         ),
       ),

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/classroom_model.dart';
-import 'classroom_filter_sheet.dart';
 
 class ProfessorClassroomListCard extends StatelessWidget {
   final ClassroomModel classroom;

@@ -4,8 +4,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/pill_button.dart';
-import '../../../../l10n/app_localizations.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/classroom_filters.dart';
 import '../../providers/classroom_provider.dart';
@@ -45,17 +45,6 @@ class ClassroomFilterSelection {
       year: clearYear ? null : (year ?? this.year),
       status: clearStatus ? null : (status ?? this.status),
     );
-  }
-}
-
-String classroomStatusLabel(String status, AppLocalizations l10n) {
-  switch (status) {
-    case 'active':
-      return l10n.classroomsStatusActive;
-    case 'archived':
-      return l10n.classroomsStatusArchived;
-    default:
-      return status;
   }
 }
 

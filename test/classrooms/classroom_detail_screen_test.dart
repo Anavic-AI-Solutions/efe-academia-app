@@ -242,7 +242,7 @@ void main() {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 
     expect(find.text('A2 A'), findsOneWidget);
-    expect(find.text('active'), findsOneWidget);
+    expect(find.text('Activo'), findsOneWidget);
     expect(find.text('Reconquista'), findsOneWidget);
     expect(find.text('Resumen'), findsOneWidget);
     expect(find.text('Estudiantes'), findsWidgets);

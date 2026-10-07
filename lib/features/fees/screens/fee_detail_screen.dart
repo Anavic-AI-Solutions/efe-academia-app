@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/utils/formatters.dart';
+import '../../../core/utils/status_labels.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
@@ -62,7 +63,7 @@ class FeeDetailScreen extends ConsumerWidget {
                     value: AppFormatters.formatCurrency(fee.total),
                   ),
                   const Divider(height: 32),
-                  _InfoRow(label: l10n.feesDetailStatus, value: fee.status),
+                  _InfoRow(label: l10n.feesDetailStatus, value: feeStatusLabel(fee.status, l10n)),
                   _InfoRow(
                     label: l10n.feesDetailPaymentMethod,
                     value: fee.paymentMethod,

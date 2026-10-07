@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/l10n.dart';
@@ -12,9 +13,13 @@ class AbsenceTile extends StatelessWidget {
 
   const AbsenceTile({super.key, required this.absence});
 
-  bool get _isJustified {
-    final value = absence.justified.toLowerCase();
-    return value.isNotEmpty && value != 'no' && value != 'false' && value != '0';
+  Color _statusColor(AbsenceModel absence) {
+    final status = absence.status.toLowerCase();
+    if (status == 'pending') return AppColors.warning;
+    if (status == 'unjustified') return AppColors.error;
+    return absenceIsJustified(absence.status, absence.justified)
+        ? AppColors.success
+        : AppColors.error;
   }
 
   @override
@@ -81,10 +86,12 @@ class AbsenceTile extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           StatusBadge(
-            status: _isJustified
-                ? l10n.studentsAbsenceJustified
-                : l10n.studentsAbsenceUnjustified,
-            color: _isJustified ? AppColors.success : AppColors.warning,
+            status: absenceStatusLabel(
+              absence.status,
+              absence.justified,
+              l10n,
+            ),
+            color: _statusColor(absence),
           ),
         ],
       ),

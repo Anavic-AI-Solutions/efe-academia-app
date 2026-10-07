@@ -3,6 +3,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../l10n/l10n.dart';
 import 'classroom_filter_sheet.dart';
 
