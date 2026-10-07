@@ -69,8 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authCheckEmail => 'Check Your Email';
 
   @override
-  String get authResetInstructions =>
-      'Enter your email and we\'ll send you a link to reset your password.';
+  String get authResetInstructions => 'Enter your email and we\'ll send you a link to reset your password.';
 
   @override
   String authResetLinkSent(String email) {
@@ -90,8 +89,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validationInvalidEmail => 'Invalid email';
 
   @override
-  String get validationPasswordLength =>
-      'Password must be at least 8 characters';
+  String get validationPasswordLength => 'Password must be at least 8 characters';
 
   @override
   String get validationPasswordsDoNotMatch => 'Passwords do not match';
@@ -251,8 +249,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsEmptyTitle => 'No classrooms found';
 
   @override
-  String get classroomsEmptyFiltered =>
-      'Try adjusting or clearing your filters';
+  String get classroomsEmptyFiltered => 'Try adjusting or clearing your filters';
 
   @override
   String get classroomsEmptySearch => 'Try a different search term';
@@ -324,8 +321,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsFiltersLoadError => 'Could not load filters';
 
   @override
-  String get classroomsFiltersLoadErrorDetail =>
-      'Check your connection and try again.';
+  String get classroomsFiltersLoadErrorDetail => 'Check your connection and try again.';
 
   @override
   String classroomsFilterChipBranch(String value) {
@@ -572,10 +568,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get studentsAbsenceTitle => 'Absence';
 
   @override
+  String get studentsStatusApproved => 'Approved';
+
+  @override
+  String get studentsStatusPending => 'Pending';
+
+  @override
+  String get studentsStatusRejected => 'Rejected';
+
+  @override
+  String get feesStatusPaid => 'Paid';
+
+  @override
+  String get feesStatusPartial => 'Partial';
+
+  @override
+  String get feesStatusPending => 'Pending';
+
+  @override
+  String get feesStatusOverdue => 'Overdue';
+
+  @override
   String get studentsAbsenceJustified => 'Justified';
 
   @override
   String get studentsAbsenceUnjustified => 'Unjustified';
+
+  @override
+  String get studentsAbsencePending => 'Pending';
 
   @override
   String get feesTitle => 'Fees';
@@ -835,8 +855,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get professorMyClassrooms => 'My classrooms';
 
   @override
-  String get professorMyClassroomsEmpty =>
-      'You have no classrooms assigned yet';
+  String get professorMyClassroomsEmpty => 'You have no classrooms assigned yet';
 
   @override
   String professorClassroomsCount(int count) {
@@ -902,8 +921,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceUnsavedTitle => 'Unsaved changes';
 
   @override
-  String get attendanceUnsavedMessage =>
-      'If you leave now, attendance changes will be lost.';
+  String get attendanceUnsavedMessage => 'If you leave now, attendance changes will be lost.';
 
   @override
   String get attendanceUnsavedStay => 'Stay';
