@@ -25,6 +25,8 @@ class StatusBadge extends StatelessWidget {
       case 'partial':
       case 'unjustified':
         return AppColors.warning;
+      case 'justified':
+        return AppColors.success;
       default:
         return AppColors.lightTextTertiary;
     }

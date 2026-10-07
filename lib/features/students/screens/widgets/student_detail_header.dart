@@ -25,7 +25,8 @@ class StudentDetailHeader extends StatelessWidget {
         showBorder: true,
       ),
       title: student.fullname,
-      status: studentStatusLabel(student.status, context.l10n),
+      status: student.status,
+      statusLabel: studentStatusLabel(student.status, context.l10n),
       fallbackRoute: '/students',
       chips: [
         if (student.branch.isNotEmpty)

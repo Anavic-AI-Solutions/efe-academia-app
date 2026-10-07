@@ -1,4 +1,5 @@
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/status_badge.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
@@ -155,8 +156,7 @@ Future<void> _pumpScreen(
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role)),
       classroomRepositoryProvider
           .overrideWithValue(_FakeClassroomRepository(total: total)),
-      classroomFiltersProvider
-          .overrideWith((ref) => const ClassroomFilters()),
+      classroomFiltersProvider.overrideWith((ref) => const ClassroomFilters()),
     ],
   );
   addTearDown(container.dispose);
@@ -228,5 +228,14 @@ void main() {
     expect(find.text('Mis aulas'), findsOneWidget);
     expect(find.text('Sala 1'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('la tarjeta colorea con el estado crudo y muestra la etiqueta',
+      (tester) async {
+    await _pumpScreen(tester);
+
+    final badge = tester.widget<StatusBadge>(find.byType(StatusBadge).first);
+    expect(badge.status, 'active');
+    expect(badge.label, 'Activo');
   });
 }

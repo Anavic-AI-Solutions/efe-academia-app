@@ -57,9 +57,8 @@ class ProfessorClassroomListCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color: isDark
-                        ? AppColors.darkTextPrimary
-                        : AppColors.lightInk,
+                    color:
+                        isDark ? AppColors.darkTextPrimary : AppColors.lightInk,
                   ),
                 ),
                 if (_schedule.isNotEmpty) ...[
@@ -118,7 +117,10 @@ class ProfessorClassroomListCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (status.isNotEmpty)
-                StatusBadge(status: classroomStatusLabel(status, l10n)),
+                StatusBadge(
+                  status: status,
+                  label: classroomStatusLabel(status, l10n),
+                ),
               const SizedBox(height: 8),
               Icon(
                 PhosphorIconsRegular.caretRight,

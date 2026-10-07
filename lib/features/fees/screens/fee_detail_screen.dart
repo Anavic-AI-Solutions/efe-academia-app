@@ -63,7 +63,9 @@ class FeeDetailScreen extends ConsumerWidget {
                     value: AppFormatters.formatCurrency(fee.total),
                   ),
                   const Divider(height: 32),
-                  _InfoRow(label: l10n.feesDetailStatus, value: feeStatusLabel(fee.status, l10n)),
+                  _InfoRow(
+                      label: l10n.feesDetailStatus,
+                      value: feeStatusLabel(fee.status, l10n)),
                   _InfoRow(
                     label: l10n.feesDetailPaymentMethod,
                     value: fee.paymentMethod,

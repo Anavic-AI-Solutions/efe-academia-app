@@ -28,7 +28,8 @@ class ClassroomDetailHeader extends StatelessWidget {
         icon: PhosphorIconsRegular.chalkboardTeacher,
       ),
       title: classroom.name,
-      status: classroomStatusLabel(classroom.status, context.l10n),
+      status: classroom.status,
+      statusLabel: classroomStatusLabel(classroom.status, context.l10n),
       fallbackRoute: '/classrooms',
       chips: [
         if (classroom.branch.isNotEmpty)
@@ -89,10 +90,8 @@ class _HeroActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final background =
-        primary ? Colors.white : AppColors.overlayStrong;
-    final foreground =
-        primary ? AppColors.primary : AppColors.onPrimary;
+    final background = primary ? Colors.white : AppColors.overlayStrong;
+    final foreground = primary ? AppColors.primary : AppColors.onPrimary;
 
     return SizedBox(
       height: 40,
