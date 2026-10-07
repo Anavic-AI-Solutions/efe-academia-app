@@ -50,6 +50,6 @@ class ApiClient {
 
   Future<Response> delete(String path) => dio.delete(path);
 
-  Future<Response> upload(String path, FormData data) =>
-      dio.post(path, data: data);
+  Future<Response> upload(String path, FormData data, {Options? options}) =>
+      dio.post(path, data: data, options: options);
 }
