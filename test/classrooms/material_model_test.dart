@@ -42,6 +42,38 @@ void main() {
       expect(model.type, '');
       expect(model.publicUrl, '');
       expect(model.downloadCount, 3);
+      expect(model.studentIds, isEmpty);
+    });
+
+    test('parses student ids from the detail relationships', () {
+      final model = MaterialModel.fromJson({
+        'data': {
+          'id': 'm1',
+          'attributes': {'name': 'Guía'},
+          'relationships': {
+            'students': {
+              'data': [
+                {'type': 'students', 'id': 's1'},
+                {'type': 'students', 'id': 's2'},
+              ],
+            },
+          },
+        },
+      });
+
+      expect(model.studentIds, ['s1', 's2']);
+    });
+
+    test('parses student ids from the classroom listing', () {
+      final model = MaterialModel.fromJson({
+        'id': 'm1',
+        'name': 'Guía',
+        'students': [
+          {'id': 's1'},
+        ],
+      });
+
+      expect(model.studentIds, ['s1']);
     });
   });
 }

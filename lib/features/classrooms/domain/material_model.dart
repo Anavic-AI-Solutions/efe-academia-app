@@ -15,6 +15,7 @@ class MaterialModel with _$MaterialModel {
     @Default('') String availableUntil,
     @Default(0) int downloadCount,
     @Default('') String createdAt,
+    @Default([]) List<String> studentIds,
   }) = _MaterialModel;
 
   factory MaterialModel.fromJson(Map<String, dynamic> json) {
@@ -35,7 +36,29 @@ class MaterialModel with _$MaterialModel {
       availableUntil: attrs['available_until'] ?? '',
       downloadCount: _parseInt(attrs['download_count']),
       createdAt: attrs['created_at'] ?? '',
+      studentIds: _parseStudentIds(json),
     );
+  }
+
+  static List<String> _parseStudentIds(Map<String, dynamic> json) {
+    final relationships =
+        json['data']?['relationships'] as Map<String, dynamic>? ??
+            json['relationships'] as Map<String, dynamic>?;
+    final fromRelationships = relationships?['students']?['data'];
+    if (fromRelationships is List) {
+      return fromRelationships
+          .map((e) => (e as Map)['id']?.toString() ?? '')
+          .where((id) => id.isNotEmpty)
+          .toList();
+    }
+    final direct = json['students'];
+    if (direct is List) {
+      return direct
+          .map((e) => (e as Map)['id']?.toString() ?? '')
+          .where((id) => id.isNotEmpty)
+          .toList();
+    }
+    return const [];
   }
 
   static int _parseInt(dynamic value) {
