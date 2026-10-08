@@ -19,6 +19,7 @@ import '../../providers/student_grades_provider.dart';
 import '../../providers/student_provider.dart';
 import 'absence_tile.dart';
 import 'fee_tile.dart';
+import 'mark_absence_sheet.dart';
 import 'student_grades_grid.dart';
 
 class StudentGradesTab extends ConsumerWidget {
@@ -243,10 +244,14 @@ class _GradesSection {
 
 class StudentAbsencesTab extends ConsumerWidget {
   final String studentId;
+  final String? classroomId;
+  final bool canWrite;
 
   const StudentAbsencesTab({
     super.key,
     required this.studentId,
+    this.classroomId,
+    this.canWrite = false,
   });
 
   @override
@@ -255,7 +260,7 @@ class StudentAbsencesTab extends ConsumerWidget {
     final provider = studentAbsencesProvider(studentId);
     final state = ref.watch(provider);
 
-    return PagedTabList<AbsenceModel>(
+    final Widget content = PagedTabList<AbsenceModel>(
       state: state,
       emptyIcon: Icons.event_busy_outlined,
       emptyTitle: l10n.studentsNoAbsences,
@@ -264,6 +269,54 @@ class StudentAbsencesTab extends ConsumerWidget {
       onPageChanged: (page) => ref.read(provider.notifier).goToPage(page),
       itemBuilder: (context, absence) => AbsenceTile(absence: absence),
     );
+
+    if (!canWrite) return content;
+
+    final classrooms =
+        ref.watch(dashboardProvider).data?.classrooms ??
+            const <ProfessorClassroomSummary>[];
+    final hasClassroom = classroomId != null || classrooms.isNotEmpty;
+
+    return Column(
+      children: [
+        Expanded(child: content),
+        _StudentGradeActionBar(
+          enabled: hasClassroom,
+          disabledMessage: l10n.studentGradeNoClassrooms,
+          label: l10n.absenceMarkTitle,
+          onTap: () => _openMarkSheet(context, ref, classrooms),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _openMarkSheet(
+    BuildContext context,
+    WidgetRef ref,
+    List<ProfessorClassroomSummary> classrooms,
+  ) async {
+    final marked = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => MarkAbsenceSheet(
+        studentId: studentId,
+        classroomId: classroomId,
+        classrooms: classroomId == null ? classrooms : null,
+      ),
+    );
+
+    if (marked == null || !context.mounted) return;
+    ref.invalidate(studentAbsencesProvider(studentId));
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            marked ? context.l10n.absenceMarked : context.l10n.absenceAlreadyMarked,
+          ),
+        ),
+      );
   }
 }
 

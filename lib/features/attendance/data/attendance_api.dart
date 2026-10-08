@@ -7,8 +7,11 @@ class AttendanceApi {
 
   AttendanceApi(this._client);
 
-  Future<Response> getAttendance(String classroomId) =>
-      _client.get('/classrooms/$classroomId/attendance');
+  Future<Response> getAttendance(String classroomId, {String? date}) =>
+      _client.get(
+        '/classrooms/$classroomId/attendance',
+        queryParameters: {if (date != null) 'date': date},
+      );
 
   Future<Response> saveAttendance(
     String classroomId, {

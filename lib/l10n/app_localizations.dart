@@ -1883,6 +1883,48 @@ abstract class AppLocalizations {
   /// **'Sin aulas asignadas'**
   String get studentGradeNoClassrooms;
 
+  /// No description provided for @absenceMarkTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar inasistencia'**
+  String get absenceMarkTitle;
+
+  /// No description provided for @absenceMarkClassroom.
+  ///
+  /// In es, this message translates to:
+  /// **'Aula'**
+  String get absenceMarkClassroom;
+
+  /// No description provided for @absenceMarkDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha'**
+  String get absenceMarkDate;
+
+  /// No description provided for @absenceMarkInfo.
+  ///
+  /// In es, this message translates to:
+  /// **'Se agrega al parte del día sin quitar a los demás ausentes.'**
+  String get absenceMarkInfo;
+
+  /// No description provided for @absenceMarked.
+  ///
+  /// In es, this message translates to:
+  /// **'Inasistencia registrada'**
+  String get absenceMarked;
+
+  /// No description provided for @absenceAlreadyMarked.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya estaba ausente ese día'**
+  String get absenceAlreadyMarked;
+
+  /// No description provided for @absenceMarkError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo registrar la inasistencia'**
+  String get absenceMarkError;
+
   /// No description provided for @materialFormTitleNew.
   ///
   /// In es, this message translates to:

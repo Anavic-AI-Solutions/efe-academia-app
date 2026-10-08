@@ -12,7 +12,8 @@ class _FakeAttendanceApi implements AttendanceApi {
   _FakeAttendanceApi(this.payload);
 
   @override
-  Future<Response> getAttendance(String classroomId) async => Response(
+  Future<Response> getAttendance(String classroomId, {String? date}) async =>
+      Response(
         requestOptions: RequestOptions(path: '/classrooms/$classroomId/attendance'),
         data: payload,
       );

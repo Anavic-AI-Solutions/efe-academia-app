@@ -984,6 +984,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentGradeNoClassrooms => 'Sin aulas asignadas';
 
   @override
+  String get absenceMarkTitle => 'Marcar inasistencia';
+
+  @override
+  String get absenceMarkClassroom => 'Aula';
+
+  @override
+  String get absenceMarkDate => 'Fecha';
+
+  @override
+  String get absenceMarkInfo => 'Se agrega al parte del día sin quitar a los demás ausentes.';
+
+  @override
+  String get absenceMarked => 'Inasistencia registrada';
+
+  @override
+  String get absenceAlreadyMarked => 'Ya estaba ausente ese día';
+
+  @override
+  String get absenceMarkError => 'No se pudo registrar la inasistencia';
+
+  @override
   String get materialFormTitleNew => 'Nuevo material';
 
   @override

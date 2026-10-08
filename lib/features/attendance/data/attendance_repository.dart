@@ -9,9 +9,9 @@ class AttendanceRepository {
 
   AttendanceRepository(this._api);
 
-  Future<AttendanceDay> getAttendance(String classroomId) async {
+  Future<AttendanceDay> getAttendance(String classroomId, {String? date}) async {
     try {
-      final response = await _api.getAttendance(classroomId);
+      final response = await _api.getAttendance(classroomId, date: date);
       return AttendanceDay.fromJson(response.data);
     } on DioException catch (e) {
       throw _handleDioError(e);

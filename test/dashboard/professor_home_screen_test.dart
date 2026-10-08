@@ -124,7 +124,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
 class _FakeAttendanceRepository implements AttendanceRepository {
   @override
-  Future<AttendanceDay> getAttendance(String classroomId) async =>
+  Future<AttendanceDay> getAttendance(String classroomId, {String? date}) async =>
       AttendanceDay(
         date: '2026-09-24',
         classroomId: classroomId,
