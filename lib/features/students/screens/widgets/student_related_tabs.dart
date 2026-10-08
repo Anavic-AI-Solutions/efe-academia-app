@@ -13,7 +13,6 @@ import '../../../dashboard/providers/dashboard_provider.dart';
 import '../../../fees/domain/fee_model.dart';
 import '../../../qualifications/domain/classroom_grades_summary.dart';
 import '../../../qualifications/domain/qualification_model.dart';
-import '../../../qualifications/providers/qualification_provider.dart';
 import '../../../qualifications/screens/widgets/create_qualification_sheet.dart';
 import '../../domain/absence_model.dart';
 import '../../providers/student_grades_provider.dart';
@@ -116,10 +115,6 @@ class StudentGradesTab extends ConsumerWidget {
 
     if (created == true && context.mounted) {
       ref.invalidate(studentGradesProvider(studentId));
-      final resolvedClassroomId = classroomId;
-      if (resolvedClassroomId != null) {
-        ref.invalidate(classroomGradesProvider(resolvedClassroomId));
-      }
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(content: Text(context.l10n.gradeFormSaved)));

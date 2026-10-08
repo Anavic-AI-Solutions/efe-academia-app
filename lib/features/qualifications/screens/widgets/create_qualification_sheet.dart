@@ -95,6 +95,10 @@ class _CreateQualificationSheetState
             description: _descriptionController.text.trim(),
           );
 
+      // El sheet es el único que conoce el aula resuelta (fija o del
+      // dropdown), así que invalida sus notas acá; el pop sigue siendo bool.
+      ref.invalidate(classroomGradesProvider(classroomId));
+
       if (mounted) {
         Navigator.of(context).pop(true);
       }

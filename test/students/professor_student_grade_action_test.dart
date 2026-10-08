@@ -3,6 +3,7 @@ import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
+import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
@@ -35,19 +36,37 @@ class _FakeQualificationRepository implements QualificationRepository {
 
   final List<QualificationModel> items;
   final List<_CreateCall> createCalls = [];
+  int studentGradesCalls = 0;
+  int classroomSummaryCalls = 0;
 
   @override
   Future<PageResult<QualificationModel>> getStudentQualifications(
     String studentId, {
     int page = 1,
     int limit = 20,
-  }) async =>
-      PageResult(
-        data: items,
-        page: page,
-        perPage: limit,
-        total: items.length,
-      );
+  }) async {
+    studentGradesCalls++;
+    return PageResult(
+      data: items,
+      page: page,
+      perPage: limit,
+      total: items.length,
+    );
+  }
+
+  @override
+  Future<ClassroomGradesSummary> getClassroomGradesSummary(
+    String classroomId,
+  ) async {
+    classroomSummaryCalls++;
+    return ClassroomGradesSummary(
+      classroomId: classroomId,
+      classroomName: '3G X',
+      students: const [
+        ClassroomGradeStudent(studentId: 's1', fullname: 'Ana Gómez'),
+      ],
+    );
+  }
 
   @override
   Future<void> createQualification({
@@ -178,5 +197,83 @@ void main() {
     expect(call.score, '8.5');
     expect(call.type, 'Parcial');
     expect(call.period, '1');
+  });
+
+  testWidgets('guardar con aula del dropdown invalida sus notas', (tester) async {
+    final repository = _FakeQualificationRepository();
+    final container = ProviderContainer(
+      overrides: [
+        qualificationRepositoryProvider.overrideWithValue(repository),
+        dashboardRepositoryProvider.overrideWithValue(
+          _FakeDashboardRepository(
+            const DashboardData(
+              role: 'professor',
+              classrooms: [
+                ProfessorClassroomSummary(id: 'c1', name: '3G X'),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    // Escucha el provider del aula para detectar su invalidación.
+    container.listen(classroomGradesProvider('c1'), (_, __) {});
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: localizedApp(
+          home: const Scaffold(
+            body: StudentGradesTab(
+              studentId: 's1',
+              classroomId: null,
+              canWrite: true,
+              studentFullname: 'Ana Gómez',
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(repository.classroomSummaryCalls, 1);
+
+    await tester.tap(find.text('Cargar nota'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CreateQualificationSheet), findsOneWidget);
+    // El dropdown de aula defaultea a la primera.
+    expect(find.text('3G X'), findsOneWidget);
+    // Solo el dropdown de alumno está deshabilitado.
+    final dropdowns = tester
+        .widgetList<DropdownButtonFormField<String>>(
+          find.byType(DropdownButtonFormField<String>),
+        )
+        .toList();
+    expect(dropdowns.where((d) => d.onChanged == null), hasLength(1));
+
+    await tester.enterText(find.byType(TextField).first, '8.5');
+
+    final defaultPeriod = currentAcademicPeriod();
+    await tester.tap(find.text('$defaultPeriod°'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('1°').last);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Guardar'));
+    await tester.pumpAndSettle();
+
+    expect(repository.createCalls, hasLength(1));
+    final call = repository.createCalls.single;
+    expect(call.studentId, 's1');
+    expect(call.classroomId, 'c1');
+    expect(call.score, '8.5');
+    expect(call.type, 'Parcial');
+    expect(call.period, '1');
+    // El aula resuelta del dropdown se invalida aunque el llamador no la vea.
+    expect(repository.classroomSummaryCalls, 2);
+    expect(repository.studentGradesCalls, 2);
   });
 }
