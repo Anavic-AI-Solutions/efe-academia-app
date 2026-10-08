@@ -566,5 +566,7 @@
   "documentsEmpty": "No hay documentos",
   "documentsOpen": "Abrir / Descargar",
   "documentsOpenError": "No se pudo abrir el documento",
-  "homeDocuments": "Documentos"
+  "homeDocuments": "Documentos",
+  "homeNews": "Novedades",
+  "homeNewsEmpty": "No hay novedades"
 }

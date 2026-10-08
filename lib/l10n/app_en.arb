@@ -366,5 +366,7 @@
   "documentsEmpty": "No documents",
   "documentsOpen": "Open / Download",
   "documentsOpenError": "Could not open the document",
-  "homeDocuments": "Documents"
+  "homeDocuments": "Documents",
+  "homeNews": "News",
+  "homeNewsEmpty": "No news yet"
 }

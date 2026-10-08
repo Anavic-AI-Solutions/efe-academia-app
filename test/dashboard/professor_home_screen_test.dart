@@ -25,6 +25,9 @@ import 'package:efe_mobile/features/documents/domain/document_model.dart';
 import 'package:efe_mobile/features/documents/providers/document_provider.dart';
 import 'package:efe_mobile/features/events/domain/event_model.dart';
 import 'package:efe_mobile/features/events/providers/event_provider.dart';
+import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/features/news/domain/news_model.dart';
+import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
@@ -78,6 +81,13 @@ class _FakeDashboardRepository implements DashboardRepository {
 
   @override
   Future<DashboardData> getDashboard() async => data;
+}
+
+/// Keeps the professor home news section off the real API in tests.
+class _FakeNewsRepository implements NewsRepository {
+  @override
+  Future<CursorPagination<NewsModel>> getNews({String? cursor}) async =>
+      CursorPagination.empty();
 }
 
 /// Keeps the classrooms branch (list screen) off the real API in tests.
@@ -219,6 +229,8 @@ Future<ProviderContainer> _pumpHome(WidgetTester tester) async {
       // El calendario y los documentos del home no tocan red en estos tests.
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+      newsListProvider
+          .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );
@@ -311,6 +323,8 @@ void main() {
             .overrideWithValue(_FakeClassroomRepository()),
         homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
         homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+        newsListProvider
+            .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
         unreadCountProvider.overrideWith((ref) async => 0),
       ],
     );

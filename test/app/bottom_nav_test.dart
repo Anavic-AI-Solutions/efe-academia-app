@@ -10,6 +10,10 @@ import 'package:efe_mobile/features/documents/domain/document_model.dart';
 import 'package:efe_mobile/features/documents/providers/document_provider.dart';
 import 'package:efe_mobile/features/events/domain/event_model.dart';
 import 'package:efe_mobile/features/events/providers/event_provider.dart';
+import 'package:efe_mobile/core/api/cursor_pagination.dart';
+import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/features/news/domain/news_model.dart';
+import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +65,13 @@ class _FakeDashboardRepository implements DashboardRepository {
   Future<DashboardData> getDashboard() async => const DashboardData();
 }
 
+/// Keeps the professor home news section off the real API in tests.
+class _FakeNewsRepository implements NewsRepository {
+  @override
+  Future<CursorPagination<NewsModel>> getNews({String? cursor}) async =>
+      CursorPagination.empty();
+}
+
 Future<void> _pumpApp(WidgetTester tester, String role) async {
   final container = ProviderContainer(
     overrides: [
@@ -69,6 +80,8 @@ Future<void> _pumpApp(WidgetTester tester, String role) async {
       // El calendario y los documentos del home no tocan red en estos tests.
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+      newsListProvider
+          .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );

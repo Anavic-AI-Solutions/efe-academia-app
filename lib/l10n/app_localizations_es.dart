@@ -1134,4 +1134,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get homeDocuments => 'Documentos';
+
+  @override
+  String get homeNews => 'Novedades';
+
+  @override
+  String get homeNewsEmpty => 'No hay novedades';
 }

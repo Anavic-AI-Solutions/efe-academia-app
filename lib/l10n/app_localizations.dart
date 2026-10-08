@@ -2170,6 +2170,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Documentos'**
   String get homeDocuments;
+
+  /// No description provided for @homeNews.
+  ///
+  /// In es, this message translates to:
+  /// **'Novedades'**
+  String get homeNews;
+
+  /// No description provided for @homeNewsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay novedades'**
+  String get homeNewsEmpty;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
