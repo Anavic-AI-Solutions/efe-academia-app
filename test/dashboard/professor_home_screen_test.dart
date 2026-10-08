@@ -10,6 +10,8 @@ import 'package:efe_mobile/features/attendance/providers/attendance_provider.dar
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
+import 'package:efe_mobile/features/birthdays/domain/birthday_model.dart';
+import 'package:efe_mobile/features/birthdays/providers/birthday_provider.dart';
 import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
@@ -229,6 +231,7 @@ Future<ProviderContainer> _pumpHome(WidgetTester tester) async {
       // El calendario y los documentos del home no tocan red en estos tests.
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+      todayBirthdaysProvider.overrideWith((ref) async => <BirthdayModel>[]),
       newsListProvider
           .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
       unreadCountProvider.overrideWith((ref) async => 0),
@@ -323,6 +326,7 @@ void main() {
             .overrideWithValue(_FakeClassroomRepository()),
         homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
         homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+        todayBirthdaysProvider.overrideWith((ref) async => <BirthdayModel>[]),
         newsListProvider
             .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
         unreadCountProvider.overrideWith((ref) async => 0),

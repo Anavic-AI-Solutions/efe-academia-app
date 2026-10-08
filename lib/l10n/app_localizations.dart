@@ -1709,6 +1709,24 @@ abstract class AppLocalizations {
   /// **'No hay próximos eventos'**
   String get homeCalendarEmpty;
 
+  /// No description provided for @homeBirthdays.
+  ///
+  /// In es, this message translates to:
+  /// **'Cumpleaños'**
+  String get homeBirthdays;
+
+  /// No description provided for @homeBirthdaysEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay cumpleaños hoy'**
+  String get homeBirthdaysEmpty;
+
+  /// No description provided for @homeBirthdaysSoon.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible próximamente'**
+  String get homeBirthdaysSoon;
+
   /// No description provided for @attendanceTitle.
   ///
   /// In es, this message translates to:

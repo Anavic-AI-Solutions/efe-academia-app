@@ -15,6 +15,7 @@ import '../../auth/providers/auth_provider.dart';
 import '../../notifications/providers/notification_provider.dart';
 import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
+import 'widgets/home_birthdays_section.dart';
 import 'widgets/home_calendar_section.dart';
 import 'widgets/home_documents_section.dart';
 import 'widgets/home_news_section.dart';
@@ -153,6 +154,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                   ),
                   const SizedBox(height: 16),
                   const HomeCalendarSection(),
+                  const SizedBox(height: 16),
+                  const HomeBirthdaysSection(),
                   const SizedBox(height: 16),
                   const HomeNewsSection(),
                   const SizedBox(height: 16),

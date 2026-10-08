@@ -466,6 +466,9 @@
   "homeCalendar": "Calendario",
   "homeSeeAll": "Ver todo",
   "homeCalendarEmpty": "No hay próximos eventos",
+  "homeBirthdays": "Cumpleaños",
+  "homeBirthdaysEmpty": "No hay cumpleaños hoy",
+  "homeBirthdaysSoon": "Disponible próximamente",
   "attendanceTitle": "Asistencia · {classroom}",
   "@attendanceTitle": {
     "placeholders": {

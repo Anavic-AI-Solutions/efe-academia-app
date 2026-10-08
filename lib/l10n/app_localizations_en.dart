@@ -893,6 +893,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeCalendarEmpty => 'No upcoming events';
 
   @override
+  String get homeBirthdays => 'Birthdays';
+
+  @override
+  String get homeBirthdaysEmpty => 'No birthdays today';
+
+  @override
+  String get homeBirthdaysSoon => 'Coming soon';
+
+  @override
   String attendanceTitle(String classroom) {
     return 'Attendance · $classroom';
   }

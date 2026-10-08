@@ -3,6 +3,8 @@ import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
+import 'package:efe_mobile/features/birthdays/domain/birthday_model.dart';
+import 'package:efe_mobile/features/birthdays/providers/birthday_provider.dart';
 import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
@@ -80,6 +82,7 @@ Future<void> _pumpApp(WidgetTester tester, String role) async {
       // El calendario y los documentos del home no tocan red en estos tests.
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+      todayBirthdaysProvider.overrideWith((ref) async => <BirthdayModel>[]),
       newsListProvider
           .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
       unreadCountProvider.overrideWith((ref) async => 0),
