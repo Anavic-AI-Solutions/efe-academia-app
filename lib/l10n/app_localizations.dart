@@ -2140,6 +2140,36 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{count, plural, =1{1 alumno} other{{count} alumnos}}'**
   String materialsStudentCount(int count);
+
+  /// No description provided for @documentsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get documentsTitle;
+
+  /// No description provided for @documentsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay documentos'**
+  String get documentsEmpty;
+
+  /// No description provided for @documentsOpen.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir / Descargar'**
+  String get documentsOpen;
+
+  /// No description provided for @documentsOpenError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir el documento'**
+  String get documentsOpenError;
+
+  /// No description provided for @homeDocuments.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get homeDocuments;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -361,5 +361,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "documentsTitle": "Documents",
+  "documentsEmpty": "No documents",
+  "documentsOpen": "Open / Download",
+  "documentsOpenError": "Could not open the document",
+  "homeDocuments": "Documents"
 }

@@ -20,6 +20,8 @@ import '../features/relations/screens/new_chat_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/notifications/screens/notification_list_screen.dart';
 import '../features/news/screens/news_list_screen.dart';
+import '../features/documents/screens/document_detail_screen.dart';
+import '../features/documents/screens/document_list_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../app/theme/app_colors.dart';
@@ -323,6 +325,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/news',
         builder: (context, state) => const NewsListScreen(),
+      ),
+      GoRoute(
+        path: '/documents',
+        builder: (context, state) => const DocumentListScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => DocumentDetailScreen(
+              documentId: state.pathParameters['id']!,
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: '/events',

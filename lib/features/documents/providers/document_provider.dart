@@ -111,3 +111,10 @@ final homeDocumentsProvider =
   final page = await repository.getDocuments();
   return page.data.take(5).toList();
 });
+
+/// Detalle de un documento por id para `DocumentDetailScreen`.
+final documentDetailProvider = FutureProvider.autoDispose
+    .family<DocumentModel, String>((ref, id) async {
+  final repository = ref.watch(documentRepositoryProvider);
+  return repository.getDocument(id);
+});

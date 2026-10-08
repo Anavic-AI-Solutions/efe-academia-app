@@ -1119,4 +1119,19 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get documentsTitle => 'Documentos';
+
+  @override
+  String get documentsEmpty => 'No hay documentos';
+
+  @override
+  String get documentsOpen => 'Abrir / Descargar';
+
+  @override
+  String get documentsOpenError => 'No se pudo abrir el documento';
+
+  @override
+  String get homeDocuments => 'Documentos';
 }

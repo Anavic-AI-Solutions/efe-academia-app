@@ -12,4 +12,8 @@ class DocumentApi {
       });
 
   Future<Response> getDocument(String id) => _client.get('/documents/$id');
+
+  /// URL absoluta de descarga directa (fallback cuando no hay file/media URL).
+  String downloadUrl(String id) =>
+      '${_client.dio.options.baseUrl}/documents/$id/download';
 }

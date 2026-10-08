@@ -561,5 +561,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "documentsTitle": "Documentos",
+  "documentsEmpty": "No hay documentos",
+  "documentsOpen": "Abrir / Descargar",
+  "documentsOpenError": "No se pudo abrir el documento",
+  "homeDocuments": "Documentos"
 }

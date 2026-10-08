@@ -30,6 +30,9 @@ class _FakeDocumentApi implements DocumentApi {
       data: payload,
     );
   }
+
+  @override
+  String downloadUrl(String id) => '/documents/$id/download';
 }
 
 void main() {

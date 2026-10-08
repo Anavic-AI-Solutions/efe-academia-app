@@ -6,6 +6,8 @@ import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
+import 'package:efe_mobile/features/documents/domain/document_model.dart';
+import 'package:efe_mobile/features/documents/providers/document_provider.dart';
 import 'package:efe_mobile/features/events/domain/event_model.dart';
 import 'package:efe_mobile/features/events/providers/event_provider.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
@@ -64,8 +66,9 @@ Future<void> _pumpApp(WidgetTester tester, String role) async {
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role)),
       dashboardRepositoryProvider.overrideWithValue(_FakeDashboardRepository()),
-      // El calendario del home no toca red en estos tests.
+      // El calendario y los documentos del home no tocan red en estos tests.
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
+      homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );
