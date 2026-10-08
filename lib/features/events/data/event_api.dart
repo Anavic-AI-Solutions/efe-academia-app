@@ -10,4 +10,13 @@ class EventApi {
         if (cursor != null) 'cursor': cursor,
         'per_page': limit,
       });
+
+  Future<Response> getCalendar({
+    required String startDate,
+    required String endDate,
+  }) =>
+      _client.get('/events/calendar', queryParameters: {
+        'start_date': startDate,
+        'end_date': endDate,
+      });
 }

@@ -463,6 +463,9 @@
   "professorTakeAttendance": "Tomar asistencia",
   "professorLoadGrade": "Cargar nota",
   "professorLoadError": "No se pudo cargar el inicio",
+  "homeCalendar": "Calendario",
+  "homeSeeAll": "Ver todo",
+  "homeCalendarEmpty": "No hay próximos eventos",
   "attendanceTitle": "Asistencia · {classroom}",
   "@attendanceTitle": {
     "placeholders": {

@@ -31,6 +31,13 @@ class _NeverEventRepository implements EventRepository {
   @override
   Future<CursorPagination<EventModel>> getEvents({String? cursor}) =>
       Completer<CursorPagination<EventModel>>().future;
+
+  @override
+  Future<List<EventModel>> getCalendarEvents({
+    required String startDate,
+    required String endDate,
+  }) =>
+      Completer<List<EventModel>>().future;
 }
 
 class _NeverNotificationRepository implements NotificationRepository {

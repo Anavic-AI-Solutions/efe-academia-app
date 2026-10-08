@@ -884,6 +884,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get professorLoadError => 'No se pudo cargar el inicio';
 
   @override
+  String get homeCalendar => 'Calendario';
+
+  @override
+  String get homeSeeAll => 'Ver todo';
+
+  @override
+  String get homeCalendarEmpty => 'No hay próximos eventos';
+
+  @override
   String attendanceTitle(String classroom) {
     return 'Asistencia · $classroom';
   }

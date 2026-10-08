@@ -884,6 +884,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get professorLoadError => 'Failed to load the home screen';
 
   @override
+  String get homeCalendar => 'Calendar';
+
+  @override
+  String get homeSeeAll => 'See all';
+
+  @override
+  String get homeCalendarEmpty => 'No upcoming events';
+
+  @override
   String attendanceTitle(String classroom) {
     return 'Attendance · $classroom';
   }

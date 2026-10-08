@@ -104,3 +104,19 @@ final eventListProvider =
     StateNotifierProvider<EventListNotifier, EventListState>((ref) {
   return EventListNotifier(ref.watch(eventRepositoryProvider));
 });
+
+String _ymd(DateTime date) =>
+    '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+/// Próximos eventos para el home del profesor: hoy → hoy+30, los 5 primeros.
+final homeCalendarProvider =
+    FutureProvider.autoDispose<List<EventModel>>((ref) async {
+  final repository = ref.watch(eventRepositoryProvider);
+  final start = DateTime.now();
+  final end = start.add(const Duration(days: 30));
+  final events = await repository.getCalendarEvents(
+    startDate: _ymd(start),
+    endDate: _ymd(end),
+  );
+  return events.take(5).toList();
+});

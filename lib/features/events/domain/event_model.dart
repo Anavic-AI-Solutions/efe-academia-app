@@ -15,12 +15,14 @@ class EventModel with _$EventModel {
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final startRaw = attrs['start_date'] ?? attrs['start'];
+    final endRaw = attrs['end_date'] ?? attrs['end'];
     return EventModel(
       id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
       title: attrs['title'] ?? '',
       description: attrs['description'] ?? '',
-      start: attrs['start'] != null ? DateTime.tryParse(attrs['start']) : null,
-      end: attrs['end'] != null ? DateTime.tryParse(attrs['end']) : null,
+      start: startRaw != null ? DateTime.tryParse(startRaw) : null,
+      end: endRaw != null ? DateTime.tryParse(endRaw) : null,
       color: _parseColor(attrs['color']),
     );
   }

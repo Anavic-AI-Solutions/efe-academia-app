@@ -1691,6 +1691,24 @@ abstract class AppLocalizations {
   /// **'No se pudo cargar el inicio'**
   String get professorLoadError;
 
+  /// No description provided for @homeCalendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario'**
+  String get homeCalendar;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo'**
+  String get homeSeeAll;
+
+  /// No description provided for @homeCalendarEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay próximos eventos'**
+  String get homeCalendarEmpty;
+
   /// No description provided for @attendanceTitle.
   ///
   /// In es, this message translates to:

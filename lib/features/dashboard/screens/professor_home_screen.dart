@@ -15,6 +15,7 @@ import '../../auth/providers/auth_provider.dart';
 import '../../notifications/providers/notification_provider.dart';
 import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
+import 'widgets/home_calendar_section.dart';
 import 'widgets/professor_classroom_card.dart';
 
 class ProfessorHomeScreen extends ConsumerStatefulWidget {
@@ -148,6 +149,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 16),
+                  const HomeCalendarSection(),
                   const SizedBox(height: 24),
                 ],
               ),

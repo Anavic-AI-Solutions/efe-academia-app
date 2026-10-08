@@ -21,6 +21,8 @@ import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/dashboard/screens/widgets/professor_stats_row.dart';
+import 'package:efe_mobile/features/events/domain/event_model.dart';
+import 'package:efe_mobile/features/events/providers/event_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
@@ -212,6 +214,8 @@ Future<ProviderContainer> _pumpHome(WidgetTester tester) async {
           .overrideWithValue(_FakeQualificationRepository()),
       classroomRepositoryProvider
           .overrideWithValue(_FakeClassroomRepository()),
+      // El calendario del home no toca red en estos tests.
+      homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );
@@ -302,6 +306,7 @@ void main() {
         ),
         classroomRepositoryProvider
             .overrideWithValue(_FakeClassroomRepository()),
+        homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
         unreadCountProvider.overrideWith((ref) async => 0),
       ],
     );

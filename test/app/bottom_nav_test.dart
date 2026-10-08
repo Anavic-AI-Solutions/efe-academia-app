@@ -6,6 +6,8 @@ import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
+import 'package:efe_mobile/features/events/domain/event_model.dart';
+import 'package:efe_mobile/features/events/providers/event_provider.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +64,8 @@ Future<void> _pumpApp(WidgetTester tester, String role) async {
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role)),
       dashboardRepositoryProvider.overrideWithValue(_FakeDashboardRepository()),
+      // El calendario del home no toca red en estos tests.
+      homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );
@@ -102,8 +106,9 @@ void main() {
     expect(find.byIcon(PhosphorIconsFill.magnifyingGlass), findsNothing);
   });
 
-  testWidgets('active destination uses the accent pill', (tester) async {
-    for (final role in ['parent', 'professor']) {
+  for (final role in ['parent', 'professor']) {
+    testWidgets('active destination uses the accent pill ($role)',
+        (tester) async {
       await _pumpApp(tester, role);
 
       final activePill = tester.widget<AnimatedContainer>(
@@ -124,6 +129,6 @@ void main() {
       expect((inactivePill.decoration as BoxDecoration).color,
           Colors.transparent,
           reason: 'role $role');
-    }
-  });
+    });
+  }
 }
