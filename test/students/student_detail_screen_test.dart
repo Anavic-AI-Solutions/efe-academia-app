@@ -6,6 +6,9 @@ import 'package:efe_mobile/core/widgets/stat_card.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
+import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
+import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
+import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/fees/data/fee_repository.dart';
 import 'package:efe_mobile/features/fees/domain/fee_model.dart';
 import 'package:efe_mobile/features/fees/providers/fee_provider.dart';
@@ -154,6 +157,13 @@ class _FakeAbsenceRepository implements AbsenceRepository {
       );
 }
 
+class _FakeDashboardRepository implements DashboardRepository {
+  const _FakeDashboardRepository();
+
+  @override
+  Future<DashboardData> getDashboard() async => const DashboardData();
+}
+
 class _FakeFeeRepository implements FeeRepository {
   _FakeFeeRepository({this.items = const []});
 
@@ -206,6 +216,8 @@ Future<void> _pumpDetail(
             .overrideWithValue(absences ?? _FakeAbsenceRepository()),
         feeRepositoryProvider
             .overrideWithValue(fees ?? _FakeFeeRepository()),
+        dashboardRepositoryProvider
+            .overrideWithValue(const _FakeDashboardRepository()),
       ],
       child: localizedApp(
         home: StudentDetailScreen(

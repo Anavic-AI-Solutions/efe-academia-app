@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../dashboard/domain/professor_classroom_summary.dart';
 import '../../domain/classroom_grades_summary.dart';
 import '../../providers/qualification_provider.dart';
 
@@ -18,13 +19,15 @@ String currentAcademicPeriod() {
 }
 
 class CreateQualificationSheet extends ConsumerStatefulWidget {
-  final String classroomId;
+  final String? classroomId;
+  final List<ProfessorClassroomSummary>? classrooms;
   final List<ClassroomGradeStudent> students;
   final String? initialStudentId;
 
   const CreateQualificationSheet({
     super.key,
-    required this.classroomId,
+    this.classroomId,
+    this.classrooms,
     required this.students,
     this.initialStudentId,
   });
@@ -41,6 +44,10 @@ class _CreateQualificationSheetState
 
   late String? _studentId = widget.initialStudentId ??
       (widget.students.isNotEmpty ? widget.students.first.studentId : null);
+  late String? _classroomId = widget.classroomId ??
+      (widget.classrooms != null && widget.classrooms!.isNotEmpty
+          ? widget.classrooms!.first.id
+          : null);
   String _type = _types.first;
   late String _period = currentAcademicPeriod();
   String? _scoreError;
@@ -65,8 +72,9 @@ class _CreateQualificationSheetState
   Future<void> _submit() async {
     final l10n = context.l10n;
     final score = _parseScore(_scoreController.text);
+    final classroomId = _classroomId;
 
-    if (score == null || _studentId == null) {
+    if (score == null || _studentId == null || classroomId == null) {
       setState(() => _scoreError = l10n.gradeFormScoreInvalid);
       return;
     }
@@ -80,7 +88,7 @@ class _CreateQualificationSheetState
     try {
       await ref.read(qualificationRepositoryProvider).createQualification(
             studentId: _studentId!,
-            classroomId: widget.classroomId,
+            classroomId: classroomId,
             score: score.toString(),
             type: _type,
             period: _period,
@@ -141,6 +149,28 @@ class _CreateQualificationSheetState
                 ),
               ),
               const SizedBox(height: 16),
+              if (widget.classroomId == null) ...[
+                _FieldLabel(label: l10n.studentGradeClassroom),
+                DropdownButtonFormField<String>(
+                  value: _classroomId,
+                  isExpanded: true,
+                  decoration: _inputDecoration(),
+                  items: (widget.classrooms ?? const [])
+                      .map(
+                        (classroom) => DropdownMenuItem(
+                          value: classroom.id,
+                          child: Text(
+                            classroom.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) => setState(() => _classroomId = value),
+                ),
+                const SizedBox(height: 12),
+              ],
               _FieldLabel(label: l10n.gradeFormStudent),
               DropdownButtonFormField<String>(
                 value: _studentId,
@@ -158,7 +188,9 @@ class _CreateQualificationSheetState
                       ),
                     )
                     .toList(),
-                onChanged: (value) => setState(() => _studentId = value),
+                onChanged: widget.students.length == 1
+                    ? null
+                    : (value) => setState(() => _studentId = value),
               ),
               const SizedBox(height: 12),
               Row(

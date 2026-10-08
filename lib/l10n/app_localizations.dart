@@ -1865,6 +1865,24 @@ abstract class AppLocalizations {
   /// **'No se pudo guardar la calificación'**
   String get gradeFormError;
 
+  /// No description provided for @studentGradeFromDetail.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar nota'**
+  String get studentGradeFromDetail;
+
+  /// No description provided for @studentGradeClassroom.
+  ///
+  /// In es, this message translates to:
+  /// **'Aula'**
+  String get studentGradeClassroom;
+
+  /// No description provided for @studentGradeNoClassrooms.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin aulas asignadas'**
+  String get studentGradeNoClassrooms;
+
   /// No description provided for @materialFormTitleNew.
   ///
   /// In es, this message translates to:

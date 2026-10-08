@@ -69,6 +69,8 @@ class StudentDetailScreen extends ConsumerWidget {
                     StudentGradesTab(
                       studentId: studentId,
                       classroomId: classroomId,
+                      canWrite: isProfessor,
+                      studentFullname: student.fullname,
                     ),
                     StudentAbsencesTab(
                       studentId: studentId,

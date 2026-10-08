@@ -975,6 +975,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gradeFormError => 'No se pudo guardar la calificación';
 
   @override
+  String get studentGradeFromDetail => 'Cargar nota';
+
+  @override
+  String get studentGradeClassroom => 'Aula';
+
+  @override
+  String get studentGradeNoClassrooms => 'Sin aulas asignadas';
+
+  @override
   String get materialFormTitleNew => 'Nuevo material';
 
   @override

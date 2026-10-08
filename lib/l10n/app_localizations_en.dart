@@ -975,6 +975,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gradeFormError => 'Failed to save the grade';
 
   @override
+  String get studentGradeFromDetail => 'Add grade';
+
+  @override
+  String get studentGradeClassroom => 'Classroom';
+
+  @override
+  String get studentGradeNoClassrooms => 'No classrooms assigned';
+
+  @override
   String get materialFormTitleNew => 'New material';
 
   @override
