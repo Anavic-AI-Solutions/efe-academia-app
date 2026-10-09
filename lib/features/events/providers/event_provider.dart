@@ -120,3 +120,18 @@ final homeCalendarProvider =
   );
   return events.take(5).toList();
 });
+
+/// Eventos del mes visible para [CalendarScreen]: primer → último día.
+///
+/// El argumento se normaliza a `DateTime(año, mes)`; instanciarlo igual en
+/// cada build reutiliza el mismo provider de la familia.
+final calendarMonthProvider = FutureProvider.family
+    .autoDispose<List<EventModel>, DateTime>((ref, month) async {
+  final repository = ref.watch(eventRepositoryProvider);
+  final first = DateTime(month.year, month.month, 1);
+  final last = DateTime(month.year, month.month + 1, 0);
+  return repository.getCalendarEvents(
+    startDate: _ymd(first),
+    endDate: _ymd(last),
+  );
+});

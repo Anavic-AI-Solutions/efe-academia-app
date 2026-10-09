@@ -287,7 +287,9 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('orden de secciones del home real', (tester) async {
+    testWidgets('home real muestra grid resumido antes de las aulas', (
+      tester,
+    ) async {
       await _pumpRealProfessorHome(
         tester,
         calendar: const [
@@ -304,16 +306,17 @@ void main() {
         ],
       );
 
-      // Las 4 secciones del ProfessorHomeScreen real con sus datos.
-      expect(find.text('Acto escolar'), findsOneWidget);
+      // El ProfessorHomeScreen real resume las 4 fuentes en el grid 2x2.
+      expect(find.textContaining('Acto escolar'), findsOneWidget);
       expect(find.text('Ana Ruiz'), findsOneWidget);
       expect(find.text('Novedad 1'), findsOneWidget);
-      expect(find.text('Reglamento'), findsOneWidget);
+      expect(find.text('1 documento'), findsOneWidget);
 
-      // Orden final: calendario → cumpleaños → novedades → documentos.
-      expect(_top(tester, 'CALENDARIO'), lessThan(_top(tester, 'CUMPLEAÑOS')));
-      expect(_top(tester, 'CUMPLEAÑOS'), lessThan(_top(tester, 'NOVEDADES')));
-      expect(_top(tester, 'NOVEDADES'), lessThan(_top(tester, 'DOCUMENTOS')));
+      // El grid va arriba, antes de la etiqueta de aulas...
+      expect(_top(tester, 'CALENDARIO'), lessThan(_top(tester, 'MIS AULAS')));
+      expect(_top(tester, 'CUMPLEAÑOS'), lessThan(_top(tester, 'MIS AULAS')));
+      // ...y las secciones largas con "Ver todo" ya no se montan.
+      expect(find.text('Ver todo'), findsNothing);
       expect(tester.takeException(), isNull);
     });
 

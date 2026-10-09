@@ -571,5 +571,22 @@
   "documentsOpenError": "No se pudo abrir el documento",
   "homeDocuments": "Documentos",
   "homeNews": "Novedades",
-  "homeNewsEmpty": "No hay novedades"
+  "homeNewsEmpty": "No hay novedades",
+  "homeSummaryDocumentsCount": "{count, plural, =1{1 documento} other{{count} documentos}}",
+  "@homeSummaryDocumentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSummaryBirthdaysCount": "{count, plural, =1{1 hoy} other{{count} hoy}}",
+  "@homeSummaryBirthdaysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calendarViewList": "Ver lista"
 }

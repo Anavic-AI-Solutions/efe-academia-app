@@ -19,10 +19,7 @@ import '../../news/providers/news_provider.dart';
 import '../../notifications/providers/notification_provider.dart';
 import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
-import 'widgets/home_birthdays_section.dart';
-import 'widgets/home_calendar_section.dart';
-import 'widgets/home_documents_section.dart';
-import 'widgets/home_news_section.dart';
+import 'widgets/home_summary_grid.dart';
 import 'widgets/professor_classroom_card.dart';
 
 class ProfessorHomeScreen extends ConsumerStatefulWidget {
@@ -107,6 +104,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const HomeSummaryGrid(),
+                  const SizedBox(height: 16),
                   Text(
                     l10n.professorMyClassrooms.toUpperCase(),
                     style: TextStyle(
@@ -164,14 +163,6 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  const HomeCalendarSection(),
-                  const SizedBox(height: 16),
-                  const HomeBirthdaysSection(),
-                  const SizedBox(height: 16),
-                  const HomeNewsSection(),
-                  const SizedBox(height: 16),
-                  const HomeDocumentsSection(),
                   const SizedBox(height: 24),
                 ],
               ),

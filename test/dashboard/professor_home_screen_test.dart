@@ -286,9 +286,15 @@ void main() {
       (tester) async {
     await _pumpHome(tester);
 
+    // El grid 2x2 empuja las aulas/botones fuera del viewport de 600px:
+    // llevar a vista antes de tapear.
+    await tester.scrollUntilVisible(find.text('1G X · 2026'), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('1G X · 2026'));
     await tester.pumpAndSettle();
 
+    await tester.scrollUntilVisible(find.text('Tomar asistencia'), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Tomar asistencia'));
     await tester.pumpAndSettle();
 
@@ -304,6 +310,8 @@ void main() {
   testWidgets('Cargar nota opens the classroom grades screen', (tester) async {
     await _pumpHome(tester);
 
+    await tester.scrollUntilVisible(find.text('Cargar nota'), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Cargar nota'));
     await tester.pumpAndSettle();
 

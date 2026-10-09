@@ -2200,6 +2200,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No hay novedades'**
   String get homeNewsEmpty;
+
+  /// No description provided for @homeSummaryDocumentsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 documento} other{{count} documentos}}'**
+  String homeSummaryDocumentsCount(int count);
+
+  /// No description provided for @homeSummaryBirthdaysCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 hoy} other{{count} hoy}}'**
+  String homeSummaryBirthdaysCount(int count);
+
+  /// No description provided for @calendarViewList.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver lista'**
+  String get calendarViewList;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

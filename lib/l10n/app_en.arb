@@ -371,5 +371,22 @@
   "documentsOpenError": "Could not open the document",
   "homeDocuments": "Documents",
   "homeNews": "News",
-  "homeNewsEmpty": "No news yet"
+  "homeNewsEmpty": "No news yet",
+  "homeSummaryDocumentsCount": "{count, plural, =1{1 document} other{{count} documents}}",
+  "@homeSummaryDocumentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSummaryBirthdaysCount": "{count, plural, =1{1 today} other{{count} today}}",
+  "@homeSummaryBirthdaysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calendarViewList": "View list"
 }

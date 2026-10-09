@@ -22,6 +22,8 @@ import '../features/notifications/screens/notification_list_screen.dart';
 import '../features/news/screens/news_list_screen.dart';
 import '../features/documents/screens/document_detail_screen.dart';
 import '../features/documents/screens/document_list_screen.dart';
+import '../features/birthdays/screens/birthday_list_screen.dart';
+import '../features/events/screens/calendar_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../app/theme/app_colors.dart';
@@ -341,6 +343,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/events',
         builder: (context, state) => const EventListScreen(),
+      ),
+      GoRoute(
+        path: '/calendar',
+        builder: (context, state) => const CalendarScreen(),
+      ),
+      GoRoute(
+        path: '/birthdays',
+        builder: (context, state) => const BirthdayListScreen(),
       ),
       GoRoute(
         path: '/search',

@@ -1149,4 +1149,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeNewsEmpty => 'No news yet';
+
+  @override
+  String homeSummaryDocumentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documents',
+      one: '1 document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeSummaryBirthdaysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count today',
+      one: '1 today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get calendarViewList => 'View list';
 }
