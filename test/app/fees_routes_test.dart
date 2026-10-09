@@ -22,6 +22,9 @@ import 'package:efe_mobile/features/news/data/news_repository.dart';
 import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
+import 'package:efe_mobile/features/relations/data/relations_repository.dart';
+import 'package:efe_mobile/features/relations/domain/relation_model.dart';
+import 'package:efe_mobile/features/relations/providers/relations_provider.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -139,11 +142,22 @@ List<String> collectRoutePaths(GoRouter router) {
   return paths;
 }
 
+class _FakeEmptyRelationsRepository implements RelationsRepository {
+  @override
+  Future<CursorPagination<RelationModel>> getRelations({
+    String? query,
+    String? cursor,
+  }) async =>
+      CursorPagination.empty();
+}
+
 Future<ProviderContainer> _pumpFeesApp(WidgetTester tester) async {
   final container = ProviderContainer(
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository()),
       dashboardRepositoryProvider.overrideWithValue(_FakeDashboardRepository()),
+      relationsRepositoryProvider
+          .overrideWithValue(_FakeEmptyRelationsRepository()),
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
       todayBirthdaysProvider.overrideWith((ref) async => <BirthdayModel>[]),

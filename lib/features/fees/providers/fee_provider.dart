@@ -27,12 +27,14 @@ class FeeListState {
   final bool isLoading;
   final String? error;
   final String search;
+  final String? studentId;
 
   FeeListState({
     CursorPagination<FeeModel>? pagination,
     this.isLoading = false,
     this.error,
     this.search = '',
+    this.studentId,
   }) : pagination = pagination ?? CursorPagination<FeeModel>.empty();
 
   FeeListState copyWith({
@@ -40,6 +42,8 @@ class FeeListState {
     bool? isLoading,
     String? error,
     String? search,
+    String? studentId,
+    bool clearStudentId = false,
     bool clearError = false,
   }) {
     return FeeListState(
@@ -47,6 +51,7 @@ class FeeListState {
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
       search: search ?? this.search,
+      studentId: clearStudentId ? null : (studentId ?? this.studentId),
     );
   }
 }
@@ -65,7 +70,10 @@ class FeeListNotifier extends StateNotifier<FeeListState> {
   Future<void> load() async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final result = await _repository.getFees(search: state.search);
+      final result = await _repository.getFees(
+        studentId: state.studentId,
+        search: state.search,
+      );
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -75,7 +83,10 @@ class FeeListNotifier extends StateNotifier<FeeListState> {
   Future<void> refresh() async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final result = await _repository.getFees(search: state.search);
+      final result = await _repository.getFees(
+        studentId: state.studentId,
+        search: state.search,
+      );
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -87,11 +98,21 @@ class FeeListNotifier extends StateNotifier<FeeListState> {
     await load();
   }
 
+  Future<void> setStudent(String? studentId) async {
+    if (studentId == null) {
+      state = state.copyWith(clearStudentId: true);
+    } else {
+      state = state.copyWith(studentId: studentId);
+    }
+    await load();
+  }
+
   Future<void> loadMore() async {
     if (!state.pagination.hasMore || state.isLoading) return;
     state = state.copyWith(isLoading: true);
     try {
       final result = await _repository.getFees(
+        studentId: state.studentId,
         search: state.search,
         cursor: state.pagination.nextCursor,
       );

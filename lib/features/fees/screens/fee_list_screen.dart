@@ -10,6 +10,9 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../../relations/providers/relations_provider.dart';
+import '../../relations/providers/selected_child_provider.dart';
 import '../providers/fee_provider.dart';
 import 'widgets/fee_card.dart';
 
@@ -28,6 +31,16 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    Future.microtask(() {
+      final role = ref.read(authProvider).user?.role;
+      if (role == 'parent') {
+        final selected = ref.read(parentSelectedStudentProvider);
+        final current = ref.read(feeListProvider).studentId;
+        if (selected != current) {
+          ref.read(feeListProvider.notifier).setStudent(selected);
+        }
+      }
+    });
   }
 
   @override
@@ -49,12 +62,14 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
     final listState = ref.watch(feeListProvider);
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isParent = ref.watch(authProvider).user?.role == 'parent';
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           LargeTitleBar(title: l10n.feesTitle),
+          if (isParent) _ParentChildSelector(),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: AppSearchBar(
@@ -68,7 +83,7 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
             child: RefreshIndicator(
               onRefresh: () =>
                   ref.read(feeListProvider.notifier).refresh(),
-              child: _buildBody(listState, l10n),
+              child: _buildBody(listState, l10n, isParent: isParent),
             ),
           ),
         ],
@@ -76,7 +91,46 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
     );
   }
 
-  Widget _buildBody(FeeListState state, AppLocalizations l10n) {
+  Widget _ParentChildSelector() {
+    final relations = ref.watch(relationsProvider);
+    final selected = ref.watch(parentSelectedStudentProvider);
+    final children =
+        relations.relations.where((r) => r.role == 'student').toList();
+
+    if (children.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: DropdownButtonFormField<String>(
+        value: children.any((c) => c.userId.toString() == selected)
+            ? selected
+            : null,
+        hint: Text(context.l10n.studentsTitle),
+        items: children
+            .map(
+              (c) => DropdownMenuItem(
+                value: c.userId.toString(),
+                child: Text(c.fullname, overflow: TextOverflow.ellipsis),
+              ),
+            )
+            .toList(),
+        onChanged: (value) {
+          ref.read(parentSelectedStudentProvider.notifier).state = value;
+          ref.read(feeListProvider.notifier).setStudent(value);
+        },
+      ),
+    );
+  }
+
+  Widget _buildBody(FeeListState state, AppLocalizations l10n,
+      {bool isParent = false}) {
+    if (isParent && state.studentId == null) {
+      return EmptyState(
+        icon: Icons.receipt_long_outlined,
+        title: l10n.feesEmptyTitle,
+        subtitle: l10n.studentsEmptyTitle,
+      );
+    }
     if (state.isLoading && state.pagination.data.isEmpty) {
       return const ListShimmer();
     }
