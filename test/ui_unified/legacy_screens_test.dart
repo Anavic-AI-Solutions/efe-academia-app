@@ -9,6 +9,9 @@ import 'package:efe_mobile/core/widgets/gradient_header.dart';
 import 'package:efe_mobile/core/widgets/large_title_bar.dart';
 import 'package:efe_mobile/core/widgets/loading_shimmer.dart';
 import 'package:efe_mobile/core/widgets/search_bar.dart';
+import 'package:efe_mobile/features/auth/data/auth_repository.dart';
+import 'package:efe_mobile/features/auth/domain/user_model.dart';
+import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/fees/data/fee_repository.dart';
 import 'package:efe_mobile/features/fees/domain/fee_model.dart';
 import 'package:efe_mobile/features/fees/providers/fee_provider.dart';
@@ -29,6 +32,42 @@ import '../helpers/localized_app.dart';
 // =============================================================================
 // Fakes
 // =============================================================================
+
+/// Non-parent auth so FeeListScreen skips the child selector in legacy tests.
+class _FakeLegacyAuthRepository implements AuthRepository {
+  @override
+  Future<UserModel> getCurrentUser() async => const UserModel(
+        id: 'u-student',
+        name: 'Estudiante Test',
+        email: 'student@test.com',
+        role: 'student',
+      );
+
+  @override
+  Future<bool> hasToken() async => true;
+
+  @override
+  Future<void> loadTokenIntoClient() async {}
+
+  @override
+  Future<UserModel> login({required String email, required String password}) =>
+      getCurrentUser();
+
+  @override
+  Future<UserModel> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) =>
+      getCurrentUser();
+
+  @override
+  Future<void> logout() async {}
+
+  @override
+  Future<void> forgotPassword(String email) async {}
+}
 
 class _NeverFeeRepository implements FeeRepository {
   @override
@@ -294,6 +333,7 @@ Future<void> _pumpFeeListLoading(WidgetTester tester) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        authRepositoryProvider.overrideWithValue(_FakeLegacyAuthRepository()),
         feeRepositoryProvider.overrideWithValue(_NeverFeeRepository()),
       ],
       child: localizedApp(home: const FeeListScreen()),
@@ -306,6 +346,7 @@ Future<void> _pumpFeeList(WidgetTester tester) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        authRepositoryProvider.overrideWithValue(_FakeLegacyAuthRepository()),
         feeRepositoryProvider.overrideWithValue(
           _FakeFeeRepository(fees: _demoFees),
         ),
@@ -405,6 +446,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            authRepositoryProvider.overrideWithValue(_FakeLegacyAuthRepository()),
             feeRepositoryProvider.overrideWithValue(
               _FakeFeeRepository(fees: []),
             ),
@@ -422,6 +464,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            authRepositoryProvider.overrideWithValue(_FakeLegacyAuthRepository()),
             feeRepositoryProvider.overrideWithValue(_ErrorFeeRepository()),
           ],
           child: localizedApp(home: const FeeListScreen()),
