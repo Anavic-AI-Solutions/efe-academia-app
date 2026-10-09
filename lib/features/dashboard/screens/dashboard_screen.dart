@@ -17,10 +17,12 @@ import '../../../l10n/l10n.dart';
 import '../../auth/domain/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../notifications/providers/notification_provider.dart';
+import '../../relations/providers/selected_child_provider.dart';
 import '../domain/dashboard_data.dart';
 import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
 import 'professor_home_screen.dart';
+import 'widgets/parent_children_section.dart';
 import 'widgets/quick_action_grid.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -169,6 +171,17 @@ class DashboardScreen extends ConsumerWidget {
                     roleName: _getRoleName(user?.role ?? '', l10n),
                   ),
                   const SizedBox(height: 14),
+                  if (user?.role == 'parent') ...[
+                    ParentChildrenSection(
+                      onSelect: (child) {
+                        ref
+                            .read(parentSelectedStudentProvider.notifier)
+                            .state = child.userId.toString();
+                        context.push('/students/${child.userId}');
+                      },
+                    ),
+                    const SizedBox(height: 14),
+                  ],
                   SectionHeader(
                     title: l10n.classroomsTitle,
                     padding: EdgeInsets.zero,
