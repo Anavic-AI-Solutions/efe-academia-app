@@ -16,6 +16,9 @@ import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/features/news/data/news_repository.dart';
 import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
+import 'package:efe_mobile/features/relations/data/relations_repository.dart';
+import 'package:efe_mobile/features/relations/domain/relation_model.dart';
+import 'package:efe_mobile/features/relations/providers/relations_provider.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:flutter/material.dart';
@@ -74,11 +77,23 @@ class _FakeNewsRepository implements NewsRepository {
       CursorPagination.empty();
 }
 
+/// Keeps the parent home children section off the real API in tests.
+class _FakeEmptyRelationsRepository implements RelationsRepository {
+  @override
+  Future<CursorPagination<RelationModel>> getRelations({
+    String? query,
+    String? cursor,
+  }) async =>
+      CursorPagination.empty();
+}
+
 Future<void> _pumpApp(WidgetTester tester, String role) async {
   final container = ProviderContainer(
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role)),
       dashboardRepositoryProvider.overrideWithValue(_FakeDashboardRepository()),
+      relationsRepositoryProvider
+          .overrideWithValue(_FakeEmptyRelationsRepository()),
       // El calendario y los documentos del home no tocan red en estos tests.
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),

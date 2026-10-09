@@ -33,22 +33,6 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
   final _searchController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      if (!mounted) return;
-      final role = ref.read(authProvider).user?.role;
-      if (role == 'parent') {
-        final selected = ref.read(parentSelectedStudentProvider);
-        final current = ref.read(classroomListProvider).studentId;
-        if (selected != current) {
-          ref.read(classroomListProvider.notifier).setStudent(selected);
-        }
-      }
-    });
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose();
     _searchController.dispose();
@@ -107,6 +91,34 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final role = ref.watch(authProvider).user?.role;
     final isProf = role == 'professor';
     final isParent = role == 'parent';
+
+    ref.listen<String?>(parentSelectedStudentProvider, (_, next) {
+      if (!mounted) return;
+      if (ref.read(authProvider).user?.role != 'parent') return;
+      ref.read(classroomListProvider.notifier).setStudent(next).then((_) {
+        if (mounted) _scrollToTop();
+      });
+    });
+    if (isParent) {
+      final selected = ref.watch(parentSelectedStudentProvider);
+      if (selected != null &&
+          selected != listState.studentId &&
+          !listState.isLoading) {
+        Future.microtask(() {
+          if (!mounted) return;
+          final want = ref.read(parentSelectedStudentProvider);
+          final current = ref.read(classroomListProvider).studentId;
+          if (want != null && want != current) {
+            ref
+                .read(classroomListProvider.notifier)
+                .setStudent(want)
+                .then((_) {
+              if (mounted) _scrollToTop();
+            });
+          }
+        });
+      }
+    }
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),

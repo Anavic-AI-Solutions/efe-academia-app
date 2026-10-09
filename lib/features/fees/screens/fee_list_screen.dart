@@ -31,16 +31,6 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    Future.microtask(() {
-      final role = ref.read(authProvider).user?.role;
-      if (role == 'parent') {
-        final selected = ref.read(parentSelectedStudentProvider);
-        final current = ref.read(feeListProvider).studentId;
-        if (selected != current) {
-          ref.read(feeListProvider.notifier).setStudent(selected);
-        }
-      }
-    });
   }
 
   @override
@@ -63,6 +53,27 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isParent = ref.watch(authProvider).user?.role == 'parent';
+
+    ref.listen<String?>(parentSelectedStudentProvider, (_, next) {
+      if (!mounted) return;
+      if (ref.read(authProvider).user?.role != 'parent') return;
+      ref.read(feeListProvider.notifier).setStudent(next);
+    });
+    if (isParent) {
+      final selected = ref.watch(parentSelectedStudentProvider);
+      if (selected != null &&
+          selected != listState.studentId &&
+          !listState.isLoading) {
+        Future.microtask(() {
+          if (!mounted) return;
+          final want = ref.read(parentSelectedStudentProvider);
+          final current = ref.read(feeListProvider).studentId;
+          if (want != null && want != current) {
+            ref.read(feeListProvider.notifier).setStudent(want);
+          }
+        });
+      }
+    }
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),

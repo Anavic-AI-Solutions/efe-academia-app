@@ -10,6 +10,7 @@ import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/dashboard/screens/dashboard_screen.dart';
+import 'package:efe_mobile/features/dashboard/screens/widgets/parent_children_section.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/relations/data/relations_repository.dart';
 import 'package:efe_mobile/features/relations/domain/relation_model.dart';
@@ -128,9 +129,9 @@ void main() {
     await _pumpParentHome(tester);
     expect(find.byType(HomeHeader), findsOneWidget);
     expect(find.byType(HeaderStatsRow), findsOneWidget);
-    // section label en versalitas del sistema
-    final label = tester.widget<Text>(find.text('CLASES'));
-    expect(label.style?.color, AppColors.sectionLabel);
+    // El padre no ve la sección global de aulas: ve a sus hijos.
+    expect(find.text('CLASES'), findsNothing);
+    expect(find.byType(ParentChildrenSection), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
@@ -154,18 +155,19 @@ void main() {
     await _pumpParentHome(tester);
 
     expect(find.byType(HomeHeader), findsOneWidget);
-    expect(find.text('3G X · 2026'), findsOneWidget);
+    expect(find.text('3G X · 2026'), findsNothing);
+    expect(find.byType(ParentChildrenSection), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('parent home empty classrooms uses neutral copy', (tester) async {
+  testWidgets('parent home hides global classrooms and shows children empty copy',
+      (tester) async {
     await _pumpParentHome(
       tester,
       data: const DashboardData(role: 'parent'),
     );
 
-    expect(find.text('CLASES'), findsOneWidget);
-    expect(find.text('No se encontraron clases'), findsOneWidget);
-    expect(find.text('No hay clases disponibles'), findsOneWidget);
+    expect(find.text('CLASES'), findsNothing);
+    expect(find.text('No se encontraron estudiantes'), findsOneWidget);
   });
 }

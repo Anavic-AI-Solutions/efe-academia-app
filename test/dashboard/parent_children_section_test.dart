@@ -15,6 +15,7 @@ import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 class _FakeParentAuthRepository implements AuthRepository {
   @override
@@ -179,6 +180,58 @@ void main() {
     await _pumpParentHome(tester);
     expect(find.byType(ParentChildrenSection), findsOneWidget);
     expect(find.text('Ana Pérez'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('tapping a child on parent home navigates to student detail route',
+      (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        authRepositoryProvider.overrideWithValue(_FakeParentAuthRepository()),
+        dashboardRepositoryProvider
+            .overrideWithValue(_FakeParentDashboardRepository()),
+        relationsRepositoryProvider.overrideWithValue(
+          _FakeRelationsRepository(children: const [_ana]),
+        ),
+        unreadCountProvider.overrideWith((ref) async => 0),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    final router = GoRouter(
+      initialLocation: '/dashboard',
+      routes: [
+        GoRoute(
+          path: '/dashboard',
+          builder: (context, state) => const DashboardScreen(),
+        ),
+        GoRoute(
+          path: '/students/:id',
+          builder: (context, state) => Scaffold(
+            body: Text('student:${state.pathParameters['id']}'),
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp.router(
+          routerConfig: router,
+          locale: const Locale('es', 'AR'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Ana Pérez'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('student:11'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

@@ -182,25 +182,27 @@ class DashboardScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 14),
                   ],
-                  SectionHeader(
-                    title: l10n.classroomsTitle,
-                    padding: EdgeInsets.zero,
-                  ),
-                  const SizedBox(height: 11),
-                  if (classrooms.isEmpty)
-                    EmptyState(
-                      icon: PhosphorIconsRegular.chalkboardTeacher,
-                      title: l10n.classroomsEmptyTitle,
-                      subtitle: l10n.classroomsEmptySubtitle,
-                    )
-                  else
-                    ...classrooms.map(
-                      (classroom) => Padding(
-                        padding: const EdgeInsets.only(bottom: 11),
-                        child: _ParentClassroomCard(classroom: classroom),
-                      ),
+                  if (user?.role != 'parent') ...[
+                    SectionHeader(
+                      title: l10n.classroomsTitle,
+                      padding: EdgeInsets.zero,
                     ),
-                  const SizedBox(height: 14),
+                    const SizedBox(height: 11),
+                    if (classrooms.isEmpty)
+                      EmptyState(
+                        icon: PhosphorIconsRegular.chalkboardTeacher,
+                        title: l10n.classroomsEmptyTitle,
+                        subtitle: l10n.classroomsEmptySubtitle,
+                      )
+                    else
+                      ...classrooms.map(
+                        (classroom) => Padding(
+                          padding: const EdgeInsets.only(bottom: 11),
+                          child: _ParentClassroomCard(classroom: classroom),
+                        ),
+                      ),
+                    const SizedBox(height: 14),
+                  ],
                   SectionHeader(
                     title: l10n.dashboardQuickActions,
                     padding: EdgeInsets.zero,
