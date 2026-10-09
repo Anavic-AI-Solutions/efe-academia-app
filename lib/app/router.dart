@@ -16,6 +16,8 @@ import '../features/students/screens/student_detail_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
 import '../features/chat/screens/chat_detail_screen.dart';
 import '../features/chat/providers/chat_provider.dart';
+import '../features/fees/screens/fee_detail_screen.dart';
+import '../features/fees/screens/fee_list_screen.dart';
 import '../features/relations/screens/new_chat_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/notifications/screens/notification_list_screen.dart';
@@ -316,6 +318,18 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => StudentDetailScreen(
               studentId: state.pathParameters['id']!,
               classroomId: state.uri.queryParameters['classroomId'],
+            ),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/fees',
+        builder: (context, state) => const FeeListScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => FeeDetailScreen(
+              feeId: state.pathParameters['id']!,
             ),
           ),
         ],
