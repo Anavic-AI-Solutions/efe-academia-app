@@ -114,6 +114,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
     String? level,
     String? year,
     String? status,
+    String? studentId,
   }) =>
       Future.error(UnimplementedError());
 

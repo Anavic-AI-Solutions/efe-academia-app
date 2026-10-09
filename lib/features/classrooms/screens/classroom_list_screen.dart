@@ -11,6 +11,8 @@ import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../relations/providers/relations_provider.dart';
+import '../../relations/providers/selected_child_provider.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_filter_button.dart';
 import 'widgets/classroom_filter_chips.dart';
@@ -29,6 +31,22 @@ class ClassroomListScreen extends ConsumerStatefulWidget {
 class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
   final _scrollController = ScrollController();
   final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (!mounted) return;
+      final role = ref.read(authProvider).user?.role;
+      if (role == 'parent') {
+        final selected = ref.read(parentSelectedStudentProvider);
+        final current = ref.read(classroomListProvider).studentId;
+        if (selected != current) {
+          ref.read(classroomListProvider.notifier).setStudent(selected);
+        }
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -86,7 +104,9 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final listState = ref.watch(classroomListProvider);
     final selection = _selectionFrom(listState);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final isProf = ref.watch(authProvider).user?.role == 'professor';
+    final role = ref.watch(authProvider).user?.role;
+    final isProf = role == 'professor';
+    final isParent = role == 'parent';
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -100,6 +120,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                     ? l10n.professorClassroomsCount(listState.page.total)
                     : '${listState.page.total} ${l10n.classroomsTitle.toLowerCase()}',
           ),
+          if (isParent) _ParentChildSelector(),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             child: Row(
@@ -112,15 +133,17 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                         ref.read(classroomListProvider.notifier).search(value),
                   ),
                 ),
-                const SizedBox(width: 10),
-                ClassroomFilterButton(
-                  activeCount: selection.count,
-                  onTap: _openFilters,
-                ),
+                if (!isParent) ...[
+                  const SizedBox(width: 10),
+                  ClassroomFilterButton(
+                    activeCount: selection.count,
+                    onTap: _openFilters,
+                  ),
+                ],
               ],
             ),
           ),
-          if (!selection.isEmpty)
+          if (!isParent && !selection.isEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: ClassroomFilterChips(
@@ -131,16 +154,56 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
               ),
             ),
           Expanded(
-            child: _buildBody(listState, isProf: isProf),
+            child: _buildBody(listState, isProf: isProf, isParent: isParent),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody(ClassroomListState state, {required bool isProf}) {
+  Widget _ParentChildSelector() {
+    final relations = ref.watch(relationsProvider);
+    final selected = ref.watch(parentSelectedStudentProvider);
+    final children =
+        relations.relations.where((r) => r.role == 'student').toList();
+
+    if (children.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: DropdownButtonFormField<String>(
+        value: children.any((c) => c.userId.toString() == selected)
+            ? selected
+            : null,
+        hint: Text(context.l10n.studentsTitle),
+        items: children
+            .map(
+              (c) => DropdownMenuItem(
+                value: c.userId.toString(),
+                child: Text(c.fullname, overflow: TextOverflow.ellipsis),
+              ),
+            )
+            .toList(),
+        onChanged: (value) async {
+          ref.read(parentSelectedStudentProvider.notifier).state = value;
+          await ref.read(classroomListProvider.notifier).setStudent(value);
+          _scrollToTop();
+        },
+      ),
+    );
+  }
+
+  Widget _buildBody(ClassroomListState state,
+      {required bool isProf, bool isParent = false}) {
     final l10n = context.l10n;
 
+    if (isParent && state.studentId == null) {
+      return EmptyState(
+        icon: PhosphorIconsRegular.chalkboardTeacher,
+        title: l10n.classroomsEmptyTitle,
+        subtitle: l10n.classroomsEmptySubtitle,
+      );
+    }
     if (state.isLoading && state.page.data.isEmpty) {
       return const ListShimmer();
     }

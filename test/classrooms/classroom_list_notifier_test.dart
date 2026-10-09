@@ -46,6 +46,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
     String? level,
     String? year,
     String? status,
+    String? studentId,
   }) {
     calls.add({
       'search': search,
@@ -54,6 +55,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
       'level': level,
       'year': year,
       'status': status,
+      'studentId': studentId,
     });
     if (_responses.isEmpty) {
       return Future.value(_page(const []));

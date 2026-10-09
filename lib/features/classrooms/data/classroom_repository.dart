@@ -22,6 +22,7 @@ class ClassroomRepository {
     String? level,
     String? year,
     String? status,
+    String? studentId,
   }) async {
     try {
       final response = await _api.getClassrooms(
@@ -32,6 +33,7 @@ class ClassroomRepository {
         level: level,
         year: year,
         status: status,
+        studentId: studentId,
       );
       return PageResult.fromJson(
         response.data,

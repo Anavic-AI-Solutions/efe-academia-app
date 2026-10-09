@@ -72,6 +72,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
     String? level,
     String? year,
     String? status,
+    String? studentId,
   }) async {
     if (total == 0) return PageResult.empty(perPage: limit);
     return PageResult(
