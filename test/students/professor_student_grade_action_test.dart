@@ -1,3 +1,4 @@
+import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
@@ -89,7 +90,13 @@ class _FakeQualificationRepository implements QualificationRepository {
   }
 
   @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  Future<CursorPagination<QualificationModel>> getQualifications({
+    String? studentId,
+    String? classroomId,
+    String? search,
+    String? cursor,
+  }) async =>
+      CursorPagination<QualificationModel>.empty();
 }
 
 class _FakeDashboardRepository implements DashboardRepository {

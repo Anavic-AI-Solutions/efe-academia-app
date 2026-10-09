@@ -3,6 +3,7 @@ import 'package:efe_mobile/core/api/api_client.dart';
 import 'package:efe_mobile/core/api/api_provider.dart';
 import 'package:efe_mobile/core/storage/secure_storage.dart';
 import 'package:efe_mobile/features/birthdays/data/birthday_api.dart';
+import 'package:efe_mobile/features/birthdays/domain/birthday_model.dart';
 import 'package:efe_mobile/features/birthdays/providers/birthday_provider.dart';
 import 'package:efe_mobile/features/dashboard/screens/widgets/home_birthdays_section.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
@@ -217,6 +218,15 @@ void main() {
         container.read(todayBirthdaysProvider.future),
         throwsA(isA<DioException>()),
       );
+    });
+
+    test('nombre no-string no lanza TypeError', () {
+      final model = BirthdayModel.fromJson({
+        'id': 'b9',
+        'attributes': {'name': 123, 'age_turning': 8},
+      });
+
+      expect(model.name, '123');
     });
   });
 

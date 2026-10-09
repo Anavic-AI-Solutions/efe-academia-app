@@ -29,12 +29,15 @@ import 'package:go_router/go_router.dart';
 
 class _FakeNewsRepository implements NewsRepository {
   final List<NewsModel> items;
+  int calls = 0;
 
   _FakeNewsRepository(this.items);
 
   @override
-  Future<CursorPagination<NewsModel>> getNews({String? cursor}) async =>
-      CursorPagination(data: items, hasMore: false);
+  Future<CursorPagination<NewsModel>> getNews({String? cursor}) async {
+    calls++;
+    return CursorPagination(data: items, hasMore: false);
+  }
 }
 
 GoRouter _router() => GoRouter(
@@ -156,20 +159,25 @@ class _FakeProfessorAuthRepository implements AuthRepository {
 }
 
 class _FakeProfessorDashboardRepository implements DashboardRepository {
+  int calls = 0;
+
   @override
-  Future<DashboardData> getDashboard() async => const DashboardData(
-        role: 'professor',
-        totalStudents: 78,
-        totalClassrooms: 3,
-        absencesToday: 4,
-        classrooms: [
-          ProfessorClassroomSummary(
-            id: 'c1',
-            name: '3G X · 2026',
-            studentsCount: 24,
-          ),
-        ],
-      );
+  Future<DashboardData> getDashboard() async {
+    calls++;
+    return const DashboardData(
+      role: 'professor',
+      totalStudents: 78,
+      totalClassrooms: 3,
+      absencesToday: 4,
+      classrooms: [
+        ProfessorClassroomSummary(
+          id: 'c1',
+          name: '3G X · 2026',
+          studentsCount: 24,
+        ),
+      ],
+    );
+  }
 }
 
 /// Monta el [ProfessorHomeScreen] real con las 4 secciones stubbeadas con
@@ -306,6 +314,85 @@ void main() {
       expect(_top(tester, 'CALENDARIO'), lessThan(_top(tester, 'CUMPLEAÑOS')));
       expect(_top(tester, 'CUMPLEAÑOS'), lessThan(_top(tester, 'NOVEDADES')));
       expect(_top(tester, 'NOVEDADES'), lessThan(_top(tester, 'DOCUMENTOS')));
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('pull-to-refresh toca dashboard y las 4 secciones', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 3000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      var calendarCalls = 0;
+      var birthdaysCalls = 0;
+      var documentsCalls = 0;
+      final dashboardRepo = _FakeProfessorDashboardRepository();
+      final newsRepo = _FakeNewsRepository(const [
+        NewsModel(id: 'n1', title: 'Novedad 1', content: 'Contenido 1'),
+      ]);
+
+      final router = GoRouter(
+        initialLocation: '/',
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (_, __) => const ProfessorHomeScreen(),
+          ),
+        ],
+      );
+      addTearDown(router.dispose);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authRepositoryProvider
+                .overrideWithValue(_FakeProfessorAuthRepository()),
+            dashboardRepositoryProvider.overrideWithValue(dashboardRepo),
+            homeCalendarProvider.overrideWith((ref) async {
+              calendarCalls++;
+              return const [EventModel(id: 'e1', title: 'Acto escolar')];
+            }),
+            todayBirthdaysProvider.overrideWith((ref) async {
+              birthdaysCalls++;
+              return const [
+                BirthdayModel(id: 'b1', name: 'Ana Ruiz', ageTurning: 8),
+              ];
+            }),
+            newsListProvider
+                .overrideWith((ref) => NewsListNotifier(newsRepo)),
+            homeDocumentsProvider.overrideWith((ref) async {
+              documentsCalls++;
+              return const [DocumentModel(id: 'd1', title: 'Reglamento')];
+            }),
+            unreadCountProvider.overrideWith((ref) async => 0),
+          ],
+          child: MaterialApp.router(
+            routerConfig: router,
+            locale: const Locale('es'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(calendarCalls, 1);
+      expect(birthdaysCalls, 1);
+      expect(documentsCalls, 1);
+      expect(dashboardRepo.calls, 1);
+      expect(newsRepo.calls, 1);
+
+      await tester
+          .widget<RefreshIndicator>(find.byType(RefreshIndicator))
+          .onRefresh();
+      await tester.pumpAndSettle();
+
+      expect(dashboardRepo.calls, 2);
+      expect(newsRepo.calls, 2);
+      expect(calendarCalls, 2);
+      expect(birthdaysCalls, 2);
+      expect(documentsCalls, 2);
       expect(tester.takeException(), isNull);
     });
   });

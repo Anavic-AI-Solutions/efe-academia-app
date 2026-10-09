@@ -61,7 +61,7 @@ class _DocumentDetailBody extends ConsumerWidget {
         : document.fileUrl;
     final url = raw.isNotEmpty
         ? raw
-        : ref.read(documentApiProvider).downloadUrl(document.id);
+        : ref.read(documentRepositoryProvider).downloadUrl(document.id);
     final uri = Uri.tryParse(url);
     var opened = false;
     if (uri != null) {

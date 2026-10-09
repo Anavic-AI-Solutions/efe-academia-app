@@ -12,6 +12,10 @@ import '../../../core/widgets/home_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../birthdays/providers/birthday_provider.dart';
+import '../../documents/providers/document_provider.dart';
+import '../../events/providers/event_provider.dart';
+import '../../news/providers/news_provider.dart';
 import '../../notifications/providers/notification_provider.dart';
 import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
@@ -61,7 +65,15 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
       backgroundColor:
           AppColors.backgroundFor(isDark),
       body: RefreshIndicator(
-        onRefresh: () => ref.read(dashboardProvider.notifier).refresh(),
+        onRefresh: () async {
+          ref.invalidate(homeCalendarProvider);
+          ref.invalidate(todayBirthdaysProvider);
+          ref.invalidate(homeDocumentsProvider);
+          await Future.wait([
+            ref.read(dashboardProvider.notifier).refresh(),
+            ref.read(newsListProvider.notifier).refresh(),
+          ]);
+        },
         child: ListView(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),

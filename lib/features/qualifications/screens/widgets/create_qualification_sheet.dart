@@ -74,7 +74,11 @@ class _CreateQualificationSheetState
     final score = _parseScore(_scoreController.text);
     final classroomId = _classroomId;
 
-    if (score == null || _studentId == null || classroomId == null) {
+    if (classroomId == null) {
+      setState(() => _submitError = l10n.studentGradeNoClassrooms);
+      return;
+    }
+    if (score == null || _studentId == null) {
       setState(() => _scoreError = l10n.gradeFormScoreInvalid);
       return;
     }
@@ -265,7 +269,9 @@ class _CreateQualificationSheetState
               if (_submitError != null) ...[
                 const SizedBox(height: 10),
                 Text(
-                  l10n.gradeFormError,
+                  _submitError == l10n.studentGradeNoClassrooms
+                      ? l10n.studentGradeNoClassrooms
+                      : l10n.gradeFormError,
                   style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.absent,
@@ -277,7 +283,8 @@ class _CreateQualificationSheetState
                 height: 46,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isSaving ? null : _submit,
+                  onPressed:
+                      (_isSaving || _classroomId == null) ? null : _submit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,

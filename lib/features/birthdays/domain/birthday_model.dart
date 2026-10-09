@@ -22,7 +22,7 @@ class BirthdayModel with _$BirthdayModel {
           json['id']?.toString() ??
           attrs['id']?.toString() ??
           '',
-      name: attrs['name'] ?? '',
+      name: attrs['name']?.toString() ?? '',
       ageTurning: _parseInt(attrs['age_turning'] ?? attrs['ageTurning']),
       studentAppId: attrs['student_app_id']?.toString() ??
           attrs['studentAppId']?.toString(),

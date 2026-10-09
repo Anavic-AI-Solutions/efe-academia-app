@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../l10n/l10n.dart';
@@ -183,7 +184,7 @@ class _MarkAbsenceSheetState extends ConsumerState<MarkAbsenceSheet> {
                   child: Row(
                     children: [
                       const Icon(
-                        Icons.calendar_today_outlined,
+                        PhosphorIconsRegular.calendarBlank,
                         size: 16,
                         color: AppColors.muted,
                       ),
@@ -219,7 +220,8 @@ class _MarkAbsenceSheetState extends ConsumerState<MarkAbsenceSheet> {
                 height: 46,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isSaving ? null : _submit,
+                  onPressed:
+                      (_isSaving || _classroomId == null) ? null : _submit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,

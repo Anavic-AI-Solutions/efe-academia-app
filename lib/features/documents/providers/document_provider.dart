@@ -62,10 +62,8 @@ class DocumentListNotifier extends StateNotifier<DocumentListState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final result = await _repository.getDocuments();
-      print('[Documents] Loaded ${result.data.length} items');
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      print('[Documents] ERROR: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

@@ -19,9 +19,9 @@ class EventRepository {
       data: items
           .map((e) => EventModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      nextCursor: meta['cursor'],
-      hasMore: meta['has_more'] ?? false,
-      total: meta['total'],
+      nextCursor: meta['cursor']?.toString(),
+      hasMore: meta['has_more'] == true,
+      total: int.tryParse('${meta['total']}'),
     );
   }
 

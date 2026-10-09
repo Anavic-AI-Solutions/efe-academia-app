@@ -40,10 +40,6 @@ class StudentGradesTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final gradesAsync = ref.watch(studentGradesProvider(studentId));
-    final classrooms =
-        ref.watch(dashboardProvider).data?.classrooms ??
-            const <ProfessorClassroomSummary>[];
-    final hasClassroom = classroomId != null || classrooms.isNotEmpty;
 
     final Widget content = gradesAsync.when(
       loading: () => const ListShimmer(itemCount: 3, itemHeight: 120),
@@ -78,6 +74,11 @@ class StudentGradesTab extends ConsumerWidget {
     );
 
     if (!canWrite) return content;
+
+    final classrooms =
+        ref.watch(dashboardProvider).data?.classrooms ??
+            const <ProfessorClassroomSummary>[];
+    final hasClassroom = classroomId != null || classrooms.isNotEmpty;
 
     return Column(
       children: [

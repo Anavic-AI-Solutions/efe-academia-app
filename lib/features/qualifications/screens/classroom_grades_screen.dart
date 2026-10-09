@@ -82,7 +82,7 @@ class ClassroomGradesScreen extends ConsumerWidget {
           ),
           if (summary != null && hasStudents)
             _LoadGradeBar(
-              onTap: () => _openCreateSheet(context, ref, summary),
+              onTap: () => _openCreateSheet(context, summary),
             ),
         ],
       ),
@@ -99,7 +99,6 @@ class ClassroomGradesScreen extends ConsumerWidget {
 
   Future<void> _openCreateSheet(
     BuildContext context,
-    WidgetRef ref,
     ClassroomGradesSummary summary,
   ) async {
     final created = await showModalBottomSheet<bool>(
@@ -113,7 +112,6 @@ class ClassroomGradesScreen extends ConsumerWidget {
     );
 
     if (created == true && context.mounted) {
-      ref.invalidate(classroomGradesProvider(classroomId));
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(content: Text(context.l10n.gradeFormSaved)));

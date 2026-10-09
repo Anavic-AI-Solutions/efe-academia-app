@@ -22,11 +22,11 @@ class DocumentModel with _$DocumentModel {
           json['id']?.toString() ??
           attrs['id']?.toString() ??
           '',
-      title: attrs['title'] ?? '',
-      description: attrs['description'] ?? '',
-      fileUrl: attrs['file_url'] ?? attrs['fileUrl'] ?? '',
-      createdAt: attrs['created_at'] != null
-          ? DateTime.tryParse(attrs['created_at'])
+      title: attrs['title']?.toString() ?? '',
+      description: attrs['description']?.toString() ?? '',
+      fileUrl: (attrs['file_url'] ?? attrs['fileUrl'])?.toString() ?? '',
+      createdAt: attrs['created_at'] is String
+          ? DateTime.tryParse(attrs['created_at'] as String)
           : null,
       mediaUrls: _parseMediaUrls(attrs['media']),
     );

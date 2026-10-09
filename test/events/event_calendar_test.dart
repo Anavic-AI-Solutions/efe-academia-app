@@ -65,8 +65,12 @@ class _FakeEventApi implements EventApi {
   final Map<String, dynamic> payload;
 
   @override
-  Future<Response> getEvents({String? cursor, int limit = 20}) =>
-      throw UnimplementedError();
+  Future<Response> getEvents({String? cursor, int limit = 20}) async =>
+      Response(
+        requestOptions: RequestOptions(path: '/events'),
+        statusCode: 200,
+        data: payload,
+      );
 
   @override
   Future<Response> getCalendar({
@@ -134,6 +138,38 @@ void main() {
 
       expect(event.start, DateTime(2026, 9, 1, 10));
       expect(event.end, DateTime(2026, 9, 1, 12));
+    });
+
+    test('payload no-string no lanza TypeError', () {
+      final event = EventModel.fromJson({
+        'id': 'e3',
+        'attributes': {
+          'title': 123,
+          'description': 456,
+          'start_date': 789,
+          'end_date': 101112,
+        },
+      });
+
+      expect(event.title, '123');
+      expect(event.description, '456');
+      expect(event.start, isNull);
+      expect(event.end, isNull);
+    });
+
+    test('meta no-string no lanza y normaliza tipos', () async {
+      final repository = EventRepository(
+        _FakeEventApi({
+          'data': [],
+          'meta': {'cursor': 42, 'has_more': 'yes', 'total': '5'},
+        }),
+      );
+
+      final page = await repository.getEvents();
+
+      expect(page.nextCursor, '42');
+      expect(page.hasMore, isFalse);
+      expect(page.total, 5);
     });
   });
 }

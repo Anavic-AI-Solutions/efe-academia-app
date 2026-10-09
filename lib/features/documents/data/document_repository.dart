@@ -24,9 +24,9 @@ class DocumentRepository {
         data: items
             .map((e) => DocumentModel.fromJson(e as Map<String, dynamic>))
             .toList(),
-        nextCursor: meta['cursor'],
-        hasMore: meta['has_more'] ?? false,
-        total: meta['total'],
+        nextCursor: meta['cursor']?.toString(),
+        hasMore: meta['has_more'] == true,
+        total: int.tryParse('${meta['total']}'),
       );
     } on DioException catch (e) {
       throw _handleDioError(e);
@@ -46,6 +46,9 @@ class DocumentRepository {
       throw _handleDioError(e);
     }
   }
+
+  /// URL absoluta de descarga directa para el detalle.
+  String downloadUrl(String id) => _api.downloadUrl(id);
 
   ApiException _handleDioError(DioException e) {
     if (e.error is ApiException) return e.error as ApiException;

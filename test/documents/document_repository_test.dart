@@ -66,6 +66,24 @@ void main() {
       expect(model.mediaUrls, isEmpty);
       expect(model.fileUrl, '');
     });
+
+    test('payload no-string no lanza TypeError', () {
+      final model = DocumentModel.fromJson({
+        'id': 7,
+        'attributes': {
+          'title': 123,
+          'description': 456,
+          'file_url': 789,
+          'created_at': 12345,
+        },
+      });
+
+      expect(model.id, '7');
+      expect(model.title, '123');
+      expect(model.description, '456');
+      expect(model.fileUrl, '789');
+      expect(model.createdAt, isNull);
+    });
   });
 
   group('DocumentRepository', () {
@@ -136,6 +154,21 @@ void main() {
         () => repository.getDocuments(),
         throwsA(isA<ApiException>()),
       );
+    });
+
+    test('meta no-string no lanza y normaliza tipos', () async {
+      final repository = DocumentRepository(
+        _FakeDocumentApi({
+          'data': [],
+          'meta': {'cursor': 42, 'has_more': 'yes', 'total': '3'},
+        }),
+      );
+
+      final page = await repository.getDocuments();
+
+      expect(page.nextCursor, '42');
+      expect(page.hasMore, isFalse);
+      expect(page.total, 3);
     });
   });
 }

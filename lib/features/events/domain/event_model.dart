@@ -19,10 +19,10 @@ class EventModel with _$EventModel {
     final endRaw = attrs['end_date'] ?? attrs['end'];
     return EventModel(
       id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
-      title: attrs['title'] ?? '',
-      description: attrs['description'] ?? '',
-      start: startRaw != null ? DateTime.tryParse(startRaw) : null,
-      end: endRaw != null ? DateTime.tryParse(endRaw) : null,
+      title: attrs['title']?.toString() ?? '',
+      description: attrs['description']?.toString() ?? '',
+      start: startRaw is String ? DateTime.tryParse(startRaw) : null,
+      end: endRaw is String ? DateTime.tryParse(endRaw) : null,
       color: _parseColor(attrs['color']),
     );
   }
