@@ -80,6 +80,40 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
+    testWidgets('evento sin fecha nunca aparece en la lista del día', (
+      tester,
+    ) async {
+      await _pumpCalendar(
+        tester,
+        load: (_) async => [
+          ..._octoberEvents(),
+          const EventModel(id: 'e3', title: 'Evento sin fecha'),
+        ],
+      );
+
+      // Día con evento: solo el evento de ese día, sin el dateless.
+      await tester.tap(find.text('5'));
+      await tester.pumpAndSettle();
+      expect(find.text('Acto escolar', skipOffstage: false), findsOneWidget);
+      expect(
+        find.text('Evento sin fecha', skipOffstage: false),
+        findsNothing,
+      );
+
+      // Día vacío: vacío real, sin el dateless colado.
+      await tester.tap(find.text('6'));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('No hay eventos', skipOffstage: false),
+        findsOneWidget,
+      );
+      expect(
+        find.text('Evento sin fecha', skipOffstage: false),
+        findsNothing,
+      );
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('tap en un día filtra la lista', (tester) async {
       await _pumpCalendar(tester, load: (_) async => _octoberEvents());
 

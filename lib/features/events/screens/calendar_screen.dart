@@ -61,9 +61,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       events.any((e) => e.start != null && _isSameDay(e.start, day));
 
   List<EventModel> _eventsOnDay(List<EventModel> events, DateTime day) =>
-      events
-          .where((e) => e.start == null || _isSameDay(e.start, day))
-          .toList();
+      events.where((e) => _isSameDay(e.start, day)).toList();
 
   @override
   Widget build(BuildContext context) {
