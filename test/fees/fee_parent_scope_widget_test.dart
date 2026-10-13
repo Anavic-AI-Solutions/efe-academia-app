@@ -148,11 +148,11 @@ Future<ProviderContainer> _pumpFeeList(
   await tester.pumpWidget(
     UncontrolledProviderScope(
       container: container,
-      child: MaterialApp(
-        locale: const Locale('es', 'AR'),
+      child: const MaterialApp(
+        locale: Locale('es', 'AR'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const FeeListScreen(),
+        home: FeeListScreen(),
       ),
     ),
   );
@@ -211,11 +211,11 @@ void main() {
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: MaterialApp(
-          locale: const Locale('es', 'AR'),
+        child: const MaterialApp(
+          locale: Locale('es', 'AR'),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: const FeeListScreen(),
+          home: FeeListScreen(),
         ),
       ),
     );
@@ -236,11 +236,11 @@ void main() {
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: MaterialApp(
-          locale: const Locale('es', 'AR'),
+        child: const MaterialApp(
+          locale: Locale('es', 'AR'),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: const FeeDetailScreen(feeId: 'missing'),
+          home: FeeDetailScreen(feeId: 'missing'),
         ),
       ),
     );

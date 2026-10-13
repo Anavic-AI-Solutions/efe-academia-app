@@ -80,7 +80,7 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
       body: Column(
         children: [
           LargeTitleBar(title: l10n.feesTitle),
-          if (isParent) _ParentChildSelector(),
+          if (isParent) _buildParentChildSelector(),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: AppSearchBar(
@@ -102,7 +102,7 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
     );
   }
 
-  Widget _ParentChildSelector() {
+  Widget _buildParentChildSelector() {
     final relations = ref.watch(relationsProvider);
     final selected = ref.watch(parentSelectedStudentProvider);
     final children =

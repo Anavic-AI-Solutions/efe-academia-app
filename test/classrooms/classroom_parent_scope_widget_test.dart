@@ -185,11 +185,11 @@ Future<void> _pumpClassrooms(
   await tester.pumpWidget(
     UncontrolledProviderScope(
       container: container,
-      child: MaterialApp(
-        locale: const Locale('es', 'AR'),
+      child: const MaterialApp(
+        locale: Locale('es', 'AR'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const ClassroomListScreen(),
+        home: ClassroomListScreen(),
       ),
     ),
   );
@@ -248,11 +248,11 @@ void main() {
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: MaterialApp(
-          locale: const Locale('es', 'AR'),
+        child: const MaterialApp(
+          locale: Locale('es', 'AR'),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: const ClassroomListScreen(),
+          home: ClassroomListScreen(),
         ),
       ),
     );

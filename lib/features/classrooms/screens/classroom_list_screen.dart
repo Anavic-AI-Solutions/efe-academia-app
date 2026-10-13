@@ -132,7 +132,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                     ? l10n.professorClassroomsCount(listState.page.total)
                     : '${listState.page.total} ${l10n.classroomsTitle.toLowerCase()}',
           ),
-          if (isParent) _ParentChildSelector(),
+          if (isParent) _buildParentChildSelector(),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             child: Row(
@@ -173,7 +173,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     );
   }
 
-  Widget _ParentChildSelector() {
+  Widget _buildParentChildSelector() {
     final relations = ref.watch(relationsProvider);
     final selected = ref.watch(parentSelectedStudentProvider);
     final children =
