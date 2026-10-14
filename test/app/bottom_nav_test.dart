@@ -179,6 +179,26 @@ void main() {
     expect(find.byType(FeeListScreen), findsOneWidget);
   });
 
+  testWidgets('parent home Cuotas action switches to the Pagos tab',
+      (tester) async {
+    await _pumpApp(tester, 'parent');
+
+    await tester.tap(find.text('Cuotas'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(FeeListScreen), findsOneWidget);
+
+    final activePill = tester.widget<AnimatedContainer>(
+      find.ancestor(
+        of: navLabel('Pagos'),
+        matching: find.byType(AnimatedContainer),
+      ),
+    );
+    final decoration = activePill.decoration as BoxDecoration;
+    expect(decoration.color, AppColors.primary,
+        reason: 'la accion Cuotas debe cambiar de pestana, no apilar la pagina');
+  });
+
   testWidgets('professor nav keeps Aulas', (tester) async {
     await _pumpApp(tester, 'professor');
     expect(navLabel('Aulas'), findsOneWidget);

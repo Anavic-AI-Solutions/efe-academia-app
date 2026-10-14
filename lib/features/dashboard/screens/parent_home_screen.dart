@@ -102,7 +102,7 @@ class ParentHomeScreen extends ConsumerWidget {
                     ParentOverdueFeesCard(
                       count: parentHome.overdueFeesCount,
                       total: parentHome.moraTotal,
-                      onPay: () => context.push('/payments'),
+                      onPay: () => context.go('/payments'),
                     ),
                     const SizedBox(height: 14),
                   ],
@@ -152,9 +152,9 @@ class ParentHomeScreen extends ConsumerWidget {
                     ),
                   const SizedBox(height: 14),
                   ParentQuickActions(
-                    onFees: () => context.push('/payments'),
+                    onFees: () => context.go('/payments'),
                     onBoletin: () => _openBoletin(context, children, parentHome),
-                    onChat: () => context.push('/chat'),
+                    onChat: () => context.go('/chat'),
                   ),
                   const SizedBox(height: 24),
                 ],
