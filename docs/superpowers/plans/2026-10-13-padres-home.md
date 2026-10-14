@@ -23,15 +23,15 @@
 
 ## Review Focus
 
-1. Padre con hijos pero **sin ningún** `myChildrenSummary` (backend viejo) ⇒ tarjetas con “—” y sin subtítulo, sin excepción. (Tarea 8)
-2. `user.name` de **una sola palabra o vacío** ⇒ no inventar “Familia X”. (Tarea 8)
-3. Payload con números **como string** (`"total_owed": "1300000"`, `"average_grade": "7.9"`) ⇒ el parser los tolera. (Tarea 3)
-4. Orden distinto entre `/relations` y `details.myChildrenSummary` ⇒ join por `userId`, nunca por índice. (Tarea 8)
-5. Pantalla angosta **320px** con alerta + tarjetas + acciones ⇒ sin overflow. (Tarea 8)
+1. Padre con hijos pero **sin ningún** `myChildrenSummary` (backend viejo) ⇒ tarjetas con “—” y sin subtítulo, sin excepción. (Task 8)
+2. `user.name` de **una sola palabra o vacío** ⇒ no inventar “Familia X”. (Task 8)
+3. Payload con números **como string** (`"total_owed": "1300000"`, `"average_grade": "7.9"`) ⇒ el parser los tolera. (Task 3)
+4. Orden distinto entre `/relations` y `details.myChildrenSummary` ⇒ join por `userId`, nunca por índice. (Task 8)
+5. Pantalla angosta **320px** con alerta + tarjetas + acciones ⇒ sin overflow. (Task 8)
 
 ---
 
-### Tarea 1: Backend — `myChildrenSummary` por hijo (efe-app)
+### Task 1: Backend — `myChildrenSummary` por hijo (efe-app)
 
 **Files:**
 - Modify: `/opt/dev/efe-app/app/Services/StatisticsService.php` (`getParentData`, ~L85-191)
@@ -164,7 +164,7 @@ git commit -m "feat(api): myChildrenSummary por hijo en estadisticas de padres"
 
 ---
 
-### Tarea 2: Tokens de mora + claves l10n
+### Task 2: Tokens de mora + claves l10n
 
 **Files:**
 - Modify: `lib/app/theme/app_colors.dart`
@@ -226,7 +226,7 @@ git commit -m "feat(ui): tokens de mora y copy del home de padres (es/en)"
 
 ---
 
-### Tarea 3: Modelo `ParentHomeData` + parseo del dashboard
+### Task 3: Modelo `ParentHomeData` + parseo del dashboard
 
 **Files:**
 - Create: `lib/features/dashboard/domain/parent_home_data.dart`
@@ -236,8 +236,8 @@ git commit -m "feat(ui): tokens de mora y copy del home de padres (es/en)"
 - Regenerar: `dart run build_runner build --delete-conflicting-outputs`
 
 **Interfaces:**
-- Consumes: payload de Tarea 1 (`metrics.fees_overdue`, `metrics.total_owed`, `details.myChildrenSummary`).
-- Produces: `ParentChildSummary.fromJson(Map<String, dynamic>)`, `ParentHomeData`, `DashboardData.parentHome` (nullable, solo rol padre). Consumido por Tareas 5/6/8.
+- Consumes: payload de Task 1 (`metrics.fees_overdue`, `metrics.total_owed`, `details.myChildrenSummary`).
+- Produces: `ParentChildSummary.fromJson(Map<String, dynamic>)`, `ParentHomeData`, `DashboardData.parentHome` (nullable, solo rol padre). Consumido por Tasks 5/6/8.
 
 - [ ] **Step 1: Escribir los tests que fallan**
 
@@ -408,7 +408,7 @@ git commit -m "feat(dashboard): ParentHomeData parseado de metrics+details para 
 
 ---
 
-### Tarea 4: `HomeHeader` — saludo override + lupa opcional
+### Task 4: `HomeHeader` — saludo override + lupa opcional
 
 **Files:**
 - Modify: `lib/core/widgets/home_header.dart`
@@ -465,15 +465,15 @@ git commit -m "feat(ui): HomeHeader acepta saludo custom y oculta la lupa sin on
 
 ---
 
-### Tarea 5: Widget alerta de mora
+### Task 5: Widget alerta de mora
 
 **Files:**
 - Create: `lib/features/dashboard/screens/widgets/parent_overdue_fees_card.dart`
 - Test: `test/dashboard/parent_overdue_fees_card_test.dart`
 
 **Interfaces:**
-- Consumes: tokens de Tarea 2, `AppFormatters.formatCurrency(double)`, l10n `parentOverdueFeesCount/parentMoraTotal/parentPayAction`.
-- Produces: `ParentOverdueFeesCard({required int count, required double total, required VoidCallback onPay})` (usado por Tarea 8).
+- Consumes: tokens de Task 2, `AppFormatters.formatCurrency(double)`, l10n `parentOverdueFeesCount/parentMoraTotal/parentPayAction`.
+- Produces: `ParentOverdueFeesCard({required int count, required double total, required VoidCallback onPay})` (usado por Task 8).
 
 - [ ] **Step 1: Escribir el test que falla**
 
@@ -535,15 +535,15 @@ git commit -m "feat(ui): alerta de mora del home de padres"
 
 ---
 
-### Tarea 6: Widget tarjeta de hijo
+### Task 6: Widget tarjeta de hijo
 
 **Files:**
 - Create: `lib/features/dashboard/screens/widgets/parent_child_card.dart`
 - Test: `test/dashboard/parent_child_card_test.dart`
 
 **Interfaces:**
-- Consumes: `ParentChildSummary` (Tarea 3), `AppAvatar`, `AppColors.formatGrade`, l10n `gradesGridAverage`/`dashboardAttendance`.
-- Produces: `ParentChildCard({required String name, ParentChildSummary? summary, required VoidCallback onTap})` (usado por Tarea 8).
+- Consumes: `ParentChildSummary` (Task 3), `AppAvatar`, `AppColors.formatGrade`, l10n `gradesGridAverage`/`dashboardAttendance`.
+- Produces: `ParentChildCard({required String name, ParentChildSummary? summary, required VoidCallback onTap})` (usado por Task 8).
 
 - [ ] **Step 1: Escribir el test que falla**
 
@@ -606,14 +606,14 @@ git commit -m "feat(ui): tarjeta de hijo con promedio y asistencia"
 
 ---
 
-### Tarea 7: Widget acciones rápidas
+### Task 7: Widget acciones rápidas
 
 **Files:**
 - Create: `lib/features/dashboard/screens/widgets/parent_quick_actions.dart`
 - Test: `test/dashboard/parent_quick_actions_test.dart`
 
 **Interfaces:**
-- Produces: `ParentQuickActions({required VoidCallback onFees, required VoidCallback onBoletin, required VoidCallback onChat})` (usado por Tarea 8).
+- Produces: `ParentQuickActions({required VoidCallback onFees, required VoidCallback onBoletin, required VoidCallback onChat})` (usado por Task 8).
 
 - [ ] **Step 1: Escribir el test que falla**
 
@@ -658,7 +658,7 @@ git commit -m "feat(ui): acciones rapidas del home de padres"
 
 ---
 
-### Tarea 8: `ParentHomeScreen` + delegación por rol + limpieza
+### Task 8: `ParentHomeScreen` + delegación por rol + limpieza
 
 **Files:**
 - Create: `lib/features/dashboard/screens/parent_home_screen.dart`
@@ -801,7 +801,7 @@ git commit -m "feat(parent-home): pantalla de inicio de padres con mora, hijos y
 
 ---
 
-### Tarea 9: Router — pestaña “Pagos” por rol
+### Task 9: Router — pestaña “Pagos” por rol
 
 **Files:**
 - Modify: `lib/app/router.dart` (branch 1 + `CustomBottomNav`)
@@ -878,7 +878,7 @@ git commit -m "feat(nav): pestana Pagos para padres en la barra inferior"
 
 ---
 
-### Tarea 10: Ficha del hijo — sección “Aulas”
+### Task 10: Ficha del hijo — sección “Aulas”
 
 **Files:**
 - Modify: `lib/features/students/data/student_api.dart`
@@ -975,5 +975,5 @@ git commit -m "feat(students): aulas del alumno en la ficha (acceso de padres)"
 ## Cierre
 
 - [ ] **Verificación final (móvil):** `flutter gen-l10n && flutter analyze && flutter test` → todo verde.
-- [ ] **Verificación final (backend):** `php -l` + `pint --test` + tinker de Tarea 1 (sin Pest).
+- [ ] **Verificación final (backend):** `php -l` + `pint --test` + tinker de Task 1 (sin Pest).
 - [ ] **Regresión manual sugerida:** cuenta padre en el emulador (`/dashboard` → alerta, hijos, acciones; pestaña Pagos; ficha → Notas y Aulas), cuenta profesor (`Aulas` intacta), claro y oscuro.
