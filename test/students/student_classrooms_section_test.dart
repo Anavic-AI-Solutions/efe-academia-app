@@ -91,14 +91,14 @@ Future<void> _pumpSection(
 
 void main() {
   // Nota: `SectionHeader` renderiza el título en mayúsculas, así que
-  // `classroomsTitle` ('Clases' en ES) se ve como 'CLASES'.
+  // `navClasses` ('Aulas' en ES) se ve como 'AULAS'.
   testWidgets('lists classrooms and navigates to detail', (tester) async {
     await _pumpSection(
       tester,
       classrooms: const [ClassroomModel(id: 'c1', name: '3G X')],
     );
 
-    expect(find.text('CLASES'), findsOneWidget);
+    expect(find.text('AULAS'), findsOneWidget);
     expect(find.text('3G X'), findsOneWidget);
 
     await tester.tap(find.text('3G X'));
@@ -111,14 +111,14 @@ void main() {
       (tester) async {
     await _pumpSection(tester);
 
-    expect(find.text('CLASES'), findsNothing);
+    expect(find.text('AULAS'), findsNothing);
     expect(find.byType(ErrorView), findsNothing);
   });
 
   testWidgets('shows the error view and retry does not crash', (tester) async {
     await _pumpSection(tester, fails: true);
 
-    expect(find.text('CLASES'), findsOneWidget);
+    expect(find.text('AULAS'), findsOneWidget);
     expect(find.byType(ErrorView), findsOneWidget);
     expect(find.text('No se pudieron cargar las clases'), findsOneWidget);
 

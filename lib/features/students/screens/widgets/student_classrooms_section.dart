@@ -32,7 +32,7 @@ class StudentClassroomsSection extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionHeader(
-            title: l10n.classroomsTitle,
+            title: l10n.navClasses,
             padding: EdgeInsets.zero,
           ),
           const SizedBox(height: 11),
@@ -53,7 +53,7 @@ class StudentClassroomsSection extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionHeader(
-            title: l10n.classroomsTitle,
+            title: l10n.navClasses,
             padding: EdgeInsets.zero,
           ),
           const SizedBox(height: 11),
@@ -71,7 +71,7 @@ class StudentClassroomsSection extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SectionHeader(
-              title: l10n.classroomsTitle,
+              title: l10n.navClasses,
               padding: EdgeInsets.zero,
             ),
             const SizedBox(height: 11),
