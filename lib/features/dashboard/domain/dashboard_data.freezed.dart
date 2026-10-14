@@ -31,6 +31,8 @@ mixin _$DashboardData {
   int get absencesToday => throw _privateConstructorUsedError;
   List<ProfessorClassroomSummary> get classrooms =>
       throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  ParentHomeData? get parentHome => throw _privateConstructorUsedError;
 
   /// Serializes this DashboardData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -58,7 +60,11 @@ abstract class $DashboardDataCopyWith<$Res> {
       int pendingFees,
       int unreadNotifications,
       int absencesToday,
-      List<ProfessorClassroomSummary> classrooms});
+      List<ProfessorClassroomSummary> classrooms,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      ParentHomeData? parentHome});
+
+  $ParentHomeDataCopyWith<$Res>? get parentHome;
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class _$DashboardDataCopyWithImpl<$Res, $Val extends DashboardData>
     Object? unreadNotifications = null,
     Object? absencesToday = null,
     Object? classrooms = null,
+    Object? parentHome = freezed,
   }) {
     return _then(_value.copyWith(
       role: null == role
@@ -128,7 +135,25 @@ class _$DashboardDataCopyWithImpl<$Res, $Val extends DashboardData>
           ? _value.classrooms
           : classrooms // ignore: cast_nullable_to_non_nullable
               as List<ProfessorClassroomSummary>,
+      parentHome: freezed == parentHome
+          ? _value.parentHome
+          : parentHome // ignore: cast_nullable_to_non_nullable
+              as ParentHomeData?,
     ) as $Val);
+  }
+
+  /// Create a copy of DashboardData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ParentHomeDataCopyWith<$Res>? get parentHome {
+    if (_value.parentHome == null) {
+      return null;
+    }
+
+    return $ParentHomeDataCopyWith<$Res>(_value.parentHome!, (value) {
+      return _then(_value.copyWith(parentHome: value) as $Val);
+    });
   }
 }
 
@@ -150,7 +175,12 @@ abstract class _$$DashboardDataImplCopyWith<$Res>
       int pendingFees,
       int unreadNotifications,
       int absencesToday,
-      List<ProfessorClassroomSummary> classrooms});
+      List<ProfessorClassroomSummary> classrooms,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      ParentHomeData? parentHome});
+
+  @override
+  $ParentHomeDataCopyWith<$Res>? get parentHome;
 }
 
 /// @nodoc
@@ -176,6 +206,7 @@ class __$$DashboardDataImplCopyWithImpl<$Res>
     Object? unreadNotifications = null,
     Object? absencesToday = null,
     Object? classrooms = null,
+    Object? parentHome = freezed,
   }) {
     return _then(_$DashboardDataImpl(
       role: null == role
@@ -218,6 +249,10 @@ class __$$DashboardDataImplCopyWithImpl<$Res>
           ? _value._classrooms
           : classrooms // ignore: cast_nullable_to_non_nullable
               as List<ProfessorClassroomSummary>,
+      parentHome: freezed == parentHome
+          ? _value.parentHome
+          : parentHome // ignore: cast_nullable_to_non_nullable
+              as ParentHomeData?,
     ));
   }
 }
@@ -235,7 +270,8 @@ class _$DashboardDataImpl implements _DashboardData {
       this.pendingFees = 0,
       this.unreadNotifications = 0,
       this.absencesToday = 0,
-      final List<ProfessorClassroomSummary> classrooms = const []})
+      final List<ProfessorClassroomSummary> classrooms = const [],
+      @JsonKey(includeFromJson: false, includeToJson: false) this.parentHome})
       : _classrooms = classrooms;
 
   factory _$DashboardDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -278,8 +314,12 @@ class _$DashboardDataImpl implements _DashboardData {
   }
 
   @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final ParentHomeData? parentHome;
+
+  @override
   String toString() {
-    return 'DashboardData(role: $role, totalStudents: $totalStudents, totalClassrooms: $totalClassrooms, totalProfessors: $totalProfessors, attendanceRate: $attendanceRate, monthlyRevenue: $monthlyRevenue, pendingFees: $pendingFees, unreadNotifications: $unreadNotifications, absencesToday: $absencesToday, classrooms: $classrooms)';
+    return 'DashboardData(role: $role, totalStudents: $totalStudents, totalClassrooms: $totalClassrooms, totalProfessors: $totalProfessors, attendanceRate: $attendanceRate, monthlyRevenue: $monthlyRevenue, pendingFees: $pendingFees, unreadNotifications: $unreadNotifications, absencesToday: $absencesToday, classrooms: $classrooms, parentHome: $parentHome)';
   }
 
   @override
@@ -305,7 +345,9 @@ class _$DashboardDataImpl implements _DashboardData {
             (identical(other.absencesToday, absencesToday) ||
                 other.absencesToday == absencesToday) &&
             const DeepCollectionEquality()
-                .equals(other._classrooms, _classrooms));
+                .equals(other._classrooms, _classrooms) &&
+            (identical(other.parentHome, parentHome) ||
+                other.parentHome == parentHome));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -321,7 +363,8 @@ class _$DashboardDataImpl implements _DashboardData {
       pendingFees,
       unreadNotifications,
       absencesToday,
-      const DeepCollectionEquality().hash(_classrooms));
+      const DeepCollectionEquality().hash(_classrooms),
+      parentHome);
 
   /// Create a copy of DashboardData
   /// with the given fields replaced by the non-null parameter values.
@@ -350,7 +393,9 @@ abstract class _DashboardData implements DashboardData {
       final int pendingFees,
       final int unreadNotifications,
       final int absencesToday,
-      final List<ProfessorClassroomSummary> classrooms}) = _$DashboardDataImpl;
+      final List<ProfessorClassroomSummary> classrooms,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final ParentHomeData? parentHome}) = _$DashboardDataImpl;
 
   factory _DashboardData.fromJson(Map<String, dynamic> json) =
       _$DashboardDataImpl.fromJson;
@@ -375,6 +420,9 @@ abstract class _DashboardData implements DashboardData {
   int get absencesToday;
   @override
   List<ProfessorClassroomSummary> get classrooms;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  ParentHomeData? get parentHome;
 
   /// Create a copy of DashboardData
   /// with the given fields replaced by the non-null parameter values.

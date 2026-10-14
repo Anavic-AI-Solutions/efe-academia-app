@@ -84,5 +84,82 @@ void main() {
       expect(data.totalClassrooms, 0);
       expect(data.classrooms, isEmpty);
     });
+
+    test('maps parent home data from metrics and details', () async {
+      final repository = DashboardRepository(
+        _FakeDashboardApi({
+          'data': {
+            'role': 'parent',
+            'metrics': {
+              'children_count': 2,
+              'fees_overdue': 2,
+              'total_owed': '1300000',
+            },
+            'details': {
+              'myChildrenSummary': [
+                {
+                  'student_id': 'uuid-1',
+                  'user_id': 11,
+                  'child_name': 'Ana Pérez',
+                  'classroom_name': '3G X',
+                  'classrooms_count': 1,
+                  'year': '3',
+                  'average_grade': '7.9',
+                  'attendance_rate': 95.0,
+                },
+                {
+                  'student_id': 'uuid-2',
+                  'user_id': 12,
+                  'child_name': 'Bruno Pérez',
+                  'classroom_name': '',
+                  'classrooms_count': 0,
+                  'year': '',
+                  'average_grade': null,
+                  'attendance_rate': null,
+                },
+              ],
+            },
+          },
+        }),
+      );
+
+      final data = await repository.getDashboard();
+
+      expect(data.parentHome, isNotNull);
+      expect(data.parentHome!.overdueFeesCount, 2);
+      expect(data.parentHome!.moraTotal, 1300000.0); // string numérico tolerado
+      expect(data.parentHome!.children, hasLength(2));
+      expect(data.parentHome!.children.first.studentId, 'uuid-1');
+      expect(data.parentHome!.children.first.userId, 11);
+      expect(data.parentHome!.children.first.averageGrade, 7.9);
+      expect(data.parentHome!.children[1].averageGrade, isNull);
+      expect(data.parentHome!.children[1].attendanceRate, isNull);
+    });
+
+    test('leaves parentHome null for non-parent roles', () async {
+      final repository = DashboardRepository(
+        _FakeDashboardApi(
+          {
+            'data': {'role': 'professor', 'metrics': {}, 'details': {}},
+          },
+        ),
+      );
+      final data = await repository.getDashboard();
+      expect(data.parentHome, isNull);
+    });
+
+    test('parent payload without myChildrenSummary degrades to empty list',
+        () async {
+      final repository = DashboardRepository(
+        _FakeDashboardApi(
+          {
+            'data': {'role': 'parent', 'metrics': {}, 'details': {}},
+          },
+        ),
+      );
+      final data = await repository.getDashboard();
+      expect(data.parentHome, isNotNull);
+      expect(data.parentHome!.children, isEmpty);
+    });
   });
 }
