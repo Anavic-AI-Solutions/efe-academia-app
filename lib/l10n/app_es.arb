@@ -588,5 +588,27 @@
       }
     }
   },
-  "calendarViewList": "Ver lista"
+  "calendarViewList": "Ver lista",
+  "parentGreeting": "Hola",
+  "parentFamilyTitle": "Familia {surname}",
+  "@parentFamilyTitle": {
+    "placeholders": {
+      "surname": {
+        "type": "String"
+      }
+    }
+  },
+  "parentOverdueFeesCount": "{count, plural, =1{1 cuota vencida} other{{count} cuotas vencidas}}",
+  "@parentOverdueFeesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parentMoraTotal": "Mora total",
+  "parentPayAction": "Pagar",
+  "navPayments": "Pagos",
+  "parentActionBoletin": "Boletín",
+  "parentChooseChild": "Elegí un hijo"
 }

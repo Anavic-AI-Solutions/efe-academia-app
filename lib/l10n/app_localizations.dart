@@ -2218,6 +2218,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ver lista'**
   String get calendarViewList;
+
+  /// No description provided for @parentGreeting.
+  ///
+  /// In es, this message translates to:
+  /// **'Hola'**
+  String get parentGreeting;
+
+  /// No description provided for @parentFamilyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Familia {surname}'**
+  String parentFamilyTitle(String surname);
+
+  /// No description provided for @parentOverdueFeesCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 cuota vencida} other{{count} cuotas vencidas}}'**
+  String parentOverdueFeesCount(int count);
+
+  /// No description provided for @parentMoraTotal.
+  ///
+  /// In es, this message translates to:
+  /// **'Mora total'**
+  String get parentMoraTotal;
+
+  /// No description provided for @parentPayAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar'**
+  String get parentPayAction;
+
+  /// No description provided for @navPayments.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagos'**
+  String get navPayments;
+
+  /// No description provided for @parentActionBoletin.
+  ///
+  /// In es, this message translates to:
+  /// **'Boletín'**
+  String get parentActionBoletin;
+
+  /// No description provided for @parentChooseChild.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí un hijo'**
+  String get parentChooseChild;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

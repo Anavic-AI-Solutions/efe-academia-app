@@ -388,5 +388,13 @@
       }
     }
   },
-  "calendarViewList": "View list"
+  "calendarViewList": "View list",
+  "parentGreeting": "Hi",
+  "parentFamilyTitle": "The {surname} Family",
+  "parentOverdueFeesCount": "{count, plural, =1{1 overdue installment} other{{count} overdue installments}}",
+  "parentMoraTotal": "Total overdue",
+  "parentPayAction": "Pay",
+  "navPayments": "Payments",
+  "parentActionBoletin": "Report Card",
+  "parentChooseChild": "Choose a child"
 }

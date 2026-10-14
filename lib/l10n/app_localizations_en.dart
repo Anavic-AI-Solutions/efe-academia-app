@@ -1174,4 +1174,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendarViewList => 'View list';
+
+  @override
+  String get parentGreeting => 'Hi';
+
+  @override
+  String parentFamilyTitle(String surname) {
+    return 'The $surname Family';
+  }
+
+  @override
+  String parentOverdueFeesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count overdue installments',
+      one: '1 overdue installment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get parentMoraTotal => 'Total overdue';
+
+  @override
+  String get parentPayAction => 'Pay';
+
+  @override
+  String get navPayments => 'Payments';
+
+  @override
+  String get parentActionBoletin => 'Report Card';
+
+  @override
+  String get parentChooseChild => 'Choose a child';
 }

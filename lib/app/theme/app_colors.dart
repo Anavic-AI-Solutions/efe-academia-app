@@ -43,6 +43,14 @@ class AppColors {
   static const Color present = Color(0xFF2FA36C);
   static const Color absent = Color(0xFFE05353);
 
+  // Parent home — mora (rojos con contraste ≥4.5:1)
+  static const Color dangerSoft = Color(0xFFFDEAEA);
+  static const Color dangerInk = Color(0xFFB53434);
+  static const Color dangerInkMuted = Color(0xFF8F4A4A);
+  static const Color darkDangerSoft = Color(0xFF3A2327);
+  static const Color darkDangerInk = Color(0xFFF0A9A9);
+  static const Color darkDangerInkMuted = Color(0xFFE0A0A0);
+
   // Grade scale
   static const Color gradeHigh = Color(0xFF2FA36C);
   static const Color gradeMid = Color(0xFF4A5AA0);
