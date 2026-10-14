@@ -488,7 +488,7 @@ testWidgets('renders count, formatted total and triggers pay', (tester) async {
     ),
   ));
   expect(find.text('2 cuotas vencidas'), findsOneWidget);
-  expect(find.text(r'Mora total $1.300.000,00'), findsOneWidget);
+  expect(find.text('Mora total ${AppFormatters.formatCurrency(1300000)}'), findsOneWidget);
   await tester.tap(find.text('Pagar'));
   expect(paid, isTrue);
 });
@@ -740,7 +740,7 @@ Future<void> _pumpHome(
 Casos (nombre + aserciones):
 
 1. `header shows Hola + Familia <apellido>` → `find.text('Hola')`, `find.text('Familia López')`, `find.byIcon(PhosphorIconsRegular.magnifyingGlass)` `findsNothing`.
-2. `shows mora alert with count and total` → `find.text('2 cuotas vencidas')`, `find.text(r'Mora total $1.300.000,00')`; tap `'Pagar'` → `find.text('payments')`.
+2. `shows mora alert with count and total` → `find.text('2 cuotas vencidas')`, `find.text('Mora total ${AppFormatters.formatCurrency(1300000)}')` (R9: el formatter es_AR pospone el símbolo: `1.300.000,00 $`); tap `'Pagar'` → `find.text('payments')`.
 3. `hides the alert when there are no overdue fees` → `_parentData(overdue: 0)` → `find.text('Pagar')` `findsNothing`.
 4. `renders one card per child with stats and dashes` → `'7.9'`, `'95%'`, `'3G X · 3° año'`, `find.text('—')` `findsNWidgets(2)` (Bruno sin datos).
 5. `joins summaries by user id regardless of order` → `children: [_bruno, _ana]`:
