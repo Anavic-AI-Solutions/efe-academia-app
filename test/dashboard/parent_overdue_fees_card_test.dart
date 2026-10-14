@@ -1,4 +1,5 @@
 import 'package:efe_mobile/app/theme/app_colors.dart';
+import 'package:efe_mobile/core/utils/formatters.dart';
 import 'package:efe_mobile/features/dashboard/screens/widgets/parent_overdue_fees_card.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,12 @@ void main() {
       ),
     ));
     expect(find.text('2 cuotas vencidas'), findsOneWidget);
-    // Nota: AppFormatters.formatCurrency (es_AR, 2 decimales) ubica el símbolo
-    // DESPUÉS del monto y separa con NBSP (U+00A0): "1.300.000,00\u00A0$".
-    // El brief asumía "$1.300.000,00"; ver reporte de la tarea (conflicto
-    // plan/spec: la spec manda usar AppFormatters.formatCurrency).
-    expect(find.text('Mora total 1.300.000,00\u00A0\$'), findsOneWidget);
+    // La expectativa se computa contra el formatter (R9): su salida real para
+    // es_AR es "1.300.000,00\u00A0$" (símbolo después del monto, NBSP U+00A0).
+    expect(
+      find.text('Mora total ${AppFormatters.formatCurrency(1300000)}'),
+      findsOneWidget,
+    );
     await tester.tap(find.text('Pagar'));
     expect(paid, isTrue);
   });

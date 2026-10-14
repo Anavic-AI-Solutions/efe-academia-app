@@ -39,7 +39,7 @@ class ParentOverdueFeesCard extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 13),
+      padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 13),
       child: Row(
         children: [
           Expanded(
