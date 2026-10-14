@@ -1,16 +1,16 @@
 import 'package:efe_mobile/app/theme/app_colors.dart';
+import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/widgets/header_stats_row.dart';
 import 'package:efe_mobile/core/widgets/home_header.dart';
-import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
-import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
+import 'package:efe_mobile/features/dashboard/domain/parent_home_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/dashboard/screens/dashboard_screen.dart';
-import 'package:efe_mobile/features/dashboard/screens/widgets/parent_children_section.dart';
+import 'package:efe_mobile/features/dashboard/screens/parent_home_screen.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/relations/data/relations_repository.dart';
 import 'package:efe_mobile/features/relations/domain/relation_model.dart';
@@ -57,53 +57,55 @@ class _FakeParentAuthRepository implements AuthRepository {
 
 const _parentData = DashboardData(
   role: 'parent',
-  totalStudents: 2,
-  totalClassrooms: 2,
-  pendingFees: 1,
-  classrooms: [
-    ProfessorClassroomSummary(
-      id: 'c1',
-      name: '3G X · 2026',
-      studentsCount: 24,
-    ),
-    ProfessorClassroomSummary(
-      id: 'c2',
-      name: '1G X · 2026',
-      studentsCount: 30,
-    ),
-  ],
+  parentHome: ParentHomeData(
+    overdueFeesCount: 2,
+    moraTotal: 1300000,
+    children: [
+      ParentChildSummary(
+        userId: 11,
+        studentId: 's-ana',
+        name: 'Ana Pérez',
+        classroomName: '3G X',
+        classroomsCount: 1,
+        year: '3',
+        averageGrade: 7.9,
+        attendanceRate: 95.0,
+      ),
+    ],
+  ),
 );
 
 class _FakeParentDashboardRepository implements DashboardRepository {
-  final DashboardData data;
-
-  const _FakeParentDashboardRepository([this.data = _parentData]);
-
   @override
-  Future<DashboardData> getDashboard() async => data;
+  Future<DashboardData> getDashboard() async => _parentData;
 }
 
-class _FakeEmptyRelationsRepository implements RelationsRepository {
+class _FakeRelationsRepository implements RelationsRepository {
   @override
   Future<CursorPagination<RelationModel>> getRelations({
     String? query,
     String? cursor,
   }) async =>
-      CursorPagination.empty();
+      CursorPagination(
+        data: const [
+          RelationModel(id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11),
+        ],
+        nextCursor: null,
+        hasMore: false,
+        total: 1,
+      );
 }
 
 Future<void> _pumpParentHome(
   WidgetTester tester, {
   Brightness brightness = Brightness.light,
-  DashboardData data = _parentData,
 }) async {
   final container = ProviderContainer(
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeParentAuthRepository()),
       dashboardRepositoryProvider
-          .overrideWithValue(_FakeParentDashboardRepository(data)),
-      relationsRepositoryProvider
-          .overrideWithValue(_FakeEmptyRelationsRepository()),
+          .overrideWithValue(_FakeParentDashboardRepository()),
+      relationsRepositoryProvider.overrideWithValue(_FakeRelationsRepository()),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );
@@ -125,26 +127,20 @@ Future<void> _pumpParentHome(
 }
 
 void main() {
-  testWidgets('parent home uses the unified header system', (tester) async {
+  testWidgets('parent delegates to ParentHomeScreen', (tester) async {
     await _pumpParentHome(tester);
+    expect(find.byType(ParentHomeScreen), findsOneWidget);
     expect(find.byType(HomeHeader), findsOneWidget);
-    expect(find.byType(HeaderStatsRow), findsOneWidget);
-    // El padre no ve la sección global de aulas: ve a sus hijos.
-    expect(find.text('CLASES'), findsNothing);
-    expect(find.byType(ParentChildrenSection), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsNothing);
+    // El padre ya no usa la fila de métricas genérica.
+    expect(find.byType(HeaderStatsRow), findsNothing);
+    expect(find.text('Ana Pérez'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('parent home renders in dark mode', (tester) async {
     await _pumpParentHome(tester, brightness: Brightness.dark);
     final scaffold = tester.widget<Scaffold>(find.byType(Scaffold).first);
     expect(scaffold.backgroundColor, AppColors.darkBackground);
-  });
-
-  testWidgets('parent home keeps the parent role badge palette', (tester) async {
-    await _pumpParentHome(tester);
-    final badge = tester.widget<Text>(find.text('Tutor'));
-    expect(badge.style?.color, AppColors.roleParent);
   });
 
   testWidgets('parent home holds a single column at 320x568', (tester) async {
@@ -154,20 +150,7 @@ void main() {
 
     await _pumpParentHome(tester);
 
-    expect(find.byType(HomeHeader), findsOneWidget);
-    expect(find.text('3G X · 2026'), findsNothing);
-    expect(find.byType(ParentChildrenSection), findsOneWidget);
+    expect(find.byType(ParentHomeScreen), findsOneWidget);
     expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('parent home hides global classrooms and shows children empty copy',
-      (tester) async {
-    await _pumpParentHome(
-      tester,
-      data: const DashboardData(role: 'parent'),
-    );
-
-    expect(find.text('CLASES'), findsNothing);
-    expect(find.text('No se encontraron estudiantes'), findsOneWidget);
   });
 }

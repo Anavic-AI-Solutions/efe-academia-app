@@ -17,12 +17,11 @@ import '../../../l10n/l10n.dart';
 import '../../auth/domain/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../notifications/providers/notification_provider.dart';
-import '../../relations/providers/selected_child_provider.dart';
 import '../domain/dashboard_data.dart';
 import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
+import 'parent_home_screen.dart';
 import 'professor_home_screen.dart';
-import 'widgets/parent_children_section.dart';
 import 'widgets/quick_action_grid.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -35,6 +34,10 @@ class DashboardScreen extends ConsumerWidget {
 
     if (user?.role == 'professor') {
       return const ProfessorHomeScreen();
+    }
+
+    if (user?.role == 'parent') {
+      return const ParentHomeScreen();
     }
 
     final dashboardState = ref.watch(dashboardProvider);
@@ -171,38 +174,25 @@ class DashboardScreen extends ConsumerWidget {
                     roleName: _getRoleName(user?.role ?? '', l10n),
                   ),
                   const SizedBox(height: 14),
-                  if (user?.role == 'parent') ...[
-                    ParentChildrenSection(
-                      onSelect: (child) {
-                        ref
-                            .read(parentSelectedStudentProvider.notifier)
-                            .state = child.userId.toString();
-                        context.push('/students/${child.userId}');
-                      },
-                    ),
-                    const SizedBox(height: 14),
-                  ],
-                  if (user?.role != 'parent') ...[
-                    SectionHeader(
-                      title: l10n.classroomsTitle,
-                      padding: EdgeInsets.zero,
-                    ),
-                    const SizedBox(height: 11),
-                    if (classrooms.isEmpty)
-                      EmptyState(
-                        icon: PhosphorIconsRegular.chalkboardTeacher,
-                        title: l10n.classroomsEmptyTitle,
-                        subtitle: l10n.classroomsEmptySubtitle,
-                      )
-                    else
-                      ...classrooms.map(
-                        (classroom) => Padding(
-                          padding: const EdgeInsets.only(bottom: 11),
-                          child: _ParentClassroomCard(classroom: classroom),
-                        ),
+                  SectionHeader(
+                    title: l10n.classroomsTitle,
+                    padding: EdgeInsets.zero,
+                  ),
+                  const SizedBox(height: 11),
+                  if (classrooms.isEmpty)
+                    EmptyState(
+                      icon: PhosphorIconsRegular.chalkboardTeacher,
+                      title: l10n.classroomsEmptyTitle,
+                      subtitle: l10n.classroomsEmptySubtitle,
+                    )
+                  else
+                    ...classrooms.map(
+                      (classroom) => Padding(
+                        padding: const EdgeInsets.only(bottom: 11),
+                        child: _ParentClassroomCard(classroom: classroom),
                       ),
-                    const SizedBox(height: 14),
-                  ],
+                    ),
+                  const SizedBox(height: 14),
                   SectionHeader(
                     title: l10n.dashboardQuickActions,
                     padding: EdgeInsets.zero,
