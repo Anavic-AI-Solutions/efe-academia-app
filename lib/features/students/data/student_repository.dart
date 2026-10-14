@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/page_pagination.dart';
+import '../../classrooms/domain/classroom_model.dart';
 import '../domain/student_model.dart';
 import 'student_api.dart';
 
@@ -42,6 +43,20 @@ class StudentRepository {
     try {
       final response = await _api.getStudent(id);
       return StudentModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<List<ClassroomModel>> getClassrooms(String studentId) async {
+    try {
+      final response = await _api.getClassrooms(studentId);
+      final data = response.data['data'];
+      if (data is! List) return const [];
+      return data
+          .whereType<Map<String, dynamic>>()
+          .map(ClassroomModel.fromJson)
+          .toList();
     } on DioException catch (e) {
       throw _handleDioError(e);
     }

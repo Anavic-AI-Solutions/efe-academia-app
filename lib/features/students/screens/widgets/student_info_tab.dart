@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
@@ -8,8 +9,9 @@ import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/stat_card.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/student_model.dart';
+import 'student_classrooms_section.dart';
 
-class StudentInfoTab extends StatelessWidget {
+class StudentInfoTab extends ConsumerWidget {
   final StudentModel student;
 
   const StudentInfoTab({
@@ -18,7 +20,7 @@ class StudentInfoTab extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
 
     return ListView(
@@ -95,6 +97,8 @@ class StudentInfoTab extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: 20),
+        StudentClassroomsSection(studentId: student.id),
       ],
     );
   }

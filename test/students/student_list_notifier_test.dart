@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
@@ -63,6 +64,10 @@ class _FakeStudentRepository implements StudentRepository {
   @override
   Future<StudentModel> getStudent(String id) =>
       Future.error(UnimplementedError());
+
+  @override
+  Future<List<ClassroomModel>> getClassrooms(String studentId) async =>
+      const [];
 }
 
 void main() {

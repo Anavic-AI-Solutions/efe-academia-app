@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/api/api_provider.dart';
 import '../../../core/api/page_pagination.dart';
 import '../../../core/pagination/paged_list_notifier.dart';
+import '../../classrooms/domain/classroom_model.dart';
 import '../../fees/domain/fee_model.dart';
 import '../../fees/providers/fee_provider.dart';
 import '../data/absence_api.dart';
@@ -190,6 +191,11 @@ final studentDetailProvider =
     FutureProvider.family<StudentModel, String>((ref, id) async {
   final repository = ref.watch(studentRepositoryProvider);
   return repository.getStudent(id);
+});
+
+final studentClassroomsProvider =
+    FutureProvider.family<List<ClassroomModel>, String>((ref, studentId) {
+  return ref.watch(studentRepositoryProvider).getClassrooms(studentId);
 });
 
 // ---------------------------------------------------------------------------
