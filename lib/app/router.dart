@@ -52,6 +52,8 @@ class CustomBottomNav extends ConsumerWidget {
         isDark ? AppColors.darkTextSecondary : AppColors.navInactive;
     // Hidden (0) while loading or on error.
     final unreadChats = ref.watch(chatUnreadCountProvider).valueOrNull ?? 0;
+    // Parents get a “Pagos” tab in place of “Aulas”.
+    final isParent = ref.watch(authProvider).user?.role == 'parent';
 
     return Container(
       decoration: BoxDecoration(
@@ -82,9 +84,13 @@ class CustomBottomNav extends ConsumerWidget {
                 inactive: inactive,
               ),
               _NavItem(
-                icon: PhosphorIconsRegular.chalkboardTeacher,
-                selectedIcon: PhosphorIconsFill.chalkboardTeacher,
-                label: l10n.navClasses,
+                icon: isParent
+                    ? PhosphorIconsRegular.wallet
+                    : PhosphorIconsRegular.chalkboardTeacher,
+                selectedIcon: isParent
+                    ? PhosphorIconsFill.wallet
+                    : PhosphorIconsFill.chalkboardTeacher,
+                label: isParent ? l10n.navPayments : l10n.navClasses,
                 isSelected: navigationShell.currentIndex == 1,
                 onTap: () => navigationShell.goBranch(
                   1,
@@ -215,6 +221,7 @@ class ScaffoldWithNav extends StatelessWidget {
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
+  final isParent = authState.user?.role == 'parent';
 
   return GoRouter(
     initialLocation: '/dashboard',
@@ -249,6 +256,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
+            initialLocation: isParent ? '/payments' : null,
             routes: [
               GoRoute(
                 path: '/classrooms',
@@ -275,6 +283,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                     ],
                   ),
                 ],
+              ),
+              GoRoute(
+                path: '/payments',
+                builder: (context, state) => const FeeListScreen(),
               ),
             ],
           ),

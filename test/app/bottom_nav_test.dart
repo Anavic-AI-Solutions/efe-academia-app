@@ -12,7 +12,12 @@ import 'package:efe_mobile/features/documents/domain/document_model.dart';
 import 'package:efe_mobile/features/documents/providers/document_provider.dart';
 import 'package:efe_mobile/features/events/domain/event_model.dart';
 import 'package:efe_mobile/features/events/providers/event_provider.dart';
+import 'package:efe_mobile/features/fees/data/fee_repository.dart';
+import 'package:efe_mobile/features/fees/domain/fee_model.dart';
+import 'package:efe_mobile/features/fees/providers/fee_provider.dart';
+import 'package:efe_mobile/features/fees/screens/fee_list_screen.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
+import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/news/data/news_repository.dart';
 import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
@@ -87,6 +92,28 @@ class _FakeEmptyRelationsRepository implements RelationsRepository {
       CursorPagination.empty();
 }
 
+/// Keeps the fee list tab off the real API in tests.
+class _FakeFeeRepository implements FeeRepository {
+  @override
+  Future<CursorPagination<FeeModel>> getFees({
+    String? studentId,
+    String? search,
+    String? cursor,
+  }) async =>
+      CursorPagination.empty();
+
+  @override
+  Future<FeeModel> getFee(String id) => throw UnimplementedError();
+
+  @override
+  Future<PageResult<FeeModel>> getStudentFees(
+    String studentAppId, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      throw UnimplementedError();
+}
+
 Future<void> _pumpApp(WidgetTester tester, String role) async {
   final container = ProviderContainer(
     overrides: [
@@ -101,6 +128,9 @@ Future<void> _pumpApp(WidgetTester tester, String role) async {
       newsListProvider
           .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
       unreadCountProvider.overrideWith((ref) async => 0),
+      // La pestaña Pagos no toca red en estos tests.
+      feeListProvider
+          .overrideWith((ref) => FeeListNotifier(_FakeFeeRepository())),
     ],
   );
   addTearDown(container.dispose);
@@ -138,6 +168,21 @@ void main() {
 
     // The old center search button is gone.
     expect(find.byIcon(PhosphorIconsFill.magnifyingGlass), findsNothing);
+  });
+
+  testWidgets('parent nav shows Pagos and opens the fee list', (tester) async {
+    await _pumpApp(tester, 'parent');
+    expect(navLabel('Pagos'), findsOneWidget);
+    expect(navLabel('Aulas'), findsNothing);
+    await tester.tap(navLabel('Pagos'));
+    await tester.pumpAndSettle();
+    expect(find.byType(FeeListScreen), findsOneWidget);
+  });
+
+  testWidgets('professor nav keeps Aulas', (tester) async {
+    await _pumpApp(tester, 'professor');
+    expect(navLabel('Aulas'), findsOneWidget);
+    expect(navLabel('Pagos'), findsNothing);
   });
 
   for (final role in ['parent', 'professor']) {
