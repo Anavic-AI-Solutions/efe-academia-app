@@ -14,6 +14,7 @@ class HomeHeader extends StatelessWidget {
   final int unreadCount;
   final VoidCallback? onNotifications;
   final VoidCallback? onSearch;
+  final String? greeting;
   final Widget? child;
 
   const HomeHeader({
@@ -24,10 +25,17 @@ class HomeHeader extends StatelessWidget {
     required this.unreadCount,
     this.onNotifications,
     this.onSearch,
+    this.greeting,
     this.child,
   });
 
   String _greeting(BuildContext context) {
+    final override = greeting;
+    if (override != null) return override;
+    return _timeGreeting(context);
+  }
+
+  String _timeGreeting(BuildContext context) {
     final hour = DateTime.now().hour;
     if (hour < 12) return context.l10n.professorGreetingMorning;
     if (hour < 20) return context.l10n.professorGreetingAfternoon;
@@ -81,11 +89,13 @@ class HomeHeader extends StatelessWidget {
                 showDot: unreadCount > 0,
                 onTap: onNotifications,
               ),
-              const SizedBox(width: 10),
-              _HeaderIconButton(
-                icon: PhosphorIconsRegular.magnifyingGlass,
-                onTap: onSearch,
-              ),
+              if (onSearch != null) ...[
+                const SizedBox(width: 10),
+                _HeaderIconButton(
+                  icon: PhosphorIconsRegular.magnifyingGlass,
+                  onTap: onSearch,
+                ),
+              ],
             ],
           ),
           if (child != null) ...[

@@ -5,6 +5,7 @@ import 'package:efe_mobile/core/widgets/home_header.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 void main() {
   testWidgets('GradientHeader renders blue gradient with bottom radius 24',
@@ -47,6 +48,25 @@ void main() {
     ));
     expect(find.text('Prof. Ileana Gómez'), findsOneWidget);
     expect(find.text('stats'), findsOneWidget);
+  });
+
+  testWidgets('HomeHeader uses greeting override and hides search when null',
+      (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      locale: const Locale('es'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(
+        body: HomeHeader(
+          name: 'María López',
+          greeting: 'Hola',
+          unreadCount: 0,
+          onNotifications: () {},
+        ),
+      ),
+    ));
+    expect(find.text('Hola'), findsOneWidget);
+    expect(find.byIcon(PhosphorIconsRegular.magnifyingGlass), findsNothing);
   });
 
   testWidgets('HeaderStatsRow renders 24/w900 values with highlighted tile',
