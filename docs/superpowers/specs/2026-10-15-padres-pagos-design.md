@@ -65,9 +65,9 @@ Aplicación: `$this->authorize(...)` en `show`, `uploadProof`, `invoice`, `updat
 - Método de instancia `SystemCollectionsFees::isInMora(): bool` con la misma regla del scope (status + total>paid + mes/año), calculado en PHP (sin SQL extra por fila).
 - `FeeResource` expone `is_overdue` (bool).
 
-### 5.3 Orden de `GET /fees`
+### 5.3 Lista completa y orden para padres (`GET /fees`)
 
-Orden determinístico para la paginación: **vencidas (0) → pendientes/parciales no vencidas (1) → pagadas (2)**, luego `year` desc, `month` desc, `id` desc (desempate estable del cursor). Cambio deliberado del endpoint compartido (para admin, “pendientes primero” también es mejor); documentado en código.
+Para **rol padre**, `GET /fees` devuelve **todas** las cuotas de sus hijos (sin paginación por cursor; los registros por familia son acotados) ordenadas: vencidas (0) → pendientes/parciales no vencidas (1) → pagadas (2), y dentro `year` desc, `month` desc, `id` desc. Motivo: el trait `paginateCursor` pagina por keyset de `id` (`where id > cursor` + `orderBy id asc`) y **no admite orden custom**. El resto de los roles conserva exactamente el comportamiento actual (cursor por id). La meta mantiene la misma forma (`has_more: false`, `cursor: null`) para no cambiar el parseo móvil.
 
 ### 5.4 Factura por URL firmada
 
@@ -91,7 +91,7 @@ Policy (padre solo sus hijos en `show`/`uploadProof`/`invoice`; 403 ajenos; alum
 1. **Header** (gradiente, `GradientHeader` con contenido propio): título “Cuotas” (14/w800 `onPrimary`) **sin flecha de volver** (raíz de pestaña) + tile centrado “Mora total” (10 `onPrimaryMuted`) + monto (22/w900 `onPrimary`) sobre `overlay` blanco 12%, radius 14. El tile se **oculta si la mora es 0**. Dato: `dashboardProvider` (`ParentHomeData.moraTotal`); el pull-to-refresh refresca cuotas y dashboard.
 2. **Lista** (orden del server), card por cuota (r13, padding 11/13, patrón `AppCard`):
    - Título “Julio 2026” (12/w800 `inkFor`).
-   - Línea 1 (10/w700, etiquetas existentes del sistema): **Vencido · $monto** (`dangerInk`) · **Pendiente · $monto** (`mutedFor`) · **Parcial · debe $X** (`dangerInk` si vencida, `mutedFor` si no) · **En revisión · $monto** (`primary`, sin acción) · **Pagado** (`present`).
+   - Línea 1 (10/w700, etiquetas existentes del sistema): **Vencido · $monto** (`dangerInk`) · **Pendiente · $monto** (`mutedFor`) · **Parcial · debe $X** (`dangerInk` si vencida, `mutedFor` si no) · **En revisión · $monto** (`primary`, sin acción; aplica si `proof_status == 'under_review'` **o** `status == 'under_review'`) · **Pagado** (`present`). Estados desconocidos (p.ej. `cancelled`) caen a una etiqueta muted con el label del sistema.
    - Línea 2 (10 `mutedFor`): nombre del hijo.
    - Acción: pill **Pagar** (`dangerInk` claro / `darkDangerInk` oscuro, texto blanco/`darkDangerSoft`, r9) para vencida/pendiente/parcial; **✓** `present` para pagada; nada para en revisión.
    - Tap en card o pill → `/payments/{id}`.
@@ -137,7 +137,7 @@ Nuevas claves ES/EN: `feesUploadProofAction` (“Subir comprobante” / “Uploa
 ## 12. Riesgos y decisiones
 
 - **Autorización**: se cierra el hueco de los endpoints de cuotas (hoy sin policy). El web no se toca (rutas propias).
-- **Orden compartido de `/fees`**: cambia para admin (pendientes primero). Deliberado; se documenta en código y tests.
+- **Cursor vs orden custom**: el trait de cursor pagina por keyset de `id`; por eso la lista ordenada completa es **solo para padres** (bounded) y admin/otros roles quedan intactos.
 - **`is_overdue` duplica la regla del scope** en PHP (una consulta por fila menos); comentario cruzado y test Pest que pinnea ambos.
 - **Factura firmada**: depende de `APP_URL` correcta en producción (ya configurada para notificaciones); firma de 10 minutos, uso inmediato.
 - **Reemplazo de comprobante**: re-subir con `under_review` es válido (el backend borra el anterior no aprobado).
