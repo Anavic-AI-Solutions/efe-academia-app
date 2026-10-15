@@ -1208,4 +1208,34 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get parentChooseChild => 'Elegí un hijo';
+
+  @override
+  String get feesUploadProofAction => 'Subir comprobante';
+
+  @override
+  String get feesReplaceProofAction => 'Reemplazar comprobante';
+
+  @override
+  String get feesInvoiceAction => 'Ver factura';
+
+  @override
+  String get feesInvoiceUnavailable => 'Factura no disponible';
+
+  @override
+  String get feesChooseFeeTitle => 'Elegí la cuota';
+
+  @override
+  String get feesProofStatusReview => 'Comprobante en revisión';
+
+  @override
+  String get feesProofPickFile => 'Elegir archivo';
+
+  @override
+  String get feesProofHint => 'JPG, PNG o PDF · hasta 10 MB';
+
+  @override
+  String get feesProofSuccess => 'Comprobante subido. Un administrador lo revisará.';
+
+  @override
+  String get feesProofError => 'No se pudo subir el comprobante';
 }

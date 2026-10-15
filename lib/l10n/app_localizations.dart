@@ -2266,6 +2266,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Elegí un hijo'**
   String get parentChooseChild;
+
+  /// No description provided for @feesUploadProofAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Subir comprobante'**
+  String get feesUploadProofAction;
+
+  /// No description provided for @feesReplaceProofAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Reemplazar comprobante'**
+  String get feesReplaceProofAction;
+
+  /// No description provided for @feesInvoiceAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver factura'**
+  String get feesInvoiceAction;
+
+  /// No description provided for @feesInvoiceUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura no disponible'**
+  String get feesInvoiceUnavailable;
+
+  /// No description provided for @feesChooseFeeTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí la cuota'**
+  String get feesChooseFeeTitle;
+
+  /// No description provided for @feesProofStatusReview.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante en revisión'**
+  String get feesProofStatusReview;
+
+  /// No description provided for @feesProofPickFile.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir archivo'**
+  String get feesProofPickFile;
+
+  /// No description provided for @feesProofHint.
+  ///
+  /// In es, this message translates to:
+  /// **'JPG, PNG o PDF · hasta 10 MB'**
+  String get feesProofHint;
+
+  /// No description provided for @feesProofSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante subido. Un administrador lo revisará.'**
+  String get feesProofSuccess;
+
+  /// No description provided for @feesProofError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo subir el comprobante'**
+  String get feesProofError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

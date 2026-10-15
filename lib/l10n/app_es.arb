@@ -610,5 +610,15 @@
   "parentPayAction": "Pagar",
   "navPayments": "Pagos",
   "parentActionBoletin": "Boletín",
-  "parentChooseChild": "Elegí un hijo"
+  "parentChooseChild": "Elegí un hijo",
+  "feesUploadProofAction": "Subir comprobante",
+  "feesReplaceProofAction": "Reemplazar comprobante",
+  "feesInvoiceAction": "Ver factura",
+  "feesInvoiceUnavailable": "Factura no disponible",
+  "feesChooseFeeTitle": "Elegí la cuota",
+  "feesProofStatusReview": "Comprobante en revisión",
+  "feesProofPickFile": "Elegir archivo",
+  "feesProofHint": "JPG, PNG o PDF · hasta 10 MB",
+  "feesProofSuccess": "Comprobante subido. Un administrador lo revisará.",
+  "feesProofError": "No se pudo subir el comprobante"
 }

@@ -396,5 +396,15 @@
   "parentPayAction": "Pay",
   "navPayments": "Payments",
   "parentActionBoletin": "Report Card",
-  "parentChooseChild": "Choose a child"
+  "parentChooseChild": "Choose a child",
+  "feesUploadProofAction": "Upload receipt",
+  "feesReplaceProofAction": "Replace receipt",
+  "feesInvoiceAction": "View invoice",
+  "feesInvoiceUnavailable": "Invoice unavailable",
+  "feesChooseFeeTitle": "Choose the installment",
+  "feesProofStatusReview": "Receipt under review",
+  "feesProofPickFile": "Choose file",
+  "feesProofHint": "JPG, PNG or PDF · up to 10 MB",
+  "feesProofSuccess": "Receipt uploaded. An administrator will review it.",
+  "feesProofError": "Could not upload the receipt"
 }

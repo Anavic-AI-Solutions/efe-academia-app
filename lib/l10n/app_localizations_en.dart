@@ -1208,4 +1208,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get parentChooseChild => 'Choose a child';
+
+  @override
+  String get feesUploadProofAction => 'Upload receipt';
+
+  @override
+  String get feesReplaceProofAction => 'Replace receipt';
+
+  @override
+  String get feesInvoiceAction => 'View invoice';
+
+  @override
+  String get feesInvoiceUnavailable => 'Invoice unavailable';
+
+  @override
+  String get feesChooseFeeTitle => 'Choose the installment';
+
+  @override
+  String get feesProofStatusReview => 'Receipt under review';
+
+  @override
+  String get feesProofPickFile => 'Choose file';
+
+  @override
+  String get feesProofHint => 'JPG, PNG or PDF · up to 10 MB';
+
+  @override
+  String get feesProofSuccess => 'Receipt uploaded. An administrator will review it.';
+
+  @override
+  String get feesProofError => 'Could not upload the receipt';
 }
