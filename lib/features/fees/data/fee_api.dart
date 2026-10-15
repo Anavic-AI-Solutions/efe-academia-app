@@ -24,4 +24,23 @@ class FeeApi {
 
   Future<Response> getFee(String id) =>
       _client.get('/fees/$id');
+
+  Future<Response> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      _client.post(
+        '/fees/$feeId/upload-proof',
+        data: FormData()
+          ..files.add(
+            MapEntry(
+              'proof',
+              MultipartFile.fromBytes(bytes, filename: filename),
+            ),
+          ),
+      );
+
+  Future<Response> getInvoiceLink(String feeId) =>
+      _client.get('/fees/$feeId/invoice-link');
 }

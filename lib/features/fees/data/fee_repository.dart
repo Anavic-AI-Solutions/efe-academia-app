@@ -69,6 +69,27 @@ class FeeRepository {
     }
   }
 
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) async {
+    try {
+      await _api.uploadProof(feeId, bytes: bytes, filename: filename);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<String> getInvoiceUrl(String feeId) async {
+    try {
+      final response = await _api.getInvoiceLink(feeId);
+      return response.data['data']['url']?.toString() ?? '';
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   ApiException _handleDioError(DioException e) {
     if (e.error is ApiException) return e.error as ApiException;
     return ApiException(

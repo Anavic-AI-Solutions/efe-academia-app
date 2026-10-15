@@ -197,6 +197,18 @@ class _FakeFeeRepository implements FeeRepository {
 
   @override
   Future<FeeModel> getFee(String id) => Future.error(UnimplementedError());
+
+  @override
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<String> getInvoiceUrl(String feeId) =>
+      Future.error(UnimplementedError());
 }
 
 Future<void> _pumpDetail(

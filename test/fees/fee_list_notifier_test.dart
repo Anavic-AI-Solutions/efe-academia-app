@@ -55,6 +55,17 @@ class _FakeFeeRepository implements FeeRepository {
       {int page = 1, int limit = 20}) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getInvoiceUrl(String feeId) => throw UnimplementedError();
 }
 
 void main() {

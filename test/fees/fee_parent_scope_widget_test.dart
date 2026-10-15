@@ -107,6 +107,17 @@ class _FakeFeeRepository implements FeeRepository {
   Future<PageResult<FeeModel>> getStudentFees(String studentAppId,
           {int page = 1, int limit = 20}) =>
       throw UnimplementedError();
+
+  @override
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getInvoiceUrl(String feeId) => throw UnimplementedError();
 }
 
 class _ThrowingFeeRepository implements FeeRepository {
@@ -126,6 +137,17 @@ class _ThrowingFeeRepository implements FeeRepository {
   Future<PageResult<FeeModel>> getStudentFees(String studentAppId,
           {int page = 1, int limit = 20}) =>
       throw UnimplementedError();
+
+  @override
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getInvoiceUrl(String feeId) => throw UnimplementedError();
 }
 
 Future<ProviderContainer> _pumpFeeList(

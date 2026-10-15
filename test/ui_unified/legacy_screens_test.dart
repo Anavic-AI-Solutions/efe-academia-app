@@ -89,6 +89,17 @@ class _NeverFeeRepository implements FeeRepository {
     int limit = 20,
   }) =>
       throw UnimplementedError();
+
+  @override
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      Completer<void>().future;
+
+  @override
+  Future<String> getInvoiceUrl(String feeId) => Completer<String>().future;
 }
 
 class _FakeFeeRepository implements FeeRepository {
@@ -131,6 +142,17 @@ class _FakeFeeRepository implements FeeRepository {
     int limit = 20,
   }) =>
       throw UnimplementedError();
+
+  @override
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getInvoiceUrl(String feeId) => throw UnimplementedError();
 }
 
 class _NeverQualificationRepository implements QualificationRepository {
@@ -235,6 +257,18 @@ class _ErrorFeeRepository implements FeeRepository {
     int limit = 20,
   }) =>
       throw UnimplementedError();
+
+  @override
+  Future<void> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) =>
+      Future.error(Exception('Network error'));
+
+  @override
+  Future<String> getInvoiceUrl(String feeId) =>
+      Future.error(Exception('Network error'));
 }
 
 class _ErrorQualificationRepository implements QualificationRepository {

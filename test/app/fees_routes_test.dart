@@ -117,6 +117,32 @@ class _FakeFeeApi implements FeeApi {
       },
     );
   }
+
+  @override
+  Future<Response> uploadProof(
+    String feeId, {
+    required List<int> bytes,
+    required String filename,
+  }) async {
+    return Response(
+      requestOptions: RequestOptions(path: '/fees/$feeId/upload-proof'),
+      statusCode: 200,
+      data: {
+        'data': {'id': feeId},
+      },
+    );
+  }
+
+  @override
+  Future<Response> getInvoiceLink(String feeId) async {
+    return Response(
+      requestOptions: RequestOptions(path: '/fees/$feeId/invoice-link'),
+      statusCode: 200,
+      data: {
+        'data': {'url': 'https://x/fees/$feeId/invoice-file?signature=abc'},
+      },
+    );
+  }
 }
 
 List<String> collectRoutePaths(GoRouter router) {
