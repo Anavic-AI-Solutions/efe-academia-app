@@ -621,6 +621,7 @@
   "feesProofHint": "JPG, PNG o PDF · hasta 10 MB",
   "feesProofSuccess": "Comprobante subido. Un administrador lo revisará.",
   "feesProofError": "No se pudo subir el comprobante",
+  "feesProofSubmit": "Subir",
   "feesStatusUnderReview": "En revisión",
   "feesPartialOwed": "debe {amount}",
   "@feesPartialOwed": {

@@ -2327,6 +2327,12 @@ abstract class AppLocalizations {
   /// **'No se pudo subir el comprobante'**
   String get feesProofError;
 
+  /// No description provided for @feesProofSubmit.
+  ///
+  /// In es, this message translates to:
+  /// **'Subir'**
+  String get feesProofSubmit;
+
   /// No description provided for @feesStatusUnderReview.
   ///
   /// In es, this message translates to:

@@ -1240,6 +1240,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feesProofError => 'Could not upload the receipt';
 
   @override
+  String get feesProofSubmit => 'Upload';
+
+  @override
   String get feesStatusUnderReview => 'Under review';
 
   @override

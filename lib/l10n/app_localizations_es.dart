@@ -1240,6 +1240,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get feesProofError => 'No se pudo subir el comprobante';
 
   @override
+  String get feesProofSubmit => 'Subir';
+
+  @override
   String get feesStatusUnderReview => 'En revisión';
 
   @override
