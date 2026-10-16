@@ -2315,6 +2315,12 @@ abstract class AppLocalizations {
   /// **'JPG, PNG o PDF · hasta 10 MB'**
   String get feesProofHint;
 
+  /// No description provided for @feesProofInvalidFile.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivo no válido. JPG, PNG o PDF · hasta 10 MB'**
+  String get feesProofInvalidFile;
+
   /// No description provided for @feesProofSuccess.
   ///
   /// In es, this message translates to:

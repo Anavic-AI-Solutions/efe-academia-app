@@ -405,6 +405,7 @@
   "feesProofStatusReview": "Receipt under review",
   "feesProofPickFile": "Choose file",
   "feesProofHint": "JPG, PNG or PDF · up to 10 MB",
+  "feesProofInvalidFile": "Invalid file. JPG, PNG or PDF · up to 10 MB",
   "feesProofSuccess": "Receipt uploaded. An administrator will review it.",
   "feesProofError": "Could not upload the receipt",
   "feesProofSubmit": "Upload",

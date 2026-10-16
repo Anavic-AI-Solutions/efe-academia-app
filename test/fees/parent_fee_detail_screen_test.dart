@@ -253,6 +253,7 @@ void main() {
       );
 
       expect(find.text(es.feesProofStatusReview), findsOneWidget);
+      // En revisión (por cualquiera de las dos fuentes) mantiene Reemplazar.
       expect(find.text(es.feesReplaceProofAction), findsOneWidget);
       expect(find.text(es.feesUploadProofAction), findsNothing);
     });
@@ -289,10 +290,18 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ParentFeeProofSheet), findsOneWidget);
+      // Título y botón submit del sheet usan la clave de reemplazo (2 textos).
       expect(
         find.descendant(
           of: find.byType(ParentFeeProofSheet),
           matching: find.text(es.feesReplaceProofAction),
+        ),
+        findsNWidgets(2),
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ParentFeeProofSheet),
+          matching: find.widgetWithText(PillButton, es.feesReplaceProofAction),
         ),
         findsOneWidget,
       );
@@ -303,6 +312,21 @@ void main() {
         ),
         findsOneWidget,
       );
+    });
+  });
+
+  group('cuota no accionable', () {
+    testWidgets('cancelled → sin botón de subir, reemplazar ni factura',
+        (tester) async {
+      await _pumpScreen(
+        tester,
+        repo: _FakeFeeRepository(fee: _fee(status: 'cancelled')),
+      );
+
+      expect(find.byType(PillButton), findsNothing);
+      expect(find.text(es.feesUploadProofAction), findsNothing);
+      expect(find.text(es.feesReplaceProofAction), findsNothing);
+      expect(find.text(es.feesInvoiceAction), findsNothing);
     });
   });
 

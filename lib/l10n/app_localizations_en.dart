@@ -1234,6 +1234,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feesProofHint => 'JPG, PNG or PDF · up to 10 MB';
 
   @override
+  String get feesProofInvalidFile => 'Invalid file. JPG, PNG or PDF · up to 10 MB';
+
+  @override
   String get feesProofSuccess => 'Receipt uploaded. An administrator will review it.';
 
   @override

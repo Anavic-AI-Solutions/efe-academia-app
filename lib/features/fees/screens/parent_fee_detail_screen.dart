@@ -19,10 +19,11 @@ import 'widgets/parent_fee_proof_sheet.dart';
 
 /// Detalle de una cuota para el padre (`/payments/:id`).
 ///
-/// Card con las filas de la cuota y acciones al pie según el estado: subir o
-/// reemplazar comprobante (no pagada; al cerrar el sheet con `pop(true)` se
-/// refrescan detalle y lista) y ver la factura firmada (solo pagada; si la
-/// factura no está disponible se avisa con snackbar, sin crashear).
+/// Card con las filas de la cuota y acciones al pie según el estado: subir
+/// comprobante (cuota accionable) o reemplazarlo (en revisión) — al cerrar el
+/// sheet con `pop(true)` se refrescan detalle y lista — y ver la factura
+/// firmada (solo pagada; si la factura no está disponible se avisa con
+/// snackbar, sin crashear).
 class ParentFeeDetailScreen extends ConsumerStatefulWidget {
   final String feeId;
 
@@ -239,24 +240,35 @@ class _ParentFeeDetailScreenState extends ConsumerState<ParentFeeDetailScreen> {
     );
   }
 
-  /// Acciones al pie: ver factura (pagada) o subir/reemplazar comprobante.
+  /// Acciones al pie: ver factura (pagada), subir comprobante (accionable:
+  /// pendiente/parcial fuera de revisión) o reemplazarlo (en revisión). Una
+  /// `cancelled` u otro estado desconocido no ofrece acción.
   Widget _buildActions(FeeModel fee, AppLocalizations l10n) {
     final isPaid = fee.status.toLowerCase() == 'paid';
 
+    if (isPaid) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
+        child: PillButton(
+          label: l10n.feesInvoiceAction,
+          isLoading: _openingInvoice,
+          onPressed: _openInvoice,
+        ),
+      );
+    }
+
+    if (!feeIsActionable(fee) && !feeIsUnderReview(fee)) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
-      child: isPaid
-          ? PillButton(
-              label: l10n.feesInvoiceAction,
-              isLoading: _openingInvoice,
-              onPressed: _openInvoice,
-            )
-          : PillButton(
-              label: feeIsUnderReview(fee)
-                  ? l10n.feesReplaceProofAction
-                  : l10n.feesUploadProofAction,
-              onPressed: () => _openProofSheet(fee),
-            ),
+      child: PillButton(
+        label: feeIsUnderReview(fee)
+            ? l10n.feesReplaceProofAction
+            : l10n.feesUploadProofAction,
+        onPressed: () => _openProofSheet(fee),
+      ),
     );
   }
 }

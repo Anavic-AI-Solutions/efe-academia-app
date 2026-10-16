@@ -7,8 +7,9 @@ import '../../../../core/utils/status_labels.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/fee_model.dart';
 
-/// Helpers compartidos de la UI de cuotas de padres (R14): mes y línea de
-/// estado, usados por la card, el sheet de subida y el selector de cuota.
+/// Helpers compartidos de la UI de cuotas de padres (R14): mes, línea de
+/// estado y accionable, usados por la card, el detalle, el sheet de subida y
+/// el selector de cuota.
 
 /// “Julio 2026”: nombre del mes capitalizado en el idioma de la app (el mes
 /// de la API viene numérico); si no parsea, cae al valor crudo.
@@ -30,6 +31,14 @@ String feeMonthLabel(FeeModel fee, BuildContext context) {
 bool feeIsUnderReview(FeeModel fee) =>
     fee.proofStatus.toLowerCase() == 'under_review' ||
     fee.status.toLowerCase() == 'under_review';
+
+/// Verdadero si la cuota admite subir/reemplazar comprobante (spec §7.3):
+/// pendiente o parcial y fuera de revisión. Una `cancelled` u otro estado
+/// desconocido no ofrece acción.
+bool feeIsActionable(FeeModel fee) {
+  final status = fee.status.toLowerCase();
+  return (status == 'pending' || status == 'partial') && !feeIsUnderReview(fee);
+}
 
 /// Línea de estado de la cuota (reglas de §7.2 del spec): texto y color ya
 /// resueltos. Con `includeAmount: false` el texto es solo el label del estado

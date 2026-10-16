@@ -619,6 +619,7 @@
   "feesProofStatusReview": "Comprobante en revisión",
   "feesProofPickFile": "Elegir archivo",
   "feesProofHint": "JPG, PNG o PDF · hasta 10 MB",
+  "feesProofInvalidFile": "Archivo no válido. JPG, PNG o PDF · hasta 10 MB",
   "feesProofSuccess": "Comprobante subido. Un administrador lo revisará.",
   "feesProofError": "No se pudo subir el comprobante",
   "feesProofSubmit": "Subir",

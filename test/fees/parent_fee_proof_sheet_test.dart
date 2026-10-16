@@ -203,7 +203,7 @@ void main() {
 
     expect(find.text('virus.exe'), findsNothing);
     expect(find.byIcon(Icons.error_outline), findsOneWidget);
-    final error = tester.widget<Text>(find.text(es.feesProofHint));
+    final error = tester.widget<Text>(find.text(es.feesProofInvalidFile));
     expect(error.style?.color, AppColors.absent);
     expect(_submitButton(tester).onPressed, isNull);
     expect(repo.uploadCalls, 0);
@@ -224,7 +224,7 @@ void main() {
 
     expect(find.text('grande.pdf'), findsNothing);
     expect(find.byIcon(Icons.error_outline), findsOneWidget);
-    final error = tester.widget<Text>(find.text(es.feesProofHint));
+    final error = tester.widget<Text>(find.text(es.feesProofInvalidFile));
     expect(error.style?.color, AppColors.absent);
     expect(_submitButton(tester).onPressed, isNull);
     expect(repo.uploadCalls, 0);
@@ -268,17 +268,29 @@ void main() {
     expect(repo.uploadCalls, 0);
   });
 
-  testWidgets('título Reemplazar comprobante si proof_status está en revisión',
+  testWidgets('modo reemplazo (proof_status): título y botón dicen Reemplazar',
       (tester) async {
     await pumpSheet(tester, fee: _fee(proofStatus: 'under_review'));
-    expect(find.text(es.feesReplaceProofAction), findsOneWidget);
+
+    // Título y botón submit comparten la clave de reemplazo (2 textos).
+    expect(find.text(es.feesReplaceProofAction), findsNWidgets(2));
+    expect(
+      find.widgetWithText(PillButton, es.feesReplaceProofAction),
+      findsOneWidget,
+    );
     expect(find.text(es.feesUploadProofAction), findsNothing);
+    expect(find.widgetWithText(PillButton, es.feesProofSubmit), findsNothing);
   });
 
-  testWidgets('título Reemplazar comprobante si status está en revisión',
+  testWidgets('modo reemplazo (status): título y botón dicen Reemplazar',
       (tester) async {
     await pumpSheet(tester, fee: _fee(status: 'under_review'));
-    expect(find.text(es.feesReplaceProofAction), findsOneWidget);
+
+    expect(find.text(es.feesReplaceProofAction), findsNWidgets(2));
+    expect(
+      find.widgetWithText(PillButton, es.feesReplaceProofAction),
+      findsOneWidget,
+    );
     expect(find.text(es.feesUploadProofAction), findsNothing);
   });
 }

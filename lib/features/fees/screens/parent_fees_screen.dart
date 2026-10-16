@@ -91,11 +91,7 @@ class _ParentFeesScreenState extends ConsumerState<ParentFeesScreen> {
     final moraTotal = ref.watch(dashboardProvider).data?.parentHome?.moraTotal;
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accionables = state.pagination.data
-        .where((fee) =>
-            (fee.status == 'pending' || fee.status == 'partial') &&
-            !feeIsUnderReview(fee))
-        .toList();
+    final accionables = state.pagination.data.where(feeIsActionable).toList();
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),

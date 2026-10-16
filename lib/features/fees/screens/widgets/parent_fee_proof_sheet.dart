@@ -72,7 +72,7 @@ class _ParentFeeProofSheetState extends ConsumerState<ParentFeeProofSheet> {
     final extension = dot < 0 ? '' : name.substring(dot + 1).toLowerCase();
     if (!_proofAllowedExtensions.contains(extension) ||
         file.bytes.length > _proofMaxBytes) {
-      return context.l10n.feesProofHint;
+      return context.l10n.feesProofInvalidFile;
     }
     return null;
   }
@@ -249,7 +249,9 @@ class _ParentFeeProofSheetState extends ConsumerState<ParentFeeProofSheet> {
               ],
               const SizedBox(height: 18),
               PillButton(
-                label: l10n.feesProofSubmit,
+                label: feeIsUnderReview(widget.fee)
+                    ? l10n.feesReplaceProofAction
+                    : l10n.feesProofSubmit,
                 isLoading: _isSaving,
                 onPressed: _file == null ? null : _submit,
               ),
