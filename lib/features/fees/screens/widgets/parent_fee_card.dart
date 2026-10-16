@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
@@ -58,7 +59,7 @@ class ParentFeeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${fee.month} ${fee.year}',
+                  _monthLabel(context),
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
@@ -96,6 +97,22 @@ class ParentFeeCard extends StatelessWidget {
     );
   }
 
+  /// Título “Julio 2026”: nombre del mes capitalizado en el idioma de la app
+  /// (el mes de la API viene numérico); si no parsea, cae al valor crudo.
+  String _monthLabel(BuildContext context) {
+    final month = int.tryParse(fee.month);
+    final year = fee.year;
+    if (month == null || month < 1 || month > 12) {
+      return '${fee.month} $year'.trim();
+    }
+    final name =
+        DateFormat.MMMM(Localizations.localeOf(context).toLanguageTag())
+            .format(DateTime(int.tryParse(year) ?? 2000, month));
+    final capitalized =
+        name.isEmpty ? name : name[0].toUpperCase() + name.substring(1);
+    return '$capitalized $year';
+  }
+
   _FeeLine _stateLine(AppLocalizations l10n, bool isDark) {
     final status = fee.status.toLowerCase();
     final danger = isDark ? AppColors.darkDangerInk : AppColors.dangerInk;
@@ -121,6 +138,9 @@ class ParentFeeCard extends StatelessWidget {
     }
     if (status == 'partial') {
       return _FeeLine(partialLine, muted);
+    }
+    if (status == 'pending') {
+      return _FeeLine('${l10n.feesStatusPending} · $amount', muted);
     }
     return _FeeLine(feeStatusLabel(fee.status, l10n), muted);
   }

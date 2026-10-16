@@ -9,13 +9,14 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/localized_app.dart';
 
 /// Cuota de prueba; por defecto, pendiente de julio 2026 de Ana Pérez.
+/// El mes va numérico como lo devuelve la API.
 FeeModel _fee({
   String status = 'pending',
   String proofStatus = '',
   bool isOverdue = false,
   double toPay = 25000,
   double owe = 0,
-  String month = 'Julio',
+  String month = '7',
   String year = '2026',
 }) =>
     FeeModel(
@@ -89,9 +90,48 @@ void main() {
   testWidgets('renders pending without danger color', (tester) async {
     await _pumpCard(tester, _fee(), onPay: () {});
 
-    expect(_lineColor(tester, 'Pendiente'), AppColors.lightMuted);
-    expect(_lineColor(tester, 'Pendiente'), isNot(AppColors.dangerInk));
+    final pendingLine = 'Pendiente · ${AppFormatters.formatCurrency(25000)}';
+    expect(_lineColor(tester, pendingLine), AppColors.lightMuted);
+    expect(_lineColor(tester, pendingLine), isNot(AppColors.dangerInk));
     expect(find.text('Pagar'), findsOneWidget);
+  });
+
+  testWidgets('renders the capitalized month name from the numeric month',
+      (tester) async {
+    Widget card(String month) => localizedApp(
+          home: Scaffold(
+            body: ParentFeeCard(
+              fee: _fee(month: month, year: '2026'),
+              childName: 'Ana Pérez',
+              onTap: () {},
+            ),
+          ),
+        );
+
+    // Locale es_AR: nombre del mes capitalizado + año.
+    await tester.pumpWidget(card('7'));
+    expect(find.text('Julio 2026'), findsOneWidget);
+
+    // Mismo dato en inglés.
+    await tester.pumpWidget(
+      localizedApp(
+        locale: const Locale('en'),
+        home: Scaffold(
+          body: ParentFeeCard(
+            fee: _fee(month: '7', year: '2026'),
+            childName: 'Ana Pérez',
+            onTap: () {},
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('July 2026'), findsOneWidget);
+
+    // Mes no numérico: fallback al valor crudo.
+    await tester.pumpWidget(card('Invierno'));
+    await tester.pumpAndSettle();
+    expect(find.text('Invierno 2026'), findsOneWidget);
   });
 
   testWidgets('renders partial with owed amount', (tester) async {
