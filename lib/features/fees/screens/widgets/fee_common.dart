@@ -56,7 +56,8 @@ bool feeIsUnderReview(FeeModel fee) =>
   if (feeIsUnderReview(fee)) {
     return (
       text: withAmount(l10n.feesStatusUnderReview),
-      color: AppColors.primary,
+      // accentFor: primary en claro, accent en oscuro (contrato de contraste).
+      color: AppColors.accentFor(isDark),
     );
   }
   if (fee.isOverdue) {

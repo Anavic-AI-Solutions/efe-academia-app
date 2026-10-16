@@ -183,7 +183,7 @@ class _ParentFeeDetailScreenState extends ConsumerState<ParentFeeDetailScreen> {
               l10n.feesPartialOwed(AppFormatters.formatCurrency(fee.owe)),
               line.color,
             ),
-          if (feeIsUnderReview(fee)) _reviewRow(l10n),
+          if (feeIsUnderReview(fee)) _reviewRow(l10n, isDark),
           if (isPaid) ...[
             const Divider(height: 16),
             _DetailRow(
@@ -216,19 +216,22 @@ class _ParentFeeDetailScreenState extends ConsumerState<ParentFeeDetailScreen> {
   }
 
   /// Fila “Comprobante en revisión” (mientras administración lo evalúa).
-  Widget _reviewRow(AppLocalizations l10n) {
+  /// Usa `accentFor` para cumplir el contraste en dark (R15).
+  Widget _reviewRow(AppLocalizations l10n, bool isDark) {
+    final color = AppColors.accentFor(isDark);
+
     return Padding(
       padding: const EdgeInsets.only(top: 4, bottom: 8),
       child: Row(
         children: [
-          const Icon(Icons.schedule, size: 14, color: AppColors.primary),
+          Icon(Icons.schedule, size: 14, color: color),
           const SizedBox(width: 6),
           Text(
             l10n.feesProofStatusReview,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+              color: color,
             ),
           ),
         ],

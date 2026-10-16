@@ -169,6 +169,15 @@ void main() {
     expect(find.text(reviewLine), findsOneWidget);
     expect(_lineColor(tester, reviewLine), AppColors.primary);
     expect(find.text('Pagar'), findsNothing);
+
+    // En dark el token cambia para cumplir el contrato de contraste (R15).
+    await _pumpCard(tester, _fee(proofStatus: 'under_review'), dark: true);
+    expect(find.text(reviewLine), findsOneWidget);
+    expect(_lineColor(tester, reviewLine), AppColors.accent);
+
+    await _pumpCard(tester, _fee(status: 'under_review'), dark: true);
+    expect(find.text(reviewLine), findsOneWidget);
+    expect(_lineColor(tester, reviewLine), AppColors.accent);
   });
 
   testWidgets('renders paid with check and no action', (tester) async {

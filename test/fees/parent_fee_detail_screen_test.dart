@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/api_exception.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
@@ -230,6 +231,15 @@ void main() {
         ),
         findsOneWidget,
       );
+      // Light: el estado en revisión usa el azul primary (5.2:1).
+      expect(
+        tester.widget<Text>(find.text(es.feesProofStatusReview)).style?.color,
+        AppColors.primary,
+      );
+      expect(
+        tester.widget<StatusBadge>(find.byType(StatusBadge)).color,
+        AppColors.primary,
+      );
       expect(find.text(es.feesReplaceProofAction), findsOneWidget);
       expect(find.text(es.feesUploadProofAction), findsNothing);
       expect(find.text(es.feesInvoiceAction), findsNothing);
@@ -245,6 +255,25 @@ void main() {
       expect(find.text(es.feesProofStatusReview), findsOneWidget);
       expect(find.text(es.feesReplaceProofAction), findsOneWidget);
       expect(find.text(es.feesUploadProofAction), findsNothing);
+    });
+
+    testWidgets('en dark la fila de revisión y el badge usan el token accent',
+        (tester) async {
+      await _pumpScreen(
+        tester,
+        brightness: Brightness.dark,
+        repo: _FakeFeeRepository(fee: _fee(proofStatus: 'under_review')),
+      );
+
+      // Dark: accent (7.6:1) en vez de primary (2.7:1) — contrato R15.
+      expect(
+        tester.widget<Text>(find.text(es.feesProofStatusReview)).style?.color,
+        AppColors.accent,
+      );
+      expect(
+        tester.widget<StatusBadge>(find.byType(StatusBadge)).color,
+        AppColors.accent,
+      );
     });
 
     testWidgets('tap Reemplazar comprobante abre el sheet de la cuota',
