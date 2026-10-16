@@ -2326,6 +2326,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo subir el comprobante'**
   String get feesProofError;
+
+  /// No description provided for @feesStatusUnderReview.
+  ///
+  /// In es, this message translates to:
+  /// **'En revisión'**
+  String get feesStatusUnderReview;
+
+  /// No description provided for @feesPartialOwed.
+  ///
+  /// In es, this message translates to:
+  /// **'debe {amount}'**
+  String feesPartialOwed(String amount);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

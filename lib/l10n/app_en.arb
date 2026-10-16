@@ -406,5 +406,7 @@
   "feesProofPickFile": "Choose file",
   "feesProofHint": "JPG, PNG or PDF · up to 10 MB",
   "feesProofSuccess": "Receipt uploaded. An administrator will review it.",
-  "feesProofError": "Could not upload the receipt"
+  "feesProofError": "Could not upload the receipt",
+  "feesStatusUnderReview": "Under review",
+  "feesPartialOwed": "owes {amount}"
 }

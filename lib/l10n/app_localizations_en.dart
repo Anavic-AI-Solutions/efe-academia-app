@@ -1238,4 +1238,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feesProofError => 'Could not upload the receipt';
+
+  @override
+  String get feesStatusUnderReview => 'Under review';
+
+  @override
+  String feesPartialOwed(String amount) {
+    return 'owes $amount';
+  }
 }

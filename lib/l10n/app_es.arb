@@ -620,5 +620,14 @@
   "feesProofPickFile": "Elegir archivo",
   "feesProofHint": "JPG, PNG o PDF · hasta 10 MB",
   "feesProofSuccess": "Comprobante subido. Un administrador lo revisará.",
-  "feesProofError": "No se pudo subir el comprobante"
+  "feesProofError": "No se pudo subir el comprobante",
+  "feesStatusUnderReview": "En revisión",
+  "feesPartialOwed": "debe {amount}",
+  "@feesPartialOwed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }
