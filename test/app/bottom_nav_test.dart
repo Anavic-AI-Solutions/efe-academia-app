@@ -15,7 +15,9 @@ import 'package:efe_mobile/features/events/providers/event_provider.dart';
 import 'package:efe_mobile/features/fees/data/fee_repository.dart';
 import 'package:efe_mobile/features/fees/domain/fee_model.dart';
 import 'package:efe_mobile/features/fees/providers/fee_provider.dart';
-import 'package:efe_mobile/features/fees/screens/fee_list_screen.dart';
+import 'package:efe_mobile/features/fees/screens/parent_fee_detail_screen.dart';
+import 'package:efe_mobile/features/fees/screens/parent_fees_screen.dart';
+import 'package:efe_mobile/features/fees/screens/widgets/parent_fee_card.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/news/data/news_repository.dart';
@@ -92,6 +94,17 @@ class _FakeEmptyRelationsRepository implements RelationsRepository {
       CursorPagination.empty();
 }
 
+/// Cuota de prueba que devuelven la lista y el detalle falsos.
+const _testFee = FeeModel(
+  id: 'f1',
+  studentName: 'Ana Pérez',
+  month: '7',
+  year: '2026',
+  toPay: 25000,
+  total: 25000,
+  status: 'pending',
+);
+
 /// Keeps the fee list tab off the real API in tests.
 class _FakeFeeRepository implements FeeRepository {
   @override
@@ -100,10 +113,10 @@ class _FakeFeeRepository implements FeeRepository {
     String? search,
     String? cursor,
   }) async =>
-      CursorPagination.empty();
+      CursorPagination(data: [_testFee], hasMore: false, total: 1);
 
   @override
-  Future<FeeModel> getFee(String id) => throw UnimplementedError();
+  Future<FeeModel> getFee(String id) async => _testFee;
 
   @override
   Future<PageResult<FeeModel>> getStudentFees(
@@ -126,6 +139,7 @@ class _FakeFeeRepository implements FeeRepository {
 }
 
 Future<void> _pumpApp(WidgetTester tester, String role) async {
+  final feeRepository = _FakeFeeRepository();
   final container = ProviderContainer(
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role)),
@@ -139,9 +153,10 @@ Future<void> _pumpApp(WidgetTester tester, String role) async {
       newsListProvider
           .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
       unreadCountProvider.overrideWith((ref) async => 0),
-      // La pestaña Pagos no toca red en estos tests.
-      feeListProvider
-          .overrideWith((ref) => FeeListNotifier(_FakeFeeRepository())),
+      // La pestaña Pagos (lista y detalle) no toca red en estos tests.
+      feeRepositoryProvider.overrideWithValue(feeRepository),
+      feeListProvider.overrideWith((ref) => FeeListNotifier(feeRepository)),
+      parentFeesProvider.overrideWith((ref) => FeeListNotifier(feeRepository)),
     ],
   );
   addTearDown(container.dispose);
@@ -181,13 +196,14 @@ void main() {
     expect(find.byIcon(PhosphorIconsFill.magnifyingGlass), findsNothing);
   });
 
-  testWidgets('parent nav shows Pagos and opens the fee list', (tester) async {
+  testWidgets('parent nav shows Pagos and opens the parent fees screen',
+      (tester) async {
     await _pumpApp(tester, 'parent');
     expect(navLabel('Pagos'), findsOneWidget);
     expect(navLabel('Aulas'), findsNothing);
     await tester.tap(navLabel('Pagos'));
     await tester.pumpAndSettle();
-    expect(find.byType(FeeListScreen), findsOneWidget);
+    expect(find.byType(ParentFeesScreen), findsOneWidget);
   });
 
   testWidgets('parent home Cuotas action switches to the Pagos tab',
@@ -197,7 +213,7 @@ void main() {
     await tester.tap(find.text('Cuotas'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(FeeListScreen), findsOneWidget);
+    expect(find.byType(ParentFeesScreen), findsOneWidget);
 
     final activePill = tester.widget<AnimatedContainer>(
       find.ancestor(
@@ -208,6 +224,20 @@ void main() {
     final decoration = activePill.decoration as BoxDecoration;
     expect(decoration.color, AppColors.primary,
         reason: 'la accion Cuotas debe cambiar de pestana, no apilar la pagina');
+  });
+
+  testWidgets('parent opens fee detail from Pagos and keeps the tab',
+      (tester) async {
+    await _pumpApp(tester, 'parent');
+    await tester.tap(navLabel('Pagos'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(ParentFeeCard).first);
+    await tester.pumpAndSettle();
+    expect(find.byType(ParentFeeDetailScreen), findsOneWidget);
+    // el pill activo sigue en 'Pagos'
+    final pill = tester.widget<AnimatedContainer>(find.ancestor(
+        of: navLabel('Pagos'), matching: find.byType(AnimatedContainer)));
+    expect((pill.decoration as BoxDecoration).color, AppColors.primary);
   });
 
   testWidgets('professor nav keeps Aulas', (tester) async {

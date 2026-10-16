@@ -18,6 +18,8 @@ import '../features/chat/screens/chat_detail_screen.dart';
 import '../features/chat/providers/chat_provider.dart';
 import '../features/fees/screens/fee_detail_screen.dart';
 import '../features/fees/screens/fee_list_screen.dart';
+import '../features/fees/screens/parent_fee_detail_screen.dart';
+import '../features/fees/screens/parent_fees_screen.dart';
 import '../features/relations/screens/new_chat_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/notifications/screens/notification_list_screen.dart';
@@ -286,7 +288,15 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
               GoRoute(
                 path: '/payments',
-                builder: (context, state) => const FeeListScreen(),
+                builder: (context, state) => const ParentFeesScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) => ParentFeeDetailScreen(
+                      feeId: state.pathParameters['id']!,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
