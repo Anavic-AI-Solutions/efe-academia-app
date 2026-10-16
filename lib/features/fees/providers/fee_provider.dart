@@ -141,6 +141,13 @@ final feeListProvider =
   return FeeListNotifier(ref.watch(feeRepositoryProvider));
 });
 
+/// Lista completa de cuotas de la familia para la pantalla Pagos de padres
+/// (el backend ya la devuelve ordenada vencidas → pendientes → pagadas).
+final parentFeesProvider =
+    StateNotifierProvider<FeeListNotifier, FeeListState>((ref) {
+  return FeeListNotifier(ref.watch(feeRepositoryProvider));
+});
+
 // ---------------------------------------------------------------------------
 // Detail Provider
 // ---------------------------------------------------------------------------
