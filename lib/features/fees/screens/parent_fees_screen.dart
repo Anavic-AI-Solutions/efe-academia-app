@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../core/utils/formatters.dart';
-import '../../../core/utils/status_labels.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
@@ -17,6 +15,7 @@ import '../../../l10n/l10n.dart';
 import '../../dashboard/providers/dashboard_provider.dart';
 import '../domain/fee_model.dart';
 import '../providers/fee_provider.dart';
+import 'widgets/fee_common.dart';
 import 'widgets/parent_fee_card.dart';
 import 'widgets/parent_fee_proof_sheet.dart';
 
@@ -50,12 +49,6 @@ class _ParentFeesScreenState extends ConsumerState<ParentFeesScreen> {
       ref.read(parentFeesProvider.notifier).loadMore();
     }
   }
-
-  /// Verdadero si el comprobante está en revisión, por cualquiera de las dos
-  /// fuentes que usa la API (`proof_status` o `status`).
-  static bool _isUnderReview(FeeModel fee) =>
-      fee.proofStatus.toLowerCase() == 'under_review' ||
-      fee.status.toLowerCase() == 'under_review';
 
   Future<void> _refresh() async {
     await Future.wait([
@@ -99,7 +92,9 @@ class _ParentFeesScreenState extends ConsumerState<ParentFeesScreen> {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accionables = state.pagination.data
-        .where((fee) => fee.status != 'paid' && !_isUnderReview(fee))
+        .where((fee) =>
+            (fee.status == 'pending' || fee.status == 'partial') &&
+            !feeIsUnderReview(fee))
         .toList();
 
     return Scaffold(
@@ -303,85 +298,82 @@ class _FeePickerSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            for (final fee in fees)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 9),
-                child: AppCard(
-                  onTap: () => Navigator.of(context).pop(fee),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              fee.studentName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w800,
-                                color: textColor,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              _monthLabel(context, fee),
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: AppColors.mutedFor(isDark),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            AppFormatters.formatCurrency(fee.toPay),
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              color: textColor,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            feeStatusLabel(fee.status, l10n),
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: AppColors.mutedFor(isDark),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            for (final fee in fees) _row(context, fee, l10n, isDark),
           ],
         ),
       ),
     );
   }
 
-  /// “Julio 2026”: nombre del mes capitalizado en el idioma de la app (el mes
-  /// de la API viene numérico); si no parsea, cae al valor crudo.
-  String _monthLabel(BuildContext context, FeeModel fee) {
-    final month = int.tryParse(fee.month);
-    final year = fee.year;
-    if (month == null || month < 1 || month > 12) {
-      return '${fee.month} $year'.trim();
-    }
-    final name =
-        DateFormat.MMMM(Localizations.localeOf(context).toLanguageTag())
-            .format(DateTime(int.tryParse(year) ?? 2000, month));
-    final capitalized =
-        name.isEmpty ? name : name[0].toUpperCase() + name.substring(1);
-    return '$capitalized $year';
+  /// Fila hijo · mes/año · monto/línea de estado de una cuota accionable.
+  Widget _row(
+    BuildContext context,
+    FeeModel fee,
+    AppLocalizations l10n,
+    bool isDark,
+  ) {
+    final textColor = isDark ? AppColors.darkTextPrimary : AppColors.lightInk;
+    // La fila ya muestra el monto aparte: la línea de estado va sin monto.
+    final line = feeStatusLine(fee, l10n, isDark, includeAmount: false);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 9),
+      child: AppCard(
+        onTap: () => Navigator.of(context).pop(fee),
+        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    fee.studentName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    feeMonthLabel(fee, context),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: AppColors.mutedFor(isDark),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  AppFormatters.formatCurrency(fee.toPay),
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: textColor,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  line.text,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: line.color,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

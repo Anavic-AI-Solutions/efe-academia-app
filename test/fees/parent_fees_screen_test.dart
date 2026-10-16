@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/core/utils/formatters.dart';
+import 'package:efe_mobile/core/widgets/app_card.dart';
 import 'package:efe_mobile/core/widgets/empty_state.dart';
 import 'package:efe_mobile/core/widgets/error_view.dart';
 import 'package:efe_mobile/core/widgets/loading_shimmer.dart';
@@ -429,6 +430,63 @@ void main() {
 
       expect(find.text(es.feesUploadProofAction), findsNothing);
       expect(find.byType(PillButton), findsNothing);
+    });
+
+    testWidgets('solo cuotas cancelled no cuentan para el CTA', (tester) async {
+      await _pumpScreen(
+        tester,
+        repo: _FakeFeeRepository(responses: [
+          _page([_fee(id: 'f1', status: 'cancelled')]),
+        ]),
+      );
+
+      expect(find.byType(ParentFeeCard), findsOneWidget);
+      expect(find.text(es.feesUploadProofAction), findsNothing);
+      expect(find.byType(PillButton), findsNothing);
+    });
+
+    testWidgets('el selector muestra el estado sin monto duplicado en la fila',
+        (tester) async {
+      await _pumpScreen(
+        tester,
+        repo: _FakeFeeRepository(responses: [
+          _page([
+            _fee(id: 'f1', isOverdue: true),
+            _fee(id: 'f2'),
+          ]),
+        ]),
+      );
+
+      await tester
+          .tap(find.widgetWithText(PillButton, es.feesUploadProofAction));
+      await tester.pumpAndSettle();
+
+      final sheet = find.byType(BottomSheet);
+      final amount = AppFormatters.formatCurrency(25000);
+      expect(
+        find.descendant(of: sheet, matching: find.text(es.feesStatusOverdue)),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: sheet, matching: find.text(es.feesStatusPending)),
+        findsOneWidget,
+      );
+      // Sin monto en la línea de estado: no se duplica con la columna monto.
+      expect(
+        find.descendant(
+          of: sheet,
+          matching: find.textContaining('${es.feesStatusOverdue} · '),
+        ),
+        findsNothing,
+      );
+      final overdueRow = find.ancestor(
+        of: find.text(es.feesStatusOverdue),
+        matching: find.byType(AppCard),
+      );
+      expect(
+        find.descendant(of: overdueRow, matching: find.text(amount)),
+        findsOneWidget,
+      );
     });
   });
 

@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
@@ -10,6 +9,7 @@ import '../../../../core/widgets/pill_button.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/fee_model.dart';
 import '../../providers/fee_provider.dart';
+import 'fee_common.dart';
 
 /// Archivo elegido para subir como comprobante de pago.
 class ProofUploadFile {
@@ -51,12 +51,6 @@ class _ParentFeeProofSheetState extends ConsumerState<ParentFeeProofSheet> {
   ProofUploadFile? _file;
   String? _error;
   bool _isSaving = false;
-
-  /// Verdadero si el comprobante está en revisión, por cualquiera de las dos
-  /// fuentes que usa la API (`proof_status` o `status`).
-  bool get _isUnderReview =>
-      widget.fee.proofStatus.toLowerCase() == 'under_review' ||
-      widget.fee.status.toLowerCase() == 'under_review';
 
   Future<ProofUploadFile?> _defaultPickFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -152,7 +146,7 @@ class _ParentFeeProofSheetState extends ConsumerState<ParentFeeProofSheet> {
               ),
               const SizedBox(height: 16),
               Text(
-                _isUnderReview
+                feeIsUnderReview(widget.fee)
                     ? l10n.feesReplaceProofAction
                     : l10n.feesUploadProofAction,
                 style: TextStyle(
@@ -269,20 +263,8 @@ class _ParentFeeProofSheetState extends ConsumerState<ParentFeeProofSheet> {
   /// “Julio 2026 · Ana Pérez · $25.000,00”: mes capitalizado, hijo y monto.
   String _contextLine(BuildContext context) {
     final fee = widget.fee;
-    final month = int.tryParse(fee.month);
-    String monthLabel;
-    if (month == null || month < 1 || month > 12) {
-      monthLabel = '${fee.month} ${fee.year}'.trim();
-    } else {
-      final name =
-          DateFormat.MMMM(Localizations.localeOf(context).toLanguageTag())
-              .format(DateTime(int.tryParse(fee.year) ?? 2000, month));
-      final capitalized =
-          name.isEmpty ? name : name[0].toUpperCase() + name.substring(1);
-      monthLabel = '$capitalized ${fee.year}';
-    }
     return [
-      monthLabel,
+      feeMonthLabel(fee, context),
       if (fee.studentName.isNotEmpty) fee.studentName,
       AppFormatters.formatCurrency(fee.toPay),
     ].join(' · ');
