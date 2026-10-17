@@ -2291,6 +2291,12 @@ abstract class AppLocalizations {
   /// **'No hay calificaciones registradas para este período'**
   String get boletinNoGrades;
 
+  /// No description provided for @boletinNoAccess.
+  ///
+  /// In es, this message translates to:
+  /// **'No tenés acceso al boletín de este alumno'**
+  String get boletinNoAccess;
+
   /// No description provided for @boletinDownloadError.
   ///
   /// In es, this message translates to:

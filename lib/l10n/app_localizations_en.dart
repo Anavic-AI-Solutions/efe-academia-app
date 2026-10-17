@@ -1224,6 +1224,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boletinNoGrades => 'No grades recorded for this period';
 
   @override
+  String get boletinNoAccess => 'You don\'t have access to this student\'s report card';
+
+  @override
   String get boletinDownloadError => 'Could not download the report card';
 
   @override

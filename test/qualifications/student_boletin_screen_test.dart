@@ -11,7 +11,14 @@ import 'package:efe_mobile/core/widgets/grade_badge.dart';
 import 'package:efe_mobile/core/widgets/loading_shimmer.dart';
 import 'package:efe_mobile/core/widgets/pill_button.dart';
 import 'package:efe_mobile/core/widgets/status_badge.dart';
+import 'package:efe_mobile/features/auth/data/auth_repository.dart';
+import 'package:efe_mobile/features/auth/domain/user_model.dart';
+import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
+import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
+import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
+import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
+import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
 import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
@@ -25,6 +32,7 @@ import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../helpers/localized_app.dart';
 
@@ -141,6 +149,57 @@ class _FakeStudentRepository implements StudentRepository {
       throw UnimplementedError();
 }
 
+/// Repositorio de auth falso: el rol decide si la pantalla acota las aulas
+/// del alumno a las del profesor.
+class _FakeAuthRepository implements AuthRepository {
+  _FakeAuthRepository({this.role = 'parent'});
+
+  final String role;
+
+  @override
+  Future<UserModel> getCurrentUser() async => UserModel(
+        id: 'u1',
+        name: 'User Test',
+        email: 'user@test.com',
+        role: role,
+      );
+
+  @override
+  Future<bool> hasToken() async => true;
+
+  @override
+  Future<void> loadTokenIntoClient() async {}
+
+  @override
+  Future<UserModel> login({required String email, required String password}) =>
+      getCurrentUser();
+
+  @override
+  Future<UserModel> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) =>
+      getCurrentUser();
+
+  @override
+  Future<void> logout() async {}
+
+  @override
+  Future<void> forgotPassword(String email) async {}
+}
+
+/// Repositorio de dashboard falso: aporta las aulas del profesor al filtrado.
+class _FakeDashboardRepository implements DashboardRepository {
+  _FakeDashboardRepository(this.data);
+
+  final DashboardData data;
+
+  @override
+  Future<DashboardData> getDashboard() async => data;
+}
+
 const _classroom1 = ClassroomModel(id: 'c1', name: '3G X');
 const _classroom2 = ClassroomModel(id: 'c2', name: '4G Y');
 
@@ -225,6 +284,8 @@ Future<void> _pumpScreen(
   Future<bool> Function(Uri)? openUrl,
   Brightness brightness = Brightness.light,
   bool settle = true,
+  String role = 'parent',
+  DashboardData dashboardData = const DashboardData(),
 }) async {
   // Superficie alta para que todas las secciones queden montadas a la vez.
   tester.view.physicalSize = const Size(800, 3000);
@@ -234,6 +295,9 @@ Future<void> _pumpScreen(
   final container = ProviderContainer(overrides: [
     qualificationRepositoryProvider.overrideWithValue(qualificationRepository),
     studentRepositoryProvider.overrideWithValue(studentRepository),
+    authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role: role)),
+    dashboardRepositoryProvider
+        .overrideWithValue(_FakeDashboardRepository(dashboardData)),
   ]);
   addTearDown(container.dispose);
 
@@ -694,6 +758,91 @@ void main() {
         tester.widget<Text>(find.text('3G X')).style?.color,
         AppColors.accentFor(true),
       );
+      expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('8) profesor', () {
+    // El alumno está en [c1, c2]; el profesor solo dicta una (o ninguna).
+    const studentClassrooms = [_classroom1, _classroom2];
+
+    testWidgets('solo el aula propia queda visible y la descarga usa esa aula',
+        (tester) async {
+      Uri? opened;
+      final repo = _FakeQualificationRepository(boletines: {
+        'c1': _fullBoletin(score: '8', average: 8.0),
+        'c2': _fullBoletin(
+          classroomId: 'c2',
+          classroomName: '4G Y',
+          score: '9',
+          average: 9.0,
+        ),
+      });
+      await _pumpScreen(
+        tester,
+        qualificationRepository: repo,
+        studentRepository:
+            _FakeStudentRepository(classrooms: studentClassrooms),
+        role: 'professor',
+        dashboardData: const DashboardData(
+          role: 'professor',
+          classrooms: [ProfessorClassroomSummary(id: 'c1', name: '3G X')],
+        ),
+        openUrl: (uri) async {
+          opened = uri;
+          return true;
+        },
+      );
+
+      // Solo el aula propia aparece como chip; la ajena no se lista ni se
+      // pide (la API la rechazaría con 403).
+      expect(find.text('3G X'), findsOneWidget);
+      expect(find.text('4G Y'), findsNothing);
+      expect(repo.callsFor('c1'), 1);
+      expect(repo.callsFor('c2'), 0);
+      expect(find.text('8'), findsOneWidget);
+      expect(find.text('9'), findsNothing);
+
+      // La descarga del PDF también queda acotada al aula propia.
+      await tester.tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
+      await tester.pumpAndSettle();
+      expect(repo.linkCalls.single.classroomId, 'c1');
+      expect(opened, Uri.parse(_boletinUrl));
+      expect(find.text(es.boletinDownloadError), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('sin intersección ⇒ boletinNoAccess sin chips ni descarga',
+        (tester) async {
+      final repo = _FakeQualificationRepository(boletines: {
+        'c1': _fullBoletin(),
+        'c2': _fullBoletin(classroomId: 'c2', classroomName: '4G Y'),
+      });
+      await _pumpScreen(
+        tester,
+        qualificationRepository: repo,
+        studentRepository:
+            _FakeStudentRepository(classrooms: studentClassrooms),
+        role: 'professor',
+        dashboardData: const DashboardData(
+          role: 'professor',
+          classrooms: [ProfessorClassroomSummary(id: 'c3', name: '5G Z')],
+        ),
+      );
+
+      expect(find.byType(EmptyState), findsOneWidget);
+      expect(find.text(es.boletinNoAccess), findsOneWidget);
+      expect(find.byIcon(PhosphorIconsRegular.lock), findsOneWidget);
+      expect(find.byIcon(PhosphorIconsRegular.books), findsNothing);
+      // Sin chips de aulas y sin botón de descarga.
+      expect(find.text('3G X'), findsNothing);
+      expect(find.text('4G Y'), findsNothing);
+      expect(
+        find.widgetWithText(PillButton, es.boletinDownloadAction),
+        findsNothing,
+      );
+      expect(repo.callsFor('c1'), 0);
+      expect(repo.callsFor('c2'), 0);
       expect(tester.takeException(), isNull);
     });
   });

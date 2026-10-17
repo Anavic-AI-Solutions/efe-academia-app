@@ -17,7 +17,10 @@ import '../../../core/widgets/section_header.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/domain/user_model.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../../classrooms/domain/classroom_model.dart';
+import '../../dashboard/providers/dashboard_provider.dart';
 import '../../students/providers/student_provider.dart';
 import '../domain/boletin_data.dart';
 import '../providers/qualification_provider.dart';
@@ -25,11 +28,15 @@ import '../providers/qualification_provider.dart';
 /// Boletín de notas de un alumno por aula (`/students/:id/boletin`).
 ///
 /// Muestra el boletín completo del aula elegida: notas por período con el
-/// promedio de paridad con el PDF, asistencia por período, inasistencias y
+/// promedio por período, asistencia por período, inasistencias y
 /// observaciones públicas. Con 2+ aulas del hijo aparecen chips (default la
 /// primera; cambiar refetchea porque el provider es family por aula) y al pie
 /// se descarga el PDF oficial por URL firmada (launcher inyectable para
 /// tests; un fallo del link avisa con snackbar, sin crashear).
+///
+/// Para profesores la lista de aulas se acota a la intersección con sus
+/// aulas del dashboard (`authorizeBoletin` rechaza las ajenas con 403); sin
+/// intersección se muestra `boletinNoAccess` sin chips ni descarga.
 class StudentBoletinScreen extends ConsumerStatefulWidget {
   final String studentId;
 
@@ -55,6 +62,14 @@ class _StudentBoletinScreenState extends ConsumerState<StudentBoletinScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
+    // Ids de las aulas del profesor (dashboard): para el rol profesor solo
+    // esas aulas son visibles; el resto daría 403 en la API.
+    final professorClassrooms =
+        isProfessor ? ref.watch(dashboardProvider).data?.classrooms : null;
+    final professorClassroomIds =
+        professorClassrooms?.map((classroom) => classroom.id).toSet() ??
+            const <String>{};
     final classroomsAsync = ref.watch(
       studentClassroomsProvider(widget.studentId),
     );
@@ -76,7 +91,24 @@ class _StudentBoletinScreenState extends ConsumerState<StudentBoletinScreen> {
           ),
         ),
         data: (classrooms) {
-          if (classrooms.isEmpty) {
+          // Profesor: solo sus aulas (la API rechaza las ajenas con 403);
+          // el resto de los roles ven las aulas del alumno tal cual.
+          final visible = isProfessor
+              ? classrooms
+                  .where((c) => professorClassroomIds.contains(c.id))
+                  .toList()
+              : classrooms;
+
+          if (visible.isEmpty) {
+            if (isProfessor) {
+              return _headerBody(
+                l10n,
+                EmptyState(
+                  icon: PhosphorIconsRegular.lock,
+                  title: l10n.boletinNoAccess,
+                ),
+              );
+            }
             return _headerBody(
               l10n,
               EmptyState(
@@ -86,7 +118,10 @@ class _StudentBoletinScreenState extends ConsumerState<StudentBoletinScreen> {
             );
           }
 
-          final selectedId = _selectedClassroomId ?? classrooms.first.id;
+          final selectedId = _selectedClassroomId != null &&
+                  visible.any((c) => c.id == _selectedClassroomId)
+              ? _selectedClassroomId!
+              : visible.first.id;
           final key = (
             studentId: widget.studentId,
             classroomId: selectedId,
@@ -102,9 +137,11 @@ class _StudentBoletinScreenState extends ConsumerState<StudentBoletinScreen> {
                 subtitle: fullname.isEmpty ? null : fullname,
                 onBack: () => Navigator.of(context).maybePop(),
               ),
+              // La fila aparece si el alumno tiene 2+ aulas; para un profesor
+              // puede quedar un único chip (las demás son ajenas).
               if (classrooms.length > 1)
                 _ClassroomChips(
-                  classrooms: classrooms,
+                  classrooms: visible,
                   selectedId: selectedId,
                   onSelected: (id) =>
                       setState(() => _selectedClassroomId = id),

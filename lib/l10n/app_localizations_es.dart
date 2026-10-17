@@ -1224,6 +1224,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get boletinNoGrades => 'No hay calificaciones registradas para este período';
 
   @override
+  String get boletinNoAccess => 'No tenés acceso al boletín de este alumno';
+
+  @override
   String get boletinDownloadError => 'No se pudo descargar el boletín';
 
   @override

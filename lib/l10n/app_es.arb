@@ -622,6 +622,7 @@
   },
   "boletinObservations": "Observaciones",
   "boletinNoGrades": "No hay calificaciones registradas para este período",
+  "boletinNoAccess": "No tenés acceso al boletín de este alumno",
   "boletinDownloadError": "No se pudo descargar el boletín",
   "boletinViewAction": "Ver boletín",
   "parentChooseChild": "Elegí un hijo",

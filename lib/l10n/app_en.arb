@@ -401,6 +401,7 @@
   "boletinPeriod": "Period {n}",
   "boletinObservations": "Observations",
   "boletinNoGrades": "No grades recorded for this period",
+  "boletinNoAccess": "You don't have access to this student's report card",
   "boletinDownloadError": "Could not download the report card",
   "boletinViewAction": "View report card",
   "parentChooseChild": "Choose a child",
