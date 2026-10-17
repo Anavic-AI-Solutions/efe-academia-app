@@ -251,7 +251,9 @@ class ParentHomeScreen extends ConsumerWidget {
     if (children.isEmpty) return;
 
     if (children.length == 1) {
-      context.push('/students/${_studentRouteId(children.first, parentHome)}');
+      context.push(
+        '/students/${_studentRouteId(children.first, parentHome)}/boletin',
+      );
       return;
     }
 
@@ -261,7 +263,7 @@ class ParentHomeScreen extends ConsumerWidget {
       builder: (_) => _ChildPickerSheet(children: children),
     );
     if (selected == null || !context.mounted) return;
-    context.push('/students/${_studentRouteId(selected, parentHome)}');
+    context.push('/students/${_studentRouteId(selected, parentHome)}/boletin');
   }
 }
 

@@ -11,6 +11,7 @@ import '../features/classrooms/screens/classroom_list_screen.dart';
 import '../features/classrooms/screens/classroom_detail_screen.dart';
 import '../features/attendance/screens/attendance_screen.dart';
 import '../features/qualifications/screens/classroom_grades_screen.dart';
+import '../features/qualifications/screens/student_boletin_screen.dart';
 import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
@@ -341,6 +342,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               studentId: state.pathParameters['id']!,
               classroomId: state.uri.queryParameters['classroomId'],
             ),
+            routes: [
+              GoRoute(
+                path: 'boletin',
+                builder: (context, state) => StudentBoletinScreen(
+                  studentId: state.pathParameters['id']!,
+                ),
+              ),
+            ],
           ),
         ],
       ),

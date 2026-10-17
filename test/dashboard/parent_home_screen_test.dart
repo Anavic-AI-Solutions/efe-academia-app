@@ -140,6 +140,12 @@ GoRouter _router() => GoRouter(
         GoRoute(
           path: '/students/:id',
           builder: (_, s) => Text('student:${s.pathParameters['id']}'),
+          routes: [
+            GoRoute(
+              path: 'boletin',
+              builder: (_, s) => Text('boletin:${s.pathParameters['id']}'),
+            ),
+          ],
         ),
         GoRoute(path: '/payments', builder: (_, __) => const Text('payments')),
         GoRoute(path: '/chat', builder: (_, __) => const Text('chat')),
@@ -301,7 +307,7 @@ void main() {
     await _pumpHome(tester, children: const [_ana]);
     await tester.tap(find.text('Boletín'));
     await tester.pumpAndSettle();
-    expect(find.text('student:s-ana'), findsOneWidget);
+    expect(find.text('boletin:s-ana'), findsOneWidget);
   });
 
   testWidgets('boletin with two children asks which one', (tester) async {
@@ -314,7 +320,7 @@ void main() {
       matching: find.text('Bruno Pérez'),
     ));
     await tester.pumpAndSettle();
-    expect(find.text('student:s-bruno'), findsOneWidget);
+    expect(find.text('boletin:s-bruno'), findsOneWidget);
   });
 
   testWidgets('chat action opens the chat tab', (tester) async {
