@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/empty_state.dart';
@@ -53,22 +55,37 @@ class StudentGradesTab extends ConsumerWidget {
       data: (qualifications) {
         final sections = _buildSections(l10n, qualifications);
         if (sections.isEmpty) {
-          return _ScrollableCenter(
-            child: EmptyState(
-              icon: Icons.grade_outlined,
-              title: l10n.studentsNoGrades,
-            ),
+          return Column(
+            children: [
+              Expanded(
+                child: _ScrollableCenter(
+                  child: EmptyState(
+                    icon: Icons.grade_outlined,
+                    title: l10n.studentsNoGrades,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: _BoletinButton(studentId: studentId),
+              ),
+            ],
           );
         }
 
         return ListView.separated(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-          itemCount: sections.length,
+          itemCount: sections.length + 1,
           separatorBuilder: (_, __) => const SizedBox(height: 14),
-          itemBuilder: (context, index) => StudentGradesGrid(
-            qualifications: sections[index].qualifications,
-            classroomName: sections[index].name,
-          ),
+          itemBuilder: (context, index) {
+            if (index == sections.length) {
+              return _BoletinButton(studentId: studentId);
+            }
+            return StudentGradesGrid(
+              qualifications: sections[index].qualifications,
+              classroomName: sections[index].name,
+            );
+          },
         );
       },
     );
@@ -168,8 +185,36 @@ class StudentGradesTab extends ConsumerWidget {
   }
 }
 
+/// Acceso al boletín del alumno desde el pie del tab Notas (todos los roles).
+class _BoletinButton extends StatelessWidget {
+  final String studentId;
+
+  const _BoletinButton({required this.studentId});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: () => context.push('/students/$studentId/boletin'),
+        icon: const Icon(PhosphorIconsRegular.fileText, size: 18),
+        label: Text(l10n.boletinViewAction),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          side: BorderSide(color: AppColors.primary.withOpacity(0.5)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Centers fixed-height states (empty/error) filling the available height,
-/// scrolling instead of overflowing when the action bar leaves little room.
+/// scrolling instead of overflowing when the footer leaves little room.
 class _ScrollableCenter extends StatelessWidget {
   final Widget child;
 
