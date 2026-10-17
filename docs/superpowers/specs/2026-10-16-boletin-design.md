@@ -25,7 +25,7 @@ La acción “Boletín” del home de padres (etapa 1) abre hoy la ficha del hij
 
 ## 3. Objetivo
 
-Que el padre (y también el alumno, profesor y staff) vea el boletín completo de un alumno por aula dentro de la app — notas por período con promedio de paridad con el PDF, asistencia por período, inasistencias y observaciones públicas — y pueda descargar el PDF oficial, con la API autorizada y sin cambios para el web.
+Que el padre (y también el alumno, profesor y staff) vea el boletín completo de un alumno por aula dentro de la app — notas por período con promedio por período (regla propia; divergencia con el PDF documentada), asistencia por período, inasistencias y observaciones públicas — y pueda descargar el PDF oficial, con la API autorizada y sin cambios para el web.
 
 ## 4. Alcance y no-objetivos
 
@@ -65,7 +65,7 @@ Que el padre (y también el alumno, profesor y staff) vea el boletín completo d
 ```
 
 Reglas:
-- **`averages`**: media simple de scores **numéricos** por período, redondeo 2, `null` sin datos — **regla del PDF** (paridad con el documento descargable). El grid del detalle del hijo conserva su regla propia (dedup + mapa de texto); son vistas distintas y queda documentado.
+- **`averages`**: promedio **por período** (media simple de scores numéricos, redondeo 2, `null` sin datos) — regla propia de la app, coherente con las cards por período; el PDF agrupa por **categoría** con un promedio único: divergencia deliberada documentada (R14). El grid del detalle del hijo conserva su regla propia (dedup + mapa de texto); son vistas distintas y queda documentado.
 - **`attendance_by_period`**: `AttendanceCalculationService` por período (1, 2, 3), `null` cuando no hay clases registradas.
 - **`absences.justified/unjustified`** y `list[].justified`: misma clasificación del sistema (status justificado/pendiente/sin justificar con fallback al campo `justified`).
 - **`observations`**: para padre/alumno solo `is_public = true`; admin/sucursal/profesor todas (como el PDF actual). La generación del PDF por esta ruta aplica el mismo filtro por rol.
@@ -110,7 +110,7 @@ Policy (padre propio/ajeno, alumno, profesor de la cátedra/otra, admin), JSON p
   4. **Observaciones** (`boletinObservations`): fecha + descripción; oculta si vacía.
 - **Botón fijo al pie**: “Descargar boletín (PDF)” (`boletinDownloadAction`, `PillButton`) → `getBoletinLink` → `openUrl` (inyectable, default `launchUrl` externo); fallo → snackbar `boletinDownloadError` sin crash.
 - **Estados**: shimmer, `ErrorView` + retry, sin aulas → `EmptyState` reusando `classroomsEmptyTitle`, secciones sin datos con su vacío (“No hay calificaciones registradas para este período”, `boletinNoGrades`); pull-to-refresh.
-- Adaptaciones documentadas: promedios con regla del PDF (paridad); observaciones solo públicas; sin filtro de período (YAGNI).
+- Adaptaciones documentadas: promedios por período (regla propia de la app; el PDF agrupa por categoría — divergencia deliberada, R14); observaciones solo públicas; sin filtro de período (YAGNI).
 
 ## 8. Navegación
 
@@ -135,7 +135,7 @@ Nuevas ES/EN: `boletinTitle` (“Boletín”/“Report card”), `boletinDownloa
 ## 11. Riesgos y decisiones
 
 - **Negociación por `Accept`**: la ruta API no tiene consumidores y el web usa rutas propias (verificado) — sin riesgo para el web; la app ya manda `Accept: application/json`.
-- **Promedio del boletín (regla PDF) ≠ grid del detalle (dedup+mapa)**: decisión explícita por paridad con el documento descargable; documentada en código y spec.
+- **Promedio del boletín: divergencia app vs PDF**: la app calcula el promedio **por período** (media simple de scores numéricos, coherente con las cards); el PDF (`boletin.blade.php`) agrupa por **categoría** con un promedio único (un número que mezcla períodos). Divergencia deliberada documentada en código (R14) y spec; no “unificar” sin contexto. El grid del detalle conserva su regla propia (dedup+mapa).
 - **Observaciones**: padre/alumno solo públicas (el PDF generado por esta ruta también filtra por rol) — evita exponer notas internas.
 - **`current_selected_id`**: la regla de alumno usa `user->studentData` (quirk pre-existente, igual que las policies de la etapa 2).
 - **Firma 10 min**: uso inmediato; depende de `APP_URL` correcta (ya usado por facturas).
@@ -144,7 +144,7 @@ Nuevas ES/EN: `boletinTitle` (“Boletín”/“Report card”), `boletinDownloa
 ## 12. Criterios de éxito
 
 1. Desde el home, “Boletín” abre la pantalla del hijo elegido (1 directo / 2+ selector).
-2. La pantalla muestra notas por período con promedio de paridad-PDF, asistencia por período, inasistencias y observaciones públicas — con selector de aula si el hijo tiene 2+.
+2. La pantalla muestra notas por período con promedio por período (regla propia; divergencia con el PDF documentada), asistencia por período, inasistencias y observaciones públicas — con selector de aula si el hijo tiene 2+.
 3. “Descargar boletín (PDF)” abre el PDF oficial vía URL firmada.
 4. La API queda autorizada (padre solo su hijo; alumno propio; profesor su aula; admin todo) y el web intacto.
 5. Otros roles y pantallas intactos; `flutter analyze` sin issues nuevos y `flutter test` verde; ES/EN; claro/oscuro.
