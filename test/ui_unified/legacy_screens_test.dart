@@ -18,6 +18,7 @@ import 'package:efe_mobile/features/fees/providers/fee_provider.dart';
 import 'package:efe_mobile/features/fees/screens/fee_detail_screen.dart';
 import 'package:efe_mobile/features/fees/screens/fee_list_screen.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
+import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart'
@@ -157,6 +158,14 @@ class _FakeFeeRepository implements FeeRepository {
 
 class _NeverQualificationRepository implements QualificationRepository {
   @override
+  Future<BoletinData> getBoletin(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getBoletinUrl(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
   Future<CursorPagination<QualificationModel>> getQualifications({
     String? studentId,
     String? classroomId,
@@ -197,6 +206,14 @@ class _FakeQualificationRepository implements QualificationRepository {
   _FakeQualificationRepository({
     this.qualifications = const [],
   });
+
+  @override
+  Future<BoletinData> getBoletin(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getBoletinUrl(String studentId, String classroomId) =>
+      throw UnimplementedError();
 
   @override
   Future<CursorPagination<QualificationModel>> getQualifications({
@@ -272,6 +289,14 @@ class _ErrorFeeRepository implements FeeRepository {
 }
 
 class _ErrorQualificationRepository implements QualificationRepository {
+  @override
+  Future<BoletinData> getBoletin(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getBoletinUrl(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
   @override
   Future<CursorPagination<QualificationModel>> getQualifications({
     String? studentId,

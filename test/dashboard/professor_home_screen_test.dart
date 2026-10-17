@@ -32,6 +32,7 @@ import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
+import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
@@ -161,6 +162,14 @@ class _FakeAttendanceRepository implements AttendanceRepository {
 }
 
 class _FakeQualificationRepository implements QualificationRepository {
+  @override
+  Future<BoletinData> getBoletin(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getBoletinUrl(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
   @override
   Future<ClassroomGradesSummary> getClassroomGradesSummary(
     String classroomId,

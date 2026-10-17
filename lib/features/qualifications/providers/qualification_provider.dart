@@ -4,6 +4,7 @@ import '../../../core/api/api_provider.dart';
 import '../../../core/api/cursor_pagination.dart';
 import '../data/qualification_api.dart';
 import '../data/qualification_repository.dart';
+import '../domain/boletin_data.dart';
 import '../domain/classroom_grades_summary.dart';
 import '../domain/qualification_model.dart';
 
@@ -125,5 +126,18 @@ final classroomGradesProvider =
     return ref
         .watch(qualificationRepositoryProvider)
         .getClassroomGradesSummary(classroomId);
+  },
+);
+
+// ---------------------------------------------------------------------------
+// Boletin
+// ---------------------------------------------------------------------------
+
+final boletinProvider = FutureProvider.family<BoletinData,
+    ({String studentId, String classroomId})>(
+  (ref, key) {
+    return ref
+        .watch(qualificationRepositoryProvider)
+        .getBoletin(key.studentId, key.classroomId);
   },
 );

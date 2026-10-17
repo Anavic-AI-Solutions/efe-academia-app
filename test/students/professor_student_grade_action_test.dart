@@ -4,6 +4,7 @@ import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
+import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
@@ -97,6 +98,14 @@ class _FakeQualificationRepository implements QualificationRepository {
     String? cursor,
   }) async =>
       CursorPagination<QualificationModel>.empty();
+
+  @override
+  Future<BoletinData> getBoletin(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getBoletinUrl(String studentId, String classroomId) =>
+      throw UnimplementedError();
 }
 
 class _FakeDashboardRepository implements DashboardRepository {
