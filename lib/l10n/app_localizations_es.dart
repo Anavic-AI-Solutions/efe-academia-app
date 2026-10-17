@@ -1207,6 +1207,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get parentActionBoletin => 'Boletín';
 
   @override
+  String get boletinTitle => 'Boletín';
+
+  @override
+  String get boletinDownloadAction => 'Descargar boletín (PDF)';
+
+  @override
+  String boletinPeriod(int n) {
+    return '$n° Período';
+  }
+
+  @override
+  String get boletinObservations => 'Observaciones';
+
+  @override
+  String get boletinNoGrades => 'No hay calificaciones registradas para este período';
+
+  @override
+  String get boletinDownloadError => 'No se pudo descargar el boletín';
+
+  @override
+  String get boletinViewAction => 'Ver boletín';
+
+  @override
   String get parentChooseChild => 'Elegí un hijo';
 
   @override

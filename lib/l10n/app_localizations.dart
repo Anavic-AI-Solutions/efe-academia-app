@@ -2261,6 +2261,48 @@ abstract class AppLocalizations {
   /// **'Boletín'**
   String get parentActionBoletin;
 
+  /// No description provided for @boletinTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Boletín'**
+  String get boletinTitle;
+
+  /// No description provided for @boletinDownloadAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar boletín (PDF)'**
+  String get boletinDownloadAction;
+
+  /// No description provided for @boletinPeriod.
+  ///
+  /// In es, this message translates to:
+  /// **'{n}° Período'**
+  String boletinPeriod(int n);
+
+  /// No description provided for @boletinObservations.
+  ///
+  /// In es, this message translates to:
+  /// **'Observaciones'**
+  String get boletinObservations;
+
+  /// No description provided for @boletinNoGrades.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay calificaciones registradas para este período'**
+  String get boletinNoGrades;
+
+  /// No description provided for @boletinDownloadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar el boletín'**
+  String get boletinDownloadError;
+
+  /// No description provided for @boletinViewAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver boletín'**
+  String get boletinViewAction;
+
   /// No description provided for @parentChooseChild.
   ///
   /// In es, this message translates to:

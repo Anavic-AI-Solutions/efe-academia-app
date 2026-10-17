@@ -610,6 +610,20 @@
   "parentPayAction": "Pagar",
   "navPayments": "Pagos",
   "parentActionBoletin": "Boletín",
+  "boletinTitle": "Boletín",
+  "boletinDownloadAction": "Descargar boletín (PDF)",
+  "boletinPeriod": "{n}° Período",
+  "@boletinPeriod": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "boletinObservations": "Observaciones",
+  "boletinNoGrades": "No hay calificaciones registradas para este período",
+  "boletinDownloadError": "No se pudo descargar el boletín",
+  "boletinViewAction": "Ver boletín",
   "parentChooseChild": "Elegí un hijo",
   "feesUploadProofAction": "Subir comprobante",
   "feesReplaceProofAction": "Reemplazar comprobante",

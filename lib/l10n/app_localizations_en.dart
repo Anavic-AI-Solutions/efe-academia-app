@@ -1207,6 +1207,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get parentActionBoletin => 'Report Card';
 
   @override
+  String get boletinTitle => 'Report card';
+
+  @override
+  String get boletinDownloadAction => 'Download report card (PDF)';
+
+  @override
+  String boletinPeriod(int n) {
+    return 'Period $n';
+  }
+
+  @override
+  String get boletinObservations => 'Observations';
+
+  @override
+  String get boletinNoGrades => 'No grades recorded for this period';
+
+  @override
+  String get boletinDownloadError => 'Could not download the report card';
+
+  @override
+  String get boletinViewAction => 'View report card';
+
+  @override
   String get parentChooseChild => 'Choose a child';
 
   @override
