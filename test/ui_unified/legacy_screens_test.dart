@@ -100,7 +100,10 @@ class _NeverFeeRepository implements FeeRepository {
       Completer<void>().future;
 
   @override
-  Future<String> getInvoiceUrl(String feeId) => Completer<String>().future;
+  Future<String> getInvoiceUrl(String feeId) async => Completer<String>().future;
+
+  @override
+  Future<Never> getInvoiceFile(String feeId) => throw UnimplementedError();
 }
 
 class _FakeFeeRepository implements FeeRepository {
@@ -154,6 +157,9 @@ class _FakeFeeRepository implements FeeRepository {
 
   @override
   Future<String> getInvoiceUrl(String feeId) => throw UnimplementedError();
+
+  @override
+  Future<Never> getInvoiceFile(String feeId) => throw UnimplementedError();
 }
 
 class _NeverQualificationRepository implements QualificationRepository {
@@ -285,6 +291,10 @@ class _ErrorFeeRepository implements FeeRepository {
 
   @override
   Future<String> getInvoiceUrl(String feeId) =>
+      Future.error(Exception('Network error'));
+
+  @override
+  Future<Never> getInvoiceFile(String feeId) =>
       Future.error(Exception('Network error'));
 }
 

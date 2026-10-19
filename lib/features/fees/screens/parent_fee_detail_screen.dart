@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../core/utils/formatters.dart';
@@ -21,19 +21,18 @@ import 'widgets/parent_fee_proof_sheet.dart';
 ///
 /// Card con las filas de la cuota y acciones al pie según el estado: subir
 /// comprobante (cuota accionable) o reemplazarlo (en revisión) — al cerrar el
-/// sheet con `pop(true)` se refrescan detalle y lista — y ver la factura
-/// firmada (solo pagada; si la factura no está disponible se avisa con
-/// snackbar, sin crashear).
+/// sheet con `pop(true)` se refrescan detalle y lista — y ver la factura en el
+/// visor in-app (`/payments/:id/invoice`, solo pagada).
 class ParentFeeDetailScreen extends ConsumerStatefulWidget {
   final String feeId;
 
-  /// Launcher inyectable para tests; por defecto abre con `url_launcher`.
-  final Future<bool> Function(Uri)? openUrl;
+  /// Navegación inyectable para tests; por defecto empuja el visor de factura.
+  final VoidCallback? onViewInvoice;
 
   const ParentFeeDetailScreen({
     super.key,
     required this.feeId,
-    this.openUrl,
+    this.onViewInvoice,
   });
 
   @override
@@ -42,7 +41,6 @@ class ParentFeeDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ParentFeeDetailScreenState extends ConsumerState<ParentFeeDetailScreen> {
-  bool _openingInvoice = false;
 
   /// Abre el sheet de subida/reemplazo y, si termina en éxito (`pop(true)`),
   /// muestra el snackbar e invalida el detalle y la lista de cuotas.
@@ -61,40 +59,16 @@ class _ParentFeeDetailScreenState extends ConsumerState<ParentFeeDetailScreen> {
     ref.invalidate(parentFeesProvider);
   }
 
-  /// Pide la URL firmada de la factura y la abre externamente. Si no está
-  /// disponible (p. ej. `ApiException` 404 sin PDF) avisa con snackbar.
-  Future<void> _openInvoice() async {
-    if (_openingInvoice) return;
-    setState(() => _openingInvoice = true);
-
-    var opened = false;
-    try {
-      final url = await ref.read(feeRepositoryProvider).getInvoiceUrl(
-            widget.feeId,
-          );
-      final uri = Uri.tryParse(url);
-      if (uri != null && url.trim().isNotEmpty) {
-        opened = await _launch(uri);
-      }
-    } catch (_) {
-      // ApiException 404 (factura sin PDF) y cualquier otro fallo de la API o
-      // del launcher terminan en el mismo aviso: nunca se propaga el error.
-      opened = false;
+  /// Abre el visor in-app de la factura; la descarga y el 404 los maneja la
+  /// pantalla del visor (`InvoiceViewerScreen`).
+  void _openInvoice() {
+    final onViewInvoice = widget.onViewInvoice;
+    if (onViewInvoice != null) {
+      onViewInvoice();
+      return;
     }
 
-    if (!mounted) return;
-    setState(() => _openingInvoice = false);
-    if (!opened) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.feesInvoiceUnavailable)),
-      );
-    }
-  }
-
-  Future<bool> _launch(Uri uri) {
-    final openUrl = widget.openUrl;
-    if (openUrl != null) return openUrl(uri);
-    return launchUrl(uri, mode: LaunchMode.externalApplication);
+    context.push('/payments/${widget.feeId}/invoice');
   }
 
   @override
@@ -251,7 +225,6 @@ class _ParentFeeDetailScreenState extends ConsumerState<ParentFeeDetailScreen> {
         padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
         child: PillButton(
           label: l10n.feesInvoiceAction,
-          isLoading: _openingInvoice,
           onPressed: _openInvoice,
         ),
       );

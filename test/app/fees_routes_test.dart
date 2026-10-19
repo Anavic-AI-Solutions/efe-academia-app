@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:efe_mobile/app/router.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
@@ -18,6 +20,7 @@ import 'package:efe_mobile/features/fees/providers/fee_provider.dart';
 import 'package:efe_mobile/features/fees/domain/fee_model.dart';
 import 'package:efe_mobile/features/fees/screens/fee_detail_screen.dart';
 import 'package:efe_mobile/features/fees/screens/fee_list_screen.dart';
+import 'package:efe_mobile/features/fees/screens/invoice_viewer_screen.dart';
 import 'package:efe_mobile/features/news/data/news_repository.dart';
 import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
@@ -143,6 +146,13 @@ class _FakeFeeApi implements FeeApi {
       },
     );
   }
+
+  @override
+  Future<Response<List<int>>> getInvoiceBytes(String url) {
+    // Nunca completa: el visor queda en loading y no intenta cargar PDFium
+    // nativo en el entorno de tests.
+    return Completer<Response<List<int>>>().future;
+  }
 }
 
 List<String> collectRoutePaths(GoRouter router) {
@@ -224,6 +234,9 @@ void main() {
     final paths = collectRoutePaths(router);
     expect(paths, contains('/fees'));
     expect(paths, contains('/fees/:id'));
+    expect(paths, contains('/payments'));
+    expect(paths, contains('/payments/:id'));
+    expect(paths, contains('/payments/:id/invoice'));
     await Future<void>.delayed(const Duration(milliseconds: 20));
   });
 
@@ -242,6 +255,18 @@ void main() {
     router.go('/fees/f1');
     await tester.pumpAndSettle();
     expect(find.byType(FeeDetailScreen), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('navigating to /payments/f1/invoice shows InvoiceViewerScreen',
+      (tester) async {
+    final container = await _pumpFeesApp(tester);
+    final router = container.read(routerProvider);
+    router.go('/payments/f1/invoice');
+    // El visor queda en loading (spinner animado): no usar pumpAndSettle.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byType(InvoiceViewerScreen), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

@@ -17,11 +17,14 @@ class _FakeFeeApi implements FeeApi {
   Map<String, dynamic>? lastQuery;
   (String, FormData)? lastUploadProof;
   String? lastInvoiceLinkId;
+  String? lastInvoiceBytesUrl;
   DioException? uploadError;
+  DioException? invoiceBytesError;
   Object feePayload = {};
   Object invoicePayload = {
     'data': {'url': 'https://x/fees/1/invoice-file?signature=abc'},
   };
+  List<int> invoiceBytes = const [37, 80, 68, 70];
 
   @override
   Future<Response> getFees({
@@ -81,6 +84,18 @@ class _FakeFeeApi implements FeeApi {
     lastInvoiceLinkId = feeId;
     return _response(invoicePayload);
   }
+
+  @override
+  Future<Response<List<int>>> getInvoiceBytes(String url) async {
+    lastInvoiceBytesUrl = url;
+    final error = invoiceBytesError;
+    if (error != null) throw error;
+    return Response<List<int>>(
+      requestOptions: RequestOptions(path: url),
+      statusCode: 200,
+      data: invoiceBytes,
+    );
+  }
 }
 
 class _FakeSecureStorage implements SecureStorage {
@@ -118,6 +133,8 @@ class _CapturingApiClient extends ApiClient {
 
   String? lastPath;
   Object? lastData;
+  String? lastBytesPath;
+  bool? lastBytesAcceptPdf;
 
   @override
   Future<Response> get(
@@ -128,6 +145,20 @@ class _CapturingApiClient extends ApiClient {
     return _response({
       'data': {'url': 'https://x/fees/f1/invoice-file?signature=abc'},
     });
+  }
+
+  @override
+  Future<Response<List<int>>> getBytes(
+    String path, {
+    Map<String, String>? headers,
+  }) async {
+    lastBytesPath = path;
+    lastBytesAcceptPdf = headers?['Accept'] == 'application/pdf';
+    return Response<List<int>>(
+      requestOptions: RequestOptions(path: path),
+      statusCode: 200,
+      data: const [37, 80, 68, 70],
+    );
   }
 
   @override
@@ -261,6 +292,52 @@ void main() {
 
       expect(await repository.getInvoiceUrl('f1'), '');
     });
+
+    test('getInvoiceFile returns the signed url and its bytes', () async {
+      final api = _FakeFeeApi();
+      final repository = FeeRepository(api);
+
+      final file = await repository.getInvoiceFile('f1');
+
+      expect(api.lastInvoiceLinkId, 'f1');
+      expect(api.lastInvoiceBytesUrl,
+          'https://x/fees/1/invoice-file?signature=abc');
+      expect(file.url, 'https://x/fees/1/invoice-file?signature=abc');
+      expect(file.bytes, const [37, 80, 68, 70]);
+    });
+
+    test('getInvoiceFile throws 404 when the link has no url', () async {
+      final api = _FakeFeeApi()..invoicePayload = {'data': <String, dynamic>{}};
+      final repository = FeeRepository(api);
+
+      await expectLater(
+        repository.getInvoiceFile('f1'),
+        throwsA(
+          isA<ApiException>().having((e) => e.statusCode, 'statusCode', 404),
+        ),
+      );
+      expect(api.lastInvoiceBytesUrl, isNull);
+    });
+
+    test('getInvoiceFile maps a 404 on the file to ApiException', () async {
+      final api = _FakeFeeApi()
+        ..invoiceBytesError = DioException(
+          requestOptions: RequestOptions(path: '/fees/1/invoice-file'),
+          response: Response(
+            requestOptions: RequestOptions(path: '/fees/1/invoice-file'),
+            statusCode: 404,
+            data: {'message': 'Factura no disponible'},
+          ),
+        );
+      final repository = FeeRepository(api);
+
+      await expectLater(
+        repository.getInvoiceFile('f1'),
+        throwsA(
+          isA<ApiException>().having((e) => e.statusCode, 'statusCode', 404),
+        ),
+      );
+    });
   });
 
   group('FeeApi', () {
@@ -286,6 +363,20 @@ void main() {
 
       expect(client.lastPath, '/fees/f1/invoice-link');
       expect(response.data['data']['url'], contains('/invoice-file'));
+    });
+
+    test('getInvoiceBytes requests the signed url accepting a pdf', () async {
+      final client = _CapturingApiClient();
+      final api = FeeApi(client);
+
+      final response = await api.getInvoiceBytes(
+        'https://x/fees/f1/invoice-file?signature=abc',
+      );
+
+      expect(client.lastBytesPath,
+          'https://x/fees/f1/invoice-file?signature=abc');
+      expect(client.lastBytesAcceptPdf, isTrue);
+      expect(response.data, const [37, 80, 68, 70]);
     });
   });
 }

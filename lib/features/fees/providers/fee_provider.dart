@@ -5,6 +5,7 @@ import '../../../core/api/cursor_pagination.dart';
 import '../data/fee_api.dart';
 import '../data/fee_repository.dart';
 import '../domain/fee_model.dart';
+import '../domain/invoice_file.dart';
 
 // ---------------------------------------------------------------------------
 // Providers
@@ -156,4 +157,11 @@ final feeDetailProvider =
     FutureProvider.family<FeeModel, String>((ref, id) async {
   final repository = ref.watch(feeRepositoryProvider);
   return repository.getFee(id);
+});
+
+/// Factura (link firmado + bytes) para el visor in-app. `autoDispose` libera
+/// el PDF de memoria al cerrar la pantalla.
+final invoiceFileProvider =
+    FutureProvider.autoDispose.family<InvoiceFile, String>((ref, feeId) {
+  return ref.watch(feeRepositoryProvider).getInvoiceFile(feeId);
 });

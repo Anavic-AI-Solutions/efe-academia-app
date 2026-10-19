@@ -22,26 +22,23 @@ import 'package:flutter_test/flutter_test.dart';
 /// URL firmada que devuelve el repo falso en los tests de factura.
 const _invoiceUrl = 'https://efe.test/fees/f1/invoice-file?signature=abc123';
 
-/// Repositorio de cuotas falso: cuenta llamadas de detalle/lista/factura,
-/// puede fallar la primera lectura del detalle, puede quedar pendiente para
-/// el estado de carga y puede fallar la factura (p. ej. 404 sin PDF).
+/// Repositorio de cuotas falso: cuenta llamadas de detalle/lista, puede fallar
+/// la primera lectura del detalle y puede quedar pendiente para el estado de
+/// carga.
 class _FakeFeeRepository implements FeeRepository {
   _FakeFeeRepository({
     FeeModel? fee,
     this.failFirst = false,
     this.pending = false,
-    this.invoiceError,
   }) : fee = fee ?? _fee();
 
   final FeeModel fee;
   final bool failFirst;
   final bool pending;
-  final ApiException? invoiceError;
 
   final pendingCompleter = Completer<FeeModel>();
   int getFeeCalls = 0;
   int getFeesCalls = 0;
-  int invoiceCalls = 0;
 
   @override
   Future<FeeModel> getFee(String id) async {
@@ -64,12 +61,10 @@ class _FakeFeeRepository implements FeeRepository {
   }
 
   @override
-  Future<String> getInvoiceUrl(String feeId) async {
-    invoiceCalls++;
-    final error = invoiceError;
-    if (error != null) throw error;
-    return _invoiceUrl;
-  }
+  Future<String> getInvoiceUrl(String feeId) async => _invoiceUrl;
+
+  @override
+  Future<Never> getInvoiceFile(String feeId) => throw UnimplementedError();
 
   @override
   Future<void> uploadProof(
@@ -122,7 +117,7 @@ FeeModel _fee({
 Future<_FakeFeeRepository> _pumpScreen(
   WidgetTester tester, {
   _FakeFeeRepository? repo,
-  Future<bool> Function(Uri)? openUrl,
+  VoidCallback? onViewInvoice,
   Brightness brightness = Brightness.light,
   bool settle = true,
 }) async {
@@ -142,7 +137,10 @@ Future<_FakeFeeRepository> _pumpScreen(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         theme: ThemeData(brightness: brightness),
-        home: ParentFeeDetailScreen(feeId: 'f1', openUrl: openUrl),
+        home: ParentFeeDetailScreen(
+          feeId: 'f1',
+          onViewInvoice: onViewInvoice,
+        ),
       ),
     ),
   );
@@ -367,49 +365,19 @@ void main() {
       expect(find.text(es.feesReplaceProofAction), findsNothing);
     });
 
-    testWidgets('tap Ver factura abre la url firmada del repo', (tester) async {
-      Uri? opened;
-      final repo = await _pumpScreen(
-        tester,
-        repo: _FakeFeeRepository(fee: _fee(status: 'paid', paid: 25000)),
-        openUrl: (uri) async {
-          opened = uri;
-          return true;
-        },
-      );
-
-      await tester.tap(find.widgetWithText(PillButton, es.feesInvoiceAction));
-      await tester.pumpAndSettle();
-
-      expect(repo.invoiceCalls, 1);
-      expect(opened, Uri.parse(_invoiceUrl));
-      expect(find.text(es.feesInvoiceUnavailable), findsNothing);
-    });
-
-    testWidgets('factura 404 → snackbar Factura no disponible, sin crash',
-        (tester) async {
-      Uri? opened;
+    testWidgets('tap Ver factura navega al visor de la factura', (tester) async {
+      var navigated = 0;
       await _pumpScreen(
         tester,
-        repo: _FakeFeeRepository(
-          fee: _fee(status: 'paid', paid: 25000),
-          invoiceError: ApiException(
-            message: 'Factura no disponible',
-            statusCode: 404,
-          ),
-        ),
-        openUrl: (uri) async {
-          opened = uri;
-          return true;
-        },
+        repo: _FakeFeeRepository(fee: _fee(status: 'paid', paid: 25000)),
+        onViewInvoice: () => navigated++,
       );
 
       await tester.tap(find.widgetWithText(PillButton, es.feesInvoiceAction));
       await tester.pumpAndSettle();
 
-      expect(find.text(es.feesInvoiceUnavailable), findsOneWidget);
-      expect(opened, isNull);
-      expect(tester.takeException(), isNull);
+      expect(navigated, 1);
+      expect(find.text(es.feesInvoiceUnavailable), findsNothing);
     });
   });
 

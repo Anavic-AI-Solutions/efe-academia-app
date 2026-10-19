@@ -1248,6 +1248,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feesInvoiceUnavailable => 'Invoice unavailable';
 
   @override
+  String get feesInvoiceViewerTitle => 'Invoice';
+
+  @override
+  String get feesInvoiceLoadError => 'Could not load the invoice';
+
+  @override
+  String get feesInvoiceDownloadAction => 'Download';
+
+  @override
+  String get feesInvoiceDownloadSuccess => 'Invoice downloaded';
+
+  @override
+  String get feesInvoiceDownloadError => 'Could not download the invoice';
+
+  @override
   String get feesChooseFeeTitle => 'Choose the installment';
 
   @override

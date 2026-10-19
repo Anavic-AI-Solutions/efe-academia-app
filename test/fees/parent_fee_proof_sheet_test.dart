@@ -61,6 +61,9 @@ class _FakeFeeRepository implements FeeRepository {
 
   @override
   Future<String> getInvoiceUrl(String feeId) => throw UnimplementedError();
+
+  @override
+  Future<Never> getInvoiceFile(String feeId) => throw UnimplementedError();
 }
 
 /// Cuota de prueba; por defecto, pendiente de julio 2026 de Ana Pérez.

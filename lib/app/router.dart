@@ -19,6 +19,7 @@ import '../features/chat/screens/chat_detail_screen.dart';
 import '../features/chat/providers/chat_provider.dart';
 import '../features/fees/screens/fee_detail_screen.dart';
 import '../features/fees/screens/fee_list_screen.dart';
+import '../features/fees/screens/invoice_viewer_screen.dart';
 import '../features/fees/screens/parent_fee_detail_screen.dart';
 import '../features/fees/screens/parent_fees_screen.dart';
 import '../features/relations/screens/new_chat_screen.dart';
@@ -296,6 +297,14 @@ final routerProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) => ParentFeeDetailScreen(
                       feeId: state.pathParameters['id']!,
                     ),
+                    routes: [
+                      GoRoute(
+                        path: 'invoice',
+                        builder: (context, state) => InvoiceViewerScreen(
+                          feeId: state.pathParameters['id']!,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

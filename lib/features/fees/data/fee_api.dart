@@ -43,4 +43,9 @@ class FeeApi {
 
   Future<Response> getInvoiceLink(String feeId) =>
       _client.get('/fees/$feeId/invoice-link');
+
+  /// Descarga los bytes del PDF desde la URL firmada (absoluta) que devuelve
+  /// `invoice-link`. No requiere auth: la firma autoriza la descarga.
+  Future<Response<List<int>>> getInvoiceBytes(String url) =>
+      _client.getBytes(url, headers: {'Accept': 'application/pdf'});
 }

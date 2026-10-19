@@ -42,6 +42,20 @@ class ApiClient {
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) =>
       dio.get(path, queryParameters: queryParameters);
 
+  /// Descarga binaria (p. ej. el PDF de una factura por URL firmada). Fuerza
+  /// `ResponseType.bytes` para no intentar decodificar el cuerpo como JSON.
+  Future<Response<List<int>>> getBytes(
+    String path, {
+    Map<String, String>? headers,
+  }) =>
+      dio.get<List<int>>(
+        path,
+        options: Options(
+          responseType: ResponseType.bytes,
+          headers: headers,
+        ),
+      );
+
   Future<Response> post(String path, {dynamic data}) =>
       dio.post(path, data: data);
 

@@ -1248,6 +1248,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get feesInvoiceUnavailable => 'Factura no disponible';
 
   @override
+  String get feesInvoiceViewerTitle => 'Factura';
+
+  @override
+  String get feesInvoiceLoadError => 'No se pudo cargar la factura';
+
+  @override
+  String get feesInvoiceDownloadAction => 'Descargar';
+
+  @override
+  String get feesInvoiceDownloadSuccess => 'Factura descargada';
+
+  @override
+  String get feesInvoiceDownloadError => 'No se pudo descargar la factura';
+
+  @override
   String get feesChooseFeeTitle => 'Elegí la cuota';
 
   @override

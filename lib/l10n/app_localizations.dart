@@ -2339,6 +2339,36 @@ abstract class AppLocalizations {
   /// **'Factura no disponible'**
   String get feesInvoiceUnavailable;
 
+  /// No description provided for @feesInvoiceViewerTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get feesInvoiceViewerTitle;
+
+  /// No description provided for @feesInvoiceLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar la factura'**
+  String get feesInvoiceLoadError;
+
+  /// No description provided for @feesInvoiceDownloadAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar'**
+  String get feesInvoiceDownloadAction;
+
+  /// No description provided for @feesInvoiceDownloadSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura descargada'**
+  String get feesInvoiceDownloadSuccess;
+
+  /// No description provided for @feesInvoiceDownloadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar la factura'**
+  String get feesInvoiceDownloadError;
+
   /// No description provided for @feesChooseFeeTitle.
   ///
   /// In es, this message translates to:

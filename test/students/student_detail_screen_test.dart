@@ -218,6 +218,10 @@ class _FakeFeeRepository implements FeeRepository {
   @override
   Future<String> getInvoiceUrl(String feeId) =>
       Future.error(UnimplementedError());
+
+  @override
+  Future<Never> getInvoiceFile(String feeId) =>
+      Future.error(UnimplementedError());
 }
 
 Future<void> _pumpDetail(
