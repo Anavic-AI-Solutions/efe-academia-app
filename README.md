@@ -143,7 +143,7 @@ lib/
 | Workflow | Trigger | Qué hace |
 |----------|---------|----------|
 | `build.yml` | Push a `master` / tag | Build Linux + Windows + APK Android, crea Release con artifacts |
-| `sync.yml` | Schedule (6h) / push / manual | Format, analyze, test, build Linux/Windows, auto-tag version, PR de sync |
+| `sync.yml` | Schedule (6h) / push / manual | Format, analyze, test, build Linux, auto-tag version, PR de sync |
 
 ### Release automático
 
