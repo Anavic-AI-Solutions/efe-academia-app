@@ -189,7 +189,7 @@ flutter clean && flutter pub get
 |----------|-------------|-----------|
 | `API_BASE_URL` | Base URL del backend API | Sí |
 | `REVERB_HOST` | Host del servidor Reverb (ver tabla por plataforma) | Para chat en vivo |
-| `REVERB_PORT` | Puerto de Reverb (`8181` en el backend actual) | Para chat en vivo |
+| `REVERB_PORT` | Puerto de Reverb: `8181` local; `443` en preprod/producción (proxy WSS) | Para chat en vivo |
 | `REVERB_APP_KEY` | App key de Reverb; debe coincidir con la del backend | Para chat en vivo |
 | `REVERB_SCHEME` | `http` o `https` según el backend | Para chat en vivo |
 | `FIREBASE_MESSAGING_KEY` | Para push notifications | No |
@@ -206,6 +206,11 @@ dónde corra la app:
 | Simulador iOS / Web / Desktop | `localhost` |
 | Emulador Android | `10.0.2.2` |
 | Dispositivo físico (Android/iOS) | IP de la LAN de la máquina que corre el backend (ej. `192.168.1.50`) |
+
+> En preprod/producción Reverb se publica por **WSS en 443**:
+> `preprod.efeacademia.com:443` (LiteSpeed hace proxy de `/app/` a
+> `127.0.0.1:8181`). Para esos entornos usá `REVERB_PORT=443` y
+> `REVERB_SCHEME=https`; el puerto 8181 queda interno.
 
 El backend debe tener Reverb y la cola de trabajos corriendo. Sin el socket la
 app sigue funcionando por REST (listar, enviar y abrir chats), pero sin
