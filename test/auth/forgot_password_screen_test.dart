@@ -1,4 +1,3 @@
-import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';

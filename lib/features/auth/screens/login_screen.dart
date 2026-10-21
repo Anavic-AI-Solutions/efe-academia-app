@@ -43,7 +43,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final size = MediaQuery.of(context).size;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     ref.listen<AuthState>(authProvider, (prev, next) {

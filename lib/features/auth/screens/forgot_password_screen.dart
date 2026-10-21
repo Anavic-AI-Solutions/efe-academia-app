@@ -40,7 +40,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final isLoading = authState.status == AuthStatus.loading;
-    final size = MediaQuery.of(context).size;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     ref.listen<AuthState>(authProvider, (prev, next) {
