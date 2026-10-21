@@ -34,7 +34,9 @@ class AttendanceStudentRow extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: isAbsent ? AppColors.absent.withOpacity(0.35) : Colors.transparent,
+          color: isAbsent
+              ? AppColors.absent.withOpacity(0.35)
+              : Colors.transparent,
           width: 1.5,
         ),
       ),
@@ -94,9 +96,7 @@ class _StudentAvatar extends StatelessWidget {
       height: 26,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: isAbsent
-            ? const Color(0xFFF6DEDE)
-            : const Color(0xFFE3E7F5),
+        color: isAbsent ? const Color(0xFFF6DEDE) : const Color(0xFFE3E7F5),
         shape: BoxShape.circle,
       ),
       child: Text(

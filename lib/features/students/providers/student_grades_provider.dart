@@ -6,7 +6,8 @@ import '../../qualifications/providers/qualification_provider.dart';
 /// Fetches every qualification of a student (all pages) so the grade grid can
 /// be built at once.
 final studentGradesProvider =
-    FutureProvider.family<List<QualificationModel>, String>((ref, studentId) async {
+    FutureProvider.family<List<QualificationModel>, String>(
+        (ref, studentId) async {
   final repository = ref.watch(qualificationRepositoryProvider);
   final all = <QualificationModel>[];
   var page = 1;

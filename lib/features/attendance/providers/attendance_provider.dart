@@ -111,7 +111,9 @@ class AttendanceNotifier extends StateNotifier<AttendanceState> {
 
     state = state.copyWith(
       day: updatedDay,
-      hasChanges: _absentIdsOf(updatedDay).difference(_originalAbsentIds).isNotEmpty ||
+      hasChanges: _absentIdsOf(updatedDay)
+              .difference(_originalAbsentIds)
+              .isNotEmpty ||
           _originalAbsentIds.difference(_absentIdsOf(updatedDay)).isNotEmpty,
       clearSaveError: true,
     );

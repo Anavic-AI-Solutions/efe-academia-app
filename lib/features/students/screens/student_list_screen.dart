@@ -89,8 +89,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
                 const SizedBox(width: 8),
                 _FilterChip(
                   label: l10n.studentsFilterInactive,
-                  selected:
-                      listState.status == StudentListState.statusInactive,
+                  selected: listState.status == StudentListState.statusInactive,
                   onTap: () =>
                       notifier.setStatus(StudentListState.statusInactive),
                 ),
@@ -157,8 +156,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
 
     return Column(
       children: [
-        if (state.isLoading)
-          const LinearProgressIndicator(minHeight: 2),
+        if (state.isLoading) const LinearProgressIndicator(minHeight: 2),
         Expanded(
           child: RefreshIndicator(
             onRefresh: () => ref.read(studentListProvider.notifier).refresh(),
@@ -278,7 +276,8 @@ class _DropdownFilter extends StatelessWidget {
           value: value ?? _allValue,
           isExpanded: true,
           borderRadius: BorderRadius.circular(12),
-          dropdownColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+          dropdownColor:
+              isDark ? AppColors.darkSurface : AppColors.lightSurface,
           icon: Icon(
             PhosphorIconsRegular.caretDown,
             size: 14,
@@ -287,9 +286,8 @@ class _DropdownFilter extends StatelessWidget {
                 : AppColors.lightTextTertiary,
           ),
           style: AppTypography.labelLarge.copyWith(
-            color: isDark
-                ? AppColors.darkTextPrimary
-                : AppColors.lightTextPrimary,
+            color:
+                isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
           ),
           items: [
             DropdownMenuItem<String>(

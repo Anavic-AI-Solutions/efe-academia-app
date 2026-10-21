@@ -20,15 +20,21 @@ class QualificationModel with _$QualificationModel {
   }) = _QualificationModel;
 
   factory QualificationModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ??
+        json['data']?['attributes'] as Map<String, dynamic>? ??
+        json;
     final classroom = attrs['classroom'] as Map<String, dynamic>?;
     return QualificationModel(
-      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ??
+          json['id']?.toString() ??
+          attrs['id']?.toString() ??
+          '',
       studentId: attrs['student_id']?.toString() ?? '',
       classroomId: attrs['classroom_id']?.toString() ?? '',
       studentName: attrs['student_name'] ?? '',
-      classroomName:
-          attrs['classroom_name']?.toString() ?? classroom?['name']?.toString() ?? '',
+      classroomName: attrs['classroom_name']?.toString() ??
+          classroom?['name']?.toString() ??
+          '',
       score: _parseDouble(attrs['score']),
       scoreLabel: attrs['score']?.toString() ?? '',
       type: attrs['type'] ?? '',

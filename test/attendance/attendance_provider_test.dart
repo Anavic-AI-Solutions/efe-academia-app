@@ -15,7 +15,8 @@ class _FakeAttendanceRepository implements AttendanceRepository {
   _FakeAttendanceRepository(this.day);
 
   @override
-  Future<AttendanceDay> getAttendance(String classroomId, {String? date}) async {
+  Future<AttendanceDay> getAttendance(String classroomId,
+      {String? date}) async {
     if (failOnLoad) {
       throw ApiException(message: 'load failed');
     }

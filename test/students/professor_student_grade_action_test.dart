@@ -215,7 +215,8 @@ void main() {
     expect(call.period, '1');
   });
 
-  testWidgets('guardar con aula del dropdown invalida sus notas', (tester) async {
+  testWidgets('guardar con aula del dropdown invalida sus notas',
+      (tester) async {
     final repository = _FakeQualificationRepository();
     final container = ProviderContainer(
       overrides: [

@@ -66,8 +66,7 @@ class _FeeListScreenState extends ConsumerState<FeeListScreen> {
           ),
           Expanded(
             child: RefreshIndicator(
-              onRefresh: () =>
-                  ref.read(feeListProvider.notifier).refresh(),
+              onRefresh: () => ref.read(feeListProvider.notifier).refresh(),
               child: _buildBody(listState, l10n),
             ),
           ),

@@ -88,7 +88,8 @@ class _FakeRelationsRepository implements RelationsRepository {
   }) async =>
       CursorPagination(
         data: const [
-          RelationModel(id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11),
+          RelationModel(
+              id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11),
         ],
         nextCursor: null,
         hasMore: false,

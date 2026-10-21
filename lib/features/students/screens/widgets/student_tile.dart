@@ -18,9 +18,8 @@ class StudentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final subtitle = student.email.isNotEmpty
-        ? student.email
-        : student.identityNumber;
+    final subtitle =
+        student.email.isNotEmpty ? student.email : student.identityNumber;
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 10),

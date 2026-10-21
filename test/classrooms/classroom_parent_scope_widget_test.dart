@@ -57,8 +57,10 @@ class _FakeParentAuthRepository implements AuthRepository {
   Future<void> forgotPassword(String email) async {}
 }
 
-const _ana = RelationModel(id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11);
-const _bruno = RelationModel(id: 'r2', fullname: 'Bruno Pérez', role: 'student', userId: 12);
+const _ana =
+    RelationModel(id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11);
+const _bruno = RelationModel(
+    id: 'r2', fullname: 'Bruno Pérez', role: 'student', userId: 12);
 
 class _FakeRelationsRepository implements RelationsRepository {
   @override
@@ -103,8 +105,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
   }
 
   @override
-  Future<ClassroomModel> getClassroom(String id) =>
-      throw UnimplementedError();
+  Future<ClassroomModel> getClassroom(String id) => throw UnimplementedError();
 
   @override
   Future<PageResult<StudentModel>> getClassroomStudents(String id,
@@ -142,8 +143,7 @@ class _ThrowingClassroomRepository implements ClassroomRepository {
   }
 
   @override
-  Future<ClassroomModel> getClassroom(String id) =>
-      throw UnimplementedError();
+  Future<ClassroomModel> getClassroom(String id) => throw UnimplementedError();
 
   @override
   Future<PageResult<StudentModel>> getClassroomStudents(String id,

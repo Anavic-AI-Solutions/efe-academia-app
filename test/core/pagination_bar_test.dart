@@ -143,8 +143,7 @@ void main() {
             darkTheme: AppTheme.dark,
             themeMode: mode,
             locale: testLocale,
-            localizationsDelegates:
-                AppLocalizations.localizationsDelegates,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             home: Scaffold(
               body: PaginationBar(
@@ -162,8 +161,7 @@ void main() {
       expect(
         find.byWidgetPredicate((w) =>
             w is Container &&
-            (w.decoration as BoxDecoration?)?.color ==
-                AppColors.primary),
+            (w.decoration as BoxDecoration?)?.color == AppColors.primary),
         findsOneWidget,
       );
 

@@ -15,8 +15,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
         theme: AppTheme.light,
         home: Scaffold(
-            body: ElevatedButton(
-                onPressed: () {}, child: const Text('CTA')))));
+            body: ElevatedButton(onPressed: () {}, child: const Text('CTA')))));
     expect(tester.getSize(find.byType(ElevatedButton)).height, 46);
     // NOTE (Task 2): widget.style is null when the style comes from the
     // theme; resolve the shape from the theme style instead (same assertion).

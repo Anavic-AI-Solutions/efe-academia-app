@@ -83,9 +83,8 @@ List<GradeGridRow> buildGradeGrid(List<QualificationModel> qualifications) {
     }
 
     final values = scoresByKey.values.toList();
-    final average = values.isEmpty
-        ? null
-        : values.reduce((a, b) => a + b) / values.length;
+    final average =
+        values.isEmpty ? null : values.reduce((a, b) => a + b) / values.length;
 
     return GradeGridRow(period: period, cells: cells, average: average);
   }).toList();

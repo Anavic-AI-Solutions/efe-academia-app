@@ -226,7 +226,8 @@ void main() {
     );
     final decoration = activePill.decoration as BoxDecoration;
     expect(decoration.color, AppColors.primary,
-        reason: 'la accion Cuotas debe cambiar de pestana, no apilar la pagina');
+        reason:
+            'la accion Cuotas debe cambiar de pestana, no apilar la pagina');
   });
 
   testWidgets('parent opens fee detail from Pagos and keeps the tab',
@@ -269,8 +270,8 @@ void main() {
           matching: find.byType(AnimatedContainer),
         ),
       );
-      expect((inactivePill.decoration as BoxDecoration).color,
-          Colors.transparent,
+      expect(
+          (inactivePill.decoration as BoxDecoration).color, Colors.transparent,
           reason: 'role $role');
     });
   }

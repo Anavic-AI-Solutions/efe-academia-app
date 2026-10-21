@@ -190,7 +190,8 @@ void main() {
   testWidgets('merge preserva ausentes existentes', (tester) async {
     final attendance = _FakeAttendanceRepository(
       students: const [
-        AttendanceStudent(id: 'otro', fullname: 'Otro Alumno', status: 'absent'),
+        AttendanceStudent(
+            id: 'otro', fullname: 'Otro Alumno', status: 'absent'),
         AttendanceStudent(id: 's1', fullname: 'Ana Gómez', status: 'present'),
       ],
     );
@@ -210,7 +211,8 @@ void main() {
     final attendance = _FakeAttendanceRepository(
       students: const [
         AttendanceStudent(id: 's1', fullname: 'Ana Gómez', status: 'absent'),
-        AttendanceStudent(id: 'otro', fullname: 'Otro Alumno', status: 'present'),
+        AttendanceStudent(
+            id: 'otro', fullname: 'Otro Alumno', status: 'present'),
       ],
     );
 
@@ -292,7 +294,8 @@ void main() {
   testWidgets('confirmar desde el tab invalida y avisa', (tester) async {
     final attendance = _FakeAttendanceRepository(
       students: const [
-        AttendanceStudent(id: 'otro', fullname: 'Otro Alumno', status: 'absent'),
+        AttendanceStudent(
+            id: 'otro', fullname: 'Otro Alumno', status: 'absent'),
         AttendanceStudent(id: 's1', fullname: 'Ana Gómez', status: 'present'),
       ],
     );

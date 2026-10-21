@@ -19,7 +19,8 @@ class LoadingShimmer extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Shimmer.fromColors(
-      baseColor: isDark ? AppColors.darkSurfaceElevated : const Color(0xFFE2E8F0),
+      baseColor:
+          isDark ? AppColors.darkSurfaceElevated : const Color(0xFFE2E8F0),
       highlightColor: isDark ? AppColors.darkSurface : const Color(0xFFF8FAFC),
       child: Container(
         width: width,

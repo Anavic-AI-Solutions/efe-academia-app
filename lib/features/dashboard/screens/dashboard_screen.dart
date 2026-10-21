@@ -129,7 +129,8 @@ class DashboardScreen extends ConsumerWidget {
 
     final rawName = user?.name.trim() ?? '';
     final displayName = rawName.isEmpty ? l10n.commonUser : rawName;
-    final firstName = rawName.isEmpty ? l10n.commonUser : rawName.split(' ').first;
+    final firstName =
+        rawName.isEmpty ? l10n.commonUser : rawName.split(' ').first;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -338,9 +339,8 @@ class _ParentClassroomCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color: isDark
-                        ? AppColors.darkTextPrimary
-                        : AppColors.lightInk,
+                    color:
+                        isDark ? AppColors.darkTextPrimary : AppColors.lightInk,
                   ),
                 ),
                 const SizedBox(height: 3),

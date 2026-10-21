@@ -31,7 +31,8 @@ class _FakeDocumentRepository extends DocumentRepository {
   final List<DocumentModel> docs;
 
   @override
-  Future<CursorPagination<DocumentModel>> getDocuments({String? cursor}) async =>
+  Future<CursorPagination<DocumentModel>> getDocuments(
+          {String? cursor}) async =>
       CursorPagination<DocumentModel>(data: docs, hasMore: false);
 
   @override
@@ -126,8 +127,7 @@ void main() {
   });
 
   group('DocumentListScreen', () {
-    testWidgets('lista muestra documentos y navega al detalle',
-        (tester) async {
+    testWidgets('lista muestra documentos y navega al detalle', (tester) async {
       final router = _router(_docs());
       addTearDown(router.dispose);
 

@@ -54,8 +54,8 @@ Future<void> _pumpSection(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
-        newsListProvider
-            .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository(items))),
+        newsListProvider.overrideWith(
+            (ref) => NewsListNotifier(_FakeNewsRepository(items))),
       ],
       child: MaterialApp.router(
         routerConfig: router,

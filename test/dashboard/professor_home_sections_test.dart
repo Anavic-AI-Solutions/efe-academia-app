@@ -362,8 +362,7 @@ void main() {
                 BirthdayModel(id: 'b1', name: 'Ana Ruiz', ageTurning: 8),
               ];
             }),
-            newsListProvider
-                .overrideWith((ref) => NewsListNotifier(newsRepo)),
+            newsListProvider.overrideWith((ref) => NewsListNotifier(newsRepo)),
             homeDocumentsProvider.overrideWith((ref) async {
               documentsCalls++;
               return const [DocumentModel(id: 'd1', title: 'Reglamento')];

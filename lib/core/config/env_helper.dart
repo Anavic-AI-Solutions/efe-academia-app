@@ -17,8 +17,9 @@ class EnvHelper {
   /// y replica las claves `REVERB_*` presentes y no vacías.
   static String buildDefaultEnvContent(Map<String, String> buildValues) {
     final apiBaseUrl = buildValues['API_BASE_URL'];
-    final resolved =
-        (apiBaseUrl == null || apiBaseUrl.isEmpty) ? _fallbackApiBaseUrl : apiBaseUrl;
+    final resolved = (apiBaseUrl == null || apiBaseUrl.isEmpty)
+        ? _fallbackApiBaseUrl
+        : apiBaseUrl;
     final buffer = StringBuffer('API_BASE_URL=$resolved\n');
     for (final key in _repeatedKeys) {
       final value = buildValues[key];

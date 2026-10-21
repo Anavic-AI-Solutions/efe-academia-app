@@ -14,12 +14,32 @@ import '../providers/attendance_provider.dart';
 import 'widgets/attendance_student_row.dart';
 
 const _monthsEs = [
-  'ene', 'feb', 'mar', 'abr', 'may', 'jun',
-  'jul', 'ago', 'sep', 'oct', 'nov', 'dic',
+  'ene',
+  'feb',
+  'mar',
+  'abr',
+  'may',
+  'jun',
+  'jul',
+  'ago',
+  'sep',
+  'oct',
+  'nov',
+  'dic',
 ];
 const _monthsEn = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 String _dateLabel(BuildContext context, String date) {
@@ -29,8 +49,9 @@ String _dateLabel(BuildContext context, String date) {
   final isSpanish = Localizations.localeOf(context).languageCode != 'en';
   final months = isSpanish ? _monthsEs : _monthsEn;
   final now = DateTime.now();
-  final isToday =
-      parsed.year == now.year && parsed.month == now.month && parsed.day == now.day;
+  final isToday = parsed.year == now.year &&
+      parsed.month == now.month &&
+      parsed.day == now.day;
   final monthLabel = months[parsed.month - 1];
 
   if (isToday) {
@@ -121,8 +142,8 @@ class AttendanceScreen extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
         itemCount: 6,
         separatorBuilder: (_, __) => const SizedBox(height: 8),
-        itemBuilder: (_, __) =>
-            const LoadingShimmer(width: double.infinity, height: 50, borderRadius: 13),
+        itemBuilder: (_, __) => const LoadingShimmer(
+            width: double.infinity, height: 50, borderRadius: 13),
       );
     }
 
@@ -231,8 +252,7 @@ class _SaveBar extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              disabledBackgroundColor:
-                  AppColors.primary.withOpacity(0.5),
+              disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(13),

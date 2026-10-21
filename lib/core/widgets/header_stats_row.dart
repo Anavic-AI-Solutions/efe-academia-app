@@ -46,9 +46,7 @@ class _StatTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
-        color: stat.highlighted
-            ? AppColors.overlayStrong
-            : AppColors.overlay,
+        color: stat.highlighted ? AppColors.overlayStrong : AppColors.overlay,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(

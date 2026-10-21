@@ -7,10 +7,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 BoxDecoration _appCardDecoration(WidgetTester tester) {
   final container = tester.widget<Container>(
-    find.descendant(
-      of: find.byType(AppCard),
-      matching: find.byType(Container),
-    ).first,
+    find
+        .descendant(
+          of: find.byType(AppCard),
+          matching: find.byType(Container),
+        )
+        .first,
   );
   return container.decoration as BoxDecoration;
 }
@@ -18,7 +20,8 @@ BoxDecoration _appCardDecoration(WidgetTester tester) {
 void main() {
   testWidgets('SectionHeader renders uppercase micro label', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(home: Scaffold(body: SectionHeader(title: 'Mis aulas'))),
+      const MaterialApp(
+          home: Scaffold(body: SectionHeader(title: 'Mis aulas'))),
     );
     final text = tester.widget<Text>(find.text('MIS AULAS'));
     expect(text.style?.fontSize, 10);
@@ -27,7 +30,8 @@ void main() {
     expect(text.style?.color, AppColors.sectionLabel);
   });
 
-  testWidgets('AppCard uses r16 padding 14 and selected border', (tester) async {
+  testWidgets('AppCard uses r16 padding 14 and selected border',
+      (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(body: AppCard(selected: true, child: Text('x'))),

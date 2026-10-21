@@ -22,8 +22,7 @@ class FeeApi {
         'per_page': limit,
       });
 
-  Future<Response> getFee(String id) =>
-      _client.get('/fees/$id');
+  Future<Response> getFee(String id) => _client.get('/fees/$id');
 
   Future<Response> uploadProof(
     String feeId, {

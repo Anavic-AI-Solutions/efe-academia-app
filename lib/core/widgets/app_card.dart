@@ -28,15 +28,15 @@ class AppCard extends StatelessWidget {
       padding: margin ?? EdgeInsets.zero,
       child: Container(
         decoration: BoxDecoration(
-          color: color ?? (isDark ? AppColors.darkSurface : AppColors.lightSurface),
+          color: color ??
+              (isDark ? AppColors.darkSurface : AppColors.lightSurface),
           borderRadius: BorderRadius.circular(16),
           border: selected
               ? Border.all(color: AppColors.primarySoft, width: 1.5)
               : null,
           boxShadow: [
             BoxShadow(
-              color: const Color(0x59232D3C)
-                  .withOpacity(isDark ? 0.3 : 0.12),
+              color: const Color(0x59232D3C).withOpacity(isDark ? 0.3 : 0.12),
               blurRadius: 24,
               offset: const Offset(0, 10),
               spreadRadius: -14,

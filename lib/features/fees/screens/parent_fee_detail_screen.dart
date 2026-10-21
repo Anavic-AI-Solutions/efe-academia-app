@@ -41,7 +41,6 @@ class ParentFeeDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ParentFeeDetailScreenState extends ConsumerState<ParentFeeDetailScreen> {
-
   /// Abre el sheet de subida/reemplazo y, si termina en éxito (`pop(true)`),
   /// muestra el snackbar e invalida el detalle y la lista de cuotas.
   Future<void> _openProofSheet(FeeModel fee) async {

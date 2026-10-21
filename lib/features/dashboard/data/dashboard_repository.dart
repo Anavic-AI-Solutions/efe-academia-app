@@ -29,15 +29,14 @@ class DashboardRepository {
 
     return DashboardData(
       role: role,
-      totalStudents:
-          _asInt(m['total_students'] ?? m['totalStudents']),
+      totalStudents: _asInt(m['total_students'] ?? m['totalStudents']),
       totalClassrooms: _asInt(
         m['classrooms_count'] ?? m['total_classrooms'] ?? m['totalClassrooms'],
       ),
       totalProfessors: _asInt(m['total_professors'] ?? d['totalProfessors']),
       attendanceRate: _asInt(m['attendance_rate'] ?? d['attendanceRate']),
-      monthlyRevenue:
-          _asDouble(m['total_owed'] ?? m['monthlyRevenue'] ?? d['monthlyRevenue']),
+      monthlyRevenue: _asDouble(
+          m['total_owed'] ?? m['monthlyRevenue'] ?? d['monthlyRevenue']),
       pendingFees: _asInt(m['fees_overdue'] ?? m['pendingFees']),
       unreadNotifications:
           _asInt(m['open_tickets'] ?? m['unreadNotifications']),

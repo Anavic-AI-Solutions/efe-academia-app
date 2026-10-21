@@ -16,7 +16,8 @@ final qualificationApiProvider = Provider<QualificationApi>((ref) {
   return QualificationApi(ref.watch(apiClientProvider));
 });
 
-final qualificationRepositoryProvider = Provider<QualificationRepository>((ref) {
+final qualificationRepositoryProvider =
+    Provider<QualificationRepository>((ref) {
   return QualificationRepository(ref.watch(qualificationApiProvider));
 });
 

@@ -14,7 +14,8 @@ class _FakeAttendanceApi implements AttendanceApi {
   @override
   Future<Response> getAttendance(String classroomId, {String? date}) async =>
       Response(
-        requestOptions: RequestOptions(path: '/classrooms/$classroomId/attendance'),
+        requestOptions:
+            RequestOptions(path: '/classrooms/$classroomId/attendance'),
         data: payload,
       );
 
@@ -29,7 +30,8 @@ class _FakeAttendanceApi implements AttendanceApi {
     savedAbsentStudentIds = absentStudentIds;
 
     return Response(
-      requestOptions: RequestOptions(path: '/classrooms/$classroomId/attendance'),
+      requestOptions:
+          RequestOptions(path: '/classrooms/$classroomId/attendance'),
       data: {
         'data': {'date': date, 'present_count': 1, 'absent_count': 1},
       },

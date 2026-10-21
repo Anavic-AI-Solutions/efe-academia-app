@@ -10,7 +10,8 @@ class ApiClient {
   final SecureStorage _storage;
 
   ApiClient(this._storage) {
-    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1';
+    final baseUrl =
+        dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1';
     // ignore: avoid_print
     print('[API] Base URL: $baseUrl');
 

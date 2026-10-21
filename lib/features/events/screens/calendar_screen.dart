@@ -142,8 +142,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         final isSelected = _isSameDay(_selectedDay, day);
                         final hasEvent = _hasEventOnDay(events, day);
                         return GestureDetector(
-                          onTap: () =>
-                              setState(() => _selectedDay = day),
+                          onTap: () => setState(() => _selectedDay = day),
                           behavior: HitTestBehavior.opaque,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -165,8 +164,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                         ? Colors.white
                                         : (isDark
                                             ? AppColors.darkTextPrimary
-                                            : AppColors
-                                                .lightTextPrimary),
+                                            : AppColors.lightTextPrimary),
                                     fontWeight: isSelected
                                         ? FontWeight.w800
                                         : FontWeight.w600,

@@ -111,8 +111,8 @@ final homeDocumentsProvider =
 });
 
 /// Detalle de un documento por id para `DocumentDetailScreen`.
-final documentDetailProvider = FutureProvider.autoDispose
-    .family<DocumentModel, String>((ref, id) async {
+final documentDetailProvider =
+    FutureProvider.autoDispose.family<DocumentModel, String>((ref, id) async {
   final repository = ref.watch(documentRepositoryProvider);
   return repository.getDocument(id);
 });

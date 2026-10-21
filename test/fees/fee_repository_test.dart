@@ -373,8 +373,8 @@ void main() {
         'https://x/fees/f1/invoice-file?signature=abc',
       );
 
-      expect(client.lastBytesPath,
-          'https://x/fees/f1/invoice-file?signature=abc');
+      expect(
+          client.lastBytesPath, 'https://x/fees/f1/invoice-file?signature=abc');
       expect(client.lastBytesAcceptPdf, isTrue);
       expect(response.data, const [37, 80, 68, 70]);
     });

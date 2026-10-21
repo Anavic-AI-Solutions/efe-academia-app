@@ -240,12 +240,11 @@ Future<void> _pumpDetail(
             .overrideWithValue(_FakeAuthRepository(role: role)),
         studentRepositoryProvider
             .overrideWithValue(students ?? _FakeStudentRepository()),
-        qualificationRepositoryProvider
-            .overrideWithValue(qualifications ?? _FakeQualificationRepository()),
+        qualificationRepositoryProvider.overrideWithValue(
+            qualifications ?? _FakeQualificationRepository()),
         absenceRepositoryProvider
             .overrideWithValue(absences ?? _FakeAbsenceRepository()),
-        feeRepositoryProvider
-            .overrideWithValue(fees ?? _FakeFeeRepository()),
+        feeRepositoryProvider.overrideWithValue(fees ?? _FakeFeeRepository()),
         dashboardRepositoryProvider
             .overrideWithValue(const _FakeDashboardRepository()),
       ],

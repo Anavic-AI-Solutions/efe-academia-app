@@ -109,10 +109,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
           final want = ref.read(parentSelectedStudentProvider);
           final current = ref.read(classroomListProvider).studentId;
           if (want != null && want != current) {
-            ref
-                .read(classroomListProvider.notifier)
-                .setStudent(want)
-                .then((_) {
+            ref.read(classroomListProvider.notifier).setStudent(want).then((_) {
               if (mounted) _scrollToTop();
             });
           }
@@ -252,12 +249,10 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
 
     return Column(
       children: [
-        if (state.isLoading)
-          const LinearProgressIndicator(minHeight: 2),
+        if (state.isLoading) const LinearProgressIndicator(minHeight: 2),
         Expanded(
           child: RefreshIndicator(
-            onRefresh: () =>
-                ref.read(classroomListProvider.notifier).refresh(),
+            onRefresh: () => ref.read(classroomListProvider.notifier).refresh(),
             child: ListView.builder(
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
@@ -269,8 +264,7 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                   padding: const EdgeInsets.only(bottom: 11),
                   child: ProfessorClassroomListCard(
                     classroom: classroom,
-                    onTap: () =>
-                        context.push('/classrooms/${classroom.id}'),
+                    onTap: () => context.push('/classrooms/${classroom.id}'),
                   ),
                 );
               },
@@ -290,4 +284,3 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     );
   }
 }
-

@@ -63,8 +63,7 @@ class HomeDocumentsSection extends ConsumerWidget {
                     for (final document in items.take(5))
                       DocumentTile(
                         document: document,
-                        onTap: () =>
-                            context.push('/documents/${document.id}'),
+                        onTap: () => context.push('/documents/${document.id}'),
                       ),
                   ],
                 ),

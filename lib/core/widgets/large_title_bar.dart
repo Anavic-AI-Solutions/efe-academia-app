@@ -75,8 +75,7 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
                         minHeight: 32,
                       ),
                     ),
-                  if (showBackButton)
-                    const SizedBox(width: 4),
+                  if (showBackButton) const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       title,

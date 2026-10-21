@@ -113,8 +113,7 @@ void main() {
       expect(boletin.observations, isEmpty);
     });
 
-    test('accepts a payload without the data wrapper and a null classroom',
-        () {
+    test('accepts a payload without the data wrapper and a null classroom', () {
       final boletin = BoletinData.fromJson({
         'student': {'id': 's1', 'fullname': 'Marega, Paola'},
         'classroom': null,

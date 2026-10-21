@@ -62,8 +62,7 @@ class BirthdayListScreen extends ConsumerWidget {
                   );
                 }
                 return RefreshIndicator(
-                  onRefresh: () =>
-                      ref.refresh(todayBirthdaysProvider.future),
+                  onRefresh: () => ref.refresh(todayBirthdaysProvider.future),
                   child: ListView.builder(
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
                     itemCount: items.length,

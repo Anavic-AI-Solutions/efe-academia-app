@@ -46,9 +46,8 @@ class GradeStudentRow extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: isDark
-                      ? AppColors.darkTextPrimary
-                      : AppColors.lightInk,
+                  color:
+                      isDark ? AppColors.darkTextPrimary : AppColors.lightInk,
                 ),
               ),
             ),

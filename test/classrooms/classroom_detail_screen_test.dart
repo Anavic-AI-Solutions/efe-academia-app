@@ -367,7 +367,8 @@ void main() {
     expect(find.text('pantalla notas'), findsOneWidget);
   });
 
-  testWidgets('detail hero hides the attendance and grade actions for other roles',
+  testWidgets(
+      'detail hero hides the attendance and grade actions for other roles',
       (tester) async {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 

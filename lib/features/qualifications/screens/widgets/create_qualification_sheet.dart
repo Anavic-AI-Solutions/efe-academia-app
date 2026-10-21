@@ -121,8 +121,7 @@ class _CreateQualificationSheetState
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final background = isDark ? AppColors.darkSurface : Colors.white;
-    final textColor =
-        isDark ? AppColors.darkTextPrimary : AppColors.lightInk;
+    final textColor = isDark ? AppColors.darkTextPrimary : AppColors.lightInk;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
@@ -288,8 +287,7 @@ class _CreateQualificationSheetState
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        AppColors.primary.withOpacity(0.5),
+                    disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),

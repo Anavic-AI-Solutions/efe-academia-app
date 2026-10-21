@@ -56,8 +56,8 @@ class AttendanceDay with _$AttendanceDay {
       date: attrs['date']?.toString() ?? '',
       classroomId: attrs['classroom_id']?.toString() ?? '',
       classroomName: attrs['classroom_name']?.toString() ?? '',
-      studentsCount: (attrs['students_count'] as num?)?.toInt() ??
-          students.length,
+      studentsCount:
+          (attrs['students_count'] as num?)?.toInt() ?? students.length,
       absentCount: (attrs['absent_count'] as num?)?.toInt() ??
           students.where((student) => student.isAbsent).length,
       students: students,

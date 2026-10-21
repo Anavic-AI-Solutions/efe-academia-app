@@ -64,7 +64,8 @@ class QuickActionGrid extends StatelessWidget {
                       color: AppColors.chipFor(isDark),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(action.icon, color: AppColors.primary, size: 20),
+                    child:
+                        Icon(action.icon, color: AppColors.primary, size: 20),
                   ),
                   const SizedBox(width: 12),
                   Expanded(

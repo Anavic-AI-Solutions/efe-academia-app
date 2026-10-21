@@ -230,7 +230,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                     l10n.searchNoResultsSubtitle(state.query),
                               )
                             : ListView.builder(
-                                padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 8, 16, 20),
                                 itemCount: state.results.length,
                                 itemBuilder: (context, index) {
                                   final result = state.results[index];
@@ -316,7 +317,9 @@ class _SearchTile extends StatelessWidget {
             Icon(
               PhosphorIconsRegular.caretRight,
               size: 16,
-              color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+              color: isDark
+                  ? AppColors.darkTextTertiary
+                  : AppColors.lightTextTertiary,
             ),
         ],
       ),

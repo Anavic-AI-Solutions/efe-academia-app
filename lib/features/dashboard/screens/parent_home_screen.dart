@@ -153,7 +153,8 @@ class ParentHomeScreen extends ConsumerWidget {
                   const SizedBox(height: 14),
                   ParentQuickActions(
                     onFees: () => context.go('/payments'),
-                    onBoletin: () => _openBoletin(context, children, parentHome),
+                    onBoletin: () =>
+                        _openBoletin(context, children, parentHome),
                     onChat: () => context.go('/chat'),
                   ),
                   const SizedBox(height: 24),

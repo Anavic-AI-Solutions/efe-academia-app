@@ -15,11 +15,9 @@ class GradientHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        gradient: isDark
-            ? AppColors.primaryGradientDark
-            : AppColors.primaryGradient,
-        borderRadius:
-            const BorderRadius.vertical(bottom: Radius.circular(24)),
+        gradient:
+            isDark ? AppColors.primaryGradientDark : AppColors.primaryGradient,
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(
         16,

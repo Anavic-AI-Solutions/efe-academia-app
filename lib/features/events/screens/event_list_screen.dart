@@ -82,7 +82,8 @@ class _EventListScreenState extends ConsumerState<EventListScreen> {
                               itemBuilder: (context, index) {
                                 if (index == events.length) {
                                   return const Padding(
-                                    padding: EdgeInsets.only(top: 4, bottom: 12),
+                                    padding:
+                                        EdgeInsets.only(top: 4, bottom: 12),
                                     child: LoadingShimmer(
                                       width: double.infinity,
                                       height: 68,
@@ -136,7 +137,9 @@ class _EventCard extends StatelessWidget {
                 Text(
                   event.title,
                   style: AppTypography.titleSmall.copyWith(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
                   ),
                 ),
                 if (event.description.isNotEmpty) ...[
@@ -146,7 +149,9 @@ class _EventCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTypography.bodySmall.copyWith(
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.lightTextSecondary,
                     ),
                   ),
                 ],

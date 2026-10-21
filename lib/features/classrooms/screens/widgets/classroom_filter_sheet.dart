@@ -128,8 +128,8 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
                     onPressed: _selection.isEmpty
                         ? null
                         : () => setState(
-                              () => _selection =
-                                  const ClassroomFilterSelection(),
+                              () =>
+                                  _selection = const ClassroomFilterSelection(),
                             ),
                     style: TextButton.styleFrom(
                       foregroundColor: accent,
@@ -286,8 +286,9 @@ class _FilterSection extends StatelessWidget {
           Text(
             label,
             style: AppTypography.titleSmall.copyWith(
-              color:
-                  isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+              color: isDark
+                  ? AppColors.darkTextPrimary
+                  : AppColors.lightTextPrimary,
             ),
           ),
           const SizedBox(height: 10),
@@ -382,8 +383,9 @@ class _ErrorBody extends StatelessWidget {
           Text(
             l10n.classroomsFiltersLoadError,
             style: AppTypography.titleSmall.copyWith(
-              color:
-                  isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+              color: isDark
+                  ? AppColors.darkTextPrimary
+                  : AppColors.lightTextPrimary,
             ),
           ),
           const SizedBox(height: 4),
@@ -402,8 +404,7 @@ class _ErrorBody extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: accent,
               side: BorderSide(
-                color:
-                    isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),

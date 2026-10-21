@@ -133,8 +133,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
       throw UnimplementedError();
 
   @override
-  Future<ClassroomModel> getClassroom(String id) =>
-      throw UnimplementedError();
+  Future<ClassroomModel> getClassroom(String id) => throw UnimplementedError();
 
   @override
   Future<ClassroomFilters> getFilters() => throw UnimplementedError();
@@ -142,7 +141,8 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
 class _FakeAttendanceRepository implements AttendanceRepository {
   @override
-  Future<AttendanceDay> getAttendance(String classroomId, {String? date}) async =>
+  Future<AttendanceDay> getAttendance(String classroomId,
+          {String? date}) async =>
       AttendanceDay(
         date: '2026-09-24',
         classroomId: classroomId,
@@ -236,8 +236,7 @@ Future<ProviderContainer> _pumpHome(WidgetTester tester) async {
           .overrideWithValue(_FakeAttendanceRepository()),
       qualificationRepositoryProvider
           .overrideWithValue(_FakeQualificationRepository()),
-      classroomRepositoryProvider
-          .overrideWithValue(_FakeClassroomRepository()),
+      classroomRepositoryProvider.overrideWithValue(_FakeClassroomRepository()),
       // El calendario y los documentos del home no tocan red en estos tests.
       homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
       homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
@@ -311,10 +310,10 @@ void main() {
     expect(find.text('Asistencia · 1G X · 2026'), findsOneWidget);
 
     final activePill = tester.widget<AnimatedContainer>(
-      find.ancestor(of: _navLabel('Aulas'), matching: find.byType(AnimatedContainer)),
+      find.ancestor(
+          of: _navLabel('Aulas'), matching: find.byType(AnimatedContainer)),
     );
-    expect((activePill.decoration as BoxDecoration).color,
-        AppColors.primary);
+    expect((activePill.decoration as BoxDecoration).color, AppColors.primary);
   });
 
   testWidgets('Cargar nota opens the classroom grades screen', (tester) async {
@@ -384,7 +383,8 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('uses HomeHeader and HeaderStatsRow (not HomeHeader/ProfessorStatsRow)',
+  testWidgets(
+      'uses HomeHeader and HeaderStatsRow (not HomeHeader/ProfessorStatsRow)',
       (tester) async {
     await _pumpHome(tester);
 

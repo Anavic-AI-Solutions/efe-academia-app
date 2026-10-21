@@ -9,8 +9,7 @@ class DocumentRepository {
   final DocumentApi _api;
   DocumentRepository(this._api);
 
-  Future<CursorPagination<DocumentModel>> getDocuments(
-      {String? cursor}) async {
+  Future<CursorPagination<DocumentModel>> getDocuments({String? cursor}) async {
     try {
       final response = await _api.getDocuments(cursor: cursor);
       final data = response.data;

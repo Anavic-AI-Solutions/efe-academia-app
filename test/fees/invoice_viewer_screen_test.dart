@@ -195,7 +195,8 @@ void main() {
 
     await _pumpScreen(tester, saver: saver);
 
-    await tester.tap(find.widgetWithText(PillButton, es.feesInvoiceDownloadAction));
+    await tester
+        .tap(find.widgetWithText(PillButton, es.feesInvoiceDownloadAction));
     await tester.pumpAndSettle();
 
     expect(savedBytes, Uint8List.fromList(const [1, 2, 3]));
@@ -209,7 +210,8 @@ void main() {
 
     await _pumpScreen(tester, saver: saver);
 
-    await tester.tap(find.widgetWithText(PillButton, es.feesInvoiceDownloadAction));
+    await tester
+        .tap(find.widgetWithText(PillButton, es.feesInvoiceDownloadAction));
     await tester.pumpAndSettle();
 
     expect(find.text(es.feesInvoiceDownloadSuccess), findsNothing);
@@ -222,7 +224,8 @@ void main() {
 
     await _pumpScreen(tester, saver: saver);
 
-    await tester.tap(find.widgetWithText(PillButton, es.feesInvoiceDownloadAction));
+    await tester
+        .tap(find.widgetWithText(PillButton, es.feesInvoiceDownloadAction));
     await tester.pumpAndSettle();
 
     expect(find.text(es.feesInvoiceDownloadError), findsOneWidget);

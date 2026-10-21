@@ -18,8 +18,7 @@ class DocumentListScreen extends ConsumerStatefulWidget {
   const DocumentListScreen({super.key});
 
   @override
-  ConsumerState<DocumentListScreen> createState() =>
-      _DocumentListScreenState();
+  ConsumerState<DocumentListScreen> createState() => _DocumentListScreenState();
 }
 
 class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
@@ -63,9 +62,8 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
                     ? ErrorView(
                         message: l10n.documentsTitle,
                         detail: state.error,
-                        onRetry: () => ref
-                            .read(documentListProvider.notifier)
-                            .refresh(),
+                        onRetry: () =>
+                            ref.read(documentListProvider.notifier).refresh(),
                       )
                     : documents.isEmpty
                         ? EmptyState(
@@ -78,8 +76,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
                                 .refresh(),
                             child: ListView.builder(
                               controller: _scrollController,
-                              padding:
-                                  const EdgeInsets.fromLTRB(16, 0, 16, 20),
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                               itemCount: documents.length +
                                   (state.pagination.hasMore ? 1 : 0),
                               itemBuilder: (context, index) {

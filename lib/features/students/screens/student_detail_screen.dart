@@ -93,7 +93,8 @@ class StudentDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildLoading(BuildContext context, bool isDark, AppLocalizations l10n) {
+  Widget _buildLoading(
+      BuildContext context, bool isDark, AppLocalizations l10n) {
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
@@ -109,7 +110,8 @@ class StudentDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildError(BuildContext context, bool isDark, AppLocalizations l10n, Object error, WidgetRef ref) {
+  Widget _buildError(BuildContext context, bool isDark, AppLocalizations l10n,
+      Object error, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(

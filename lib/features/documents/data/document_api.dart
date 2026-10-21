@@ -15,8 +15,7 @@ class DocumentApi {
 
   /// URL absoluta de descarga directa (fallback cuando no hay file/media URL).
   String downloadUrl(String id) {
-    final base =
-        _client.dio.options.baseUrl.replaceAll(RegExp(r'/+$'), '');
+    final base = _client.dio.options.baseUrl.replaceAll(RegExp(r'/+$'), '');
     return '$base/documents/$id/download';
   }
 }

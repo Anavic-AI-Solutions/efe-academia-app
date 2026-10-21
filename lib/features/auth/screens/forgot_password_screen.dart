@@ -32,7 +32,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
   void _handleSubmit() {
     if (!_formKey.currentState!.validate()) return;
-    ref.read(authProvider.notifier).forgotPassword(_emailController.text.trim());
+    ref
+        .read(authProvider.notifier)
+        .forgotPassword(_emailController.text.trim());
     setState(() => _submitted = true);
   }
 
@@ -98,7 +100,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: _submitted ? _buildSuccessState(isDark) : _buildFormState(isLoading, isDark),
+              child: _submitted
+                  ? _buildSuccessState(isDark)
+                  : _buildFormState(isLoading, isDark),
             ),
           ),
         ],
@@ -129,7 +133,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             ),
           ),
           const SizedBox(height: 28),
-
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
@@ -161,7 +164,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             },
           ),
           const SizedBox(height: 20),
-
           PillButton(
             label: l10n.authSendResetLink,
             isLoading: isLoading,
@@ -169,7 +171,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             onPressed: _handleSubmit,
           ),
           const SizedBox(height: 16),
-
           TextButton(
             onPressed: widget.onBackToLogin ?? () => Navigator.pop(context),
             style: TextButton.styleFrom(

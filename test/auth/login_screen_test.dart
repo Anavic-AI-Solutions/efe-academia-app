@@ -91,11 +91,13 @@ void main() {
     expect(data.lengthInBytes, greaterThan(0));
   });
 
-  testWidgets('header uses GradientHeader with bottom radius 24', (tester) async {
+  testWidgets('header uses GradientHeader with bottom radius 24',
+      (tester) async {
     await _pumpLoginScreen(tester);
 
     final container = tester.widget<Container>(
-      find.descendant(of: find.byType(GradientHeader), matching: find.byType(Container)),
+      find.descendant(
+          of: find.byType(GradientHeader), matching: find.byType(Container)),
     );
     final boxDecoration = container.decoration as BoxDecoration?;
     expect(boxDecoration, isNotNull);
@@ -105,7 +107,8 @@ void main() {
     expect(radius.bottomRight, const Radius.circular(24));
   });
 
-  testWidgets('login CTA is PillButton with height 46 and radius 13', (tester) async {
+  testWidgets('login CTA is PillButton with height 46 and radius 13',
+      (tester) async {
     await _pumpLoginScreen(tester);
 
     final pillButton = tester.widget<PillButton>(find.byType(PillButton));
@@ -117,7 +120,8 @@ void main() {
       matching: find.byType(ElevatedButton),
     );
     final elevatedButton = tester.widget<ElevatedButton>(buttonFinder);
-    final shape = elevatedButton.style?.shape?.resolve({}) as RoundedRectangleBorder?;
+    final shape =
+        elevatedButton.style?.shape?.resolve({}) as RoundedRectangleBorder?;
     expect(shape, isNotNull);
     final borderRadius = shape!.borderRadius.resolve(TextDirection.ltr);
     expect(borderRadius.topLeft, const Radius.circular(13));

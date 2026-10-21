@@ -48,8 +48,8 @@ void main() {
       expect(rows.map((row) => row.period), ['1', '2', '3']);
       expect(rows.every((row) => row.cells.length == 7), isTrue);
       expect(rows.every((row) => row.average == null), isTrue);
-      expect(rows.every((row) => row.cells.every((cell) => cell == null)),
-          isTrue);
+      expect(
+          rows.every((row) => row.cells.every((cell) => cell == null)), isTrue);
     });
 
     test('maps qualifications by period, type and category', () {

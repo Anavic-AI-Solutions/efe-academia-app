@@ -336,7 +336,8 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
       );
 
       // Encabezado con el título y el nombre del hijo; sin chips de aula.
@@ -444,8 +445,8 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository:
-            _FakeStudentRepository(classrooms: const [_classroom1, _classroom2]),
+        studentRepository: _FakeStudentRepository(
+            classrooms: const [_classroom1, _classroom2]),
       );
 
       // Chips de ambas aulas y datos de la primera (default).
@@ -506,7 +507,8 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
       );
 
       expect(find.text(es.boletinNoGrades), findsOneWidget);
@@ -535,7 +537,8 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
       );
 
       expect(find.text(es.boletinObservations.toUpperCase()), findsNothing);
@@ -556,7 +559,8 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
       );
 
       expect(find.text(es.studentsTabAbsences.toUpperCase()), findsNothing);
@@ -567,8 +571,7 @@ void main() {
   });
 
   group('6) descarga del boletín', () {
-    testWidgets('tap → openUrl recibe la URL firmada del repo',
-        (tester) async {
+    testWidgets('tap → openUrl recibe la URL firmada del repo', (tester) async {
       Uri? opened;
       final repo = _FakeQualificationRepository(
         boletines: {'c1': _fullBoletin()},
@@ -577,14 +580,16 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
         openUrl: (uri) async {
           opened = uri;
           return true;
         },
       );
 
-      await tester.tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
+      await tester
+          .tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
       await tester.pumpAndSettle();
 
       expect(repo.linkCalls, hasLength(1));
@@ -605,14 +610,16 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
         openUrl: (uri) async {
           opened = uri;
           return true;
         },
       );
 
-      await tester.tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
+      await tester
+          .tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
       await tester.pumpAndSettle();
 
       expect(find.text(es.boletinDownloadError), findsOneWidget);
@@ -628,11 +635,13 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
         openUrl: (uri) async => false,
       );
 
-      await tester.tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
+      await tester
+          .tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
       await tester.pumpAndSettle();
 
       expect(find.text(es.boletinDownloadError), findsOneWidget);
@@ -644,11 +653,13 @@ void main() {
     testWidgets('loading muestra shimmer y luego los datos', (tester) async {
       final repo = _FakeQualificationRepository(boletines: {
         'c1': _fullBoletin(),
-      })..pendingBoletin = Completer<BoletinData>();
+      })
+        ..pendingBoletin = Completer<BoletinData>();
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
         settle: false,
       );
       await tester.pump();
@@ -670,11 +681,13 @@ void main() {
         (tester) async {
       final repo = _FakeQualificationRepository(boletines: {
         'c1': _fullBoletin(),
-      })..failBoletin = true;
+      })
+        ..failBoletin = true;
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
       );
 
       expect(find.byType(ErrorView), findsOneWidget);
@@ -725,7 +738,8 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository: _FakeStudentRepository(classrooms: const [_classroom1]),
+        studentRepository:
+            _FakeStudentRepository(classrooms: const [_classroom1]),
       );
       expect(repo.callsFor('c1'), 1);
 
@@ -745,8 +759,8 @@ void main() {
       await _pumpScreen(
         tester,
         qualificationRepository: repo,
-        studentRepository:
-            _FakeStudentRepository(classrooms: const [_classroom1, _classroom2]),
+        studentRepository: _FakeStudentRepository(
+            classrooms: const [_classroom1, _classroom2]),
         brightness: Brightness.dark,
       );
 
@@ -804,7 +818,8 @@ void main() {
       expect(find.text('9'), findsNothing);
 
       // La descarga del PDF también queda acotada al aula propia.
-      await tester.tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
+      await tester
+          .tap(find.widgetWithText(PillButton, es.boletinDownloadAction));
       await tester.pumpAndSettle();
       expect(repo.linkCalls.single.classroomId, 'c1');
       expect(opened, Uri.parse(_boletinUrl));

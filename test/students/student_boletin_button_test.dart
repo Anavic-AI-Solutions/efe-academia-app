@@ -35,7 +35,8 @@ class _FakeQualificationRepository implements QualificationRepository {
       PageResult(data: items, page: page, perPage: limit, total: items.length);
 
   @override
-  Future<ClassroomGradesSummary> getClassroomGradesSummary(String classroomId) =>
+  Future<ClassroomGradesSummary> getClassroomGradesSummary(
+          String classroomId) =>
       throw UnimplementedError();
 
   @override

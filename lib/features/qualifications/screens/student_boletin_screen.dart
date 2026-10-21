@@ -143,8 +143,7 @@ class _StudentBoletinScreenState extends ConsumerState<StudentBoletinScreen> {
                 _ClassroomChips(
                   classrooms: visible,
                   selectedId: selectedId,
-                  onSelected: (id) =>
-                      setState(() => _selectedClassroomId = id),
+                  onSelected: (id) => setState(() => _selectedClassroomId = id),
                 ),
               Expanded(child: _buildBody(boletinAsync, key, l10n, isDark)),
               if (boletin != null)
@@ -375,12 +374,16 @@ class _ClassroomChips extends StatelessWidget {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
-                  color: selected ? accent.withOpacity(0.12) : AppColors.chipFor(isDark),
+                  color: selected
+                      ? accent.withOpacity(0.12)
+                      : AppColors.chipFor(isDark),
                   borderRadius: BorderRadius.circular(17),
                   border: Border.all(
                     color: selected
                         ? accent
-                        : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
+                        : (isDark
+                            ? AppColors.darkBorder
+                            : AppColors.lightBorder),
                     width: selected ? 1.2 : 0.5,
                   ),
                 ),

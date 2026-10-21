@@ -55,7 +55,8 @@ class ClassroomSummaryTab extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         if (classroom.description.isNotEmpty) ...[
-          SectionHeader(title: l10n.classroomsDescription, padding: EdgeInsets.zero),
+          SectionHeader(
+              title: l10n.classroomsDescription, padding: EdgeInsets.zero),
           const SizedBox(height: 8),
           AppCard(
             padding: const EdgeInsets.all(16),
@@ -70,7 +71,8 @@ class ClassroomSummaryTab extends StatelessWidget {
           ),
           const SizedBox(height: 20),
         ],
-        SectionHeader(title: l10n.classroomsSectionSchedule, padding: EdgeInsets.zero),
+        SectionHeader(
+            title: l10n.classroomsSectionSchedule, padding: EdgeInsets.zero),
         const SizedBox(height: 8),
         AppCard(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -81,14 +83,16 @@ class ClassroomSummaryTab extends StatelessWidget {
               InfoRow(label: l10n.classroomsHour, value: classroom.hour),
               InfoRow(
                 label: l10n.classroomsCourseDays,
-                value: classroom.courseDays > 0 ? '${classroom.courseDays}' : '',
+                value:
+                    classroom.courseDays > 0 ? '${classroom.courseDays}' : '',
                 isLast: true,
               ),
             ],
           ),
         ),
         const SizedBox(height: 20),
-        SectionHeader(title: l10n.classroomsSectionAcademic, padding: EdgeInsets.zero),
+        SectionHeader(
+            title: l10n.classroomsSectionAcademic, padding: EdgeInsets.zero),
         const SizedBox(height: 8),
         AppCard(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -110,7 +114,8 @@ class ClassroomSummaryTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        SectionHeader(title: l10n.classroomsSectionLocation, padding: EdgeInsets.zero),
+        SectionHeader(
+            title: l10n.classroomsSectionLocation, padding: EdgeInsets.zero),
         const SizedBox(height: 8),
         AppCard(
           padding: const EdgeInsets.symmetric(vertical: 4),

@@ -10,8 +10,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 void main() {
   testWidgets('GradientHeader renders blue gradient with bottom radius 24',
       (tester) async {
-    await tester.pumpWidget(
-        const MaterialApp(home: Scaffold(body: GradientHeader(child: Text('x')))));
+    await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(body: GradientHeader(child: Text('x')))));
     final box = tester.widget<Container>(find.byType(Container).first);
     final deco = box.decoration as BoxDecoration;
     expect(deco.gradient, AppColors.primaryGradient);
@@ -22,7 +22,8 @@ void main() {
   testWidgets('ScreenHeader shows back, 14/w800 title and 11 subtitle',
       (tester) async {
     await tester.pumpWidget(const MaterialApp(
-        home: Scaffold(body: ScreenHeader(title: 'Asistencia', subtitle: '1G'))));
+        home:
+            Scaffold(body: ScreenHeader(title: 'Asistencia', subtitle: '1G'))));
     final title = tester.widget<Text>(find.text('Asistencia'));
     expect(title.style?.fontSize, 14);
     expect(title.style?.fontWeight, FontWeight.w800);
@@ -87,8 +88,7 @@ void main() {
     final tiles = tester.widgetList<Container>(find.byType(Container));
     expect(
       tiles.any((c) =>
-          (c.decoration as BoxDecoration?)?.color ==
-          AppColors.overlayStrong),
+          (c.decoration as BoxDecoration?)?.color == AppColors.overlayStrong),
       isTrue,
     );
   });

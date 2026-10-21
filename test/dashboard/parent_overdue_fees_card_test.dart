@@ -8,11 +8,13 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/localized_app.dart';
 
 void main() {
-  testWidgets('renders count, formatted total and triggers pay', (tester) async {
+  testWidgets('renders count, formatted total and triggers pay',
+      (tester) async {
     var paid = false;
     await tester.pumpWidget(localizedApp(
       home: Scaffold(
-        body: ParentOverdueFeesCard(count: 2, total: 1300000, onPay: () => paid = true),
+        body: ParentOverdueFeesCard(
+            count: 2, total: 1300000, onPay: () => paid = true),
       ),
     ));
     expect(find.text('2 cuotas vencidas'), findsOneWidget);
@@ -28,10 +30,12 @@ void main() {
 
   testWidgets('singular copy and danger tokens in light/dark', (tester) async {
     await tester.pumpWidget(localizedApp(
-      home: Scaffold(body: ParentOverdueFeesCard(count: 1, total: 50000, onPay: () {})),
+      home: Scaffold(
+          body: ParentOverdueFeesCard(count: 1, total: 50000, onPay: () {})),
     ));
     expect(find.text('1 cuota vencida'), findsOneWidget);
-    final light = tester.widget<Container>(find.byKey(const Key('parent-mora-card')));
+    final light =
+        tester.widget<Container>(find.byKey(const Key('parent-mora-card')));
     expect((light.decoration as BoxDecoration).color, AppColors.dangerSoft);
 
     // El pump oscuro del brief no traía delegates de l10n (el widget usa
@@ -42,10 +46,12 @@ void main() {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(brightness: Brightness.dark),
-      home: Scaffold(body: ParentOverdueFeesCard(count: 1, total: 50000, onPay: () {})),
+      home: Scaffold(
+          body: ParentOverdueFeesCard(count: 1, total: 50000, onPay: () {})),
     ));
     await tester.pumpAndSettle();
-    final dark = tester.widget<Container>(find.byKey(const Key('parent-mora-card')));
+    final dark =
+        tester.widget<Container>(find.byKey(const Key('parent-mora-card')));
     expect((dark.decoration as BoxDecoration).color, AppColors.darkDangerSoft);
   });
 }

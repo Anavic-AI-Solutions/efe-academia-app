@@ -14,8 +14,7 @@ String formatAbsenceDate(DateTime date) {
   return '${date.year}-$month-$day';
 }
 
-DateTime _dateOnly(DateTime date) =>
-    DateTime(date.year, date.month, date.day);
+DateTime _dateOnly(DateTime date) => DateTime(date.year, date.month, date.day);
 
 /// Último día seleccionable: hoy (el parte es registro, no planificación).
 DateTime absenceMaxDate(DateTime today) => _dateOnly(today);
@@ -117,8 +116,7 @@ class _MarkAbsenceSheetState extends ConsumerState<MarkAbsenceSheet> {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final background = isDark ? AppColors.darkSurface : Colors.white;
-    final textColor =
-        isDark ? AppColors.darkTextPrimary : AppColors.lightInk;
+    final textColor = isDark ? AppColors.darkTextPrimary : AppColors.lightInk;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
@@ -225,8 +223,7 @@ class _MarkAbsenceSheetState extends ConsumerState<MarkAbsenceSheet> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        AppColors.primary.withOpacity(0.5),
+                    disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),

@@ -20,7 +20,8 @@ class QualificationListScreen extends ConsumerStatefulWidget {
       _QualificationListScreenState();
 }
 
-class _QualificationListScreenState extends ConsumerState<QualificationListScreen> {
+class _QualificationListScreenState
+    extends ConsumerState<QualificationListScreen> {
   final _scrollController = ScrollController();
   final _searchController = TextEditingController();
 
@@ -85,8 +86,7 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
       return ErrorView(
         message: l10n.qualificationsLoadError,
         detail: state.error,
-        onRetry: () =>
-            ref.read(qualificationListProvider.notifier).refresh(),
+        onRetry: () => ref.read(qualificationListProvider.notifier).refresh(),
       );
     }
 

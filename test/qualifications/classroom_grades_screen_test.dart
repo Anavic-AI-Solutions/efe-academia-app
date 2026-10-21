@@ -125,7 +125,8 @@ void main() {
     expect(find.text('—'), findsOneWidget);
   });
 
-  testWidgets('creating a grade sends the payload and confirms', (tester) async {
+  testWidgets('creating a grade sends the payload and confirms',
+      (tester) async {
     final repository = _FakeQualificationRepository(_summary);
     await _pumpScreen(tester, repository);
 

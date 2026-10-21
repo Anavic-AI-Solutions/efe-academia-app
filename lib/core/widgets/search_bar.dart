@@ -39,34 +39,42 @@ class AppSearchBar extends StatelessWidget {
         onTap: onTap,
         readOnly: readOnly,
         style: AppTypography.bodyMedium.copyWith(
-          color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+          color:
+              isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
         ),
         decoration: InputDecoration(
           hintText: hintText ?? context.l10n.commonSearchHint,
           hintStyle: AppTypography.bodyMedium.copyWith(
-            color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+            color: isDark
+                ? AppColors.darkTextTertiary
+                : AppColors.lightTextTertiary,
           ),
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 16, right: 8),
             child: Icon(
               PhosphorIconsRegular.magnifyingGlass,
               size: 20,
-              color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+              color: isDark
+                  ? AppColors.darkTextTertiary
+                  : AppColors.lightTextTertiary,
             ),
           ),
-          prefixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 48),
+          prefixIconConstraints:
+              const BoxConstraints(minWidth: 44, minHeight: 48),
           suffixIcon: suffix != null
               ? Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: suffix,
                 )
               : null,
-          suffixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 48),
+          suffixIconConstraints:
+              const BoxConstraints(minWidth: 44, minHeight: 48),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           filled: false,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );

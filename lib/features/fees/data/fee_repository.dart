@@ -26,9 +26,8 @@ class FeeRepository {
         cursor: cursor,
       );
       final data = response.data;
-      final items = (data['data'] as List)
-          .map((e) => FeeModel.fromJson(e))
-          .toList();
+      final items =
+          (data['data'] as List).map((e) => FeeModel.fromJson(e)).toList();
       final meta = data['meta'] ?? {};
       return CursorPagination(
         data: items,

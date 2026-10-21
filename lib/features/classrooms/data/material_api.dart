@@ -21,7 +21,8 @@ class MaterialApi {
   Future<Response> replaceFiles(String id, FormData data) =>
       _client.upload('/materials/$id/upload', data, options: _uploadOptions);
 
-  Future<Response> deleteMaterial(String id) => _client.delete('/materials/$id');
+  Future<Response> deleteMaterial(String id) =>
+      _client.delete('/materials/$id');
 
   Future<Response> getMaterial(String id) => _client.get('/materials/$id');
 }

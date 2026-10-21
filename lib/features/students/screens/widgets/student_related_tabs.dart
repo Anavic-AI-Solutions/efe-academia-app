@@ -92,9 +92,8 @@ class StudentGradesTab extends ConsumerWidget {
 
     if (!canWrite) return content;
 
-    final classrooms =
-        ref.watch(dashboardProvider).data?.classrooms ??
-            const <ProfessorClassroomSummary>[];
+    final classrooms = ref.watch(dashboardProvider).data?.classrooms ??
+        const <ProfessorClassroomSummary>[];
     final hasClassroom = classroomId != null || classrooms.isNotEmpty;
 
     return Column(
@@ -159,7 +158,9 @@ class StudentGradesTab extends ConsumerWidget {
 
     final groups = <String, List<QualificationModel>>{};
     for (final qualification in qualifications) {
-      groups.putIfAbsent(qualification.classroomId, () => []).add(qualification);
+      groups
+          .putIfAbsent(qualification.classroomId, () => [])
+          .add(qualification);
     }
 
     return groups.values
@@ -275,7 +276,8 @@ class _StudentGradeActionBar extends StatelessWidget {
       top: false,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-        child: enabled ? button : Tooltip(message: disabledMessage, child: button),
+        child:
+            enabled ? button : Tooltip(message: disabledMessage, child: button),
       ),
     );
   }
@@ -318,9 +320,8 @@ class StudentAbsencesTab extends ConsumerWidget {
 
     if (!canWrite) return content;
 
-    final classrooms =
-        ref.watch(dashboardProvider).data?.classrooms ??
-            const <ProfessorClassroomSummary>[];
+    final classrooms = ref.watch(dashboardProvider).data?.classrooms ??
+        const <ProfessorClassroomSummary>[];
     final hasClassroom = classroomId != null || classrooms.isNotEmpty;
 
     return Column(
@@ -359,7 +360,9 @@ class StudentAbsencesTab extends ConsumerWidget {
       ..showSnackBar(
         SnackBar(
           content: Text(
-            marked ? context.l10n.absenceMarked : context.l10n.absenceAlreadyMarked,
+            marked
+                ? context.l10n.absenceMarked
+                : context.l10n.absenceAlreadyMarked,
           ),
         ),
       );

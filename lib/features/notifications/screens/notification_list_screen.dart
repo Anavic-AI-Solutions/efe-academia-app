@@ -23,7 +23,8 @@ class NotificationListScreen extends ConsumerStatefulWidget {
       _NotificationListScreenState();
 }
 
-class _NotificationListScreenState extends ConsumerState<NotificationListScreen> {
+class _NotificationListScreenState
+    extends ConsumerState<NotificationListScreen> {
   final _scrollController = ScrollController();
 
   @override
@@ -130,9 +131,7 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
           ...today.map((n) => _NotificationTile(
                 notification: n,
                 onTap: () {
-                  ref
-                      .read(notificationListProvider.notifier)
-                      .markRead(n.id);
+                  ref.read(notificationListProvider.notifier).markRead(n.id);
                 },
               )),
         ],
@@ -141,9 +140,7 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
           ...yesterday.map((n) => _NotificationTile(
                 notification: n,
                 onTap: () {
-                  ref
-                      .read(notificationListProvider.notifier)
-                      .markRead(n.id);
+                  ref.read(notificationListProvider.notifier).markRead(n.id);
                 },
               )),
         ],
@@ -152,9 +149,7 @@ class _NotificationListScreenState extends ConsumerState<NotificationListScreen>
           ...earlier.map((n) => _NotificationTile(
                 notification: n,
                 onTap: () {
-                  ref
-                      .read(notificationListProvider.notifier)
-                      .markRead(n.id);
+                  ref.read(notificationListProvider.notifier).markRead(n.id);
                 },
               )),
         ],
@@ -222,7 +217,9 @@ class _NotificationTile extends StatelessWidget {
                 Text(
                   notification.title,
                   style: AppTypography.titleSmall.copyWith(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
                     fontWeight: hasUnread ? FontWeight.w700 : FontWeight.w600,
                   ),
                 ),

@@ -44,7 +44,9 @@ class StudentCard extends StatelessWidget {
                 Text(
                   student.fullname,
                   style: AppTypography.titleSmall.copyWith(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

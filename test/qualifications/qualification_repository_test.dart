@@ -20,7 +20,9 @@ class _FakeQualificationApi implements QualificationApi {
   (String, String)? lastBoletinIds;
   Object boletinPayload = {};
   Object boletinLinkPayload = {
-    'data': {'url': 'https://x/qualifications/boletin/s1/c1/file?signature=abc'},
+    'data': {
+      'url': 'https://x/qualifications/boletin/s1/c1/file?signature=abc'
+    },
   };
   DioException? boletinError;
 
@@ -214,8 +216,7 @@ void main() {
     test('getBoletin maps DioException to ApiException', () async {
       final api = _FakeQualificationApi()
         ..boletinError = DioException(
-          requestOptions:
-              RequestOptions(path: '/qualifications/boletin/s1/c1'),
+          requestOptions: RequestOptions(path: '/qualifications/boletin/s1/c1'),
           response: Response(
             requestOptions:
                 RequestOptions(path: '/qualifications/boletin/s1/c1'),

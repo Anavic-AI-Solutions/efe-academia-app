@@ -80,8 +80,7 @@ class _NeverFeeRepository implements FeeRepository {
       Completer<CursorPagination<FeeModel>>().future;
 
   @override
-  Future<FeeModel> getFee(String id) async =>
-      Completer<FeeModel>().future;
+  Future<FeeModel> getFee(String id) async => Completer<FeeModel>().future;
 
   @override
   Future<PageResult<FeeModel>> getStudentFees(
@@ -100,7 +99,8 @@ class _NeverFeeRepository implements FeeRepository {
       Completer<void>().future;
 
   @override
-  Future<String> getInvoiceUrl(String feeId) async => Completer<String>().future;
+  Future<String> getInvoiceUrl(String feeId) async =>
+      Completer<String>().future;
 
   @override
   Future<Never> getInvoiceFile(String feeId) => throw UnimplementedError();
@@ -469,12 +469,11 @@ Future<void> _pumpQualificationList(WidgetTester tester) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
-        qual_provider.qualificationRepositoryProvider
-            .overrideWithValue(
-              _FakeQualificationRepository(
-                qualifications: _demoQualifications,
-              ),
-            ),
+        qual_provider.qualificationRepositoryProvider.overrideWithValue(
+          _FakeQualificationRepository(
+            qualifications: _demoQualifications,
+          ),
+        ),
       ],
       child: localizedApp(home: const QualificationListScreen()),
     ),
@@ -495,15 +494,18 @@ void main() {
       expect(find.byType(AppBar), findsNothing);
     });
 
-    testWidgets('uses AppSearchBar instead of raw TextField with OutlineInputBorder',
+    testWidgets(
+        'uses AppSearchBar instead of raw TextField with OutlineInputBorder',
         (tester) async {
       await _pumpFeeList(tester);
 
       expect(find.byType(AppSearchBar), findsOneWidget);
-      expect(find.byType(TextField), findsWidgets); // AppSearchBar contains TextField
+      expect(find.byType(TextField),
+          findsWidgets); // AppSearchBar contains TextField
     });
 
-    testWidgets('shows shimmer (ListShimmer) instead of CircularProgressIndicator while loading',
+    testWidgets(
+        'shows shimmer (ListShimmer) instead of CircularProgressIndicator while loading',
         (tester) async {
       await _pumpFeeListLoading(tester);
 
@@ -515,7 +517,8 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            authRepositoryProvider.overrideWithValue(_FakeLegacyAuthRepository()),
+            authRepositoryProvider
+                .overrideWithValue(_FakeLegacyAuthRepository()),
             feeRepositoryProvider.overrideWithValue(
               _FakeFeeRepository(fees: []),
             ),
@@ -533,7 +536,8 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            authRepositoryProvider.overrideWithValue(_FakeLegacyAuthRepository()),
+            authRepositoryProvider
+                .overrideWithValue(_FakeLegacyAuthRepository()),
             feeRepositoryProvider.overrideWithValue(_ErrorFeeRepository()),
           ],
           child: localizedApp(home: const FeeListScreen()),
@@ -574,7 +578,8 @@ void main() {
       expect(find.byType(AppBar), findsNothing);
     });
 
-    testWidgets('shows shimmer (ListShimmer) instead of CircularProgressIndicator while loading',
+    testWidgets(
+        'shows shimmer (ListShimmer) instead of CircularProgressIndicator while loading',
         (tester) async {
       await _pumpFeeDetailLoading(tester);
 
@@ -612,14 +617,16 @@ void main() {
       expect(find.byType(AppBar), findsNothing);
     });
 
-    testWidgets('uses AppSearchBar instead of raw TextField with OutlineInputBorder',
+    testWidgets(
+        'uses AppSearchBar instead of raw TextField with OutlineInputBorder',
         (tester) async {
       await _pumpQualificationList(tester);
 
       expect(find.byType(AppSearchBar), findsOneWidget);
     });
 
-    testWidgets('shows shimmer (ListShimmer) instead of CircularProgressIndicator while loading',
+    testWidgets(
+        'shows shimmer (ListShimmer) instead of CircularProgressIndicator while loading',
         (tester) async {
       await _pumpQualificationListLoading(tester);
 
@@ -631,8 +638,8 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            qual_provider.qualificationRepositoryProvider
-                .overrideWithValue(_FakeQualificationRepository(qualifications: [])),
+            qual_provider.qualificationRepositoryProvider.overrideWithValue(
+                _FakeQualificationRepository(qualifications: [])),
           ],
           child: localizedApp(home: const QualificationListScreen()),
         ),

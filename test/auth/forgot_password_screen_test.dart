@@ -74,7 +74,8 @@ void main() {
     });
 
     group('dark mode support', () {
-      testWidgets('TODO: add dark mode test with theme provider', (tester) async {
+      testWidgets('TODO: add dark mode test with theme provider',
+          (tester) async {
         // Dark mode test requires theme provider setup; skipped for now
         expect(true, isTrue);
       });

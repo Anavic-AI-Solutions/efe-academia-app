@@ -38,9 +38,8 @@ class ProfessorClassroomCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color: isDark
-                        ? AppColors.darkTextPrimary
-                        : AppColors.lightInk,
+                    color:
+                        isDark ? AppColors.darkTextPrimary : AppColors.lightInk,
                   ),
                 ),
                 const SizedBox(height: 3),

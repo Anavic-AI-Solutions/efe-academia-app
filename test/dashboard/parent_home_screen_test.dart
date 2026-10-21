@@ -105,8 +105,10 @@ class _PendingDashboardRepository implements DashboardRepository {
   Future<DashboardData> getDashboard() => completer.future;
 }
 
-const _ana = RelationModel(id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11);
-const _bruno = RelationModel(id: 'r2', fullname: 'Bruno Pérez', role: 'student', userId: 12);
+const _ana =
+    RelationModel(id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11);
+const _bruno = RelationModel(
+    id: 'r2', fullname: 'Bruno Pérez', role: 'student', userId: 12);
 
 DashboardData _parentData({
   int overdue = 2,
@@ -136,7 +138,8 @@ DashboardData _parentData({
 GoRouter _router() => GoRouter(
       initialLocation: '/dashboard',
       routes: [
-        GoRoute(path: '/dashboard', builder: (_, __) => const ParentHomeScreen()),
+        GoRoute(
+            path: '/dashboard', builder: (_, __) => const ParentHomeScreen()),
         GoRoute(
           path: '/students/:id',
           builder: (_, s) => Text('student:${s.pathParameters['id']}'),
@@ -164,8 +167,8 @@ Future<void> _pumpHome(
   final container = ProviderContainer(overrides: [
     authRepositoryProvider
         .overrideWithValue(_FakeParentAuthRepository(name: parentName)),
-    dashboardRepositoryProvider.overrideWithValue(
-        _FakeDashboardRepository(data: data ?? _parentData(), fails: dashboardFails)),
+    dashboardRepositoryProvider.overrideWithValue(_FakeDashboardRepository(
+        data: data ?? _parentData(), fails: dashboardFails)),
     relationsRepositoryProvider.overrideWithValue(
         _FakeRelationsRepository(children: children, fails: relationsFail)),
     unreadCountProvider.overrideWith((ref) async => 0),
@@ -229,11 +232,10 @@ void main() {
     expect(find.text('—'), findsNWidgets(2));
   });
 
-  testWidgets('joins summaries by user id regardless of order',
-      (tester) async {
+  testWidgets('joins summaries by user id regardless of order', (tester) async {
     await _pumpHome(tester, children: const [_bruno, _ana]);
-    final anaCard =
-        find.ancestor(of: find.text('Ana Pérez'), matching: find.byType(AppCard));
+    final anaCard = find.ancestor(
+        of: find.text('Ana Pérez'), matching: find.byType(AppCard));
     expect(find.descendant(of: anaCard, matching: find.text('7.9')),
         findsOneWidget);
   });

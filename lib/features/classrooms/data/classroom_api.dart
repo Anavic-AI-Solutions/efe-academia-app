@@ -26,11 +26,9 @@ class ClassroomApi {
         'per_page': limit,
       });
 
-  Future<Response> getClassroom(String id) =>
-      _client.get('/classrooms/$id');
+  Future<Response> getClassroom(String id) => _client.get('/classrooms/$id');
 
-  Future<Response> getClassroomFilters() =>
-      _client.get('/classrooms/filters');
+  Future<Response> getClassroomFilters() => _client.get('/classrooms/filters');
 
   Future<Response> getClassroomStudents(
     String id, {

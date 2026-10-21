@@ -59,8 +59,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
         (classrooms.isNotEmpty ? classrooms.first.id : null);
 
     return Scaffold(
-      backgroundColor:
-          AppColors.backgroundFor(isDark),
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(homeCalendarProvider);
@@ -175,8 +174,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
 
   Widget _buildLoading(BuildContext context, bool isDark) {
     return Scaffold(
-      backgroundColor:
-          AppColors.backgroundFor(isDark),
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [

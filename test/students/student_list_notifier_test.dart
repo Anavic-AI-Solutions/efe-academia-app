@@ -85,8 +85,7 @@ void main() {
       expect(notifier.state.isLoading, isFalse);
     });
 
-    test('goToPage keeps the filters and fetches the requested page',
-        () async {
+    test('goToPage keeps the filters and fetches the requested page', () async {
       final repository = _FakeStudentRepository();
       repository.enqueue(_page([_student('1')], total: 57));
       final notifier = StudentListNotifier(repository);
@@ -147,8 +146,8 @@ void main() {
 
     test('accumulates filter options across pages', () async {
       final repository = _FakeStudentRepository();
-      repository.enqueue(_page([_student('1', year: '2025', branch: 'Vera')],
-          total: 57));
+      repository.enqueue(
+          _page([_student('1', year: '2025', branch: 'Vera')], total: 57));
       final notifier = StudentListNotifier(repository);
       await pumpEventQueue();
 

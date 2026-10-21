@@ -365,7 +365,8 @@ void main() {
       expect(find.text(es.feesReplaceProofAction), findsNothing);
     });
 
-    testWidgets('tap Ver factura navega al visor de la factura', (tester) async {
+    testWidgets('tap Ver factura navega al visor de la factura',
+        (tester) async {
       var navigated = 0;
       await _pumpScreen(
         tester,

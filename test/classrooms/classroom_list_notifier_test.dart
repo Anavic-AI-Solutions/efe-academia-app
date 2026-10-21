@@ -184,7 +184,8 @@ void main() {
       expect(notifier.state.hasActiveFilters, isFalse);
     });
 
-    test('ignores a stale response that resolves after newer filters', () async {
+    test('ignores a stale response that resolves after newer filters',
+        () async {
       final repository = _FakeClassroomRepository();
       final initial = Completer<PageResult<ClassroomModel>>();
       repository.enqueueFuture(() => initial.future);

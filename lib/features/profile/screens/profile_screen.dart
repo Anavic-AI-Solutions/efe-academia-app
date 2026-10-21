@@ -41,178 +41,178 @@ class ProfileScreen extends ConsumerWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
               children: [
-          // Profile header
-          Center(
-            child: Column(
-              children: [
-                AppAvatar(
-                  imageUrl: user?.avatarUrl,
-                  name: user?.name ?? l10n.commonUser,
-                  size: 80,
-                  showGradientRing: true,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  user?.name ?? l10n.commonUser,
-                  style: AppTypography.headlineMedium.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextPrimary
-                        : AppColors.lightTextPrimary,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  user?.email ?? '',
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextSecondary
-                        : AppColors.lightTextSecondary,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                _RoleBadge(role: user?.role ?? ''),
-              ],
-            ),
-          ),
-          const SizedBox(height: 36),
-
-          // Account section
-          SectionHeader(
-            title: l10n.profileAccount,
-            padding: EdgeInsets.zero,
-          ),
-          const SizedBox(height: 8),
-          AppCard(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Column(
-              children: [
-                _SettingsTile(
-                  icon: PhosphorIconsRegular.user,
-                title: l10n.profileEditProfile,
-                onTap: () {},
-                isDark: isDark,
-              ),
-              _SettingsTile(
-                icon: PhosphorIconsRegular.bell,
-                title: l10n.profileNotifications,
-                onTap: () => context.push('/notifications'),
-                isDark: isDark,
-              ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // Preferences section
-          SectionHeader(
-            title: l10n.profilePreferences,
-            padding: EdgeInsets.zero,
-          ),
-          const SizedBox(height: 8),
-          AppCard(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Column(
-              children: [
-                _SettingsTile(
-                  icon: PhosphorIconsRegular.moon,
-                title: l10n.profileTheme,
-                trailing: Text(
-                  _themeModeLabel(themeMode, l10n),
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextTertiary
-                        : AppColors.lightTextTertiary,
-                  ),
-                ),
-                onTap: () => _showThemeSheet(context, ref),
-                isDark: isDark,
-              ),
-              _SettingsTile(
-                icon: PhosphorIconsRegular.globe,
-                title: l10n.profileLanguage,
-                trailing: Text(
-                  locale.languageCode == 'en'
-                      ? l10n.languageEnglish
-                      : l10n.languageSpanish,
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextTertiary
-                        : AppColors.lightTextTertiary,
-                  ),
-                ),
-                onTap: () => _showLanguageSheet(context, ref),
-                isDark: isDark,
-                showDivider: false,
-              ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // About section
-          SectionHeader(
-            title: l10n.profileAbout,
-            padding: EdgeInsets.zero,
-          ),
-          const SizedBox(height: 8),
-          AppCard(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Column(
-              children: [
-                _SettingsTile(
-                  icon: PhosphorIconsRegular.info,
-                title: l10n.profileAbout,
-                onTap: () {},
-                isDark: isDark,
-              ),
-              _SettingsTile(
-                icon: PhosphorIconsRegular.question,
-                title: l10n.profileHelpSupport,
-                onTap: () {},
-                isDark: isDark,
-                showDivider: false,
-              ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
-
-          // Logout button
-          PillButton(
-            label: l10n.profileLogout,
-            icon: PhosphorIconsBold.power,
-            color: AppColors.error,
-            onPressed: () async {
-              final confirmed = await showDialog<bool>(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(l10n.profileLogout),
-                  content: Text(l10n.profileLogoutConfirm),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: Text(l10n.commonCancel),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: Text(
-                        l10n.profileLogout,
-                        style: const TextStyle(color: AppColors.error),
+                // Profile header
+                Center(
+                  child: Column(
+                    children: [
+                      AppAvatar(
+                        imageUrl: user?.avatarUrl,
+                        name: user?.name ?? l10n.commonUser,
+                        size: 80,
+                        showGradientRing: true,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      Text(
+                        user?.name ?? l10n.commonUser,
+                        style: AppTypography.headlineMedium.copyWith(
+                          color: isDark
+                              ? AppColors.darkTextPrimary
+                              : AppColors.lightTextPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        user?.email ?? '',
+                        style: AppTypography.bodyMedium.copyWith(
+                          color: isDark
+                              ? AppColors.darkTextSecondary
+                              : AppColors.lightTextSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      _RoleBadge(role: user?.role ?? ''),
+                    ],
+                  ),
                 ),
-              );
-              if (confirmed == true && context.mounted) {
-                await ref.read(authProvider.notifier).logout();
-              }
-            },
-          ),
-        ],
-      ),
+                const SizedBox(height: 36),
+
+                // Account section
+                SectionHeader(
+                  title: l10n.profileAccount,
+                  padding: EdgeInsets.zero,
+                ),
+                const SizedBox(height: 8),
+                AppCard(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Column(
+                    children: [
+                      _SettingsTile(
+                        icon: PhosphorIconsRegular.user,
+                        title: l10n.profileEditProfile,
+                        onTap: () {},
+                        isDark: isDark,
+                      ),
+                      _SettingsTile(
+                        icon: PhosphorIconsRegular.bell,
+                        title: l10n.profileNotifications,
+                        onTap: () => context.push('/notifications'),
+                        isDark: isDark,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Preferences section
+                SectionHeader(
+                  title: l10n.profilePreferences,
+                  padding: EdgeInsets.zero,
+                ),
+                const SizedBox(height: 8),
+                AppCard(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Column(
+                    children: [
+                      _SettingsTile(
+                        icon: PhosphorIconsRegular.moon,
+                        title: l10n.profileTheme,
+                        trailing: Text(
+                          _themeModeLabel(themeMode, l10n),
+                          style: AppTypography.bodyMedium.copyWith(
+                            color: isDark
+                                ? AppColors.darkTextTertiary
+                                : AppColors.lightTextTertiary,
+                          ),
+                        ),
+                        onTap: () => _showThemeSheet(context, ref),
+                        isDark: isDark,
+                      ),
+                      _SettingsTile(
+                        icon: PhosphorIconsRegular.globe,
+                        title: l10n.profileLanguage,
+                        trailing: Text(
+                          locale.languageCode == 'en'
+                              ? l10n.languageEnglish
+                              : l10n.languageSpanish,
+                          style: AppTypography.bodyMedium.copyWith(
+                            color: isDark
+                                ? AppColors.darkTextTertiary
+                                : AppColors.lightTextTertiary,
+                          ),
+                        ),
+                        onTap: () => _showLanguageSheet(context, ref),
+                        isDark: isDark,
+                        showDivider: false,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // About section
+                SectionHeader(
+                  title: l10n.profileAbout,
+                  padding: EdgeInsets.zero,
+                ),
+                const SizedBox(height: 8),
+                AppCard(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Column(
+                    children: [
+                      _SettingsTile(
+                        icon: PhosphorIconsRegular.info,
+                        title: l10n.profileAbout,
+                        onTap: () {},
+                        isDark: isDark,
+                      ),
+                      _SettingsTile(
+                        icon: PhosphorIconsRegular.question,
+                        title: l10n.profileHelpSupport,
+                        onTap: () {},
+                        isDark: isDark,
+                        showDivider: false,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // Logout button
+                PillButton(
+                  label: l10n.profileLogout,
+                  icon: PhosphorIconsBold.power,
+                  color: AppColors.error,
+                  onPressed: () async {
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(l10n.profileLogout),
+                        content: Text(l10n.profileLogoutConfirm),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text(l10n.commonCancel),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: Text(
+                              l10n.profileLogout,
+                              style: const TextStyle(color: AppColors.error),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirmed == true && context.mounted) {
+                      await ref.read(authProvider.notifier).logout();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

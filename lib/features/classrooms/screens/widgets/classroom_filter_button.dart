@@ -57,9 +57,8 @@ class ClassroomFilterButton extends StatelessWidget {
                 width: 18,
                 height: 18,
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.darkSurface
-                      : AppColors.lightSurface,
+                  color:
+                      isDark ? AppColors.darkSurface : AppColors.lightSurface,
                   shape: BoxShape.circle,
                   border: Border.all(color: accent, width: 1.5),
                 ),

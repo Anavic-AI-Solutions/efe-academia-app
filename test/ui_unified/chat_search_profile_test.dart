@@ -221,8 +221,7 @@ Future<ProviderContainer> _pumpProfile(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets(
-      'chat list uses gradient header, shimmer loading and app cards',
+  testWidgets('chat list uses gradient header, shimmer loading and app cards',
       (tester) async {
     await _pumpChatList(tester, _FakeChatRepository(chats: _demoChats));
 
@@ -294,8 +293,7 @@ void main() {
     expect(find.byType(Divider), findsNothing);
   });
 
-  testWidgets('search loading uses shimmer instead of spinner',
-      (tester) async {
+  testWidgets('search loading uses shimmer instead of spinner', (tester) async {
     await _pumpSearch(
       tester,
       initial: const SearchState(query: 'ana', isLoading: true),
@@ -325,8 +323,8 @@ void main() {
     await tester.pump();
     expect(find.byType(AppCard), findsAtLeastNWidgets(3));
     // Logout is an r13/h46 error button.
-    final logout =
-        tester.widget<PillButton>(find.widgetWithText(PillButton, 'Cerrar sesión'));
+    final logout = tester
+        .widget<PillButton>(find.widgetWithText(PillButton, 'Cerrar sesión'));
     expect(logout.color, AppColors.error);
     expect(logout.height, 46);
     // Assert effective border radius is 13 (per brief: r13).

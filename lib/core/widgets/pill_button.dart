@@ -39,8 +39,9 @@ class PillButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: isGradient ? Colors.transparent : baseColor,
             foregroundColor: Colors.white,
-            disabledBackgroundColor:
-                isGradient ? baseColor.withAlpha(128) : baseColor.withAlpha(128),
+            disabledBackgroundColor: isGradient
+                ? baseColor.withAlpha(128)
+                : baseColor.withAlpha(128),
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(13),
