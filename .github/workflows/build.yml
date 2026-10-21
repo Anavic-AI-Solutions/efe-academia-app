@@ -86,8 +86,52 @@ jobs:
           name: windows
           path: build/efe-mobile-windows-x64.zip
 
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure app (preprod)
+        shell: bash
+        run: |
+          cat > .env <<'EOF'
+          API_BASE_URL=https://preprod.efeacademia.com/api/v1
+          REVERB_HOST=preprod.efeacademia.com
+          REVERB_PORT=8181
+          REVERB_APP_KEY=${{ secrets.REVERB_APP_KEY }}
+          REVERB_SCHEME=https
+          EOF
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Firma con la debug key configurada en android/app/build.gradle.
+      # Para publicar en Play Store hay que configurar un keystore real.
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+
   release:
-    needs: [build-linux, build-windows]
+    needs: [build-linux, build-windows, build-android]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
@@ -103,6 +147,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: windows
+          path: ./artifacts
+
+      - name: Download Android artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-apk
           path: ./artifacts
 
       - name: Get version
@@ -127,4 +177,5 @@ jobs:
           files: |
             artifacts/efe-mobile-linux-x86_64.tar.gz
             artifacts/efe-mobile-windows-x64.zip
+            artifacts/app-release.apk
           generate_release_notes: true

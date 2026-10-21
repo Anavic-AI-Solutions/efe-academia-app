@@ -142,7 +142,7 @@ lib/
 
 | Workflow | Trigger | Qué hace |
 |----------|---------|----------|
-| `build.yml` | Push a `master` / tag | Build Linux + Windows, crea Release con artifacts |
+| `build.yml` | Push a `master` / tag | Build Linux + Windows + APK Android, crea Release con artifacts |
 | `sync.yml` | Schedule (6h) / push / manual | Format, analyze, test, build Linux/Windows, auto-tag version, PR de sync |
 
 ### Release automático
@@ -150,8 +150,18 @@ lib/
 Al hacer push a `master`:
 
 1. Se ejecutan tests + análisis en Linux y Windows
-2. Se compilan binarios release
-3. Se crea GitHub Release `v{version}` con artifacts adjuntos
+2. Se compilan Linux, Windows y el APK Android release
+3. Se crea GitHub Release `v{version}` con los tres artifacts adjuntos
+
+El APK usa la **debug key** de `android/app/build.gradle` (instalable, pero no
+apta para Play Store). Para publicar, configurá un keystore real y reemplazá
+`signingConfigs.debug`. El workflow toma `REVERB_APP_KEY` del secret homónimo
+del repositorio; si no está definido, el chat realtime queda deshabilitado
+(la app sigue funcionando por REST).
+
+También podés ejecutar **Build & Release** manualmente
+(`workflow_dispatch`) desde cualquier rama: el job `build-android` sube el
+APK como artifact descargable, aunque no se cree un Release si no es `master`.
 
 ## Scripts útiles
 
