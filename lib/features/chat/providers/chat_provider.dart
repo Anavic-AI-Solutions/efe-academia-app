@@ -100,6 +100,19 @@ class ChatListNotifier extends StateNotifier<ChatListState> {
     }
   }
 
+  /// Pone en cero el contador local de un chat al abrirlo. El backend ya lo
+  /// marcó como leído; así la lista no muestra el badge viejo al volver.
+  void clearUnread(String chatId) {
+    state = state.copyWith(
+      pagination: state.pagination.copyWith(
+        data: state.chats
+            .map((chat) =>
+                chat.id == chatId ? chat.copyWith(unreadCount: 0) : chat)
+            .toList(),
+      ),
+    );
+  }
+
   Future<void> loadMore() async {
     if (!state.pagination.hasMore || state.isLoading) return;
     state = state.copyWith(isLoading: true);
@@ -140,14 +153,19 @@ class ChatUnreadCountController {
 
   final Ref _ref;
 
-  /// Marca el chat como leído y, solo si el POST tuvo éxito, invalida el
-  /// badge para que se relea el contador.
+  /// Marca el chat como leído y, solo si el POST tuvo éxito, limpia el badge
+  /// por chat y lo invalida para que se relea el contador global.
   Future<void> markRead(String chatId) async {
     try {
       await _ref.read(chatApiProvider).markRead(chatId);
     } catch (_) {
       // El badge conserva su valor; el próximo refresh lo reconcilia.
       return;
+    }
+    // Solo actualiza la lista si ya está montada; no fuerza una carga extra
+    // cuando se abre un chat desde un enlace directo.
+    if (_ref.container.exists(chatListProvider)) {
+      _ref.read(chatListProvider.notifier).clearUnread(chatId);
     }
     _ref.invalidate(chatUnreadCountProvider);
   }

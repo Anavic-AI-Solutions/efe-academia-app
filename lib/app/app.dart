@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../features/chat/providers/chat_provider.dart';
+import '../features/notifications/providers/notification_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../core/realtime/realtime_providers.dart';
 import 'locale/locale_provider.dart';
@@ -38,6 +39,7 @@ class _EfeAppState extends ConsumerState<EfeApp> with WidgetsBindingObserver {
     if (state != AppLifecycleState.resumed) return;
     ref.read(chatUnreadCountControllerProvider).refresh();
     ref.read(chatListProvider.notifier).refreshFirstPage();
+    ref.invalidate(unreadCountProvider);
   }
 
   @override

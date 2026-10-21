@@ -214,21 +214,26 @@ class _FakeRealtimeService implements RealtimeService {
 // ---------------------------------------------------------------------------
 
 class _Harness {
-  _Harness(this.api, this.repository);
+  _Harness(this.api, this.repository, this.notificationUnreadCalls);
 
   final _FakeChatApi api;
   final _FakeChatRepository repository;
+  final List<int> notificationUnreadCalls;
 }
 
 Future<_Harness> _pumpApp(WidgetTester tester) async {
   final api = _FakeChatApi();
   final repository = _FakeChatRepository();
+  final notificationUnreadCalls = <int>[];
   final container = ProviderContainer(
     overrides: [
       secureStorageProvider.overrideWithValue(_FakeSecureStorage()),
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository()),
       dashboardRepositoryProvider.overrideWithValue(_FakeDashboardRepository()),
-      unreadCountProvider.overrideWith((ref) async => 0),
+      unreadCountProvider.overrideWith((ref) async {
+        notificationUnreadCalls.add(1);
+        return 0;
+      }),
       chatApiProvider.overrideWithValue(api),
       chatRepositoryProvider.overrideWithValue(repository),
       realtimeServiceProvider.overrideWithValue(_FakeRealtimeService()),
@@ -244,7 +249,7 @@ Future<_Harness> _pumpApp(WidgetTester tester) async {
   );
   await tester.pumpAndSettle();
 
-  return _Harness(api, repository);
+  return _Harness(api, repository, notificationUnreadCalls);
 }
 
 void main() {
@@ -264,5 +269,17 @@ void main() {
     expect(harness.api.unreadCalls, 2);
     // ...and the list was refreshed from its first page.
     expect(harness.repository.cursors, [null, null]);
+  });
+
+  testWidgets('resuming the app refreshes the notification badge',
+      (tester) async {
+    final harness = await _pumpApp(tester);
+
+    expect(harness.notificationUnreadCalls, hasLength(1));
+
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpAndSettle();
+
+    expect(harness.notificationUnreadCalls, hasLength(2));
   });
 }
