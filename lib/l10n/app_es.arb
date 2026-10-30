@@ -275,9 +275,38 @@
       }
     }
   },
+  "gradesGridTitle": "Calificaciones por período",
+  "gradesGridPeriod": "Período",
+  "gradesGridPerformance": "Desempeño",
+  "gradesGridAttitude": "Actitud",
+  "gradesGridWritten": "Escrito",
+  "gradesGridOral": "Oral",
+  "gradesGridHomework": "Tareas",
+  "gradesGridDiscipline": "Disciplina",
+  "gradesGridParticipation": "Participación",
+  "gradesGridAttendance": "Asistencia",
+  "gradesGridExam": "Parcial",
+  "gradesGridAverage": "Promedio",
+  "gradesGridTerm": "{term}° Trimestre",
+  "@gradesGridTerm": {
+    "placeholders": {
+      "term": {
+        "type": "int"
+      }
+    }
+  },
+  "gradesGridClassroomFallback": "Aula",
   "studentsAbsenceTitle": "Inasistencia",
+  "studentsStatusApproved": "Aprobado",
+  "studentsStatusPending": "Pendiente",
+  "studentsStatusRejected": "Rechazado",
+  "feesStatusPaid": "Pagado",
+  "feesStatusPartial": "Parcial",
+  "feesStatusPending": "Pendiente",
+  "feesStatusOverdue": "Vencido",
   "studentsAbsenceJustified": "Justificada",
   "studentsAbsenceUnjustified": "Sin justificar",
+  "studentsAbsencePending": "Pendiente",
   "feesTitle": "Cuotas",
   "feesSearchHint": "Buscar cuotas...",
   "feesLoadError": "No se pudieron cargar las cuotas",
@@ -348,6 +377,36 @@
       }
     }
   },
+  "chatNewTitle": "Nuevo chat",
+  "chatNewSearchHint": "Buscar persona…",
+  "chatNewEmptyTitle": "Sin personas vinculadas",
+  "chatNewEmptySubtitle": "Todavía no tenés personas con las que chatear",
+  "chatNewNoResults": "Sin resultados para «{query}»",
+  "@chatNewNoResults": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "chatNewStart": "Iniciar conversación",
+  "relationRoleStudent": "Alumno",
+  "relationRoleProfessor": "Profesor",
+  "relationRoleParent": "Padre/Madre",
+  "relationRoleAdmin": "Admin",
+  "chatTyping": "escribiendo…",
+  "chatOnline": "en línea",
+  "chatConnectionLost": "Sin conexión — tocá para reintentar",
+  "chatSendFailed": "No se pudo enviar",
+  "chatRetry": "Reintentar",
+  "chatUnreadLabel": "{count} mensajes sin leer",
+  "@chatUnreadLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "newsTitle": "Noticias",
   "newsErrorTitle": "No se pudieron cargar las noticias",
   "newsEmptyTitle": "No hay noticias",
@@ -385,6 +444,14 @@
   "professorStatAbsences": "Ausentes",
   "professorMyClassrooms": "Mis aulas",
   "professorMyClassroomsEmpty": "Todavía no tenés aulas asignadas",
+  "professorClassroomsCount": "{count, plural, =0{Sin aulas asignadas} =1{1 aula} other{{count} aulas}}",
+  "@professorClassroomsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "professorStudentsCount": "{count} alumnos",
   "@professorStudentsCount": {
     "placeholders": {
@@ -396,6 +463,12 @@
   "professorTakeAttendance": "Tomar asistencia",
   "professorLoadGrade": "Cargar nota",
   "professorLoadError": "No se pudo cargar el inicio",
+  "homeCalendar": "Calendario",
+  "homeSeeAll": "Ver todo",
+  "homeCalendarEmpty": "No hay próximos eventos",
+  "homeBirthdays": "Cumpleaños",
+  "homeBirthdaysEmpty": "No hay cumpleaños hoy",
+  "homeBirthdaysSoon": "Disponible próximamente",
   "attendanceTitle": "Asistencia · {classroom}",
   "@attendanceTitle": {
     "placeholders": {
@@ -441,5 +514,149 @@
   "gradeFormSave": "Guardar",
   "gradeFormScoreInvalid": "Ingresá una nota entre 0 y 10",
   "gradeFormSaved": "Calificación guardada",
-  "gradeFormError": "No se pudo guardar la calificación"
+  "gradeFormError": "No se pudo guardar la calificación",
+  "studentGradeFromDetail": "Cargar nota",
+  "studentGradeClassroom": "Aula",
+  "studentGradeNoClassrooms": "Sin aulas asignadas",
+  "absenceMarkTitle": "Marcar inasistencia",
+  "absenceMarkClassroom": "Aula",
+  "absenceMarkDate": "Fecha",
+  "absenceMarkInfo": "Se agrega al parte del día sin quitar a los demás ausentes.",
+  "absenceMarked": "Inasistencia registrada",
+  "absenceAlreadyMarked": "Ya estaba ausente ese día",
+  "absenceMarkError": "No se pudo registrar la inasistencia",
+  "materialFormTitleNew": "Nuevo material",
+  "materialFormTitleEdit": "Editar material",
+  "materialFormName": "Nombre",
+  "materialFormCategory": "Categoría",
+  "materialFormCategoryNone": "Sin categoría",
+  "materialFormDescription": "Descripción (opcional)",
+  "materialFormFiles": "Archivos",
+  "materialFormPickFiles": "Elegir archivos",
+  "materialFormVisibility": "Visibilidad",
+  "materialFormVisibilityAll": "Todos",
+  "materialFormVisibilitySpecific": "Alumnos específicos",
+  "materialFormAvailableUntil": "Disponible hasta (opcional)",
+  "materialFormClearDate": "Quitar fecha",
+  "materialFormSave": "Guardar",
+  "materialFormNameRequired": "Ingresá un nombre",
+  "materialFormFilesRequired": "Elegí al menos un archivo",
+  "materialFormFilesTooMany": "Máximo 10 archivos",
+  "materialFormFileTooLarge": "Cada archivo puede pesar hasta 50 MB",
+  "materialFormStudentsRequired": "Elegí al menos un alumno",
+  "materialFormError": "No se pudo guardar el material",
+  "materialFormDetailError": "No se pudo cargar el material",
+  "materialsAdd": "Cargar material",
+  "materialsCreated": "Material publicado",
+  "materialsUpdated": "Material actualizado",
+  "materialsDeleted": "Material eliminado",
+  "materialsDeleteError": "No se pudo eliminar el material",
+  "materialsEdit": "Editar",
+  "materialsDelete": "Eliminar",
+  "materialsDeleteTitle": "¿Eliminar material?",
+  "materialsDeleteMessage": "También se borran sus archivos.",
+  "materialsDeleteCancel": "Cancelar",
+  "materialsDeleteConfirm": "Eliminar",
+  "materialsStudentCount": "{count, plural, =1{1 alumno} other{{count} alumnos}}",
+  "@materialsStudentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "documentsTitle": "Documentos",
+  "documentsEmpty": "No hay documentos",
+  "documentsOpen": "Abrir / Descargar",
+  "documentsOpenError": "No se pudo abrir el documento",
+  "homeDocuments": "Documentos",
+  "homeNews": "Novedades",
+  "homeNewsEmpty": "No hay novedades",
+  "homeSummaryDocumentsCount": "{count, plural, =1{1 documento} other{{count} documentos}}",
+  "@homeSummaryDocumentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSummaryBirthdaysCount": "{count, plural, =1{1 hoy} other{{count} hoy}}",
+  "@homeSummaryBirthdaysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calendarViewList": "Ver lista",
+  "parentGreeting": "Hola",
+  "parentFamilyTitle": "Familia {surname}",
+  "@parentFamilyTitle": {
+    "placeholders": {
+      "surname": {
+        "type": "String"
+      }
+    }
+  },
+  "parentOverdueFeesCount": "{count, plural, =1{1 cuota vencida} other{{count} cuotas vencidas}}",
+  "@parentOverdueFeesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parentMoraTotal": "Mora total",
+  "parentPayAction": "Pagar",
+  "navPayments": "Pagos",
+  "parentActionBoletin": "Boletín",
+  "boletinTitle": "Boletín",
+  "boletinDownloadAction": "Descargar boletín (PDF)",
+  "boletinPeriod": "{n}° Período",
+  "@boletinPeriod": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "boletinObservations": "Observaciones",
+  "boletinNoGrades": "No hay calificaciones registradas para este período",
+  "boletinNoAccess": "No tenés acceso al boletín de este alumno",
+  "boletinDownloadError": "No se pudo descargar el boletín",
+  "boletinViewAction": "Ver boletín",
+  "parentChooseChild": "Elegí un hijo",
+  "feesUploadProofAction": "Subir comprobante",
+  "feesReplaceProofAction": "Reemplazar comprobante",
+  "feesInvoiceAction": "Ver factura",
+  "feesInvoiceUnavailable": "Factura no disponible",
+  "feesInvoiceViewerTitle": "Factura",
+  "feesInvoiceLoadError": "No se pudo cargar la factura",
+  "feesInvoiceDownloadAction": "Descargar",
+  "feesInvoiceDownloadSuccess": "Factura descargada",
+  "feesInvoiceDownloadError": "No se pudo descargar la factura",
+  "feesChooseFeeTitle": "Elegí la cuota",
+  "feesProofStatusReview": "Comprobante en revisión",
+  "feesProofPickFile": "Elegir archivo",
+  "feesProofHint": "JPG, PNG o PDF · hasta 10 MB",
+  "feesProofInvalidFile": "Archivo no válido. JPG, PNG o PDF · hasta 10 MB",
+  "feesProofSuccess": "Comprobante subido. Un administrador lo revisará.",
+  "feesProofError": "No se pudo subir el comprobante",
+  "feesProofSubmit": "Subir",
+  "feesStatusUnderReview": "En revisión",
+  "feesPartialOwed": "debe {amount}",
+  "@feesPartialOwed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pushPrimerTitle": "Activá las notificaciones",
+  "pushPrimerBody": "Los mensajes de chat y los avisos de la escuela te llegan aunque la app esté cerrada",
+  "pushPrimerActivate": "Activar",
+  "pushPrimerLater": "Ahora no",
+  "trayOpen": "Abrir EFE",
+  "trayAutostart": "Iniciar con el sistema",
+  "trayQuit": "Salir"
 }

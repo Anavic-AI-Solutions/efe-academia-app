@@ -4,11 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/avatar.dart';
 import '../../../core/widgets/badge_counter.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
+import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/realtime/realtime_providers.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../l10n/app_localizations.dart';
@@ -50,17 +53,37 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     final state = ref.watch(chatListProvider);
     final chats = state.chats;
     final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // El chat sigue funcionando por REST sin socket; el aviso solo informa y
+    // permite reintentar el handshake a mano.
+    final realtimeReady = ref.watch(realtimeReadyProvider);
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           LargeTitleBar(
             title: l10n.navChat,
             showBackButton: false,
+            actions: [
+              IconButton(
+                onPressed: () => context.push('/chat/new'),
+                tooltip: l10n.chatNewTitle,
+                icon: const Icon(
+                  PhosphorIconsRegular.plus,
+                  size: 22,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
+          if (!realtimeReady)
+            _ConnectionBanner(
+              onTap: () => ref.read(realtimeServiceProvider).connect(),
+            ),
           Expanded(
             child: state.isLoading && chats.isEmpty
-                ? const Center(child: CircularProgressIndicator())
+                ? const ListShimmer()
                 : state.error != null && chats.isEmpty
                     ? ErrorView(
                         message: l10n.chatLoadError,
@@ -77,19 +100,19 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                         : RefreshIndicator(
                             onRefresh: () =>
                                 ref.read(chatListProvider.notifier).refresh(),
-                            child: ListView.separated(
+                            child: ListView.builder(
                               controller: _scrollController,
-                              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
                               itemCount: chats.length +
                                   (state.pagination.hasMore ? 1 : 0),
-                              separatorBuilder: (_, __) =>
-                                  const Divider(height: 1),
                               itemBuilder: (context, index) {
                                 if (index == chats.length) {
                                   return const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
+                                    padding:
+                                        EdgeInsets.only(top: 4, bottom: 12),
+                                    child: LoadingShimmer(
+                                      width: double.infinity,
+                                      height: 68,
                                     ),
                                   );
                                 }
@@ -109,6 +132,37 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
   }
 }
 
+class _ConnectionBanner extends StatelessWidget {
+  const _ConnectionBanner({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Material(
+      key: const Key('chatConnectionBanner'),
+      color: AppColors.mutedFor(isDark),
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text(
+            context.l10n.chatConnectionLost,
+            textAlign: TextAlign.center,
+            style: AppTypography.bodySmall.copyWith(
+              color: isDark ? AppColors.darkBackground : Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _ChatTile extends StatelessWidget {
   final ChatModel chat;
   final VoidCallback? onTap;
@@ -122,68 +176,65 @@ class _ChatTile extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final hasUnread = chat.unreadCount > 0;
 
-    return InkWell(
+    return AppCard(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            BadgeCounter(
-              count: chat.unreadCount,
-              child: AppAvatar(
-                name: chat.name,
-                size: 48,
-              ),
+      child: Row(
+        children: [
+          BadgeCounter(
+            count: chat.unreadCount,
+            child: AppAvatar(
+              name: chat.name,
+              size: 48,
             ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    chat.name,
-                    style: AppTypography.titleSmall.copyWith(
-                      color: isDark
-                          ? AppColors.darkTextPrimary
-                          : AppColors.lightTextPrimary,
-                      fontWeight:
-                          hasUnread ? FontWeight.w700 : FontWeight.w600,
-                    ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  chat.name,
+                  style: AppTypography.titleSmall.copyWith(
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
+                    fontWeight: hasUnread ? FontWeight.w700 : FontWeight.w600,
                   ),
-                  const SizedBox(height: 3),
-                  Text(
-                    chat.lastMessage,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTypography.bodySmall.copyWith(
-                      color: hasUnread
-                          ? (isDark
-                              ? AppColors.darkTextSecondary
-                              : AppColors.lightTextSecondary)
-                          : (isDark
-                              ? AppColors.darkTextTertiary
-                              : AppColors.lightTextTertiary),
-                      fontWeight:
-                          hasUnread ? FontWeight.w500 : FontWeight.normal,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            if (chat.lastMessageAt != null)
-              Text(
-                _formatTime(l10n, chat.lastMessageAt!),
-                style: AppTypography.labelSmall.copyWith(
-                  color: hasUnread
-                      ? (isDark ? const Color(0xFF6366F1) : AppColors.primary)
-                      : (isDark
-                          ? AppColors.darkTextTertiary
-                          : AppColors.lightTextTertiary),
                 ),
+                const SizedBox(height: 3),
+                Text(
+                  chat.lastMessage,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: hasUnread
+                        ? (isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.lightTextSecondary)
+                        : (isDark
+                            ? AppColors.darkTextTertiary
+                            : AppColors.lightTextTertiary),
+                    fontWeight: hasUnread ? FontWeight.w500 : FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          if (chat.lastMessageAt != null)
+            Text(
+              _formatTime(l10n, chat.lastMessageAt!),
+              style: AppTypography.labelSmall.copyWith(
+                color: hasUnread
+                    ? AppColors.accentFor(isDark)
+                    : (isDark
+                        ? AppColors.darkTextTertiary
+                        : AppColors.lightTextTertiary),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

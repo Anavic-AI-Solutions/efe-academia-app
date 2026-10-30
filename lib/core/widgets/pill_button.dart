@@ -9,6 +9,7 @@ class PillButton extends StatelessWidget {
   final bool isGradient;
   final IconData? icon;
   final double height;
+  final Color? color;
 
   const PillButton({
     super.key,
@@ -17,30 +18,33 @@ class PillButton extends StatelessWidget {
     this.isLoading = false,
     this.isGradient = false,
     this.icon,
-    this.height = 52,
+    this.height = 46,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
+    final baseColor = color ?? AppColors.primary;
+
     return SizedBox(
       width: double.infinity,
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: isGradient ? AppColors.primaryGradient : null,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(13),
         ),
         child: ElevatedButton(
           onPressed: isLoading ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: isGradient ? Colors.transparent : AppColors.primary,
+            backgroundColor: isGradient ? Colors.transparent : baseColor,
             foregroundColor: Colors.white,
             disabledBackgroundColor: isGradient
-                ? AppColors.primary.withAlpha(128)
-                : AppColors.primary.withAlpha(128),
+                ? baseColor.withAlpha(128)
+                : baseColor.withAlpha(128),
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(13),
             ),
             elevation: 0,
           ),
@@ -64,7 +68,8 @@ class PillButton extends StatelessWidget {
                       label,
                       style: AppTypography.labelLarge.copyWith(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ],

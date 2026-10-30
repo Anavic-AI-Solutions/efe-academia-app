@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/cursor_pagination.dart';
 import '../../../core/api/page_pagination.dart';
+import '../domain/boletin_data.dart';
 import '../domain/classroom_grades_summary.dart';
 import '../domain/qualification_model.dart';
 import 'qualification_api.dart';
@@ -91,6 +92,24 @@ class QualificationRepository {
         period: period,
         description: description,
       );
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<BoletinData> getBoletin(String studentId, String classroomId) async {
+    try {
+      final response = await _api.getBoletin(studentId, classroomId);
+      return BoletinData.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<String> getBoletinUrl(String studentId, String classroomId) async {
+    try {
+      final response = await _api.getBoletinLink(studentId, classroomId);
+      return response.data['data']['url']?.toString() ?? '';
     } on DioException catch (e) {
       throw _handleDioError(e);
     }

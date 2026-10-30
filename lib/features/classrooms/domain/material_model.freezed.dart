@@ -26,6 +26,7 @@ mixin _$MaterialModel {
   String get availableUntil => throw _privateConstructorUsedError;
   int get downloadCount => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
+  List<String> get studentIds => throw _privateConstructorUsedError;
 
   /// Create a copy of MaterialModel
   /// with the given fields replaced by the non-null parameter values.
@@ -50,7 +51,8 @@ abstract class $MaterialModelCopyWith<$Res> {
       String visibility,
       String availableUntil,
       int downloadCount,
-      String createdAt});
+      String createdAt,
+      List<String> studentIds});
 }
 
 /// @nodoc
@@ -78,6 +80,7 @@ class _$MaterialModelCopyWithImpl<$Res, $Val extends MaterialModel>
     Object? availableUntil = null,
     Object? downloadCount = null,
     Object? createdAt = null,
+    Object? studentIds = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -120,6 +123,10 @@ class _$MaterialModelCopyWithImpl<$Res, $Val extends MaterialModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      studentIds: null == studentIds
+          ? _value.studentIds
+          : studentIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -142,7 +149,8 @@ abstract class _$$MaterialModelImplCopyWith<$Res>
       String visibility,
       String availableUntil,
       int downloadCount,
-      String createdAt});
+      String createdAt,
+      List<String> studentIds});
 }
 
 /// @nodoc
@@ -168,6 +176,7 @@ class __$$MaterialModelImplCopyWithImpl<$Res>
     Object? availableUntil = null,
     Object? downloadCount = null,
     Object? createdAt = null,
+    Object? studentIds = null,
   }) {
     return _then(_$MaterialModelImpl(
       id: null == id
@@ -210,6 +219,10 @@ class __$$MaterialModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      studentIds: null == studentIds
+          ? _value._studentIds
+          : studentIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -227,7 +240,9 @@ class _$MaterialModelImpl implements _MaterialModel {
       this.visibility = '',
       this.availableUntil = '',
       this.downloadCount = 0,
-      this.createdAt = ''});
+      this.createdAt = '',
+      final List<String> studentIds = const []})
+      : _studentIds = studentIds;
 
   @override
   final String id;
@@ -258,10 +273,18 @@ class _$MaterialModelImpl implements _MaterialModel {
   @override
   @JsonKey()
   final String createdAt;
+  final List<String> _studentIds;
+  @override
+  @JsonKey()
+  List<String> get studentIds {
+    if (_studentIds is EqualUnmodifiableListView) return _studentIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_studentIds);
+  }
 
   @override
   String toString() {
-    return 'MaterialModel(id: $id, name: $name, description: $description, type: $type, publicUrl: $publicUrl, category: $category, visibility: $visibility, availableUntil: $availableUntil, downloadCount: $downloadCount, createdAt: $createdAt)';
+    return 'MaterialModel(id: $id, name: $name, description: $description, type: $type, publicUrl: $publicUrl, category: $category, visibility: $visibility, availableUntil: $availableUntil, downloadCount: $downloadCount, createdAt: $createdAt, studentIds: $studentIds)';
   }
 
   @override
@@ -285,7 +308,9 @@ class _$MaterialModelImpl implements _MaterialModel {
             (identical(other.downloadCount, downloadCount) ||
                 other.downloadCount == downloadCount) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            const DeepCollectionEquality()
+                .equals(other._studentIds, _studentIds));
   }
 
   @override
@@ -300,7 +325,8 @@ class _$MaterialModelImpl implements _MaterialModel {
       visibility,
       availableUntil,
       downloadCount,
-      createdAt);
+      createdAt,
+      const DeepCollectionEquality().hash(_studentIds));
 
   /// Create a copy of MaterialModel
   /// with the given fields replaced by the non-null parameter values.
@@ -322,7 +348,8 @@ abstract class _MaterialModel implements MaterialModel {
       final String visibility,
       final String availableUntil,
       final int downloadCount,
-      final String createdAt}) = _$MaterialModelImpl;
+      final String createdAt,
+      final List<String> studentIds}) = _$MaterialModelImpl;
 
   @override
   String get id;
@@ -344,6 +371,8 @@ abstract class _MaterialModel implements MaterialModel {
   int get downloadCount;
   @override
   String get createdAt;
+  @override
+  List<String> get studentIds;
 
   /// Create a copy of MaterialModel
   /// with the given fields replaced by the non-null parameter values.

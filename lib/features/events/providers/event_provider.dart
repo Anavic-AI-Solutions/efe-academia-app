@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
@@ -103,4 +102,35 @@ class EventListNotifier extends StateNotifier<EventListState> {
 final eventListProvider =
     StateNotifierProvider<EventListNotifier, EventListState>((ref) {
   return EventListNotifier(ref.watch(eventRepositoryProvider));
+});
+
+String _ymd(DateTime date) =>
+    '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+/// Próximos eventos para el home del profesor: hoy → hoy+30, los 5 primeros.
+final homeCalendarProvider =
+    FutureProvider.autoDispose<List<EventModel>>((ref) async {
+  final repository = ref.watch(eventRepositoryProvider);
+  final start = DateTime.now();
+  final end = start.add(const Duration(days: 30));
+  final events = await repository.getCalendarEvents(
+    startDate: _ymd(start),
+    endDate: _ymd(end),
+  );
+  return events.take(5).toList();
+});
+
+/// Eventos del mes visible para [CalendarScreen]: primer → último día.
+///
+/// El argumento se normaliza a `DateTime(año, mes)`; instanciarlo igual en
+/// cada build reutiliza el mismo provider de la familia.
+final calendarMonthProvider = FutureProvider.family
+    .autoDispose<List<EventModel>, DateTime>((ref, month) async {
+  final repository = ref.watch(eventRepositoryProvider);
+  final first = DateTime(month.year, month.month, 1);
+  final last = DateTime(month.year, month.month + 1, 0);
+  return repository.getCalendarEvents(
+    startDate: _ymd(first),
+    endDate: _ymd(last),
+  );
 });

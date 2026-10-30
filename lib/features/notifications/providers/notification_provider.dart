@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
@@ -56,8 +55,10 @@ class NotificationListState {
 
 class NotificationListNotifier extends StateNotifier<NotificationListState> {
   final NotificationRepository _repository;
+  final Ref _ref;
 
-  NotificationListNotifier(this._repository) : super(NotificationListState()) {
+  NotificationListNotifier(this._repository, this._ref)
+      : super(NotificationListState()) {
     load();
   }
 
@@ -106,11 +107,10 @@ class NotificationListNotifier extends StateNotifier<NotificationListState> {
       await _repository.markAllRead();
       state = state.copyWith(
         pagination: state.pagination.copyWith(
-          data: state.notifications
-              .map((n) => n.copyWith(read: true))
-              .toList(),
+          data: state.notifications.map((n) => n.copyWith(read: true)).toList(),
         ),
       );
+      _ref.invalidate(unreadCountProvider);
     } catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -126,6 +126,7 @@ class NotificationListNotifier extends StateNotifier<NotificationListState> {
               .toList(),
         ),
       );
+      _ref.invalidate(unreadCountProvider);
     } catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -133,8 +134,12 @@ class NotificationListNotifier extends StateNotifier<NotificationListState> {
 }
 
 final notificationListProvider =
-    StateNotifierProvider<NotificationListNotifier, NotificationListState>((ref) {
-  return NotificationListNotifier(ref.watch(notificationRepositoryProvider));
+    StateNotifierProvider<NotificationListNotifier, NotificationListState>(
+        (ref) {
+  return NotificationListNotifier(
+    ref.watch(notificationRepositoryProvider),
+    ref,
+  );
 });
 
 // ---------------------------------------------------------------------------

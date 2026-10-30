@@ -37,7 +37,12 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+.worktrees/
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
 /android/app/release
+android/app/google-services.json
+
+# Build local (no commitear)
+*.tar.gz

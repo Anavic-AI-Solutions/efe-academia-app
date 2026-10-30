@@ -44,6 +44,7 @@ class ClassroomListState {
   final String? level;
   final String? year;
   final String? status;
+  final String? studentId;
 
   ClassroomListState({
     PageResult<ClassroomModel>? page,
@@ -54,6 +55,7 @@ class ClassroomListState {
     this.level,
     this.year,
     this.status,
+    this.studentId,
   }) : page = page ?? PageResult<ClassroomModel>.empty();
 
   bool get hasActiveFilters =>
@@ -75,6 +77,7 @@ class ClassroomListState {
       level: level,
       year: year,
       status: status,
+      studentId: studentId,
     );
   }
 }
@@ -102,6 +105,7 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
         level: state.level,
         year: state.year,
         status: state.status,
+        studentId: state.studentId,
       );
       if (requestId != _requestId) return;
       if (result.data.isEmpty && page > 1 && result.total > 0) {
@@ -134,6 +138,19 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
       level: level,
       year: year,
       status: status,
+      studentId: state.studentId,
+    );
+    await load();
+  }
+
+  Future<void> setStudent(String? studentId) async {
+    state = ClassroomListState(
+      search: state.search,
+      branch: state.branch,
+      level: state.level,
+      year: state.year,
+      status: state.status,
+      studentId: studentId,
     );
     await load();
   }

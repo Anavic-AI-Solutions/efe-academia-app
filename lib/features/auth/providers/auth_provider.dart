@@ -1,10 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
 import '../data/auth_api.dart';
 import '../data/auth_repository.dart';
 import '../domain/user_model.dart';
+import '../../push/data/push_repository.dart';
+import '../../push/providers/push_providers.dart';
 
 // ---------------------------------------------------------------------------
 // Providers
@@ -59,8 +60,10 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository _repository;
+  final PushRepository? _pushRepository;
 
-  AuthNotifier(this._repository) : super(const AuthState()) {
+  AuthNotifier(this._repository, [this._pushRepository])
+      : super(const AuthState()) {
     _init();
   }
 
@@ -137,6 +140,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     print('[Auth] logout()');
+    try {
+      await _pushRepository?.unregisterCurrentDevice();
+    } catch (_) {}
     await _repository.logout();
     state = const AuthState(status: AuthStatus.unauthenticated);
   }
@@ -162,7 +168,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 }
 
-final authProvider =
-    StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier(ref.watch(authRepositoryProvider));
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  return AuthNotifier(
+    ref.watch(authRepositoryProvider),
+    ref.watch(pushRepositoryProvider),
+  );
 });

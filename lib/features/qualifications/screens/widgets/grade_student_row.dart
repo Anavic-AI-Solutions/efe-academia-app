@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../core/widgets/grade_badge.dart';
 
 class GradeStudentRow extends StatelessWidget {
@@ -47,9 +46,8 @@ class GradeStudentRow extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: isDark
-                      ? AppColors.darkTextPrimary
-                      : ProfessorColors.ink,
+                  color:
+                      isDark ? AppColors.darkTextPrimary : AppColors.lightInk,
                 ),
               ),
             ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/formatters.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/fee_model.dart';
@@ -18,6 +20,7 @@ class FeeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = context.l10n;
 
     return AppCard(
@@ -48,6 +51,7 @@ class FeeCard extends StatelessWidget {
                       : l10n.feesUnknownStudent,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
+                        color: AppColors.inkFor(isDark),
                       ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -56,7 +60,7 @@ class FeeCard extends StatelessWidget {
                 Text(
                   l10n.feesCardSubtitle(fee.numberFee, fee.month, fee.year),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey,
+                        color: AppColors.mutedFor(isDark),
                       ),
                 ),
               ],
@@ -70,44 +74,17 @@ class FeeCard extends StatelessWidget {
                 AppFormatters.formatCurrency(fee.total),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: AppColors.inkFor(isDark),
                     ),
               ),
               const SizedBox(height: 4),
-              _StatusBadge(status: fee.status),
+              StatusBadge(
+                status: fee.status,
+                label: feeStatusLabel(fee.status, l10n),
+              ),
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  final String status;
-
-  const _StatusBadge({required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = status.toLowerCase() == 'paid'
-        ? AppColors.success
-        : status.toLowerCase() == 'partial'
-            ? AppColors.warning
-            : AppColors.error;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        status,
-        style: TextStyle(
-          color: color,
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-        ),
       ),
     );
   }

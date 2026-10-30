@@ -28,6 +28,12 @@ class QualificationApi {
   Future<Response> getClassroomGradesSummary(String classroomId) =>
       _client.get('/classrooms/$classroomId/grades-summary');
 
+  Future<Response> getBoletin(String studentId, String classroomId) =>
+      _client.get('/qualifications/boletin/$studentId/$classroomId');
+
+  Future<Response> getBoletinLink(String studentId, String classroomId) =>
+      _client.get('/qualifications/boletin/$studentId/$classroomId/link');
+
   Future<Response> createQualification({
     required String studentId,
     required String classroomId,

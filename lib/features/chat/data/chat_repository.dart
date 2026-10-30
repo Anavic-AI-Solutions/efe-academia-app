@@ -29,8 +29,10 @@ class ChatRepository {
   Future<CursorPagination<MessageModel>> getMessages(
     String chatId, {
     String? cursor,
+    String? direction,
   }) async {
-    final response = await _api.getMessages(chatId, cursor: cursor);
+    final response =
+        await _api.getMessages(chatId, cursor: cursor, direction: direction);
     final data = response.data;
     final items = data is Map<String, dynamic>
         ? (data['data'] as List<dynamic>? ?? [])

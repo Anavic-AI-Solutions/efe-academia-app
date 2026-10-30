@@ -1,13 +1,17 @@
 import 'package:efe_mobile/app/router.dart';
-import 'package:efe_mobile/app/theme/professor_colors.dart';
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/header_stats_row.dart';
+import 'package:efe_mobile/core/widgets/home_header.dart';
 import 'package:efe_mobile/features/attendance/data/attendance_repository.dart';
 import 'package:efe_mobile/features/attendance/domain/attendance_day.dart';
 import 'package:efe_mobile/features/attendance/providers/attendance_provider.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
+import 'package:efe_mobile/features/birthdays/domain/birthday_model.dart';
+import 'package:efe_mobile/features/birthdays/providers/birthday_provider.dart';
 import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
@@ -18,8 +22,17 @@ import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
+import 'package:efe_mobile/features/dashboard/screens/widgets/professor_stats_row.dart';
+import 'package:efe_mobile/features/documents/domain/document_model.dart';
+import 'package:efe_mobile/features/documents/providers/document_provider.dart';
+import 'package:efe_mobile/features/events/domain/event_model.dart';
+import 'package:efe_mobile/features/events/providers/event_provider.dart';
+import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/features/news/domain/news_model.dart';
+import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
+import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
@@ -73,6 +86,13 @@ class _FakeDashboardRepository implements DashboardRepository {
   Future<DashboardData> getDashboard() async => data;
 }
 
+/// Keeps the professor home news section off the real API in tests.
+class _FakeNewsRepository implements NewsRepository {
+  @override
+  Future<CursorPagination<NewsModel>> getNews({String? cursor}) async =>
+      CursorPagination.empty();
+}
+
 /// Keeps the classrooms branch (list screen) off the real API in tests.
 class _FakeClassroomRepository implements ClassroomRepository {
   @override
@@ -84,6 +104,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
     String? level,
     String? year,
     String? status,
+    String? studentId,
   }) async =>
       PageResult<ClassroomModel>.empty();
 
@@ -112,8 +133,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
       throw UnimplementedError();
 
   @override
-  Future<ClassroomModel> getClassroom(String id) =>
-      throw UnimplementedError();
+  Future<ClassroomModel> getClassroom(String id) => throw UnimplementedError();
 
   @override
   Future<ClassroomFilters> getFilters() => throw UnimplementedError();
@@ -121,7 +141,8 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
 class _FakeAttendanceRepository implements AttendanceRepository {
   @override
-  Future<AttendanceDay> getAttendance(String classroomId) async =>
+  Future<AttendanceDay> getAttendance(String classroomId,
+          {String? date}) async =>
       AttendanceDay(
         date: '2026-09-24',
         classroomId: classroomId,
@@ -141,6 +162,14 @@ class _FakeAttendanceRepository implements AttendanceRepository {
 }
 
 class _FakeQualificationRepository implements QualificationRepository {
+  @override
+  Future<BoletinData> getBoletin(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getBoletinUrl(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
   @override
   Future<ClassroomGradesSummary> getClassroomGradesSummary(
     String classroomId,
@@ -207,8 +236,13 @@ Future<ProviderContainer> _pumpHome(WidgetTester tester) async {
           .overrideWithValue(_FakeAttendanceRepository()),
       qualificationRepositoryProvider
           .overrideWithValue(_FakeQualificationRepository()),
-      classroomRepositoryProvider
-          .overrideWithValue(_FakeClassroomRepository()),
+      classroomRepositoryProvider.overrideWithValue(_FakeClassroomRepository()),
+      // El calendario y los documentos del home no tocan red en estos tests.
+      homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
+      homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+      todayBirthdaysProvider.overrideWith((ref) async => <BirthdayModel>[]),
+      newsListProvider
+          .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
       unreadCountProvider.overrideWith((ref) async => 0),
     ],
   );
@@ -261,24 +295,32 @@ void main() {
       (tester) async {
     await _pumpHome(tester);
 
+    // El grid 2x2 empuja las aulas/botones fuera del viewport de 600px:
+    // llevar a vista antes de tapear.
+    await tester.scrollUntilVisible(find.text('1G X · 2026'), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('1G X · 2026'));
     await tester.pumpAndSettle();
 
+    await tester.scrollUntilVisible(find.text('Tomar asistencia'), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Tomar asistencia'));
     await tester.pumpAndSettle();
 
     expect(find.text('Asistencia · 1G X · 2026'), findsOneWidget);
 
     final activePill = tester.widget<AnimatedContainer>(
-      find.ancestor(of: _navLabel('Aulas'), matching: find.byType(AnimatedContainer)),
+      find.ancestor(
+          of: _navLabel('Aulas'), matching: find.byType(AnimatedContainer)),
     );
-    expect((activePill.decoration as BoxDecoration).color,
-        ProfessorColors.primarySoft);
+    expect((activePill.decoration as BoxDecoration).color, AppColors.primary);
   });
 
   testWidgets('Cargar nota opens the classroom grades screen', (tester) async {
     await _pumpHome(tester);
 
+    await tester.scrollUntilVisible(find.text('Cargar nota'), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Cargar nota'));
     await tester.pumpAndSettle();
 
@@ -299,6 +341,11 @@ void main() {
         ),
         classroomRepositoryProvider
             .overrideWithValue(_FakeClassroomRepository()),
+        homeCalendarProvider.overrideWith((ref) async => <EventModel>[]),
+        homeDocumentsProvider.overrideWith((ref) async => <DocumentModel>[]),
+        todayBirthdaysProvider.overrideWith((ref) async => <BirthdayModel>[]),
+        newsListProvider
+            .overrideWith((ref) => NewsListNotifier(_FakeNewsRepository())),
         unreadCountProvider.overrideWith((ref) async => 0),
       ],
     );
@@ -320,5 +367,33 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Todavía no tenés aulas asignadas'), findsOneWidget);
+  });
+
+  testWidgets('the enlarged home header renders without overflow at 320px',
+      (tester) async {
+    tester.view.physicalSize = const Size(320 * 3, 568 * 3);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await _pumpHome(tester);
+
+    expect(find.byType(HomeHeader), findsOneWidget);
+    expect(find.text('Prof. Ileana Gómez'), findsOneWidget);
+    expect(find.text('78'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+      'uses HomeHeader and HeaderStatsRow (not HomeHeader/ProfessorStatsRow)',
+      (tester) async {
+    await _pumpHome(tester);
+
+    expect(find.byType(HomeHeader), findsOneWidget);
+    expect(find.byType(HeaderStatsRow), findsOneWidget);
+    expect(find.byType(ProfessorStatsRow), findsNothing);
+    // ProfessorStatsRow is not a widget type we can find directly, but we verify the stats are shown via HeaderStatsRow
+    expect(find.text('3'), findsOneWidget); // classrooms
+    expect(find.text('78'), findsOneWidget); // students
+    expect(find.text('4'), findsOneWidget); // absences
   });
 }

@@ -54,6 +54,13 @@ class _FakeStudentApi implements StudentApi {
         'id': id,
         'attributes': {'fullname': 'Ana Gómez'},
       });
+
+  @override
+  Future<Response> getClassrooms(String studentId) async => _response({
+        'data': [
+          {'id': 'c1', 'name': '3G X', 'shift': 'Mañana'},
+        ],
+      });
 }
 
 void main() {
@@ -98,6 +105,16 @@ void main() {
 
       expect(student.id, 's1');
       expect(student.fullname, 'Ana Gómez');
+    });
+
+    test('parses the student classrooms from raw items', () async {
+      final repository = StudentRepository(_FakeStudentApi());
+
+      final classrooms = await repository.getClassrooms('s1');
+
+      expect(classrooms.single.id, 'c1');
+      expect(classrooms.single.name, '3G X');
+      expect(classrooms.single.shift, 'Mañana');
     });
   });
 }

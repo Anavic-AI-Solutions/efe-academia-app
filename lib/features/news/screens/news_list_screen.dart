@@ -7,6 +7,7 @@ import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
+import '../../../core/widgets/loading_shimmer.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../l10n/l10n.dart';
@@ -47,14 +48,16 @@ class _NewsListScreenState extends ConsumerState<NewsListScreen> {
     final l10n = context.l10n;
     final state = ref.watch(newsListProvider);
     final news = state.pagination.data;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           LargeTitleBar(title: l10n.newsTitle),
           Expanded(
             child: state.isLoading && news.isEmpty
-                ? const Center(child: CircularProgressIndicator())
+                ? const ListShimmer()
                 : state.error != null && news.isEmpty
                     ? ErrorView(
                         message: l10n.newsErrorTitle,
@@ -73,15 +76,17 @@ class _NewsListScreenState extends ConsumerState<NewsListScreen> {
                                 ref.read(newsListProvider.notifier).refresh(),
                             child: ListView.builder(
                               controller: _scrollController,
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                              itemCount:
-                                  news.length + (state.pagination.hasMore ? 1 : 0),
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+                              itemCount: news.length +
+                                  (state.pagination.hasMore ? 1 : 0),
                               itemBuilder: (context, index) {
                                 if (index == news.length) {
                                   return const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
+                                    padding:
+                                        EdgeInsets.only(top: 4, bottom: 12),
+                                    child: LoadingShimmer(
+                                      width: double.infinity,
+                                      height: 68,
                                     ),
                                   );
                                 }
@@ -116,13 +121,16 @@ class _NewsCard extends StatelessWidget {
             width: double.infinity,
             height: 140,
             decoration: BoxDecoration(
-              color: isDark ? AppColors.darkSurfaceElevated : AppColors.lightSearchFill,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              color: isDark
+                  ? AppColors.darkSurfaceElevated
+                  : AppColors.lightSearchFill,
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Icon(
               PhosphorIconsRegular.newspaper,
               size: 40,
-              color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+              color: AppColors.mutedFor(isDark),
             ),
           ),
           Padding(
@@ -133,7 +141,9 @@ class _NewsCard extends StatelessWidget {
                 Text(
                   news.title,
                   style: AppTypography.titleMedium.copyWith(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
                   ),
                 ),
                 if (news.eventDate != null) ...[
@@ -143,13 +153,13 @@ class _NewsCard extends StatelessWidget {
                       Icon(
                         PhosphorIconsRegular.calendar,
                         size: 13,
-                        color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                        color: AppColors.accentFor(isDark),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         DateFormat('MMM d, yyyy').format(news.eventDate!),
                         style: AppTypography.labelSmall.copyWith(
-                          color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                          color: AppColors.accentFor(isDark),
                         ),
                       ),
                     ],
@@ -161,7 +171,9 @@ class _NewsCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppTypography.bodySmall.copyWith(
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.lightTextSecondary,
                   ),
                 ),
                 if (news.createdAt != null) ...[
@@ -169,7 +181,7 @@ class _NewsCard extends StatelessWidget {
                   Text(
                     DateFormat('MMM d, yyyy').format(news.createdAt!),
                     style: AppTypography.labelSmall.copyWith(
-                      color: isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary,
+                      color: AppColors.mutedFor(isDark),
                     ),
                   ),
                 ],

@@ -10,7 +10,13 @@ class ApiClient {
   final SecureStorage _storage;
 
   ApiClient(this._storage) {
-    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1';
+    String baseUrl;
+    try {
+      baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api/v1';
+    } catch (_) {
+      // dotenv sin inicializar (tests/widget sin EnvHelper): mismo default.
+      baseUrl = 'http://localhost:8000/api/v1';
+    }
     // ignore: avoid_print
     print('[API] Base URL: $baseUrl');
 
@@ -42,14 +48,30 @@ class ApiClient {
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) =>
       dio.get(path, queryParameters: queryParameters);
 
+  /// Descarga binaria (p. ej. el PDF de una factura por URL firmada). Fuerza
+  /// `ResponseType.bytes` para no intentar decodificar el cuerpo como JSON.
+  Future<Response<List<int>>> getBytes(
+    String path, {
+    Map<String, String>? headers,
+  }) =>
+      dio.get<List<int>>(
+        path,
+        options: Options(
+          responseType: ResponseType.bytes,
+          headers: headers,
+        ),
+      );
+
   Future<Response> post(String path, {dynamic data}) =>
       dio.post(path, data: data);
 
   Future<Response> patch(String path, {dynamic data}) =>
       dio.patch(path, data: data);
 
-  Future<Response> delete(String path) => dio.delete(path);
+  Future<Response> delete(String path,
+          {Map<String, dynamic>? queryParameters}) =>
+      dio.delete(path, queryParameters: queryParameters);
 
-  Future<Response> upload(String path, FormData data) =>
-      dio.post(path, data: data);
+  Future<Response> upload(String path, FormData data, {Options? options}) =>
+      dio.post(path, data: data, options: options);
 }

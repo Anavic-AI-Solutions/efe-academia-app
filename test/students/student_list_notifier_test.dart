@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
@@ -63,6 +64,10 @@ class _FakeStudentRepository implements StudentRepository {
   @override
   Future<StudentModel> getStudent(String id) =>
       Future.error(UnimplementedError());
+
+  @override
+  Future<List<ClassroomModel>> getClassrooms(String studentId) async =>
+      const [];
 }
 
 void main() {
@@ -80,8 +85,7 @@ void main() {
       expect(notifier.state.isLoading, isFalse);
     });
 
-    test('goToPage keeps the filters and fetches the requested page',
-        () async {
+    test('goToPage keeps the filters and fetches the requested page', () async {
       final repository = _FakeStudentRepository();
       repository.enqueue(_page([_student('1')], total: 57));
       final notifier = StudentListNotifier(repository);
@@ -142,8 +146,8 @@ void main() {
 
     test('accumulates filter options across pages', () async {
       final repository = _FakeStudentRepository();
-      repository.enqueue(_page([_student('1', year: '2025', branch: 'Vera')],
-          total: 57));
+      repository.enqueue(
+          _page([_student('1', year: '2025', branch: 'Vera')], total: 57));
       final notifier = StudentListNotifier(repository);
       await pumpEventQueue();
 

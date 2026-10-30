@@ -30,3 +30,12 @@ class UserModel with _$UserModel {
     );
   }
 }
+
+extension UserModelRoleX on UserModel {
+  bool get isProfessor => role == 'professor';
+
+  bool get canManageMaterials {
+    const allowed = {'professor', 'admin', 'branch'};
+    return allowed.contains(role) || roles.any(allowed.contains);
+  }
+}

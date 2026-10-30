@@ -1,5 +1,5 @@
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -69,7 +69,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authCheckEmail => 'Check Your Email';
 
   @override
-  String get authResetInstructions => 'Enter your email and we\'ll send you a link to reset your password.';
+  String get authResetInstructions =>
+      'Enter your email and we\'ll send you a link to reset your password.';
 
   @override
   String authResetLinkSent(String email) {
@@ -89,7 +90,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validationInvalidEmail => 'Invalid email';
 
   @override
-  String get validationPasswordLength => 'Password must be at least 8 characters';
+  String get validationPasswordLength =>
+      'Password must be at least 8 characters';
 
   @override
   String get validationPasswordsDoNotMatch => 'Passwords do not match';
@@ -249,7 +251,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsEmptyTitle => 'No classrooms found';
 
   @override
-  String get classroomsEmptyFiltered => 'Try adjusting or clearing your filters';
+  String get classroomsEmptyFiltered =>
+      'Try adjusting or clearing your filters';
 
   @override
   String get classroomsEmptySearch => 'Try a different search term';
@@ -321,7 +324,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsFiltersLoadError => 'Could not load filters';
 
   @override
-  String get classroomsFiltersLoadErrorDetail => 'Check your connection and try again.';
+  String get classroomsFiltersLoadErrorDetail =>
+      'Check your connection and try again.';
 
   @override
   String classroomsFilterChipBranch(String value) {
@@ -521,13 +525,81 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get gradesGridTitle => 'Grades by period';
+
+  @override
+  String get gradesGridPeriod => 'Period';
+
+  @override
+  String get gradesGridPerformance => 'Performance';
+
+  @override
+  String get gradesGridAttitude => 'Attitude';
+
+  @override
+  String get gradesGridWritten => 'Written';
+
+  @override
+  String get gradesGridOral => 'Oral';
+
+  @override
+  String get gradesGridHomework => 'Homework';
+
+  @override
+  String get gradesGridDiscipline => 'Discipline';
+
+  @override
+  String get gradesGridParticipation => 'Participation';
+
+  @override
+  String get gradesGridAttendance => 'Attendance';
+
+  @override
+  String get gradesGridExam => 'Midterm';
+
+  @override
+  String get gradesGridAverage => 'Average';
+
+  @override
+  String gradesGridTerm(int term) {
+    return 'Term $term';
+  }
+
+  @override
+  String get gradesGridClassroomFallback => 'Classroom';
+
+  @override
   String get studentsAbsenceTitle => 'Absence';
+
+  @override
+  String get studentsStatusApproved => 'Approved';
+
+  @override
+  String get studentsStatusPending => 'Pending';
+
+  @override
+  String get studentsStatusRejected => 'Rejected';
+
+  @override
+  String get feesStatusPaid => 'Paid';
+
+  @override
+  String get feesStatusPartial => 'Partial';
+
+  @override
+  String get feesStatusPending => 'Pending';
+
+  @override
+  String get feesStatusOverdue => 'Overdue';
 
   @override
   String get studentsAbsenceJustified => 'Justified';
 
   @override
   String get studentsAbsenceUnjustified => 'Unjustified';
+
+  @override
+  String get studentsAbsencePending => 'Pending';
 
   @override
   String get feesTitle => 'Fees';
@@ -665,6 +737,58 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get chatNewTitle => 'New chat';
+
+  @override
+  String get chatNewSearchHint => 'Search people…';
+
+  @override
+  String get chatNewEmptyTitle => 'No linked people';
+
+  @override
+  String get chatNewEmptySubtitle => 'You don\'t have anyone to chat with yet';
+
+  @override
+  String chatNewNoResults(String query) {
+    return 'No results for “$query”';
+  }
+
+  @override
+  String get chatNewStart => 'Start conversation';
+
+  @override
+  String get relationRoleStudent => 'Student';
+
+  @override
+  String get relationRoleProfessor => 'Professor';
+
+  @override
+  String get relationRoleParent => 'Parent';
+
+  @override
+  String get relationRoleAdmin => 'Admin';
+
+  @override
+  String get chatTyping => 'typing…';
+
+  @override
+  String get chatOnline => 'online';
+
+  @override
+  String get chatConnectionLost => 'Offline — tap to retry';
+
+  @override
+  String get chatSendFailed => 'Couldn\'t send';
+
+  @override
+  String get chatRetry => 'Retry';
+
+  @override
+  String chatUnreadLabel(int count) {
+    return '$count unread messages';
+  }
+
+  @override
   String get newsTitle => 'News';
 
   @override
@@ -735,7 +859,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get professorMyClassrooms => 'My classrooms';
 
   @override
-  String get professorMyClassroomsEmpty => 'You have no classrooms assigned yet';
+  String get professorMyClassroomsEmpty =>
+      'You have no classrooms assigned yet';
+
+  @override
+  String professorClassroomsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count classrooms',
+      one: '1 classroom',
+      zero: 'No classrooms assigned',
+    );
+    return '$_temp0';
+  }
 
   @override
   String professorStudentsCount(int count) {
@@ -750,6 +887,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get professorLoadError => 'Failed to load the home screen';
+
+  @override
+  String get homeCalendar => 'Calendar';
+
+  @override
+  String get homeSeeAll => 'See all';
+
+  @override
+  String get homeCalendarEmpty => 'No upcoming events';
+
+  @override
+  String get homeBirthdays => 'Birthdays';
+
+  @override
+  String get homeBirthdaysEmpty => 'No birthdays today';
+
+  @override
+  String get homeBirthdaysSoon => 'Coming soon';
 
   @override
   String attendanceTitle(String classroom) {
@@ -789,7 +944,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceUnsavedTitle => 'Unsaved changes';
 
   @override
-  String get attendanceUnsavedMessage => 'If you leave now, attendance changes will be lost.';
+  String get attendanceUnsavedMessage =>
+      'If you leave now, attendance changes will be lost.';
 
   @override
   String get attendanceUnsavedStay => 'Stay';
@@ -841,4 +997,332 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gradeFormError => 'Failed to save the grade';
+
+  @override
+  String get studentGradeFromDetail => 'Add grade';
+
+  @override
+  String get studentGradeClassroom => 'Classroom';
+
+  @override
+  String get studentGradeNoClassrooms => 'No classrooms assigned';
+
+  @override
+  String get absenceMarkTitle => 'Mark absence';
+
+  @override
+  String get absenceMarkClassroom => 'Classroom';
+
+  @override
+  String get absenceMarkDate => 'Date';
+
+  @override
+  String get absenceMarkInfo =>
+      'Adds to the day\'s roll without removing the other absent students.';
+
+  @override
+  String get absenceMarked => 'Absence recorded';
+
+  @override
+  String get absenceAlreadyMarked => 'Already marked absent that day';
+
+  @override
+  String get absenceMarkError => 'Could not record the absence';
+
+  @override
+  String get materialFormTitleNew => 'New material';
+
+  @override
+  String get materialFormTitleEdit => 'Edit material';
+
+  @override
+  String get materialFormName => 'Name';
+
+  @override
+  String get materialFormCategory => 'Category';
+
+  @override
+  String get materialFormCategoryNone => 'No category';
+
+  @override
+  String get materialFormDescription => 'Description (optional)';
+
+  @override
+  String get materialFormFiles => 'Files';
+
+  @override
+  String get materialFormPickFiles => 'Choose files';
+
+  @override
+  String get materialFormVisibility => 'Visibility';
+
+  @override
+  String get materialFormVisibilityAll => 'Everyone';
+
+  @override
+  String get materialFormVisibilitySpecific => 'Specific students';
+
+  @override
+  String get materialFormAvailableUntil => 'Available until (optional)';
+
+  @override
+  String get materialFormClearDate => 'Clear date';
+
+  @override
+  String get materialFormSave => 'Save';
+
+  @override
+  String get materialFormNameRequired => 'Enter a name';
+
+  @override
+  String get materialFormFilesRequired => 'Choose at least one file';
+
+  @override
+  String get materialFormFilesTooMany => 'Maximum 10 files';
+
+  @override
+  String get materialFormFileTooLarge => 'Each file can weigh up to 50 MB';
+
+  @override
+  String get materialFormStudentsRequired => 'Choose at least one student';
+
+  @override
+  String get materialFormError => 'Could not save the material';
+
+  @override
+  String get materialFormDetailError => 'Could not load the material';
+
+  @override
+  String get materialsAdd => 'Add material';
+
+  @override
+  String get materialsCreated => 'Material published';
+
+  @override
+  String get materialsUpdated => 'Material updated';
+
+  @override
+  String get materialsDeleted => 'Material deleted';
+
+  @override
+  String get materialsDeleteError => 'Could not delete the material';
+
+  @override
+  String get materialsEdit => 'Edit';
+
+  @override
+  String get materialsDelete => 'Delete';
+
+  @override
+  String get materialsDeleteTitle => 'Delete material?';
+
+  @override
+  String get materialsDeleteMessage => 'Its files will also be deleted.';
+
+  @override
+  String get materialsDeleteCancel => 'Cancel';
+
+  @override
+  String get materialsDeleteConfirm => 'Delete';
+
+  @override
+  String materialsStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count students',
+      one: '1 student',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentsTitle => 'Documents';
+
+  @override
+  String get documentsEmpty => 'No documents';
+
+  @override
+  String get documentsOpen => 'Open / Download';
+
+  @override
+  String get documentsOpenError => 'Could not open the document';
+
+  @override
+  String get homeDocuments => 'Documents';
+
+  @override
+  String get homeNews => 'News';
+
+  @override
+  String get homeNewsEmpty => 'No news yet';
+
+  @override
+  String homeSummaryDocumentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documents',
+      one: '1 document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeSummaryBirthdaysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count today',
+      one: '1 today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get calendarViewList => 'View list';
+
+  @override
+  String get parentGreeting => 'Hi';
+
+  @override
+  String parentFamilyTitle(String surname) {
+    return 'The $surname Family';
+  }
+
+  @override
+  String parentOverdueFeesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count overdue installments',
+      one: '1 overdue installment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get parentMoraTotal => 'Total overdue';
+
+  @override
+  String get parentPayAction => 'Pay';
+
+  @override
+  String get navPayments => 'Payments';
+
+  @override
+  String get parentActionBoletin => 'Report Card';
+
+  @override
+  String get boletinTitle => 'Report card';
+
+  @override
+  String get boletinDownloadAction => 'Download report card (PDF)';
+
+  @override
+  String boletinPeriod(int n) {
+    return 'Period $n';
+  }
+
+  @override
+  String get boletinObservations => 'Observations';
+
+  @override
+  String get boletinNoGrades => 'No grades recorded for this period';
+
+  @override
+  String get boletinNoAccess =>
+      'You don\'t have access to this student\'s report card';
+
+  @override
+  String get boletinDownloadError => 'Could not download the report card';
+
+  @override
+  String get boletinViewAction => 'View report card';
+
+  @override
+  String get parentChooseChild => 'Choose a child';
+
+  @override
+  String get feesUploadProofAction => 'Upload receipt';
+
+  @override
+  String get feesReplaceProofAction => 'Replace receipt';
+
+  @override
+  String get feesInvoiceAction => 'View invoice';
+
+  @override
+  String get feesInvoiceUnavailable => 'Invoice unavailable';
+
+  @override
+  String get feesInvoiceViewerTitle => 'Invoice';
+
+  @override
+  String get feesInvoiceLoadError => 'Could not load the invoice';
+
+  @override
+  String get feesInvoiceDownloadAction => 'Download';
+
+  @override
+  String get feesInvoiceDownloadSuccess => 'Invoice downloaded';
+
+  @override
+  String get feesInvoiceDownloadError => 'Could not download the invoice';
+
+  @override
+  String get feesChooseFeeTitle => 'Choose the installment';
+
+  @override
+  String get feesProofStatusReview => 'Receipt under review';
+
+  @override
+  String get feesProofPickFile => 'Choose file';
+
+  @override
+  String get feesProofHint => 'JPG, PNG or PDF · up to 10 MB';
+
+  @override
+  String get feesProofInvalidFile =>
+      'Invalid file. JPG, PNG or PDF · up to 10 MB';
+
+  @override
+  String get feesProofSuccess =>
+      'Receipt uploaded. An administrator will review it.';
+
+  @override
+  String get feesProofError => 'Could not upload the receipt';
+
+  @override
+  String get feesProofSubmit => 'Upload';
+
+  @override
+  String get feesStatusUnderReview => 'Under review';
+
+  @override
+  String feesPartialOwed(String amount) {
+    return 'owes $amount';
+  }
+
+  @override
+  String get pushPrimerTitle => 'Turn on notifications';
+
+  @override
+  String get pushPrimerBody =>
+      'Chat messages and school notices reach you even when the app is closed';
+
+  @override
+  String get pushPrimerActivate => 'Turn on';
+
+  @override
+  String get pushPrimerLater => 'Not now';
+
+  @override
+  String get trayOpen => 'Open EFE';
+
+  @override
+  String get trayAutostart => 'Launch at startup';
+
+  @override
+  String get trayQuit => 'Quit';
 }

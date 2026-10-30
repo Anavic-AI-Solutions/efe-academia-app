@@ -14,8 +14,7 @@ class NotificationApi {
   Future<Response> getUnreadCount() =>
       _client.get('/notifications/unread-count');
 
-  Future<Response> markAllRead() =>
-      _client.post('/notifications/mark-read');
+  Future<Response> markAllRead() => _client.post('/notifications/mark-read');
 
   Future<Response> markRead(String id) =>
       _client.post('/notifications/$id/read');

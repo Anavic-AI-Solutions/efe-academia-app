@@ -32,6 +32,24 @@ class _FakeSecureStorage implements SecureStorage {
 
   @override
   Future<String?> getLanguageCode() async => values['language_code'];
+
+  @override
+  Future<void> saveFcmToken(String token) async {}
+
+  @override
+  Future<String?> getFcmToken() async => null;
+
+  @override
+  Future<void> deleteFcmToken() async {}
+
+  @override
+  Future<String> getOrCreateDeviceId() async => 'test-device';
+
+  @override
+  Future<bool> hasSeenPushPrimer() async => false;
+
+  @override
+  Future<void> savePushPrimerSeen() async {}
 }
 
 class _ThrowingSecureStorage extends _FakeSecureStorage {

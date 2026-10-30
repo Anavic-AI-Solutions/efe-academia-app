@@ -22,7 +22,9 @@ mixin _$QualificationModel {
   String get studentName => throw _privateConstructorUsedError;
   String get classroomName => throw _privateConstructorUsedError;
   double get score => throw _privateConstructorUsedError;
+  String get scoreLabel => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
+  String get category => throw _privateConstructorUsedError;
   String get period => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
@@ -47,7 +49,9 @@ abstract class $QualificationModelCopyWith<$Res> {
       String studentName,
       String classroomName,
       double score,
+      String scoreLabel,
       String type,
+      String category,
       String period,
       String description,
       String date});
@@ -74,7 +78,9 @@ class _$QualificationModelCopyWithImpl<$Res, $Val extends QualificationModel>
     Object? studentName = null,
     Object? classroomName = null,
     Object? score = null,
+    Object? scoreLabel = null,
     Object? type = null,
+    Object? category = null,
     Object? period = null,
     Object? description = null,
     Object? date = null,
@@ -104,9 +110,17 @@ class _$QualificationModelCopyWithImpl<$Res, $Val extends QualificationModel>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
+      scoreLabel: null == scoreLabel
+          ? _value.scoreLabel
+          : scoreLabel // ignore: cast_nullable_to_non_nullable
+              as String,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       period: null == period
           ? _value.period
@@ -139,7 +153,9 @@ abstract class _$$QualificationModelImplCopyWith<$Res>
       String studentName,
       String classroomName,
       double score,
+      String scoreLabel,
       String type,
+      String category,
       String period,
       String description,
       String date});
@@ -164,7 +180,9 @@ class __$$QualificationModelImplCopyWithImpl<$Res>
     Object? studentName = null,
     Object? classroomName = null,
     Object? score = null,
+    Object? scoreLabel = null,
     Object? type = null,
+    Object? category = null,
     Object? period = null,
     Object? description = null,
     Object? date = null,
@@ -194,9 +212,17 @@ class __$$QualificationModelImplCopyWithImpl<$Res>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
+      scoreLabel: null == scoreLabel
+          ? _value.scoreLabel
+          : scoreLabel // ignore: cast_nullable_to_non_nullable
+              as String,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       period: null == period
           ? _value.period
@@ -224,7 +250,9 @@ class _$QualificationModelImpl implements _QualificationModel {
       this.studentName = '',
       this.classroomName = '',
       this.score = 0.0,
+      this.scoreLabel = '',
       this.type = '',
+      this.category = '',
       this.period = '',
       this.description = '',
       this.date = ''});
@@ -248,7 +276,13 @@ class _$QualificationModelImpl implements _QualificationModel {
   final double score;
   @override
   @JsonKey()
+  final String scoreLabel;
+  @override
+  @JsonKey()
   final String type;
+  @override
+  @JsonKey()
+  final String category;
   @override
   @JsonKey()
   final String period;
@@ -261,7 +295,7 @@ class _$QualificationModelImpl implements _QualificationModel {
 
   @override
   String toString() {
-    return 'QualificationModel(id: $id, studentId: $studentId, classroomId: $classroomId, studentName: $studentName, classroomName: $classroomName, score: $score, type: $type, period: $period, description: $description, date: $date)';
+    return 'QualificationModel(id: $id, studentId: $studentId, classroomId: $classroomId, studentName: $studentName, classroomName: $classroomName, score: $score, scoreLabel: $scoreLabel, type: $type, category: $category, period: $period, description: $description, date: $date)';
   }
 
   @override
@@ -279,7 +313,11 @@ class _$QualificationModelImpl implements _QualificationModel {
             (identical(other.classroomName, classroomName) ||
                 other.classroomName == classroomName) &&
             (identical(other.score, score) || other.score == score) &&
+            (identical(other.scoreLabel, scoreLabel) ||
+                other.scoreLabel == scoreLabel) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             (identical(other.period, period) || other.period == period) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -287,8 +325,20 @@ class _$QualificationModelImpl implements _QualificationModel {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, studentId, classroomId,
-      studentName, classroomName, score, type, period, description, date);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      studentId,
+      classroomId,
+      studentName,
+      classroomName,
+      score,
+      scoreLabel,
+      type,
+      category,
+      period,
+      description,
+      date);
 
   /// Create a copy of QualificationModel
   /// with the given fields replaced by the non-null parameter values.
@@ -308,7 +358,9 @@ abstract class _QualificationModel implements QualificationModel {
       final String studentName,
       final String classroomName,
       final double score,
+      final String scoreLabel,
       final String type,
+      final String category,
       final String period,
       final String description,
       final String date}) = _$QualificationModelImpl;
@@ -326,7 +378,11 @@ abstract class _QualificationModel implements QualificationModel {
   @override
   double get score;
   @override
+  String get scoreLabel;
+  @override
   String get type;
+  @override
+  String get category;
   @override
   String get period;
   @override

@@ -5,9 +5,10 @@ import '../../app/theme/app_typography.dart';
 
 class StatusBadge extends StatelessWidget {
   final String status;
+  final String? label;
   final Color? color;
 
-  const StatusBadge({super.key, required this.status, this.color});
+  const StatusBadge({super.key, required this.status, this.label, this.color});
 
   static Color colorFor(String status) {
     switch (status.toLowerCase()) {
@@ -18,11 +19,14 @@ class StatusBadge extends StatelessWidget {
       case 'inactive':
       case 'archived':
       case 'overdue':
+      case 'rejected':
         return AppColors.error;
       case 'pending':
       case 'partial':
       case 'unjustified':
         return AppColors.warning;
+      case 'justified':
+        return AppColors.success;
       default:
         return AppColors.lightTextTertiary;
     }
@@ -39,7 +43,7 @@ class StatusBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
-        status,
+        label ?? status,
         style: AppTypography.labelSmall.copyWith(
           color: badgeColor,
           fontWeight: FontWeight.w600,

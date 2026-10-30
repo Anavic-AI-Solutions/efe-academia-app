@@ -27,18 +27,24 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final bgColor = backgroundColor ??
-        (isDark ? AppColors.darkBackground : AppColors.lightBackground);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Container(
-        color: bgColor,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          gradient: backgroundColor == null
+              ? (isDark
+                  ? AppColors.primaryGradientDark
+                  : AppColors.primaryGradient)
+              : null,
+          borderRadius:
+              const BorderRadius.vertical(bottom: Radius.circular(24)),
+        ),
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top + 4,
-          left: 20,
+          left: 16,
           right: 16,
         ),
         child: Column(
@@ -51,12 +57,10 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   if (showBackButton)
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_ios_new_rounded,
                         size: 20,
-                        color: isDark
-                            ? AppColors.darkTextPrimary
-                            : AppColors.lightTextPrimary,
+                        color: Colors.white,
                       ),
                       onPressed: () {
                         if (Navigator.canPop(context)) {
@@ -71,15 +75,13 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
                         minHeight: 32,
                       ),
                     ),
-                  if (showBackButton)
-                    const SizedBox(width: 4),
+                  if (showBackButton) const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       title,
-                      style: AppTypography.headlineLarge.copyWith(
-                        color: isDark
-                            ? AppColors.darkTextPrimary
-                            : AppColors.lightTextPrimary,
+                      style: AppTypography.headlineMedium.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),

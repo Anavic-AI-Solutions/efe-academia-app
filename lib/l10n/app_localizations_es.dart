@@ -1,5 +1,5 @@
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -69,7 +69,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authCheckEmail => 'Revisá tu correo';
 
   @override
-  String get authResetInstructions => 'Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
+  String get authResetInstructions =>
+      'Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
 
   @override
   String authResetLinkSent(String email) {
@@ -89,7 +90,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get validationInvalidEmail => 'Correo electrónico inválido';
 
   @override
-  String get validationPasswordLength => 'La contraseña debe tener al menos 8 caracteres';
+  String get validationPasswordLength =>
+      'La contraseña debe tener al menos 8 caracteres';
 
   @override
   String get validationPasswordsDoNotMatch => 'Las contraseñas no coinciden';
@@ -178,7 +180,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileLogout => 'Cerrar sesión';
 
   @override
-  String get profileLogoutConfirm => '¿Estás seguro de que querés cerrar sesión?';
+  String get profileLogoutConfirm =>
+      '¿Estás seguro de que querés cerrar sesión?';
 
   @override
   String get languageSpanish => 'Español';
@@ -321,7 +324,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomsFiltersLoadError => 'No se pudieron cargar los filtros';
 
   @override
-  String get classroomsFiltersLoadErrorDetail => 'Revisá tu conexión e intentá de nuevo.';
+  String get classroomsFiltersLoadErrorDetail =>
+      'Revisá tu conexión e intentá de nuevo.';
 
   @override
   String classroomsFilterChipBranch(String value) {
@@ -453,7 +457,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentsEmptySearch => 'Probá con otro término de búsqueda';
 
   @override
-  String get studentsEmptyFilters => 'Ningún estudiante coincide con los filtros seleccionados';
+  String get studentsEmptyFilters =>
+      'Ningún estudiante coincide con los filtros seleccionados';
 
   @override
   String get studentsDetailFallbackTitle => 'Estudiante';
@@ -521,13 +526,81 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get gradesGridTitle => 'Calificaciones por período';
+
+  @override
+  String get gradesGridPeriod => 'Período';
+
+  @override
+  String get gradesGridPerformance => 'Desempeño';
+
+  @override
+  String get gradesGridAttitude => 'Actitud';
+
+  @override
+  String get gradesGridWritten => 'Escrito';
+
+  @override
+  String get gradesGridOral => 'Oral';
+
+  @override
+  String get gradesGridHomework => 'Tareas';
+
+  @override
+  String get gradesGridDiscipline => 'Disciplina';
+
+  @override
+  String get gradesGridParticipation => 'Participación';
+
+  @override
+  String get gradesGridAttendance => 'Asistencia';
+
+  @override
+  String get gradesGridExam => 'Parcial';
+
+  @override
+  String get gradesGridAverage => 'Promedio';
+
+  @override
+  String gradesGridTerm(int term) {
+    return '$term° Trimestre';
+  }
+
+  @override
+  String get gradesGridClassroomFallback => 'Aula';
+
+  @override
   String get studentsAbsenceTitle => 'Inasistencia';
+
+  @override
+  String get studentsStatusApproved => 'Aprobado';
+
+  @override
+  String get studentsStatusPending => 'Pendiente';
+
+  @override
+  String get studentsStatusRejected => 'Rechazado';
+
+  @override
+  String get feesStatusPaid => 'Pagado';
+
+  @override
+  String get feesStatusPartial => 'Parcial';
+
+  @override
+  String get feesStatusPending => 'Pendiente';
+
+  @override
+  String get feesStatusOverdue => 'Vencido';
 
   @override
   String get studentsAbsenceJustified => 'Justificada';
 
   @override
   String get studentsAbsenceUnjustified => 'Sin justificar';
+
+  @override
+  String get studentsAbsencePending => 'Pendiente';
 
   @override
   String get feesTitle => 'Cuotas';
@@ -600,13 +673,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get qualificationsSearchHint => 'Buscar calificaciones...';
 
   @override
-  String get qualificationsLoadError => 'No se pudieron cargar las calificaciones';
+  String get qualificationsLoadError =>
+      'No se pudieron cargar las calificaciones';
 
   @override
   String get qualificationsEmptyTitle => 'No se encontraron calificaciones';
 
   @override
-  String get qualificationsEmptySearchSubtitle => 'Probá con otro término de búsqueda';
+  String get qualificationsEmptySearchSubtitle =>
+      'Probá con otro término de búsqueda';
 
   @override
   String get qualificationsEmptySubtitle => 'No hay calificaciones disponibles';
@@ -621,7 +696,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get notificationsMarkAllRead => 'Marcar todas como leídas';
 
   @override
-  String get notificationsLoadError => 'No se pudieron cargar las notificaciones';
+  String get notificationsLoadError =>
+      'No se pudieron cargar las notificaciones';
 
   @override
   String get notificationsEmptyTitle => 'No hay notificaciones';
@@ -651,7 +727,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatMessagesLoadError => 'No se pudieron cargar los mensajes';
 
   @override
-  String get chatMessagesEmpty => 'Todavía no hay mensajes\n¡Iniciá la conversación!';
+  String get chatMessagesEmpty =>
+      'Todavía no hay mensajes\n¡Iniciá la conversación!';
 
   @override
   String get chatInputHint => 'Escribí un mensaje...';
@@ -662,6 +739,59 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String chatTimeMinutesShort(int count) {
     return '${count}m';
+  }
+
+  @override
+  String get chatNewTitle => 'Nuevo chat';
+
+  @override
+  String get chatNewSearchHint => 'Buscar persona…';
+
+  @override
+  String get chatNewEmptyTitle => 'Sin personas vinculadas';
+
+  @override
+  String get chatNewEmptySubtitle =>
+      'Todavía no tenés personas con las que chatear';
+
+  @override
+  String chatNewNoResults(String query) {
+    return 'Sin resultados para «$query»';
+  }
+
+  @override
+  String get chatNewStart => 'Iniciar conversación';
+
+  @override
+  String get relationRoleStudent => 'Alumno';
+
+  @override
+  String get relationRoleProfessor => 'Profesor';
+
+  @override
+  String get relationRoleParent => 'Padre/Madre';
+
+  @override
+  String get relationRoleAdmin => 'Admin';
+
+  @override
+  String get chatTyping => 'escribiendo…';
+
+  @override
+  String get chatOnline => 'en línea';
+
+  @override
+  String get chatConnectionLost => 'Sin conexión — tocá para reintentar';
+
+  @override
+  String get chatSendFailed => 'No se pudo enviar';
+
+  @override
+  String get chatRetry => 'Reintentar';
+
+  @override
+  String chatUnreadLabel(int count) {
+    return '$count mensajes sin leer';
   }
 
   @override
@@ -738,6 +868,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get professorMyClassroomsEmpty => 'Todavía no tenés aulas asignadas';
 
   @override
+  String professorClassroomsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aulas',
+      one: '1 aula',
+      zero: 'Sin aulas asignadas',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String professorStudentsCount(int count) {
     return '$count alumnos';
   }
@@ -750,6 +892,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get professorLoadError => 'No se pudo cargar el inicio';
+
+  @override
+  String get homeCalendar => 'Calendario';
+
+  @override
+  String get homeSeeAll => 'Ver todo';
+
+  @override
+  String get homeCalendarEmpty => 'No hay próximos eventos';
+
+  @override
+  String get homeBirthdays => 'Cumpleaños';
+
+  @override
+  String get homeBirthdaysEmpty => 'No hay cumpleaños hoy';
+
+  @override
+  String get homeBirthdaysSoon => 'Disponible próximamente';
 
   @override
   String attendanceTitle(String classroom) {
@@ -789,7 +949,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get attendanceUnsavedTitle => 'Cambios sin guardar';
 
   @override
-  String get attendanceUnsavedMessage => 'Si salís ahora, se perderán los cambios de asistencia.';
+  String get attendanceUnsavedMessage =>
+      'Si salís ahora, se perderán los cambios de asistencia.';
 
   @override
   String get attendanceUnsavedStay => 'Seguir acá';
@@ -841,4 +1002,332 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gradeFormError => 'No se pudo guardar la calificación';
+
+  @override
+  String get studentGradeFromDetail => 'Cargar nota';
+
+  @override
+  String get studentGradeClassroom => 'Aula';
+
+  @override
+  String get studentGradeNoClassrooms => 'Sin aulas asignadas';
+
+  @override
+  String get absenceMarkTitle => 'Marcar inasistencia';
+
+  @override
+  String get absenceMarkClassroom => 'Aula';
+
+  @override
+  String get absenceMarkDate => 'Fecha';
+
+  @override
+  String get absenceMarkInfo =>
+      'Se agrega al parte del día sin quitar a los demás ausentes.';
+
+  @override
+  String get absenceMarked => 'Inasistencia registrada';
+
+  @override
+  String get absenceAlreadyMarked => 'Ya estaba ausente ese día';
+
+  @override
+  String get absenceMarkError => 'No se pudo registrar la inasistencia';
+
+  @override
+  String get materialFormTitleNew => 'Nuevo material';
+
+  @override
+  String get materialFormTitleEdit => 'Editar material';
+
+  @override
+  String get materialFormName => 'Nombre';
+
+  @override
+  String get materialFormCategory => 'Categoría';
+
+  @override
+  String get materialFormCategoryNone => 'Sin categoría';
+
+  @override
+  String get materialFormDescription => 'Descripción (opcional)';
+
+  @override
+  String get materialFormFiles => 'Archivos';
+
+  @override
+  String get materialFormPickFiles => 'Elegir archivos';
+
+  @override
+  String get materialFormVisibility => 'Visibilidad';
+
+  @override
+  String get materialFormVisibilityAll => 'Todos';
+
+  @override
+  String get materialFormVisibilitySpecific => 'Alumnos específicos';
+
+  @override
+  String get materialFormAvailableUntil => 'Disponible hasta (opcional)';
+
+  @override
+  String get materialFormClearDate => 'Quitar fecha';
+
+  @override
+  String get materialFormSave => 'Guardar';
+
+  @override
+  String get materialFormNameRequired => 'Ingresá un nombre';
+
+  @override
+  String get materialFormFilesRequired => 'Elegí al menos un archivo';
+
+  @override
+  String get materialFormFilesTooMany => 'Máximo 10 archivos';
+
+  @override
+  String get materialFormFileTooLarge => 'Cada archivo puede pesar hasta 50 MB';
+
+  @override
+  String get materialFormStudentsRequired => 'Elegí al menos un alumno';
+
+  @override
+  String get materialFormError => 'No se pudo guardar el material';
+
+  @override
+  String get materialFormDetailError => 'No se pudo cargar el material';
+
+  @override
+  String get materialsAdd => 'Cargar material';
+
+  @override
+  String get materialsCreated => 'Material publicado';
+
+  @override
+  String get materialsUpdated => 'Material actualizado';
+
+  @override
+  String get materialsDeleted => 'Material eliminado';
+
+  @override
+  String get materialsDeleteError => 'No se pudo eliminar el material';
+
+  @override
+  String get materialsEdit => 'Editar';
+
+  @override
+  String get materialsDelete => 'Eliminar';
+
+  @override
+  String get materialsDeleteTitle => '¿Eliminar material?';
+
+  @override
+  String get materialsDeleteMessage => 'También se borran sus archivos.';
+
+  @override
+  String get materialsDeleteCancel => 'Cancelar';
+
+  @override
+  String get materialsDeleteConfirm => 'Eliminar';
+
+  @override
+  String materialsStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos',
+      one: '1 alumno',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentsTitle => 'Documentos';
+
+  @override
+  String get documentsEmpty => 'No hay documentos';
+
+  @override
+  String get documentsOpen => 'Abrir / Descargar';
+
+  @override
+  String get documentsOpenError => 'No se pudo abrir el documento';
+
+  @override
+  String get homeDocuments => 'Documentos';
+
+  @override
+  String get homeNews => 'Novedades';
+
+  @override
+  String get homeNewsEmpty => 'No hay novedades';
+
+  @override
+  String homeSummaryDocumentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documentos',
+      one: '1 documento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeSummaryBirthdaysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hoy',
+      one: '1 hoy',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get calendarViewList => 'Ver lista';
+
+  @override
+  String get parentGreeting => 'Hola';
+
+  @override
+  String parentFamilyTitle(String surname) {
+    return 'Familia $surname';
+  }
+
+  @override
+  String parentOverdueFeesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cuotas vencidas',
+      one: '1 cuota vencida',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get parentMoraTotal => 'Mora total';
+
+  @override
+  String get parentPayAction => 'Pagar';
+
+  @override
+  String get navPayments => 'Pagos';
+
+  @override
+  String get parentActionBoletin => 'Boletín';
+
+  @override
+  String get boletinTitle => 'Boletín';
+
+  @override
+  String get boletinDownloadAction => 'Descargar boletín (PDF)';
+
+  @override
+  String boletinPeriod(int n) {
+    return '$n° Período';
+  }
+
+  @override
+  String get boletinObservations => 'Observaciones';
+
+  @override
+  String get boletinNoGrades =>
+      'No hay calificaciones registradas para este período';
+
+  @override
+  String get boletinNoAccess => 'No tenés acceso al boletín de este alumno';
+
+  @override
+  String get boletinDownloadError => 'No se pudo descargar el boletín';
+
+  @override
+  String get boletinViewAction => 'Ver boletín';
+
+  @override
+  String get parentChooseChild => 'Elegí un hijo';
+
+  @override
+  String get feesUploadProofAction => 'Subir comprobante';
+
+  @override
+  String get feesReplaceProofAction => 'Reemplazar comprobante';
+
+  @override
+  String get feesInvoiceAction => 'Ver factura';
+
+  @override
+  String get feesInvoiceUnavailable => 'Factura no disponible';
+
+  @override
+  String get feesInvoiceViewerTitle => 'Factura';
+
+  @override
+  String get feesInvoiceLoadError => 'No se pudo cargar la factura';
+
+  @override
+  String get feesInvoiceDownloadAction => 'Descargar';
+
+  @override
+  String get feesInvoiceDownloadSuccess => 'Factura descargada';
+
+  @override
+  String get feesInvoiceDownloadError => 'No se pudo descargar la factura';
+
+  @override
+  String get feesChooseFeeTitle => 'Elegí la cuota';
+
+  @override
+  String get feesProofStatusReview => 'Comprobante en revisión';
+
+  @override
+  String get feesProofPickFile => 'Elegir archivo';
+
+  @override
+  String get feesProofHint => 'JPG, PNG o PDF · hasta 10 MB';
+
+  @override
+  String get feesProofInvalidFile =>
+      'Archivo no válido. JPG, PNG o PDF · hasta 10 MB';
+
+  @override
+  String get feesProofSuccess =>
+      'Comprobante subido. Un administrador lo revisará.';
+
+  @override
+  String get feesProofError => 'No se pudo subir el comprobante';
+
+  @override
+  String get feesProofSubmit => 'Subir';
+
+  @override
+  String get feesStatusUnderReview => 'En revisión';
+
+  @override
+  String feesPartialOwed(String amount) {
+    return 'debe $amount';
+  }
+
+  @override
+  String get pushPrimerTitle => 'Activá las notificaciones';
+
+  @override
+  String get pushPrimerBody =>
+      'Los mensajes de chat y los avisos de la escuela te llegan aunque la app esté cerrada';
+
+  @override
+  String get pushPrimerActivate => 'Activar';
+
+  @override
+  String get pushPrimerLater => 'Ahora no';
+
+  @override
+  String get trayOpen => 'Abrir EFE';
+
+  @override
+  String get trayAutostart => 'Iniciar con el sistema';
+
+  @override
+  String get trayQuit => 'Salir';
 }

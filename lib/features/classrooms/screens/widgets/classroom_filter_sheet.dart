@@ -4,8 +4,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/pill_button.dart';
-import '../../../../l10n/app_localizations.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/classroom_filters.dart';
 import '../../providers/classroom_provider.dart';
@@ -48,33 +48,29 @@ class ClassroomFilterSelection {
   }
 }
 
-String classroomStatusLabel(String status, AppLocalizations l10n) {
-  switch (status) {
-    case 'active':
-      return l10n.classroomsStatusActive;
-    case 'archived':
-      return l10n.classroomsStatusArchived;
-    default:
-      return status;
-  }
-}
-
 Future<ClassroomFilterSelection?> showClassroomFilterSheet(
   BuildContext context, {
   required ClassroomFilterSelection initial,
+  Color? accentColor,
 }) {
   return showModalBottomSheet<ClassroomFilterSelection>(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    builder: (_) => ClassroomFilterSheet(initial: initial),
+    builder: (_) =>
+        ClassroomFilterSheet(initial: initial, accentColor: accentColor),
   );
 }
 
 class ClassroomFilterSheet extends ConsumerStatefulWidget {
   final ClassroomFilterSelection initial;
+  final Color? accentColor;
 
-  const ClassroomFilterSheet({super.key, required this.initial});
+  const ClassroomFilterSheet({
+    super.key,
+    required this.initial,
+    this.accentColor,
+  });
 
   @override
   ConsumerState<ClassroomFilterSheet> createState() =>
@@ -89,6 +85,7 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final accent = widget.accentColor ?? AppColors.accentFor(isDark);
     final optionsAsync = ref.watch(classroomFiltersProvider);
 
     return Container(
@@ -131,12 +128,11 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
                     onPressed: _selection.isEmpty
                         ? null
                         : () => setState(
-                              () => _selection =
-                                  const ClassroomFilterSelection(),
+                              () =>
+                                  _selection = const ClassroomFilterSelection(),
                             ),
                     style: TextButton.styleFrom(
-                      foregroundColor:
-                          isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                      foregroundColor: accent,
                       disabledForegroundColor: isDark
                           ? AppColors.darkTextTertiary
                           : AppColors.lightTextTertiary,
@@ -154,11 +150,13 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
                   child: Center(child: CircularProgressIndicator()),
                 ),
                 error: (_, __) => _ErrorBody(
+                  accent: accent,
                   onRetry: () => ref.invalidate(classroomFiltersProvider),
                 ),
                 data: (options) => _OptionsBody(
                   options: options,
                   selection: _selection,
+                  accent: accent,
                   onChanged: (selection) =>
                       setState(() => _selection = selection),
                 ),
@@ -169,6 +167,7 @@ class _ClassroomFilterSheetState extends ConsumerState<ClassroomFilterSheet> {
               child: PillButton(
                 label: l10n.classroomsFilterApply,
                 height: 48,
+                color: widget.accentColor,
                 onPressed: () => Navigator.of(context).pop(_selection),
               ),
             ),
@@ -183,11 +182,13 @@ class _OptionsBody extends StatelessWidget {
   final ClassroomFilters options;
   final ClassroomFilterSelection selection;
   final ValueChanged<ClassroomFilterSelection> onChanged;
+  final Color accent;
 
   const _OptionsBody({
     required this.options,
     required this.selection,
     required this.onChanged,
+    required this.accent,
   });
 
   @override
@@ -204,6 +205,7 @@ class _OptionsBody extends StatelessWidget {
               label: l10n.classroomsBranch,
               values: options.branches,
               selected: selection.branch,
+              accent: accent,
               onSelected: (value) => onChanged(
                 value == null
                     ? selection.copyWith(clearBranch: true)
@@ -215,6 +217,7 @@ class _OptionsBody extends StatelessWidget {
               label: l10n.classroomsLevel,
               values: options.levels,
               selected: selection.level,
+              accent: accent,
               onSelected: (value) => onChanged(
                 value == null
                     ? selection.copyWith(clearLevel: true)
@@ -226,6 +229,7 @@ class _OptionsBody extends StatelessWidget {
               label: l10n.classroomsYear,
               values: options.years,
               selected: selection.year,
+              accent: accent,
               onSelected: (value) => onChanged(
                 value == null
                     ? selection.copyWith(clearYear: true)
@@ -237,6 +241,7 @@ class _OptionsBody extends StatelessWidget {
               label: l10n.classroomsStatus,
               values: options.statuses,
               selected: selection.status,
+              accent: accent,
               labelFor: (value) => classroomStatusLabel(value, l10n),
               onSelected: (value) => onChanged(
                 value == null
@@ -256,12 +261,14 @@ class _FilterSection extends StatelessWidget {
   final String? selected;
   final String Function(String value)? labelFor;
   final ValueChanged<String?> onSelected;
+  final Color accent;
 
   const _FilterSection({
     required this.label,
     required this.values,
     required this.selected,
     required this.onSelected,
+    required this.accent,
     this.labelFor,
   });
 
@@ -279,8 +286,9 @@ class _FilterSection extends StatelessWidget {
           Text(
             label,
             style: AppTypography.titleSmall.copyWith(
-              color:
-                  isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+              color: isDark
+                  ? AppColors.darkTextPrimary
+                  : AppColors.lightTextPrimary,
             ),
           ),
           const SizedBox(height: 10),
@@ -292,6 +300,7 @@ class _FilterSection extends StatelessWidget {
                 _FilterChip(
                   label: (labelFor ?? _identity)(value),
                   selected: value == selected,
+                  accent: accent,
                   onTap: () => onSelected(value == selected ? null : value),
                 ),
             ],
@@ -306,17 +315,18 @@ class _FilterChip extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
+  final Color accent;
 
   const _FilterChip({
     required this.label,
     required this.selected,
     required this.onTap,
+    required this.accent,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accent = isDark ? const Color(0xFF6366F1) : AppColors.primary;
 
     return GestureDetector(
       onTap: onTap,
@@ -351,8 +361,9 @@ class _FilterChip extends StatelessWidget {
 
 class _ErrorBody extends StatelessWidget {
   final VoidCallback onRetry;
+  final Color accent;
 
-  const _ErrorBody({required this.onRetry});
+  const _ErrorBody({required this.onRetry, required this.accent});
 
   @override
   Widget build(BuildContext context) {
@@ -372,8 +383,9 @@ class _ErrorBody extends StatelessWidget {
           Text(
             l10n.classroomsFiltersLoadError,
             style: AppTypography.titleSmall.copyWith(
-              color:
-                  isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+              color: isDark
+                  ? AppColors.darkTextPrimary
+                  : AppColors.lightTextPrimary,
             ),
           ),
           const SizedBox(height: 4),
@@ -390,11 +402,9 @@ class _ErrorBody extends StatelessWidget {
           OutlinedButton(
             onPressed: onRetry,
             style: OutlinedButton.styleFrom(
-              foregroundColor:
-                  isDark ? const Color(0xFF6366F1) : AppColors.primary,
+              foregroundColor: accent,
               side: BorderSide(
-                color:
-                    isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),

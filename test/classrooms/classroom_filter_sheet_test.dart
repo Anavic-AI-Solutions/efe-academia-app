@@ -1,3 +1,4 @@
+import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
 import 'package:efe_mobile/features/classrooms/providers/classroom_provider.dart';
 import 'package:efe_mobile/features/classrooms/screens/widgets/classroom_filter_sheet.dart';
@@ -122,5 +123,30 @@ void main() {
 
     expect(find.text('No se pudieron cargar los filtros'), findsOneWidget);
     expect(find.text('Reintentar'), findsOneWidget);
+  });
+
+  testWidgets('selected options use the single blue accent', (tester) async {
+    ClassroomFilterSelection? result;
+    await _pumpApp(tester, onResult: (r) => result = r);
+
+    await _openSheet(tester);
+    await tester.tap(find.text('Reconquista'));
+    await tester.pump();
+
+    final selected = tester.widgetList<AnimatedContainer>(
+      find.byType(AnimatedContainer),
+    );
+    expect(
+      selected.any(
+        (chip) =>
+            (chip.decoration as BoxDecoration?)?.color == AppColors.primary,
+      ),
+      isTrue,
+    );
+
+    await tester.tap(find.text('Aplicar filtros'));
+    await tester.pumpAndSettle();
+
+    expect(result?.branch, 'Reconquista');
   });
 }

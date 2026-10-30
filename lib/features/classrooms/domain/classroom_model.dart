@@ -28,11 +28,16 @@ class ClassroomModel with _$ClassroomModel {
   }) = _ClassroomModel;
 
   factory ClassroomModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ??
+        json['data']?['attributes'] as Map<String, dynamic>? ??
+        json;
     final relationships = json['relationships'] as Map<String, dynamic>?;
     final students = relationships?['students']?['data'] as List<dynamic>?;
     return ClassroomModel(
-      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ??
+          json['id']?.toString() ??
+          attrs['id']?.toString() ??
+          '',
       name: attrs['name'] ?? '',
       description: attrs['description'] ?? '',
       status: attrs['status'] ?? '',
@@ -52,8 +57,7 @@ class ClassroomModel with _$ClassroomModel {
       period3Days: _parseInt(attrs['period_3_days']),
       isActive: attrs['is_active'] as bool? ??
           !((attrs['is_archivated'] as bool?) ?? false),
-      studentCount:
-          students?.length ?? _parseInt(attrs['student_count']),
+      studentCount: students?.length ?? _parseInt(attrs['student_count']),
     );
   }
 

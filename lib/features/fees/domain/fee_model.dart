@@ -15,14 +15,22 @@ class FeeModel with _$FeeModel {
     @Default(0.0) double paid,
     @Default(0.0) double total,
     @Default('') String status,
+    @Default('') String proofStatus,
+    @Default(false) bool isOverdue,
+    @Default(0.0) double owe,
     @Default('') String paymentMethod,
     @Default('') String paymentDate,
   }) = _FeeModel;
 
   factory FeeModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ??
+        json['data']?['attributes'] as Map<String, dynamic>? ??
+        json;
     return FeeModel(
-      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ??
+          json['id']?.toString() ??
+          attrs['id']?.toString() ??
+          '',
       studentId: attrs['student_id']?.toString() ?? '',
       studentName: attrs['student_name'] ?? '',
       numberFee: _parseInt(attrs['number_fee']),
@@ -32,10 +40,16 @@ class FeeModel with _$FeeModel {
       paid: _parseDouble(attrs['paid']),
       total: _parseDouble(attrs['total']),
       status: attrs['status'] ?? '',
+      proofStatus: attrs['proof_status']?.toString() ?? '',
+      isOverdue: _parseBool(attrs['is_overdue']),
+      owe: _parseDouble(attrs['owe']),
       paymentMethod: attrs['payment_method'] ?? '',
       paymentDate: attrs['payment_date'] ?? '',
     );
   }
+
+  static bool _parseBool(dynamic value) =>
+      value == true || value == 1 || value == '1';
 
   static double _parseDouble(dynamic value) {
     if (value is double) return value;

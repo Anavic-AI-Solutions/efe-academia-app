@@ -24,9 +24,9 @@ class AppAvatar extends StatelessWidget {
     Color(0xFFF59E0B),
     Color(0xFF10B981),
     Color(0xFF3B82F6),
-    Color(0xFF8B5CF6),
-    Color(0xFFEC4899),
     Color(0xFF06B6D4),
+    Color(0xFFEC4899),
+    Color(0xFF14B8A6),
   ];
 
   Color get _backgroundColor {

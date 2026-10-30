@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/professor_colors.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../dashboard/domain/professor_classroom_summary.dart';
 import '../../domain/classroom_grades_summary.dart';
 import '../../providers/qualification_provider.dart';
 
@@ -19,13 +19,15 @@ String currentAcademicPeriod() {
 }
 
 class CreateQualificationSheet extends ConsumerStatefulWidget {
-  final String classroomId;
+  final String? classroomId;
+  final List<ProfessorClassroomSummary>? classrooms;
   final List<ClassroomGradeStudent> students;
   final String? initialStudentId;
 
   const CreateQualificationSheet({
     super.key,
-    required this.classroomId,
+    this.classroomId,
+    this.classrooms,
     required this.students,
     this.initialStudentId,
   });
@@ -42,6 +44,10 @@ class _CreateQualificationSheetState
 
   late String? _studentId = widget.initialStudentId ??
       (widget.students.isNotEmpty ? widget.students.first.studentId : null);
+  late String? _classroomId = widget.classroomId ??
+      (widget.classrooms != null && widget.classrooms!.isNotEmpty
+          ? widget.classrooms!.first.id
+          : null);
   String _type = _types.first;
   late String _period = currentAcademicPeriod();
   String? _scoreError;
@@ -66,7 +72,12 @@ class _CreateQualificationSheetState
   Future<void> _submit() async {
     final l10n = context.l10n;
     final score = _parseScore(_scoreController.text);
+    final classroomId = _classroomId;
 
+    if (classroomId == null) {
+      setState(() => _submitError = l10n.studentGradeNoClassrooms);
+      return;
+    }
     if (score == null || _studentId == null) {
       setState(() => _scoreError = l10n.gradeFormScoreInvalid);
       return;
@@ -81,12 +92,16 @@ class _CreateQualificationSheetState
     try {
       await ref.read(qualificationRepositoryProvider).createQualification(
             studentId: _studentId!,
-            classroomId: widget.classroomId,
+            classroomId: classroomId,
             score: score.toString(),
             type: _type,
             period: _period,
             description: _descriptionController.text.trim(),
           );
+
+      // El sheet es el único que conoce el aula resuelta (fija o del
+      // dropdown), así que invalida sus notas acá; el pop sigue siendo bool.
+      ref.invalidate(classroomGradesProvider(classroomId));
 
       if (mounted) {
         Navigator.of(context).pop(true);
@@ -106,8 +121,7 @@ class _CreateQualificationSheetState
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final background = isDark ? AppColors.darkSurface : Colors.white;
-    final textColor =
-        isDark ? AppColors.darkTextPrimary : ProfessorColors.ink;
+    final textColor = isDark ? AppColors.darkTextPrimary : AppColors.lightInk;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
@@ -127,7 +141,7 @@ class _CreateQualificationSheetState
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: ProfessorColors.navInactive.withOpacity(0.4),
+                    color: AppColors.navInactive.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -142,6 +156,28 @@ class _CreateQualificationSheetState
                 ),
               ),
               const SizedBox(height: 16),
+              if (widget.classroomId == null) ...[
+                _FieldLabel(label: l10n.studentGradeClassroom),
+                DropdownButtonFormField<String>(
+                  value: _classroomId,
+                  isExpanded: true,
+                  decoration: _inputDecoration(),
+                  items: (widget.classrooms ?? const [])
+                      .map(
+                        (classroom) => DropdownMenuItem(
+                          value: classroom.id,
+                          child: Text(
+                            classroom.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) => setState(() => _classroomId = value),
+                ),
+                const SizedBox(height: 12),
+              ],
               _FieldLabel(label: l10n.gradeFormStudent),
               DropdownButtonFormField<String>(
                 value: _studentId,
@@ -159,7 +195,9 @@ class _CreateQualificationSheetState
                       ),
                     )
                     .toList(),
-                onChanged: (value) => setState(() => _studentId = value),
+                onChanged: widget.students.length == 1
+                    ? null
+                    : (value) => setState(() => _studentId = value),
               ),
               const SizedBox(height: 12),
               Row(
@@ -230,10 +268,12 @@ class _CreateQualificationSheetState
               if (_submitError != null) ...[
                 const SizedBox(height: 10),
                 Text(
-                  l10n.gradeFormError,
+                  _submitError == l10n.studentGradeNoClassrooms
+                      ? l10n.studentGradeNoClassrooms
+                      : l10n.gradeFormError,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: ProfessorColors.absent,
+                    color: AppColors.absent,
                   ),
                 ),
               ],
@@ -242,12 +282,12 @@ class _CreateQualificationSheetState
                 height: 46,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isSaving ? null : _submit,
+                  onPressed:
+                      (_isSaving || _classroomId == null) ? null : _submit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ProfessorColors.primary,
+                    backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        ProfessorColors.primary.withOpacity(0.5),
+                    disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),
@@ -283,7 +323,7 @@ class _CreateQualificationSheetState
       hintText: hint,
       isDense: true,
       filled: true,
-      fillColor: ProfessorColors.gradeEmptyBackground,
+      fillColor: AppColors.gradeEmptyBackground,
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -307,7 +347,7 @@ class _FieldLabel extends StatelessWidget {
         style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w700,
-          color: ProfessorColors.muted,
+          color: AppColors.muted,
         ),
       ),
     );

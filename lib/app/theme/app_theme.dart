@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
 
@@ -32,32 +33,34 @@ class AppTheme {
         labelSmall: AppTypography.labelSmall,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.lightBackground,
-        foregroundColor: AppColors.lightTextPrimary,
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         titleTextStyle: TextStyle(
           fontFamily: 'PlusJakartaSans',
-          fontSize: 28,
-          fontWeight: FontWeight.w700,
-          color: AppColors.lightTextPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+          color: Colors.white,
           height: 1.2,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         color: AppColors.lightSurface,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         shadowColor: Colors.black.withOpacity(0.04),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.lightSearchFill,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -86,33 +89,41 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
-          minimumSize: const Size(0, 52),
+          minimumSize: const Size(0, 46),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(13),
           ),
           textStyle: AppTypography.labelLarge.copyWith(
             color: Colors.white,
-            fontSize: 15,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
           ),
           elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          minimumSize: const Size(0, 52),
+          minimumSize: const Size(0, 46),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(13),
           ),
           side: const BorderSide(color: AppColors.lightBorder),
           textStyle: AppTypography.labelLarge.copyWith(
             color: AppColors.lightTextPrimary,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
           ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
           textStyle: AppTypography.labelLarge.copyWith(
             color: AppColors.primary,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
           ),
         ),
       ),
@@ -135,7 +146,7 @@ class AppTheme {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.primary,
       brightness: Brightness.dark,
-      primary: const Color(0xFF6366F1),
+      primary: AppColors.primary,
       surface: AppColors.darkSurface,
     );
 
@@ -158,31 +169,33 @@ class AppTheme {
         labelSmall: AppTypography.labelSmall,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.darkBackground,
-        foregroundColor: AppColors.darkTextPrimary,
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         titleTextStyle: TextStyle(
           fontFamily: 'PlusJakartaSans',
-          fontSize: 28,
-          fontWeight: FontWeight.w700,
-          color: AppColors.darkTextPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+          color: Colors.white,
           height: 1.2,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         color: AppColors.darkSurface,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.darkSearchFill,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -193,7 +206,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6366F1), width: 1.5),
+          borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -209,35 +222,43 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF6366F1),
+          backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
-          minimumSize: const Size(0, 52),
+          minimumSize: const Size(0, 46),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(13),
           ),
           textStyle: AppTypography.labelLarge.copyWith(
             color: Colors.white,
-            fontSize: 15,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
           ),
           elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          minimumSize: const Size(0, 52),
+          minimumSize: const Size(0, 46),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(13),
           ),
           side: const BorderSide(color: AppColors.darkBorder),
           textStyle: AppTypography.labelLarge.copyWith(
             color: AppColors.darkTextPrimary,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
           ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
           textStyle: AppTypography.labelLarge.copyWith(
-            color: const Color(0xFF6366F1),
+            color: AppColors.primary,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
           ),
         ),
       ),
@@ -248,7 +269,7 @@ class AppTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.darkSurface,
-        selectedItemColor: Color(0xFF6366F1),
+        selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.darkTextTertiary,
         type: BottomNavigationBarType.fixed,
         elevation: 0,

@@ -8,6 +8,7 @@ class ErrorView extends StatelessWidget {
   final String? detail;
   final String? retryLabel;
   final VoidCallback? onRetry;
+  final Color? accentColor;
 
   const ErrorView({
     super.key,
@@ -15,12 +16,14 @@ class ErrorView extends StatelessWidget {
     this.detail,
     this.retryLabel,
     this.onRetry,
+    this.accentColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final retryColor = accentColor ?? AppColors.accentFor(isDark);
 
     return Center(
       child: Padding(
@@ -45,7 +48,9 @@ class ErrorView extends StatelessWidget {
             Text(
               message,
               style: AppTypography.titleMedium.copyWith(
-                color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                color: isDark
+                    ? AppColors.darkTextPrimary
+                    : AppColors.lightTextPrimary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -54,7 +59,9 @@ class ErrorView extends StatelessWidget {
               Text(
                 detail!,
                 style: AppTypography.bodyMedium.copyWith(
-                  color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                  color: isDark
+                      ? AppColors.darkTextSecondary
+                      : AppColors.lightTextSecondary,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -66,13 +73,19 @@ class ErrorView extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onRetry,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                    backgroundColor: retryColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(13),
                     ),
                   ),
-                  child: Text(retryLabel ?? context.l10n.commonRetry),
+                  child: Text(
+                    retryLabel ?? context.l10n.commonRetry,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
             ],

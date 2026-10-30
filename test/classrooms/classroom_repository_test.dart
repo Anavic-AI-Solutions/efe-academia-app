@@ -23,6 +23,7 @@ class _FakeClassroomApi implements ClassroomApi {
     String? level,
     String? year,
     String? status,
+    String? studentId,
   }) async {
     lastQuery = {
       'search': search,

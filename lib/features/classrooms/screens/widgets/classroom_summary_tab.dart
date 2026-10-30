@@ -13,14 +13,17 @@ import '../../domain/classroom_model.dart';
 class ClassroomSummaryTab extends StatelessWidget {
   final ClassroomModel classroom;
 
-  const ClassroomSummaryTab({super.key, required this.classroom});
+  const ClassroomSummaryTab({
+    super.key,
+    required this.classroom,
+  });
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       children: [
         SizedBox(
           height: 150,
@@ -31,28 +34,29 @@ class ClassroomSummaryTab extends StatelessWidget {
                 icon: PhosphorIconsRegular.users,
                 value: '${classroom.studentCount}',
                 label: l10n.classroomsStudents,
-                iconColor: const Color(0xFF3B82F6),
+                iconColor: AppColors.primary,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.mapPin,
                 value: classroom.room.isNotEmpty ? classroom.room : '—',
                 label: l10n.classroomsRoom,
-                iconColor: const Color(0xFF10B981),
+                iconColor: AppColors.primarySoft,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.clock,
                 value: classroom.shift.isNotEmpty ? classroom.shift : '—',
                 label: l10n.classroomsShift,
-                iconColor: const Color(0xFFF97316),
+                iconColor: AppColors.accent,
               ),
             ],
           ),
         ),
         const SizedBox(height: 20),
         if (classroom.description.isNotEmpty) ...[
-          SectionHeader(title: l10n.classroomsDescription, padding: EdgeInsets.zero),
+          SectionHeader(
+              title: l10n.classroomsDescription, padding: EdgeInsets.zero),
           const SizedBox(height: 8),
           AppCard(
             padding: const EdgeInsets.all(16),
@@ -67,7 +71,8 @@ class ClassroomSummaryTab extends StatelessWidget {
           ),
           const SizedBox(height: 20),
         ],
-        SectionHeader(title: l10n.classroomsSectionSchedule, padding: EdgeInsets.zero),
+        SectionHeader(
+            title: l10n.classroomsSectionSchedule, padding: EdgeInsets.zero),
         const SizedBox(height: 8),
         AppCard(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -78,14 +83,16 @@ class ClassroomSummaryTab extends StatelessWidget {
               InfoRow(label: l10n.classroomsHour, value: classroom.hour),
               InfoRow(
                 label: l10n.classroomsCourseDays,
-                value: classroom.courseDays > 0 ? '${classroom.courseDays}' : '',
+                value:
+                    classroom.courseDays > 0 ? '${classroom.courseDays}' : '',
                 isLast: true,
               ),
             ],
           ),
         ),
         const SizedBox(height: 20),
-        SectionHeader(title: l10n.classroomsSectionAcademic, padding: EdgeInsets.zero),
+        SectionHeader(
+            title: l10n.classroomsSectionAcademic, padding: EdgeInsets.zero),
         const SizedBox(height: 8),
         AppCard(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -107,7 +114,8 @@ class ClassroomSummaryTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        SectionHeader(title: l10n.classroomsSectionLocation, padding: EdgeInsets.zero),
+        SectionHeader(
+            title: l10n.classroomsSectionLocation, padding: EdgeInsets.zero),
         const SizedBox(height: 8),
         AppCard(
           padding: const EdgeInsets.symmetric(vertical: 4),

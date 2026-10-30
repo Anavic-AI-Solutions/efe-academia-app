@@ -19,9 +19,26 @@ class EventRepository {
       data: items
           .map((e) => EventModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      nextCursor: meta['cursor'],
-      hasMore: meta['has_more'] ?? false,
-      total: meta['total'],
+      nextCursor: meta['cursor']?.toString(),
+      hasMore: meta['has_more'] == true,
+      total: int.tryParse('${meta['total']}'),
     );
+  }
+
+  Future<List<EventModel>> getCalendarEvents({
+    required String startDate,
+    required String endDate,
+  }) async {
+    final response = await _api.getCalendar(
+      startDate: startDate,
+      endDate: endDate,
+    );
+    final data = response.data;
+    final items = data is Map<String, dynamic>
+        ? (data['data'] as List<dynamic>? ?? [])
+        : data as List<dynamic>? ?? [];
+    return items
+        .map((e) => EventModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }

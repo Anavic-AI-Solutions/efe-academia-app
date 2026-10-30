@@ -4,23 +4,42 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/professor_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
-import '../../professor/widgets/professor_screen_header.dart';
 import '../domain/attendance_day.dart';
 import '../providers/attendance_provider.dart';
 import 'widgets/attendance_student_row.dart';
 
 const _monthsEs = [
-  'ene', 'feb', 'mar', 'abr', 'may', 'jun',
-  'jul', 'ago', 'sep', 'oct', 'nov', 'dic',
+  'ene',
+  'feb',
+  'mar',
+  'abr',
+  'may',
+  'jun',
+  'jul',
+  'ago',
+  'sep',
+  'oct',
+  'nov',
+  'dic',
 ];
 const _monthsEn = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 String _dateLabel(BuildContext context, String date) {
@@ -30,8 +49,9 @@ String _dateLabel(BuildContext context, String date) {
   final isSpanish = Localizations.localeOf(context).languageCode != 'en';
   final months = isSpanish ? _monthsEs : _monthsEn;
   final now = DateTime.now();
-  final isToday =
-      parsed.year == now.year && parsed.month == now.month && parsed.day == now.day;
+  final isToday = parsed.year == now.year &&
+      parsed.month == now.month &&
+      parsed.day == now.day;
   final monthLabel = months[parsed.month - 1];
 
   if (isToday) {
@@ -77,10 +97,10 @@ class AttendanceScreen extends ConsumerWidget {
       },
       child: Scaffold(
         backgroundColor:
-            isDark ? AppColors.darkBackground : ProfessorColors.surface,
+            isDark ? AppColors.darkBackground : AppColors.lightBackground,
         body: Column(
           children: [
-            ProfessorScreenHeader(
+            ScreenHeader(
               title: l10n.attendanceTitle(day?.classroomName ?? ''),
               subtitle: l10n.attendanceSubtitle(
                 _dateLabel(context, day?.date ?? ''),
@@ -122,8 +142,8 @@ class AttendanceScreen extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
         itemCount: 6,
         separatorBuilder: (_, __) => const SizedBox(height: 8),
-        itemBuilder: (_, __) =>
-            const LoadingShimmer(width: double.infinity, height: 50, borderRadius: 13),
+        itemBuilder: (_, __) => const LoadingShimmer(
+            width: double.infinity, height: 50, borderRadius: 13),
       );
     }
 
@@ -230,10 +250,9 @@ class _SaveBar extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isSaving ? null : onSave,
             style: ElevatedButton.styleFrom(
-              backgroundColor: ProfessorColors.primary,
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              disabledBackgroundColor:
-                  ProfessorColors.primary.withOpacity(0.5),
+              disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(13),

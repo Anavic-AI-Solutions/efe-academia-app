@@ -26,6 +26,9 @@ mixin _$FeeModel {
   double get paid => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  String get proofStatus => throw _privateConstructorUsedError;
+  bool get isOverdue => throw _privateConstructorUsedError;
+  double get owe => throw _privateConstructorUsedError;
   String get paymentMethod => throw _privateConstructorUsedError;
   String get paymentDate => throw _privateConstructorUsedError;
 
@@ -52,6 +55,9 @@ abstract class $FeeModelCopyWith<$Res> {
       double paid,
       double total,
       String status,
+      String proofStatus,
+      bool isOverdue,
+      double owe,
       String paymentMethod,
       String paymentDate});
 }
@@ -81,6 +87,9 @@ class _$FeeModelCopyWithImpl<$Res, $Val extends FeeModel>
     Object? paid = null,
     Object? total = null,
     Object? status = null,
+    Object? proofStatus = null,
+    Object? isOverdue = null,
+    Object? owe = null,
     Object? paymentMethod = null,
     Object? paymentDate = null,
   }) {
@@ -125,6 +134,18 @@ class _$FeeModelCopyWithImpl<$Res, $Val extends FeeModel>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
+      proofStatus: null == proofStatus
+          ? _value.proofStatus
+          : proofStatus // ignore: cast_nullable_to_non_nullable
+              as String,
+      isOverdue: null == isOverdue
+          ? _value.isOverdue
+          : isOverdue // ignore: cast_nullable_to_non_nullable
+              as bool,
+      owe: null == owe
+          ? _value.owe
+          : owe // ignore: cast_nullable_to_non_nullable
+              as double,
       paymentMethod: null == paymentMethod
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
@@ -156,6 +177,9 @@ abstract class _$$FeeModelImplCopyWith<$Res>
       double paid,
       double total,
       String status,
+      String proofStatus,
+      bool isOverdue,
+      double owe,
       String paymentMethod,
       String paymentDate});
 }
@@ -183,6 +207,9 @@ class __$$FeeModelImplCopyWithImpl<$Res>
     Object? paid = null,
     Object? total = null,
     Object? status = null,
+    Object? proofStatus = null,
+    Object? isOverdue = null,
+    Object? owe = null,
     Object? paymentMethod = null,
     Object? paymentDate = null,
   }) {
@@ -227,6 +254,18 @@ class __$$FeeModelImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
+      proofStatus: null == proofStatus
+          ? _value.proofStatus
+          : proofStatus // ignore: cast_nullable_to_non_nullable
+              as String,
+      isOverdue: null == isOverdue
+          ? _value.isOverdue
+          : isOverdue // ignore: cast_nullable_to_non_nullable
+              as bool,
+      owe: null == owe
+          ? _value.owe
+          : owe // ignore: cast_nullable_to_non_nullable
+              as double,
       paymentMethod: null == paymentMethod
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
@@ -253,6 +292,9 @@ class _$FeeModelImpl implements _FeeModel {
       this.paid = 0.0,
       this.total = 0.0,
       this.status = '',
+      this.proofStatus = '',
+      this.isOverdue = false,
+      this.owe = 0.0,
       this.paymentMethod = '',
       this.paymentDate = ''});
 
@@ -287,6 +329,15 @@ class _$FeeModelImpl implements _FeeModel {
   final String status;
   @override
   @JsonKey()
+  final String proofStatus;
+  @override
+  @JsonKey()
+  final bool isOverdue;
+  @override
+  @JsonKey()
+  final double owe;
+  @override
+  @JsonKey()
   final String paymentMethod;
   @override
   @JsonKey()
@@ -294,7 +345,7 @@ class _$FeeModelImpl implements _FeeModel {
 
   @override
   String toString() {
-    return 'FeeModel(id: $id, studentId: $studentId, studentName: $studentName, numberFee: $numberFee, month: $month, year: $year, toPay: $toPay, paid: $paid, total: $total, status: $status, paymentMethod: $paymentMethod, paymentDate: $paymentDate)';
+    return 'FeeModel(id: $id, studentId: $studentId, studentName: $studentName, numberFee: $numberFee, month: $month, year: $year, toPay: $toPay, paid: $paid, total: $total, status: $status, proofStatus: $proofStatus, isOverdue: $isOverdue, owe: $owe, paymentMethod: $paymentMethod, paymentDate: $paymentDate)';
   }
 
   @override
@@ -315,6 +366,11 @@ class _$FeeModelImpl implements _FeeModel {
             (identical(other.paid, paid) || other.paid == paid) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.proofStatus, proofStatus) ||
+                other.proofStatus == proofStatus) &&
+            (identical(other.isOverdue, isOverdue) ||
+                other.isOverdue == isOverdue) &&
+            (identical(other.owe, owe) || other.owe == owe) &&
             (identical(other.paymentMethod, paymentMethod) ||
                 other.paymentMethod == paymentMethod) &&
             (identical(other.paymentDate, paymentDate) ||
@@ -334,6 +390,9 @@ class _$FeeModelImpl implements _FeeModel {
       paid,
       total,
       status,
+      proofStatus,
+      isOverdue,
+      owe,
       paymentMethod,
       paymentDate);
 
@@ -358,6 +417,9 @@ abstract class _FeeModel implements FeeModel {
       final double paid,
       final double total,
       final String status,
+      final String proofStatus,
+      final bool isOverdue,
+      final double owe,
       final String paymentMethod,
       final String paymentDate}) = _$FeeModelImpl;
 
@@ -381,6 +443,12 @@ abstract class _FeeModel implements FeeModel {
   double get total;
   @override
   String get status;
+  @override
+  String get proofStatus;
+  @override
+  bool get isOverdue;
+  @override
+  double get owe;
   @override
   String get paymentMethod;
   @override

@@ -7,6 +7,7 @@ import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
+import '../../../core/widgets/loading_shimmer.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../l10n/l10n.dart';
@@ -47,14 +48,16 @@ class _EventListScreenState extends ConsumerState<EventListScreen> {
     final l10n = context.l10n;
     final state = ref.watch(eventListProvider);
     final events = state.pagination.data;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           LargeTitleBar(title: l10n.eventsTitle),
           Expanded(
             child: state.isLoading && events.isEmpty
-                ? const Center(child: CircularProgressIndicator())
+                ? const ListShimmer()
                 : state.error != null && events.isEmpty
                     ? ErrorView(
                         message: l10n.eventsErrorTitle,
@@ -73,15 +76,17 @@ class _EventListScreenState extends ConsumerState<EventListScreen> {
                                 ref.read(eventListProvider.notifier).refresh(),
                             child: ListView.builder(
                               controller: _scrollController,
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                               itemCount: events.length +
                                   (state.pagination.hasMore ? 1 : 0),
                               itemBuilder: (context, index) {
                                 if (index == events.length) {
                                   return const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
+                                    padding:
+                                        EdgeInsets.only(top: 4, bottom: 12),
+                                    child: LoadingShimmer(
+                                      width: double.infinity,
+                                      height: 68,
                                     ),
                                   );
                                 }
@@ -132,7 +137,9 @@ class _EventCard extends StatelessWidget {
                 Text(
                   event.title,
                   style: AppTypography.titleSmall.copyWith(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
                   ),
                 ),
                 if (event.description.isNotEmpty) ...[
@@ -142,7 +149,9 @@ class _EventCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTypography.bodySmall.copyWith(
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.lightTextSecondary,
                     ),
                   ),
                 ],

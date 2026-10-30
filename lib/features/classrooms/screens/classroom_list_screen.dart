@@ -4,18 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/app_typography.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
-import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../../relations/providers/relations_provider.dart';
+import '../../relations/providers/selected_child_provider.dart';
 import '../providers/classroom_provider.dart';
-import 'widgets/classroom_card.dart';
+import 'widgets/classroom_filter_button.dart';
 import 'widgets/classroom_filter_chips.dart';
 import 'widgets/classroom_filter_sheet.dart';
+import 'widgets/professor_classroom_list_card.dart';
+import 'widgets/professor_classrooms_header.dart';
 
 class ClassroomListScreen extends ConsumerStatefulWidget {
   const ClassroomListScreen({super.key});
@@ -84,16 +87,51 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final l10n = context.l10n;
     final listState = ref.watch(classroomListProvider);
     final selection = _selectionFrom(listState);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final role = ref.watch(authProvider).user?.role;
+    final isProf = role == 'professor';
+    final isParent = role == 'parent';
+
+    ref.listen<String?>(parentSelectedStudentProvider, (_, next) {
+      if (!mounted) return;
+      if (ref.read(authProvider).user?.role != 'parent') return;
+      ref.read(classroomListProvider.notifier).setStudent(next).then((_) {
+        if (mounted) _scrollToTop();
+      });
+    });
+    if (isParent) {
+      final selected = ref.watch(parentSelectedStudentProvider);
+      if (selected != null &&
+          selected != listState.studentId &&
+          !listState.isLoading) {
+        Future.microtask(() {
+          if (!mounted) return;
+          final want = ref.read(parentSelectedStudentProvider);
+          final current = ref.read(classroomListProvider).studentId;
+          if (want != null && want != current) {
+            ref.read(classroomListProvider.notifier).setStudent(want).then((_) {
+              if (mounted) _scrollToTop();
+            });
+          }
+        });
+      }
+    }
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
-          LargeTitleBar(
-            title: l10n.classroomsTitle,
-            showBackButton: false,
+          ProfessorClassroomsHeader(
+            title: isProf ? l10n.professorMyClassrooms : l10n.classroomsTitle,
+            subtitle: listState.isLoading && listState.page.total == 0
+                ? ''
+                : isProf
+                    ? l10n.professorClassroomsCount(listState.page.total)
+                    : '${listState.page.total} ${l10n.classroomsTitle.toLowerCase()}',
           ),
+          if (isParent) _buildParentChildSelector(),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             child: Row(
               children: [
                 Expanded(
@@ -104,15 +142,17 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
                         ref.read(classroomListProvider.notifier).search(value),
                   ),
                 ),
-                const SizedBox(width: 10),
-                _FilterButton(
-                  activeCount: selection.count,
-                  onTap: _openFilters,
-                ),
+                if (!isParent) ...[
+                  const SizedBox(width: 10),
+                  ClassroomFilterButton(
+                    activeCount: selection.count,
+                    onTap: _openFilters,
+                  ),
+                ],
               ],
             ),
           ),
-          if (!selection.isEmpty)
+          if (!isParent && !selection.isEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: ClassroomFilterChips(
@@ -123,16 +163,56 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
               ),
             ),
           Expanded(
-            child: _buildBody(listState),
+            child: _buildBody(listState, isProf: isProf, isParent: isParent),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody(ClassroomListState state) {
+  Widget _buildParentChildSelector() {
+    final relations = ref.watch(relationsProvider);
+    final selected = ref.watch(parentSelectedStudentProvider);
+    final children =
+        relations.relations.where((r) => r.role == 'student').toList();
+
+    if (children.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: DropdownButtonFormField<String>(
+        value: children.any((c) => c.userId.toString() == selected)
+            ? selected
+            : null,
+        hint: Text(context.l10n.studentsTitle),
+        items: children
+            .map(
+              (c) => DropdownMenuItem(
+                value: c.userId.toString(),
+                child: Text(c.fullname, overflow: TextOverflow.ellipsis),
+              ),
+            )
+            .toList(),
+        onChanged: (value) async {
+          ref.read(parentSelectedStudentProvider.notifier).state = value;
+          await ref.read(classroomListProvider.notifier).setStudent(value);
+          _scrollToTop();
+        },
+      ),
+    );
+  }
+
+  Widget _buildBody(ClassroomListState state,
+      {required bool isProf, bool isParent = false}) {
     final l10n = context.l10n;
 
+    if (isParent && state.studentId == null) {
+      return EmptyState(
+        icon: PhosphorIconsRegular.chalkboardTeacher,
+        title: l10n.classroomsEmptyTitle,
+        subtitle: l10n.classroomsEmptySubtitle,
+      );
+    }
     if (state.isLoading && state.page.data.isEmpty) {
       return const ListShimmer();
     }
@@ -147,14 +227,19 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
 
     if (state.page.data.isEmpty) {
       final filtered = state.hasActiveFilters;
+      final searching = state.search.isNotEmpty;
       return EmptyState(
-        icon: Icons.class_outlined,
-        title: l10n.classroomsEmptyTitle,
+        icon: PhosphorIconsRegular.chalkboardTeacher,
+        title: !filtered && !searching
+            ? (isProf
+                ? l10n.professorMyClassroomsEmpty
+                : l10n.classroomsEmptyTitle)
+            : l10n.classroomsEmptyTitle,
         subtitle: filtered
             ? l10n.classroomsEmptyFiltered
-            : state.search.isNotEmpty
+            : searching
                 ? l10n.classroomsEmptySearch
-                : l10n.classroomsEmptySubtitle,
+                : (isProf ? null : l10n.classroomsEmptySubtitle),
         actionLabel: filtered ? l10n.classroomsClearFilters : null,
         onAction: filtered
             ? () => _applySelection(const ClassroomFilterSelection())
@@ -164,22 +249,23 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
 
     return Column(
       children: [
-        if (state.isLoading)
-          const LinearProgressIndicator(minHeight: 2),
+        if (state.isLoading) const LinearProgressIndicator(minHeight: 2),
         Expanded(
           child: RefreshIndicator(
-            onRefresh: () =>
-                ref.read(classroomListProvider.notifier).refresh(),
+            onRefresh: () => ref.read(classroomListProvider.notifier).refresh(),
             child: ListView.builder(
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
               itemCount: state.page.data.length,
               itemBuilder: (context, index) {
                 final classroom = state.page.data[index];
-                return ClassroomCard(
-                  classroom: classroom,
-                  onTap: () => context.push('/classrooms/${classroom.id}'),
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 11),
+                  child: ProfessorClassroomListCard(
+                    classroom: classroom,
+                    onTap: () => context.push('/classrooms/${classroom.id}'),
+                  ),
                 );
               },
             ),
@@ -195,77 +281,6 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
           onPageChanged: _goToPage,
         ),
       ],
-    );
-  }
-}
-
-class _FilterButton extends StatelessWidget {
-  final int activeCount;
-  final VoidCallback onTap;
-
-  const _FilterButton({required this.activeCount, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final active = activeCount > 0;
-    final accent = isDark ? const Color(0xFF6366F1) : AppColors.primary;
-
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: active
-                  ? accent
-                  : (isDark
-                      ? AppColors.darkSearchFill
-                      : AppColors.lightSearchFill),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              PhosphorIconsRegular.faders,
-              size: 20,
-              color: active
-                  ? Colors.white
-                  : (isDark
-                      ? AppColors.darkTextSecondary
-                      : AppColors.lightTextSecondary),
-            ),
-          ),
-          if (active)
-            Positioned(
-              top: -2,
-              right: -2,
-              child: Container(
-                width: 18,
-                height: 18,
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.darkSurface
-                      : AppColors.lightSurface,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: accent, width: 1.5),
-                ),
-                child: Center(
-                  child: Text(
-                    '$activeCount',
-                    style: AppTypography.labelSmall.copyWith(
-                      color: accent,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
     );
   }
 }

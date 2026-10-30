@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/info_row.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/stat_card.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/student_model.dart';
+import 'student_classrooms_section.dart';
 
-class StudentInfoTab extends StatelessWidget {
+class StudentInfoTab extends ConsumerWidget {
   final StudentModel student;
 
-  const StudentInfoTab({super.key, required this.student});
+  const StudentInfoTab({
+    super.key,
+    required this.student,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       children: [
         SizedBox(
           height: 150,
@@ -29,21 +35,21 @@ class StudentInfoTab extends StatelessWidget {
                 icon: PhosphorIconsRegular.calendarBlank,
                 value: student.year.isNotEmpty ? student.year : '—',
                 label: l10n.studentsInfoYear,
-                iconColor: const Color(0xFF3B82F6),
+                iconColor: AppColors.primary,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.mapPin,
                 value: student.branch.isNotEmpty ? student.branch : '—',
                 label: l10n.studentsInfoBranch,
-                iconColor: const Color(0xFF10B981),
+                iconColor: AppColors.primarySoft,
               ),
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.chalkboardTeacher,
                 value: '${student.classroomCount}',
                 label: l10n.studentsInfoClassrooms,
-                iconColor: const Color(0xFFF97316),
+                iconColor: AppColors.accent,
               ),
             ],
           ),
@@ -91,6 +97,8 @@ class StudentInfoTab extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: 20),
+        StudentClassroomsSection(studentId: student.id),
       ],
     );
   }

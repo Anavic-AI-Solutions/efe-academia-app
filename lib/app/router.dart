@@ -11,17 +11,29 @@ import '../features/classrooms/screens/classroom_list_screen.dart';
 import '../features/classrooms/screens/classroom_detail_screen.dart';
 import '../features/attendance/screens/attendance_screen.dart';
 import '../features/qualifications/screens/classroom_grades_screen.dart';
+import '../features/qualifications/screens/student_boletin_screen.dart';
 import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
 import '../features/chat/screens/chat_detail_screen.dart';
+import '../features/chat/providers/chat_provider.dart';
+import '../features/fees/screens/fee_detail_screen.dart';
+import '../features/fees/screens/fee_list_screen.dart';
+import '../features/fees/screens/invoice_viewer_screen.dart';
+import '../features/fees/screens/parent_fee_detail_screen.dart';
+import '../features/fees/screens/parent_fees_screen.dart';
+import '../features/relations/screens/new_chat_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/notifications/screens/notification_list_screen.dart';
 import '../features/news/screens/news_list_screen.dart';
+import '../features/documents/screens/document_detail_screen.dart';
+import '../features/documents/screens/document_list_screen.dart';
+import '../features/birthdays/screens/birthday_list_screen.dart';
+import '../features/events/screens/calendar_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../app/theme/app_colors.dart';
-import '../app/theme/professor_colors.dart';
+import '../core/widgets/badge_counter.dart';
 import '../l10n/l10n.dart';
 
 // ---------------------------------------------------------------------------
@@ -38,12 +50,14 @@ class CustomBottomNav extends ConsumerWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final l10n = context.l10n;
-    final role = ref.watch(authProvider).user?.role;
-    final accent = role == 'professor'
-        ? ProfessorColors.primarySoft
-        : (isDark ? const Color(0xFF6366F1) : AppColors.primary);
+    // Single unified accent for every role.
+    const accent = AppColors.primary;
     final inactive =
-        isDark ? AppColors.darkTextTertiary : AppColors.lightTextTertiary;
+        isDark ? AppColors.darkTextSecondary : AppColors.navInactive;
+    // Hidden (0) while loading or on error.
+    final unreadChats = ref.watch(chatUnreadCountProvider).valueOrNull ?? 0;
+    // Parents get a “Pagos” tab in place of “Aulas”.
+    final isParent = ref.watch(authProvider).user?.role == 'parent';
 
     return Container(
       decoration: BoxDecoration(
@@ -74,9 +88,13 @@ class CustomBottomNav extends ConsumerWidget {
                 inactive: inactive,
               ),
               _NavItem(
-                icon: PhosphorIconsRegular.chalkboardTeacher,
-                selectedIcon: PhosphorIconsFill.chalkboardTeacher,
-                label: l10n.navClasses,
+                icon: isParent
+                    ? PhosphorIconsRegular.wallet
+                    : PhosphorIconsRegular.chalkboardTeacher,
+                selectedIcon: isParent
+                    ? PhosphorIconsFill.wallet
+                    : PhosphorIconsFill.chalkboardTeacher,
+                label: isParent ? l10n.navPayments : l10n.navClasses,
                 isSelected: navigationShell.currentIndex == 1,
                 onTap: () => navigationShell.goBranch(
                   1,
@@ -89,6 +107,7 @@ class CustomBottomNav extends ConsumerWidget {
                 icon: PhosphorIconsRegular.chatCircle,
                 selectedIcon: PhosphorIconsFill.chatCircle,
                 label: l10n.navChat,
+                badgeCount: unreadChats,
                 isSelected: navigationShell.currentIndex == 2,
                 onTap: () => navigationShell.goBranch(
                   2,
@@ -121,6 +140,7 @@ class _NavItem extends StatelessWidget {
   final IconData icon;
   final IconData selectedIcon;
   final String label;
+  final int badgeCount;
   final bool isSelected;
   final VoidCallback onTap;
   final Color accent;
@@ -130,6 +150,7 @@ class _NavItem extends StatelessWidget {
     required this.icon,
     required this.selectedIcon,
     required this.label,
+    this.badgeCount = 0,
     required this.isSelected,
     required this.onTap,
     required this.accent,
@@ -147,10 +168,14 @@ class _NavItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              isSelected ? selectedIcon : icon,
-              size: 22,
-              color: color,
+            BadgeCounter(
+              count: badgeCount,
+              showCount: true,
+              child: Icon(
+                isSelected ? selectedIcon : icon,
+                size: 22,
+                color: color,
+              ),
             ),
             const SizedBox(height: 4),
             AnimatedContainer(
@@ -200,6 +225,7 @@ class ScaffoldWithNav extends StatelessWidget {
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
+  final isParent = authState.user?.role == 'parent';
 
   return GoRouter(
     initialLocation: '/dashboard',
@@ -234,6 +260,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
+            initialLocation: isParent ? '/payments' : null,
             routes: [
               GoRoute(
                 path: '/classrooms',
@@ -261,6 +288,26 @@ final routerProvider = Provider<GoRouter>((ref) {
                   ),
                 ],
               ),
+              GoRoute(
+                path: '/payments',
+                builder: (context, state) => const ParentFeesScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) => ParentFeeDetailScreen(
+                      feeId: state.pathParameters['id']!,
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'invoice',
+                        builder: (context, state) => InvoiceViewerScreen(
+                          feeId: state.pathParameters['id']!,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -269,6 +316,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: '/chat',
                 builder: (context, state) => const ChatListScreen(),
                 routes: [
+                  GoRoute(
+                    path: 'new',
+                    builder: (context, state) => const NewChatScreen(),
+                  ),
                   GoRoute(
                     path: ':id',
                     builder: (context, state) => ChatDetailScreen(
@@ -298,6 +349,27 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: ':id',
             builder: (context, state) => StudentDetailScreen(
               studentId: state.pathParameters['id']!,
+              classroomId: state.uri.queryParameters['classroomId'],
+            ),
+            routes: [
+              GoRoute(
+                path: 'boletin',
+                builder: (context, state) => StudentBoletinScreen(
+                  studentId: state.pathParameters['id']!,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/fees',
+        builder: (context, state) => const FeeListScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => FeeDetailScreen(
+              feeId: state.pathParameters['id']!,
             ),
           ),
         ],
@@ -311,8 +383,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const NewsListScreen(),
       ),
       GoRoute(
+        path: '/documents',
+        builder: (context, state) => const DocumentListScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => DocumentDetailScreen(
+              documentId: state.pathParameters['id']!,
+            ),
+          ),
+        ],
+      ),
+      GoRoute(
         path: '/events',
         builder: (context, state) => const EventListScreen(),
+      ),
+      GoRoute(
+        path: '/calendar',
+        builder: (context, state) => const CalendarScreen(),
+      ),
+      GoRoute(
+        path: '/birthdays',
+        builder: (context, state) => const BirthdayListScreen(),
       ),
       GoRoute(
         path: '/search',

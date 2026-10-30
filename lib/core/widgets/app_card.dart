@@ -7,6 +7,7 @@ class AppCard extends StatelessWidget {
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final Color? color;
+  final bool selected;
 
   const AppCard({
     super.key,
@@ -15,6 +16,7 @@ class AppCard extends StatelessWidget {
     this.padding,
     this.margin,
     this.color,
+    this.selected = false,
   });
 
   @override
@@ -26,13 +28,18 @@ class AppCard extends StatelessWidget {
       padding: margin ?? EdgeInsets.zero,
       child: Container(
         decoration: BoxDecoration(
-          color: color ?? (isDark ? AppColors.darkSurface : AppColors.lightSurface),
+          color: color ??
+              (isDark ? AppColors.darkSurface : AppColors.lightSurface),
           borderRadius: BorderRadius.circular(16),
+          border: selected
+              ? Border.all(color: AppColors.primarySoft, width: 1.5)
+              : null,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 2),
+              color: const Color(0x59232D3C).withOpacity(isDark ? 0.3 : 0.12),
+              blurRadius: 24,
+              offset: const Offset(0, 10),
+              spreadRadius: -14,
             ),
           ],
         ),
@@ -43,7 +50,7 @@ class AppCard extends StatelessWidget {
             onTap: onTap,
             borderRadius: BorderRadius.circular(16),
             child: Padding(
-              padding: padding ?? const EdgeInsets.all(16),
+              padding: padding ?? const EdgeInsets.all(14),
               child: child,
             ),
           ),

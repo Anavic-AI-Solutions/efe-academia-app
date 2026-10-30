@@ -25,40 +25,52 @@ class ErrorInterceptor extends Interceptor {
 
     switch (statusCode) {
       case 401:
-        handler.reject(_wrapError(err, UnauthorizedException(
-          detail: _extractErrorDetail(err),
-        )));
+        handler.reject(_wrapError(
+            err,
+            UnauthorizedException(
+              detail: _extractErrorDetail(err),
+            )));
         return;
       case 403:
-        handler.reject(_wrapError(err, ForbiddenException(
-          detail: _extractErrorDetail(err),
-        )));
+        handler.reject(_wrapError(
+            err,
+            ForbiddenException(
+              detail: _extractErrorDetail(err),
+            )));
         return;
       case 404:
-        handler.reject(_wrapError(err, NotFoundException(
-          detail: _extractErrorDetail(err),
-        )));
+        handler.reject(_wrapError(
+            err,
+            NotFoundException(
+              detail: _extractErrorDetail(err),
+            )));
         return;
       case 422:
         final fieldErrors = _parseFieldErrors(err);
-        handler.reject(_wrapError(err, ValidationException(
-          fieldErrors: fieldErrors,
-          detail: _extractErrorDetail(err),
-        )));
+        handler.reject(_wrapError(
+            err,
+            ValidationException(
+              fieldErrors: fieldErrors,
+              detail: _extractErrorDetail(err),
+            )));
         return;
       case 500:
-        handler.reject(_wrapError(err, ApiException(
-          statusCode: 500,
-          message: 'Error interno del servidor',
-          detail: _extractErrorDetail(err),
-        )));
+        handler.reject(_wrapError(
+            err,
+            ApiException(
+              statusCode: 500,
+              message: 'Error interno del servidor',
+              detail: _extractErrorDetail(err),
+            )));
         return;
       default:
-        handler.reject(_wrapError(err, ApiException(
-          statusCode: statusCode,
-          message: 'La solicitud falló',
-          detail: _extractErrorDetail(err),
-        )));
+        handler.reject(_wrapError(
+            err,
+            ApiException(
+              statusCode: statusCode,
+              message: 'La solicitud falló',
+              detail: _extractErrorDetail(err),
+            )));
         return;
     }
   }

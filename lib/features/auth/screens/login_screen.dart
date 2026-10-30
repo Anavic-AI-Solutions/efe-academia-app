@@ -5,6 +5,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/pill_button.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/auth_provider.dart';
@@ -42,7 +43,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final size = MediaQuery.of(context).size;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     ref.listen<AuthState>(authProvider, (prev, next) {
       if (next.status == AuthStatus.error && next.error != null) {
@@ -63,157 +64,156 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final l10n = context.l10n;
 
     return Scaffold(
-      body: Container(
-        color: AppColors.lightBackground,
-        child: Column(
-          children: [
-            // Gradient header
-            Container(
-              width: double.infinity,
-              height: size.height * 0.34,
-              decoration: const BoxDecoration(
-                gradient: AppColors.primaryGradient,
+      backgroundColor: AppColors.backgroundFor(isDark),
+      body: Column(
+        children: [
+          // Gradient header
+          GradientHeader(
+            child: Center(
+              child: Image.asset(
+                'assets/images/efe_logo_white.png',
+                height: 28,
+                fit: BoxFit.contain,
+                semanticLabel: 'EFE',
               ),
-              child: SafeArea(
-                bottom: false,
-                child: Center(
-                  child: Image.asset(
-                    'assets/images/efe_logo_white.png',
-                    height: 28,
-                    fit: BoxFit.contain,
-                    semanticLabel: 'EFE',
-                  ),
+            ),
+          ),
+
+          // Form area
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 32),
+                    Text(
+                      l10n.authWelcomeBack,
+                      style: AppTypography.headlineMedium.copyWith(
+                        color: AppColors.inkFor(isDark),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.authSignInSubtitle,
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.mutedFor(isDark),
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+
+                    // Email
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.inkFor(isDark),
+                      ),
+                      decoration: InputDecoration(
+                        hintText: l10n.authEmailLabel,
+                        hintStyle: AppTypography.bodyMedium.copyWith(
+                          color: AppColors.mutedFor(isDark),
+                        ),
+                        prefixIcon: Icon(
+                          PhosphorIconsRegular.envelope,
+                          size: 20,
+                          color: AppColors.mutedFor(isDark),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return l10n.authEmailRequired;
+                        }
+                        if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(value.trim())) {
+                          return l10n.authEmailInvalid;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 14),
+
+                    // Password
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) => _handleLogin(),
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.inkFor(isDark),
+                      ),
+                      decoration: InputDecoration(
+                        hintText: l10n.authPasswordLabel,
+                        hintStyle: AppTypography.bodyMedium.copyWith(
+                          color: AppColors.mutedFor(isDark),
+                        ),
+                        prefixIcon: Icon(
+                          PhosphorIconsRegular.lock,
+                          size: 20,
+                          color: AppColors.mutedFor(isDark),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? PhosphorIconsRegular.eyeSlash
+                                : PhosphorIconsRegular.eye,
+                            size: 20,
+                            color: AppColors.mutedFor(isDark),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.authPasswordRequired;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Forgot password
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => context.push('/forgot-password'),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 8,
+                          ),
+                        ),
+                        child: Text(
+                          l10n.authForgotPassword,
+                          style: AppTypography.labelLarge.copyWith(
+                            color: AppColors.accentFor(isDark),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Login button
+                    PillButton(
+                      label: l10n.authSignIn,
+                      isLoading: isLoading,
+                      isGradient: true,
+                      onPressed: _handleLogin,
+                    ),
+                    const SizedBox(height: 24),
+                  ],
                 ),
               ),
             ),
-
-            // Form area
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 32),
-                      Text(
-                        l10n.authWelcomeBack,
-                        style: AppTypography.headlineMedium.copyWith(
-                          color: AppColors.lightTextPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        l10n.authSignInSubtitle,
-                        style: AppTypography.bodyMedium.copyWith(
-                          color: AppColors.lightTextSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 28),
-
-                      // Email
-                      TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        style: AppTypography.bodyMedium.copyWith(
-                          color: AppColors.lightTextPrimary,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: l10n.authEmailLabel,
-                          prefixIcon: const Icon(
-                            PhosphorIconsRegular.envelope,
-                            size: 20,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return l10n.authEmailRequired;
-                          }
-                          if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
-                              .hasMatch(value.trim())) {
-                            return l10n.authEmailInvalid;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 14),
-
-                      // Password
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        textInputAction: TextInputAction.done,
-                        onFieldSubmitted: (_) => _handleLogin(),
-                        style: AppTypography.bodyMedium.copyWith(
-                          color: AppColors.lightTextPrimary,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: l10n.authPasswordLabel,
-                          prefixIcon: const Icon(
-                            PhosphorIconsRegular.lock,
-                            size: 20,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? PhosphorIconsRegular.eyeSlash
-                                  : PhosphorIconsRegular.eye,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authPasswordRequired;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Forgot password
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () => context.push('/forgot-password'),
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 8,
-                            ),
-                          ),
-                          child: Text(
-                            l10n.authForgotPassword,
-                            style: AppTypography.labelLarge.copyWith(
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Login button
-                      PillButton(
-                        label: l10n.authSignIn,
-                        isLoading: isLoading,
-                        isGradient: true,
-                        onPressed: _handleLogin,
-                      ),
-                      const SizedBox(height: 24),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

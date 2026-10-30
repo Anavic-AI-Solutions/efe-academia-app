@@ -8,6 +8,7 @@ class EmptyState extends StatelessWidget {
   final String? subtitle;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final Color? accentColor;
 
   const EmptyState({
     super.key,
@@ -16,12 +17,14 @@ class EmptyState extends StatelessWidget {
     this.subtitle,
     this.actionLabel,
     this.onAction,
+    this.accentColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final accent = accentColor ?? AppColors.accentFor(isDark);
 
     return Center(
       child: Padding(
@@ -33,20 +36,22 @@ class EmptyState extends StatelessWidget {
               width: 72,
               height: 72,
               decoration: BoxDecoration(
-                color: (isDark ? AppColors.primary : AppColors.primary).withOpacity(0.1),
+                color: accent.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
                 size: 32,
-                color: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                color: accent,
               ),
             ),
             const SizedBox(height: 20),
             Text(
               title,
               style: AppTypography.titleMedium.copyWith(
-                color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                color: isDark
+                    ? AppColors.darkTextPrimary
+                    : AppColors.lightTextPrimary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -55,7 +60,9 @@ class EmptyState extends StatelessWidget {
               Text(
                 subtitle!,
                 style: AppTypography.bodyMedium.copyWith(
-                  color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                  color: isDark
+                      ? AppColors.darkTextSecondary
+                      : AppColors.lightTextSecondary,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -67,13 +74,19 @@ class EmptyState extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onAction,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark ? const Color(0xFF6366F1) : AppColors.primary,
+                    backgroundColor: accent,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(13),
                     ),
                   ),
-                  child: Text(actionLabel!),
+                  child: Text(
+                    actionLabel!,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
             ],

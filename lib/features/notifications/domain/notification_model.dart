@@ -15,15 +15,30 @@ class NotificationModel with _$NotificationModel {
   }) = _NotificationModel;
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
-    final attrs = json['attributes'] as Map<String, dynamic>? ?? json['data']?['attributes'] as Map<String, dynamic>? ?? json;
+    final attrs = json['attributes'] as Map<String, dynamic>? ??
+        json['data']?['attributes'] as Map<String, dynamic>? ??
+        json;
     return NotificationModel(
-      id: json['data']?['id']?.toString() ?? json['id']?.toString() ?? attrs['id']?.toString() ?? '',
+      id: json['data']?['id']?.toString() ??
+          json['id']?.toString() ??
+          attrs['id']?.toString() ??
+          '',
       title: attrs['title'] ?? '',
       body: attrs['body'] ?? '',
-      read: attrs['read'] ?? false,
+      read: _asBool(attrs['is_read'] ?? attrs['read']),
       type: attrs['type'] ?? '',
       typeId: attrs['type_id']?.toString() ?? '',
       createdAt: DateTime.tryParse(attrs['created_at'] ?? '') ?? DateTime.now(),
     );
   }
+}
+
+bool _asBool(dynamic value) {
+  if (value is bool) return value;
+  if (value is num) return value != 0;
+  if (value is String) {
+    final normalized = value.toLowerCase();
+    return normalized == 'true' || normalized == '1';
+  }
+  return false;
 }

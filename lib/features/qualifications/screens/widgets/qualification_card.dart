@@ -21,6 +21,7 @@ class QualificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = _scoreColor();
     final l10n = context.l10n;
 
@@ -57,6 +58,7 @@ class QualificationCard extends StatelessWidget {
                       : l10n.qualificationsUnknownStudent,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
+                        color: AppColors.inkFor(isDark),
                       ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -67,7 +69,7 @@ class QualificationCard extends StatelessWidget {
                       ? qualification.classroomName
                       : l10n.qualificationsUnknownClassroom,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey,
+                        color: AppColors.mutedFor(isDark),
                       ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -77,7 +79,7 @@ class QualificationCard extends StatelessWidget {
                   Text(
                     qualification.date,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: AppColors.mutedFor(isDark),
                           fontSize: 11,
                         ),
                   ),
@@ -90,13 +92,13 @@ class QualificationCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: AppColors.mutedFor(isDark).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 qualification.type,
                 style: TextStyle(
-                  color: Colors.grey[600],
+                  color: AppColors.mutedFor(isDark),
                   fontSize: 11,
                   fontWeight: FontWeight.w500,
                 ),

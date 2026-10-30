@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../core/utils/formatters.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/l10n.dart';
@@ -78,7 +79,10 @@ class FeeTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              StatusBadge(status: fee.status),
+              StatusBadge(
+                status: fee.status,
+                label: feeStatusLabel(fee.status, l10n),
+              ),
             ],
           ),
         ],

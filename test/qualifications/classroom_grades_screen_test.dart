@@ -1,6 +1,7 @@
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
+import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
@@ -41,6 +42,14 @@ class _FakeQualificationRepository implements QualificationRepository {
     String classroomId,
   ) async =>
       summary;
+
+  @override
+  Future<BoletinData> getBoletin(String studentId, String classroomId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> getBoletinUrl(String studentId, String classroomId) =>
+      throw UnimplementedError();
 
   @override
   Future<void> createQualification({
@@ -116,7 +125,8 @@ void main() {
     expect(find.text('—'), findsOneWidget);
   });
 
-  testWidgets('creating a grade sends the payload and confirms', (tester) async {
+  testWidgets('creating a grade sends the payload and confirms',
+      (tester) async {
     final repository = _FakeQualificationRepository(_summary);
     await _pumpScreen(tester, repository);
 

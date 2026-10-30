@@ -1,4 +1,5 @@
 import '../domain/dashboard_data.dart';
+import '../domain/parent_home_data.dart';
 import '../domain/professor_classroom_summary.dart';
 import 'dashboard_api.dart';
 
@@ -24,22 +25,40 @@ class DashboardRepository {
     final details = rawData['details'];
     final d = details is Map<String, dynamic> ? details : <String, dynamic>{};
 
+    final parentHome = role == 'parent' ? _parseParentHome(m, d) : null;
+
     return DashboardData(
       role: role,
-      totalStudents:
-          _asInt(m['total_students'] ?? m['totalStudents']),
+      totalStudents: _asInt(m['total_students'] ?? m['totalStudents']),
       totalClassrooms: _asInt(
         m['classrooms_count'] ?? m['total_classrooms'] ?? m['totalClassrooms'],
       ),
       totalProfessors: _asInt(m['total_professors'] ?? d['totalProfessors']),
       attendanceRate: _asInt(m['attendance_rate'] ?? d['attendanceRate']),
-      monthlyRevenue:
-          _asDouble(m['total_owed'] ?? m['monthlyRevenue'] ?? d['monthlyRevenue']),
+      monthlyRevenue: _asDouble(
+          m['total_owed'] ?? m['monthlyRevenue'] ?? d['monthlyRevenue']),
       pendingFees: _asInt(m['fees_overdue'] ?? m['pendingFees']),
       unreadNotifications:
           _asInt(m['open_tickets'] ?? m['unreadNotifications']),
       absencesToday: _asInt(m['absences_today']),
       classrooms: _parseClassrooms(m['classrooms_detail']),
+      parentHome: parentHome,
+    );
+  }
+
+  ParentHomeData _parseParentHome(
+      Map<String, dynamic> m, Map<String, dynamic> d) {
+    final raw = d['myChildrenSummary'];
+    final children = raw is List
+        ? raw
+            .whereType<Map<String, dynamic>>()
+            .map(ParentChildSummary.fromJson)
+            .toList()
+        : <ParentChildSummary>[];
+    return ParentHomeData(
+      overdueFeesCount: _asInt(m['fees_overdue']),
+      moraTotal: _asDouble(m['total_owed']),
+      children: children,
     );
   }
 

@@ -13,6 +13,7 @@ class ClassroomApi {
     String? level,
     String? year,
     String? status,
+    String? studentId,
   }) =>
       _client.get('/classrooms', queryParameters: {
         if (search != null && search.isNotEmpty) 'search': search,
@@ -21,14 +22,13 @@ class ClassroomApi {
         if (level != null && level.isNotEmpty) 'level': level,
         if (year != null && year.isNotEmpty) 'year': year,
         if (status != null && status.isNotEmpty) 'status': status,
+        if (studentId != null && studentId.isNotEmpty) 'student_id': studentId,
         'per_page': limit,
       });
 
-  Future<Response> getClassroom(String id) =>
-      _client.get('/classrooms/$id');
+  Future<Response> getClassroom(String id) => _client.get('/classrooms/$id');
 
-  Future<Response> getClassroomFilters() =>
-      _client.get('/classrooms/filters');
+  Future<Response> getClassroomFilters() => _client.get('/classrooms/filters');
 
   Future<Response> getClassroomStudents(
     String id, {

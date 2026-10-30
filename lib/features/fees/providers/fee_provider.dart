@@ -5,6 +5,7 @@ import '../../../core/api/cursor_pagination.dart';
 import '../data/fee_api.dart';
 import '../data/fee_repository.dart';
 import '../domain/fee_model.dart';
+import '../domain/invoice_file.dart';
 
 // ---------------------------------------------------------------------------
 // Providers
@@ -27,12 +28,14 @@ class FeeListState {
   final bool isLoading;
   final String? error;
   final String search;
+  final String? studentId;
 
   FeeListState({
     CursorPagination<FeeModel>? pagination,
     this.isLoading = false,
     this.error,
     this.search = '',
+    this.studentId,
   }) : pagination = pagination ?? CursorPagination<FeeModel>.empty();
 
   FeeListState copyWith({
@@ -40,6 +43,8 @@ class FeeListState {
     bool? isLoading,
     String? error,
     String? search,
+    String? studentId,
+    bool clearStudentId = false,
     bool clearError = false,
   }) {
     return FeeListState(
@@ -47,6 +52,7 @@ class FeeListState {
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
       search: search ?? this.search,
+      studentId: clearStudentId ? null : (studentId ?? this.studentId),
     );
   }
 }
@@ -57,27 +63,40 @@ class FeeListState {
 
 class FeeListNotifier extends StateNotifier<FeeListState> {
   final FeeRepository _repository;
+  int _requestId = 0;
 
   FeeListNotifier(this._repository) : super(FeeListState()) {
     load();
   }
 
   Future<void> load() async {
+    final requestId = ++_requestId;
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final result = await _repository.getFees(search: state.search);
+      final result = await _repository.getFees(
+        studentId: state.studentId,
+        search: state.search,
+      );
+      if (requestId != _requestId) return;
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
+      if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
   Future<void> refresh() async {
+    final requestId = ++_requestId;
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final result = await _repository.getFees(search: state.search);
+      final result = await _repository.getFees(
+        studentId: state.studentId,
+        search: state.search,
+      );
+      if (requestId != _requestId) return;
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
+      if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -87,27 +106,45 @@ class FeeListNotifier extends StateNotifier<FeeListState> {
     await load();
   }
 
+  Future<void> setStudent(String? studentId) async {
+    if (state.studentId == studentId) return;
+    state = FeeListState(search: state.search, studentId: studentId);
+    await load();
+  }
+
   Future<void> loadMore() async {
     if (!state.pagination.hasMore || state.isLoading) return;
+    final requestId = ++_requestId;
+    final previous = state.pagination;
     state = state.copyWith(isLoading: true);
     try {
       final result = await _repository.getFees(
+        studentId: state.studentId,
         search: state.search,
-        cursor: state.pagination.nextCursor,
+        cursor: previous.nextCursor,
       );
+      if (requestId != _requestId) return;
       state = state.copyWith(
         pagination: result.copyWith(
-          data: [...state.pagination.data, ...result.data],
+          data: [...previous.data, ...result.data],
         ),
         isLoading: false,
       );
     } catch (e) {
+      if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 }
 
 final feeListProvider =
+    StateNotifierProvider<FeeListNotifier, FeeListState>((ref) {
+  return FeeListNotifier(ref.watch(feeRepositoryProvider));
+});
+
+/// Lista completa de cuotas de la familia para la pantalla Pagos de padres
+/// (el backend ya la devuelve ordenada vencidas → pendientes → pagadas).
+final parentFeesProvider =
     StateNotifierProvider<FeeListNotifier, FeeListState>((ref) {
   return FeeListNotifier(ref.watch(feeRepositoryProvider));
 });
@@ -120,4 +157,11 @@ final feeDetailProvider =
     FutureProvider.family<FeeModel, String>((ref, id) async {
   final repository = ref.watch(feeRepositoryProvider);
   return repository.getFee(id);
+});
+
+/// Factura (link firmado + bytes) para el visor in-app. `autoDispose` libera
+/// el PDF de memoria al cerrar la pantalla.
+final invoiceFileProvider =
+    FutureProvider.autoDispose.family<InvoiceFile, String>((ref, feeId) {
+  return ref.watch(feeRepositoryProvider).getInvoiceFile(feeId);
 });

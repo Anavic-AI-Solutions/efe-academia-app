@@ -62,7 +62,8 @@ import 'app_localizations_es.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,7 +84,8 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -1019,11 +1022,137 @@ abstract class AppLocalizations {
   /// **'Período {period}'**
   String studentsGradePeriod(String period);
 
+  /// No description provided for @gradesGridTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Calificaciones por período'**
+  String get gradesGridTitle;
+
+  /// No description provided for @gradesGridPeriod.
+  ///
+  /// In es, this message translates to:
+  /// **'Período'**
+  String get gradesGridPeriod;
+
+  /// No description provided for @gradesGridPerformance.
+  ///
+  /// In es, this message translates to:
+  /// **'Desempeño'**
+  String get gradesGridPerformance;
+
+  /// No description provided for @gradesGridAttitude.
+  ///
+  /// In es, this message translates to:
+  /// **'Actitud'**
+  String get gradesGridAttitude;
+
+  /// No description provided for @gradesGridWritten.
+  ///
+  /// In es, this message translates to:
+  /// **'Escrito'**
+  String get gradesGridWritten;
+
+  /// No description provided for @gradesGridOral.
+  ///
+  /// In es, this message translates to:
+  /// **'Oral'**
+  String get gradesGridOral;
+
+  /// No description provided for @gradesGridHomework.
+  ///
+  /// In es, this message translates to:
+  /// **'Tareas'**
+  String get gradesGridHomework;
+
+  /// No description provided for @gradesGridDiscipline.
+  ///
+  /// In es, this message translates to:
+  /// **'Disciplina'**
+  String get gradesGridDiscipline;
+
+  /// No description provided for @gradesGridParticipation.
+  ///
+  /// In es, this message translates to:
+  /// **'Participación'**
+  String get gradesGridParticipation;
+
+  /// No description provided for @gradesGridAttendance.
+  ///
+  /// In es, this message translates to:
+  /// **'Asistencia'**
+  String get gradesGridAttendance;
+
+  /// No description provided for @gradesGridExam.
+  ///
+  /// In es, this message translates to:
+  /// **'Parcial'**
+  String get gradesGridExam;
+
+  /// No description provided for @gradesGridAverage.
+  ///
+  /// In es, this message translates to:
+  /// **'Promedio'**
+  String get gradesGridAverage;
+
+  /// No description provided for @gradesGridTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'{term}° Trimestre'**
+  String gradesGridTerm(int term);
+
+  /// No description provided for @gradesGridClassroomFallback.
+  ///
+  /// In es, this message translates to:
+  /// **'Aula'**
+  String get gradesGridClassroomFallback;
+
   /// No description provided for @studentsAbsenceTitle.
   ///
   /// In es, this message translates to:
   /// **'Inasistencia'**
   String get studentsAbsenceTitle;
+
+  /// No description provided for @studentsStatusApproved.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobado'**
+  String get studentsStatusApproved;
+
+  /// No description provided for @studentsStatusPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get studentsStatusPending;
+
+  /// No description provided for @studentsStatusRejected.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazado'**
+  String get studentsStatusRejected;
+
+  /// No description provided for @feesStatusPaid.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get feesStatusPaid;
+
+  /// No description provided for @feesStatusPartial.
+  ///
+  /// In es, this message translates to:
+  /// **'Parcial'**
+  String get feesStatusPartial;
+
+  /// No description provided for @feesStatusPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get feesStatusPending;
+
+  /// No description provided for @feesStatusOverdue.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get feesStatusOverdue;
 
   /// No description provided for @studentsAbsenceJustified.
   ///
@@ -1036,6 +1165,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin justificar'**
   String get studentsAbsenceUnjustified;
+
+  /// No description provided for @studentsAbsencePending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get studentsAbsencePending;
 
   /// No description provided for @feesTitle.
   ///
@@ -1295,6 +1430,102 @@ abstract class AppLocalizations {
   /// **'{count}m'**
   String chatTimeMinutesShort(int count);
 
+  /// No description provided for @chatNewTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo chat'**
+  String get chatNewTitle;
+
+  /// No description provided for @chatNewSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar persona…'**
+  String get chatNewSearchHint;
+
+  /// No description provided for @chatNewEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin personas vinculadas'**
+  String get chatNewEmptyTitle;
+
+  /// No description provided for @chatNewEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenés personas con las que chatear'**
+  String get chatNewEmptySubtitle;
+
+  /// No description provided for @chatNewNoResults.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin resultados para «{query}»'**
+  String chatNewNoResults(String query);
+
+  /// No description provided for @chatNewStart.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar conversación'**
+  String get chatNewStart;
+
+  /// No description provided for @relationRoleStudent.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno'**
+  String get relationRoleStudent;
+
+  /// No description provided for @relationRoleProfessor.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor'**
+  String get relationRoleProfessor;
+
+  /// No description provided for @relationRoleParent.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre/Madre'**
+  String get relationRoleParent;
+
+  /// No description provided for @relationRoleAdmin.
+  ///
+  /// In es, this message translates to:
+  /// **'Admin'**
+  String get relationRoleAdmin;
+
+  /// No description provided for @chatTyping.
+  ///
+  /// In es, this message translates to:
+  /// **'escribiendo…'**
+  String get chatTyping;
+
+  /// No description provided for @chatOnline.
+  ///
+  /// In es, this message translates to:
+  /// **'en línea'**
+  String get chatOnline;
+
+  /// No description provided for @chatConnectionLost.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión — tocá para reintentar'**
+  String get chatConnectionLost;
+
+  /// No description provided for @chatSendFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo enviar'**
+  String get chatSendFailed;
+
+  /// No description provided for @chatRetry.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get chatRetry;
+
+  /// No description provided for @chatUnreadLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} mensajes sin leer'**
+  String chatUnreadLabel(int count);
+
   /// No description provided for @newsTitle.
   ///
   /// In es, this message translates to:
@@ -1433,6 +1664,12 @@ abstract class AppLocalizations {
   /// **'Todavía no tenés aulas asignadas'**
   String get professorMyClassroomsEmpty;
 
+  /// No description provided for @professorClassroomsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =0{Sin aulas asignadas} =1{1 aula} other{{count} aulas}}'**
+  String professorClassroomsCount(int count);
+
   /// No description provided for @professorStudentsCount.
   ///
   /// In es, this message translates to:
@@ -1456,6 +1693,42 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo cargar el inicio'**
   String get professorLoadError;
+
+  /// No description provided for @homeCalendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario'**
+  String get homeCalendar;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo'**
+  String get homeSeeAll;
+
+  /// No description provided for @homeCalendarEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay próximos eventos'**
+  String get homeCalendarEmpty;
+
+  /// No description provided for @homeBirthdays.
+  ///
+  /// In es, this message translates to:
+  /// **'Cumpleaños'**
+  String get homeBirthdays;
+
+  /// No description provided for @homeBirthdaysEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay cumpleaños hoy'**
+  String get homeBirthdaysEmpty;
+
+  /// No description provided for @homeBirthdaysSoon.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible próximamente'**
+  String get homeBirthdaysSoon;
 
   /// No description provided for @attendanceTitle.
   ///
@@ -1630,9 +1903,580 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo guardar la calificación'**
   String get gradeFormError;
+
+  /// No description provided for @studentGradeFromDetail.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar nota'**
+  String get studentGradeFromDetail;
+
+  /// No description provided for @studentGradeClassroom.
+  ///
+  /// In es, this message translates to:
+  /// **'Aula'**
+  String get studentGradeClassroom;
+
+  /// No description provided for @studentGradeNoClassrooms.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin aulas asignadas'**
+  String get studentGradeNoClassrooms;
+
+  /// No description provided for @absenceMarkTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar inasistencia'**
+  String get absenceMarkTitle;
+
+  /// No description provided for @absenceMarkClassroom.
+  ///
+  /// In es, this message translates to:
+  /// **'Aula'**
+  String get absenceMarkClassroom;
+
+  /// No description provided for @absenceMarkDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha'**
+  String get absenceMarkDate;
+
+  /// No description provided for @absenceMarkInfo.
+  ///
+  /// In es, this message translates to:
+  /// **'Se agrega al parte del día sin quitar a los demás ausentes.'**
+  String get absenceMarkInfo;
+
+  /// No description provided for @absenceMarked.
+  ///
+  /// In es, this message translates to:
+  /// **'Inasistencia registrada'**
+  String get absenceMarked;
+
+  /// No description provided for @absenceAlreadyMarked.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya estaba ausente ese día'**
+  String get absenceAlreadyMarked;
+
+  /// No description provided for @absenceMarkError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo registrar la inasistencia'**
+  String get absenceMarkError;
+
+  /// No description provided for @materialFormTitleNew.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo material'**
+  String get materialFormTitleNew;
+
+  /// No description provided for @materialFormTitleEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar material'**
+  String get materialFormTitleEdit;
+
+  /// No description provided for @materialFormName.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get materialFormName;
+
+  /// No description provided for @materialFormCategory.
+  ///
+  /// In es, this message translates to:
+  /// **'Categoría'**
+  String get materialFormCategory;
+
+  /// No description provided for @materialFormCategoryNone.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin categoría'**
+  String get materialFormCategoryNone;
+
+  /// No description provided for @materialFormDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción (opcional)'**
+  String get materialFormDescription;
+
+  /// No description provided for @materialFormFiles.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivos'**
+  String get materialFormFiles;
+
+  /// No description provided for @materialFormPickFiles.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir archivos'**
+  String get materialFormPickFiles;
+
+  /// No description provided for @materialFormVisibility.
+  ///
+  /// In es, this message translates to:
+  /// **'Visibilidad'**
+  String get materialFormVisibility;
+
+  /// No description provided for @materialFormVisibilityAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Todos'**
+  String get materialFormVisibilityAll;
+
+  /// No description provided for @materialFormVisibilitySpecific.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos específicos'**
+  String get materialFormVisibilitySpecific;
+
+  /// No description provided for @materialFormAvailableUntil.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible hasta (opcional)'**
+  String get materialFormAvailableUntil;
+
+  /// No description provided for @materialFormClearDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Quitar fecha'**
+  String get materialFormClearDate;
+
+  /// No description provided for @materialFormSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get materialFormSave;
+
+  /// No description provided for @materialFormNameRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Ingresá un nombre'**
+  String get materialFormNameRequired;
+
+  /// No description provided for @materialFormFilesRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí al menos un archivo'**
+  String get materialFormFilesRequired;
+
+  /// No description provided for @materialFormFilesTooMany.
+  ///
+  /// In es, this message translates to:
+  /// **'Máximo 10 archivos'**
+  String get materialFormFilesTooMany;
+
+  /// No description provided for @materialFormFileTooLarge.
+  ///
+  /// In es, this message translates to:
+  /// **'Cada archivo puede pesar hasta 50 MB'**
+  String get materialFormFileTooLarge;
+
+  /// No description provided for @materialFormStudentsRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí al menos un alumno'**
+  String get materialFormStudentsRequired;
+
+  /// No description provided for @materialFormError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar el material'**
+  String get materialFormError;
+
+  /// No description provided for @materialFormDetailError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar el material'**
+  String get materialFormDetailError;
+
+  /// No description provided for @materialsAdd.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar material'**
+  String get materialsAdd;
+
+  /// No description provided for @materialsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Material publicado'**
+  String get materialsCreated;
+
+  /// No description provided for @materialsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Material actualizado'**
+  String get materialsUpdated;
+
+  /// No description provided for @materialsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Material eliminado'**
+  String get materialsDeleted;
+
+  /// No description provided for @materialsDeleteError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo eliminar el material'**
+  String get materialsDeleteError;
+
+  /// No description provided for @materialsEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar'**
+  String get materialsEdit;
+
+  /// No description provided for @materialsDelete.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get materialsDelete;
+
+  /// No description provided for @materialsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Eliminar material?'**
+  String get materialsDeleteTitle;
+
+  /// No description provided for @materialsDeleteMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'También se borran sus archivos.'**
+  String get materialsDeleteMessage;
+
+  /// No description provided for @materialsDeleteCancel.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get materialsDeleteCancel;
+
+  /// No description provided for @materialsDeleteConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get materialsDeleteConfirm;
+
+  /// No description provided for @materialsStudentCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 alumno} other{{count} alumnos}}'**
+  String materialsStudentCount(int count);
+
+  /// No description provided for @documentsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get documentsTitle;
+
+  /// No description provided for @documentsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay documentos'**
+  String get documentsEmpty;
+
+  /// No description provided for @documentsOpen.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir / Descargar'**
+  String get documentsOpen;
+
+  /// No description provided for @documentsOpenError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir el documento'**
+  String get documentsOpenError;
+
+  /// No description provided for @homeDocuments.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get homeDocuments;
+
+  /// No description provided for @homeNews.
+  ///
+  /// In es, this message translates to:
+  /// **'Novedades'**
+  String get homeNews;
+
+  /// No description provided for @homeNewsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay novedades'**
+  String get homeNewsEmpty;
+
+  /// No description provided for @homeSummaryDocumentsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 documento} other{{count} documentos}}'**
+  String homeSummaryDocumentsCount(int count);
+
+  /// No description provided for @homeSummaryBirthdaysCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 hoy} other{{count} hoy}}'**
+  String homeSummaryBirthdaysCount(int count);
+
+  /// No description provided for @calendarViewList.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver lista'**
+  String get calendarViewList;
+
+  /// No description provided for @parentGreeting.
+  ///
+  /// In es, this message translates to:
+  /// **'Hola'**
+  String get parentGreeting;
+
+  /// No description provided for @parentFamilyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Familia {surname}'**
+  String parentFamilyTitle(String surname);
+
+  /// No description provided for @parentOverdueFeesCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 cuota vencida} other{{count} cuotas vencidas}}'**
+  String parentOverdueFeesCount(int count);
+
+  /// No description provided for @parentMoraTotal.
+  ///
+  /// In es, this message translates to:
+  /// **'Mora total'**
+  String get parentMoraTotal;
+
+  /// No description provided for @parentPayAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar'**
+  String get parentPayAction;
+
+  /// No description provided for @navPayments.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagos'**
+  String get navPayments;
+
+  /// No description provided for @parentActionBoletin.
+  ///
+  /// In es, this message translates to:
+  /// **'Boletín'**
+  String get parentActionBoletin;
+
+  /// No description provided for @boletinTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Boletín'**
+  String get boletinTitle;
+
+  /// No description provided for @boletinDownloadAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar boletín (PDF)'**
+  String get boletinDownloadAction;
+
+  /// No description provided for @boletinPeriod.
+  ///
+  /// In es, this message translates to:
+  /// **'{n}° Período'**
+  String boletinPeriod(int n);
+
+  /// No description provided for @boletinObservations.
+  ///
+  /// In es, this message translates to:
+  /// **'Observaciones'**
+  String get boletinObservations;
+
+  /// No description provided for @boletinNoGrades.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay calificaciones registradas para este período'**
+  String get boletinNoGrades;
+
+  /// No description provided for @boletinNoAccess.
+  ///
+  /// In es, this message translates to:
+  /// **'No tenés acceso al boletín de este alumno'**
+  String get boletinNoAccess;
+
+  /// No description provided for @boletinDownloadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar el boletín'**
+  String get boletinDownloadError;
+
+  /// No description provided for @boletinViewAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver boletín'**
+  String get boletinViewAction;
+
+  /// No description provided for @parentChooseChild.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí un hijo'**
+  String get parentChooseChild;
+
+  /// No description provided for @feesUploadProofAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Subir comprobante'**
+  String get feesUploadProofAction;
+
+  /// No description provided for @feesReplaceProofAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Reemplazar comprobante'**
+  String get feesReplaceProofAction;
+
+  /// No description provided for @feesInvoiceAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver factura'**
+  String get feesInvoiceAction;
+
+  /// No description provided for @feesInvoiceUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura no disponible'**
+  String get feesInvoiceUnavailable;
+
+  /// No description provided for @feesInvoiceViewerTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get feesInvoiceViewerTitle;
+
+  /// No description provided for @feesInvoiceLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar la factura'**
+  String get feesInvoiceLoadError;
+
+  /// No description provided for @feesInvoiceDownloadAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar'**
+  String get feesInvoiceDownloadAction;
+
+  /// No description provided for @feesInvoiceDownloadSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura descargada'**
+  String get feesInvoiceDownloadSuccess;
+
+  /// No description provided for @feesInvoiceDownloadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar la factura'**
+  String get feesInvoiceDownloadError;
+
+  /// No description provided for @feesChooseFeeTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí la cuota'**
+  String get feesChooseFeeTitle;
+
+  /// No description provided for @feesProofStatusReview.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante en revisión'**
+  String get feesProofStatusReview;
+
+  /// No description provided for @feesProofPickFile.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir archivo'**
+  String get feesProofPickFile;
+
+  /// No description provided for @feesProofHint.
+  ///
+  /// In es, this message translates to:
+  /// **'JPG, PNG o PDF · hasta 10 MB'**
+  String get feesProofHint;
+
+  /// No description provided for @feesProofInvalidFile.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivo no válido. JPG, PNG o PDF · hasta 10 MB'**
+  String get feesProofInvalidFile;
+
+  /// No description provided for @feesProofSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante subido. Un administrador lo revisará.'**
+  String get feesProofSuccess;
+
+  /// No description provided for @feesProofError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo subir el comprobante'**
+  String get feesProofError;
+
+  /// No description provided for @feesProofSubmit.
+  ///
+  /// In es, this message translates to:
+  /// **'Subir'**
+  String get feesProofSubmit;
+
+  /// No description provided for @feesStatusUnderReview.
+  ///
+  /// In es, this message translates to:
+  /// **'En revisión'**
+  String get feesStatusUnderReview;
+
+  /// No description provided for @feesPartialOwed.
+  ///
+  /// In es, this message translates to:
+  /// **'debe {amount}'**
+  String feesPartialOwed(String amount);
+
+  /// No description provided for @pushPrimerTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Activá las notificaciones'**
+  String get pushPrimerTitle;
+
+  /// No description provided for @pushPrimerBody.
+  ///
+  /// In es, this message translates to:
+  /// **'Los mensajes de chat y los avisos de la escuela te llegan aunque la app esté cerrada'**
+  String get pushPrimerBody;
+
+  /// No description provided for @pushPrimerActivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Activar'**
+  String get pushPrimerActivate;
+
+  /// No description provided for @pushPrimerLater.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora no'**
+  String get pushPrimerLater;
+
+  /// No description provided for @trayOpen.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir EFE'**
+  String get trayOpen;
+
+  /// No description provided for @trayAutostart.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar con el sistema'**
+  String get trayAutostart;
+
+  /// No description provided for @trayQuit.
+  ///
+  /// In es, this message translates to:
+  /// **'Salir'**
+  String get trayQuit;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -1641,25 +2485,25 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'es': return AppLocalizationsEs();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
   }
 
   throw FlutterError(
-    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
-  );
+      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }

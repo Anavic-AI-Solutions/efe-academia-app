@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_typography.dart';
+import 'status_badge.dart';
 
 class DetailHeroChip {
   final IconData icon;
@@ -15,16 +16,22 @@ class DetailHero extends StatelessWidget {
   final Widget leading;
   final String title;
   final String status;
+  final String? statusLabel;
   final List<DetailHeroChip> chips;
   final String fallbackRoute;
+  final Gradient? gradient;
+  final Widget? bottom;
 
   const DetailHero({
     super.key,
     required this.leading,
     required this.title,
     this.status = '',
+    this.statusLabel,
     this.chips = const [],
     this.fallbackRoute = '/dashboard',
+    this.gradient,
+    this.bottom,
   });
 
   @override
@@ -32,9 +39,13 @@ class DetailHero extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        gradient:
-            isDark ? AppColors.primaryGradientDark : AppColors.primaryGradient,
+        gradient: gradient ??
+            (isDark
+                ? AppColors.primaryGradientDark
+                : AppColors.primaryGradient),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: SafeArea(
         bottom: false,
@@ -82,7 +93,10 @@ class DetailHero extends StatelessWidget {
                               runSpacing: 8,
                               children: [
                                 if (status.isNotEmpty)
-                                  _StatusPill(status: status),
+                                  _StatusPill(
+                                    status: status,
+                                    label: statusLabel ?? status,
+                                  ),
                                 for (final chip in chips)
                                   _MetaChip(icon: chip.icon, label: chip.label),
                               ],
@@ -94,6 +108,11 @@ class DetailHero extends StatelessWidget {
                   ],
                 ),
               ),
+              if (bottom != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, top: 14),
+                  child: bottom!,
+                ),
             ],
           ),
         ),
@@ -124,17 +143,13 @@ class DetailHeroIcon extends StatelessWidget {
 
 class _StatusPill extends StatelessWidget {
   final String status;
+  final String label;
 
-  const _StatusPill({required this.status});
+  const _StatusPill({required this.status, required this.label});
 
   @override
   Widget build(BuildContext context) {
-    final normalized = status.toLowerCase();
-    final color = normalized == 'active'
-        ? AppColors.success
-        : normalized == 'archived' || normalized == 'inactive'
-            ? AppColors.error
-            : Colors.white70;
+    final color = StatusBadge.colorFor(status);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -152,7 +167,7 @@ class _StatusPill extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Text(
-            status,
+            label,
             style: AppTypography.labelSmall.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w600,

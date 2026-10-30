@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
+import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
+import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 import '../providers/qualification_provider.dart';
@@ -17,7 +20,8 @@ class QualificationListScreen extends ConsumerStatefulWidget {
       _QualificationListScreenState();
 }
 
-class _QualificationListScreenState extends ConsumerState<QualificationListScreen> {
+class _QualificationListScreenState
+    extends ConsumerState<QualificationListScreen> {
   final _scrollController = ScrollController();
   final _searchController = TextEditingController();
 
@@ -45,25 +49,18 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
   Widget build(BuildContext context) {
     final listState = ref.watch(qualificationListProvider);
     final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.qualificationsTitle),
-      ),
+      backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
+          LargeTitleBar(title: l10n.qualificationsTitle),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: TextField(
+            child: AppSearchBar(
               controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.qualificationsSearchHint,
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                isDense: true,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
+              hintText: l10n.qualificationsSearchHint,
               onChanged: (value) =>
                   ref.read(qualificationListProvider.notifier).search(value),
             ),
@@ -89,8 +86,7 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
       return ErrorView(
         message: l10n.qualificationsLoadError,
         detail: state.error,
-        onRetry: () =>
-            ref.read(qualificationListProvider.notifier).refresh(),
+        onRetry: () => ref.read(qualificationListProvider.notifier).refresh(),
       );
     }
 
@@ -107,15 +103,8 @@ class _QualificationListScreenState extends ConsumerState<QualificationListScree
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount:
-          state.pagination.data.length + (state.pagination.hasMore ? 1 : 0),
+      itemCount: state.pagination.data.length,
       itemBuilder: (context, index) {
-        if (index == state.pagination.data.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
         final qualification = state.pagination.data[index];
         return QualificationCard(qualification: qualification);
       },

@@ -30,7 +30,16 @@ class NotificationRepository {
   Future<int> getUnreadCount() async {
     final response = await _api.getUnreadCount();
     final data = response.data;
-    return data is Map<String, dynamic> ? (data['count'] ?? 0) as int : 0;
+    if (data is! Map) return 0;
+    // El backend responde `{data: {count}}`; se acepta también `{count}` por
+    // compatibilidad con respuestas antiguas.
+    final payload = data['data'];
+    final source = payload is Map ? payload : data;
+    final count = source['count'];
+    if (count is int) return count;
+    if (count is num) return count.toInt();
+    if (count is String) return int.tryParse(count) ?? 0;
+    return 0;
   }
 
   Future<void> markAllRead() async {

@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.efe" "\0"
-            VALUE "FileDescription", "efe_mobile" "\0"
+            VALUE "CompanyName", "EFE" "\0"
+            VALUE "FileDescription", "EFE Academia de Ingles" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "efe_mobile" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.efe. All rights reserved." "\0"
-            VALUE "OriginalFilename", "efe_mobile.exe" "\0"
-            VALUE "ProductName", "efe_mobile" "\0"
+            VALUE "InternalName", "EFE Academia de Ingles" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 EFE. All rights reserved." "\0"
+            VALUE "OriginalFilename", "EFE Academia de Ingles.exe" "\0"
+            VALUE "ProductName", "EFE Academia de Ingles" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
