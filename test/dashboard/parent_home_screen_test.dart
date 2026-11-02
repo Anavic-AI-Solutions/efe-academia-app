@@ -13,6 +13,14 @@ import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/parent_home_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/dashboard/screens/parent_home_screen.dart';
+import 'package:efe_mobile/features/dashboard/screens/widgets/parent_summary_sections.dart';
+import 'package:efe_mobile/features/documents/domain/document_model.dart';
+import 'package:efe_mobile/features/documents/providers/document_provider.dart';
+import 'package:efe_mobile/features/events/domain/event_model.dart';
+import 'package:efe_mobile/features/events/providers/event_provider.dart';
+import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/features/news/domain/news_model.dart';
+import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/relations/data/relations_repository.dart';
 import 'package:efe_mobile/features/relations/domain/relation_model.dart';
@@ -105,6 +113,19 @@ class _PendingDashboardRepository implements DashboardRepository {
   Future<DashboardData> getDashboard() => completer.future;
 }
 
+class _FakeNewsRepository implements NewsRepository {
+  final List<NewsModel> items;
+  int calls = 0;
+
+  _FakeNewsRepository(this.items);
+
+  @override
+  Future<CursorPagination<NewsModel>> getNews({String? cursor}) async {
+    calls++;
+    return CursorPagination(data: items, hasMore: false);
+  }
+}
+
 const _ana =
     RelationModel(id: 'r1', fullname: 'Ana Pérez', role: 'student', userId: 11);
 const _bruno = RelationModel(
@@ -152,8 +173,23 @@ GoRouter _router() => GoRouter(
         ),
         GoRoute(path: '/payments', builder: (_, __) => const Text('payments')),
         GoRoute(path: '/chat', builder: (_, __) => const Text('chat')),
+        GoRoute(
+            path: '/documents',
+            builder: (_, __) => const Text('documents-list'),
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (_, s) =>
+                    Text('document:${s.pathParameters['id']}'),
+              ),
+            ]),
+        GoRoute(path: '/events', builder: (_, __) => const Text('events-list')),
+        GoRoute(path: '/news', builder: (_, __) => const Text('news-list')),
       ],
     );
+
+double _top(WidgetTester tester, String text) =>
+    tester.getTopLeft(find.text(text)).dy;
 
 Future<void> _pumpHome(
   WidgetTester tester, {
@@ -163,6 +199,9 @@ Future<void> _pumpHome(
   bool dashboardFails = false,
   String parentName = 'María López',
   Brightness brightness = Brightness.light,
+  Future<List<DocumentModel>> Function(Ref ref)? documents,
+  Future<List<EventModel>> Function(Ref ref)? calendar,
+  NewsRepository? newsRepository,
 }) async {
   final container = ProviderContainer(overrides: [
     authRepositoryProvider
@@ -172,6 +211,34 @@ Future<void> _pumpHome(
     relationsRepositoryProvider.overrideWithValue(
         _FakeRelationsRepository(children: children, fails: relationsFail)),
     unreadCountProvider.overrideWith((ref) async => 0),
+    homeDocumentsProvider.overrideWith(
+      documents ??
+          (ref) async => const [
+                DocumentModel(id: 'd1', title: 'Contrato 2026'),
+              ],
+    ),
+    homeCalendarProvider.overrideWith(
+      calendar ??
+          (ref) async => [
+                EventModel(
+                  id: 'e1',
+                  title: 'Reunión de padres',
+                  start: DateTime(2026, 11, 3, 18, 30),
+                ),
+              ],
+    ),
+    newsListProvider.overrideWith(
+      (ref) => NewsListNotifier(
+        newsRepository ??
+            _FakeNewsRepository(const [
+              NewsModel(
+                id: 'n1',
+                title: 'Novedad padre',
+                content: 'Contenido padre',
+              ),
+            ]),
+      ),
+    ),
   ]);
   addTearDown(container.dispose);
 
@@ -379,6 +446,71 @@ void main() {
     await _pumpHome(tester);
     await tester.drag(find.byType(ListView), const Offset(0, -400));
     await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('parent home muestra resumen tras acciones y refresca',
+      (tester) async {
+    var documentsCalls = 0;
+    var calendarCalls = 0;
+    final newsRepo = _FakeNewsRepository(const [
+      NewsModel(
+        id: 'n1',
+        title: 'Novedad padre',
+        content: 'Contenido padre',
+      ),
+    ]);
+
+    await _pumpHome(
+      tester,
+      documents: (ref) async {
+        documentsCalls++;
+        return const [DocumentModel(id: 'd1', title: 'Contrato 2026')];
+      },
+      calendar: (ref) async {
+        calendarCalls++;
+        return [
+          EventModel(
+            id: 'e1',
+            title: 'Reunión de padres',
+            start: DateTime(2026, 11, 3, 18, 30),
+          ),
+        ];
+      },
+      newsRepository: newsRepo,
+    );
+
+    // Resumen visible tras las acciones rápidas.
+    expect(find.byType(ParentSummarySections), findsOneWidget);
+    expect(
+      _top(tester, 'Boletín'),
+      lessThan(_top(tester, 'DOCUMENTOS')),
+    );
+
+    // Scroll: las secciones siguen montadas.
+    await tester.fling(find.byType(ListView), const Offset(0, 300), 1000);
+    await tester.pumpAndSettle();
+    expect(find.byType(ParentSummarySections), findsOneWidget);
+
+    // Pull-to-refresh recarga resúmenes + dashboard + hijos + news.
+    expect(documentsCalls, 1);
+    expect(calendarCalls, 1);
+    expect(newsRepo.calls, 1);
+    await tester
+        .widget<RefreshIndicator>(find.byType(RefreshIndicator))
+        .onRefresh();
+    await tester.pumpAndSettle();
+    expect(documentsCalls, 2);
+    expect(calendarCalls, 2);
+    expect(newsRepo.calls, 2);
+    expect(tester.takeException(), isNull);
+
+    // Ver-todo navega con push a la lista dedicada.
+    await tester.ensureVisible(find.text('Ver todo').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Ver todo').first);
+    await tester.pumpAndSettle();
+    expect(find.text('documents-list'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }
