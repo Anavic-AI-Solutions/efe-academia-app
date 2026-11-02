@@ -14,6 +14,7 @@ import 'package:efe_mobile/features/dashboard/screens/parent_home_screen.dart';
 import 'package:efe_mobile/features/documents/providers/document_provider.dart';
 import 'package:efe_mobile/features/events/providers/event_provider.dart';
 import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/relations/data/relations_repository.dart';
