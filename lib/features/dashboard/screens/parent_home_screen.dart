@@ -21,9 +21,13 @@ import '../../relations/providers/relations_provider.dart';
 import '../domain/dashboard_data.dart';
 import '../domain/parent_home_data.dart';
 import '../providers/dashboard_provider.dart';
+import '../../documents/providers/document_provider.dart';
+import '../../events/providers/event_provider.dart';
+import '../../news/providers/news_provider.dart';
 import 'widgets/parent_child_card.dart';
 import 'widgets/parent_overdue_fees_card.dart';
 import 'widgets/parent_quick_actions.dart';
+import 'widgets/parent_summary_sections.dart';
 
 /// Home del rol padre: alerta de mora, hijos con promedio/asistencia y
 /// acciones rápidas (Cuotas, Boletín, Chat).
@@ -75,9 +79,12 @@ class ParentHomeScreen extends ConsumerWidget {
       backgroundColor: AppColors.backgroundFor(isDark),
       body: RefreshIndicator(
         onRefresh: () async {
+          ref.invalidate(homeDocumentsProvider);
+          ref.invalidate(homeCalendarProvider);
           await Future.wait([
             ref.read(dashboardProvider.notifier).refresh(),
             ref.read(relationsProvider.notifier).refresh(),
+            ref.read(newsListProvider.notifier).refresh(),
           ]);
         },
         child: ListView(
@@ -157,6 +164,8 @@ class ParentHomeScreen extends ConsumerWidget {
                         _openBoletin(context, children, parentHome),
                     onChat: () => context.go('/chat'),
                   ),
+                  const SizedBox(height: 8),
+                  const ParentSummarySections(),
                   const SizedBox(height: 24),
                 ],
               ),
