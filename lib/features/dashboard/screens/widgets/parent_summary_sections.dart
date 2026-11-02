@@ -79,7 +79,7 @@ class _DocumentsPreview extends ConsumerWidget {
         height: 68,
         borderRadius: 16,
       ),
-      error: (_, _) => _CompactError(
+      error: (_, __) => _CompactError(
         message: l10n.documentsTitle,
         onRetry: () => ref.invalidate(homeDocumentsProvider),
       ),
@@ -107,7 +107,7 @@ class _EventsPreview extends ConsumerWidget {
         height: 68,
         borderRadius: 16,
       ),
-      error: (_, _) => _CompactError(
+      error: (_, __) => _CompactError(
         message: l10n.eventsErrorTitle,
         onRetry: () => ref.invalidate(homeCalendarProvider),
       ),
@@ -169,7 +169,7 @@ class _EventPreviewTile extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: eventColor.withOpacity(0.1),
+              color: eventColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
@@ -234,7 +234,7 @@ class _NewsPreviewTile extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: accent.withOpacity(0.1),
+              color: accent.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
