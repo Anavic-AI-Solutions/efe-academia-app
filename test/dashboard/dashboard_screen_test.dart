@@ -11,6 +11,10 @@ import 'package:efe_mobile/features/dashboard/domain/parent_home_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/dashboard/screens/dashboard_screen.dart';
 import 'package:efe_mobile/features/dashboard/screens/parent_home_screen.dart';
+import 'package:efe_mobile/features/documents/providers/document_provider.dart';
+import 'package:efe_mobile/features/events/providers/event_provider.dart';
+import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
 import 'package:efe_mobile/features/relations/data/relations_repository.dart';
 import 'package:efe_mobile/features/relations/domain/relation_model.dart';
@@ -97,6 +101,12 @@ class _FakeRelationsRepository implements RelationsRepository {
       );
 }
 
+class _FakeNewsRepository implements NewsRepository {
+  @override
+  Future<CursorPagination<NewsModel>> getNews({String? cursor}) async =>
+      CursorPagination(data: const [], hasMore: false);
+}
+
 Future<void> _pumpParentHome(
   WidgetTester tester, {
   Brightness brightness = Brightness.light,
@@ -108,6 +118,11 @@ Future<void> _pumpParentHome(
           .overrideWithValue(_FakeParentDashboardRepository()),
       relationsRepositoryProvider.overrideWithValue(_FakeRelationsRepository()),
       unreadCountProvider.overrideWith((ref) async => 0),
+      homeDocumentsProvider.overrideWith((ref) async => const []),
+      homeCalendarProvider.overrideWith((ref) async => const []),
+      newsListProvider.overrideWith(
+        (ref) => NewsListNotifier(_FakeNewsRepository()),
+      ),
     ],
   );
   addTearDown(container.dispose);
