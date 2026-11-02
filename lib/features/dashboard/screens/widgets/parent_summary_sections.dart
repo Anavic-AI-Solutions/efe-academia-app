@@ -40,7 +40,8 @@ class ParentSummarySections extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         const _DocumentsPreview(),
-        const SizedBox(height: 16),
+        // DocumentTile trae margen inferior propio de 10: 10 + 6 = 16.
+        const SizedBox(height: 6),
         SectionHeader(
           title: l10n.homeCalendar,
           actionLabel: l10n.homeSeeAll,
@@ -78,9 +79,8 @@ class _DocumentsPreview extends ConsumerWidget {
         height: 68,
         borderRadius: 16,
       ),
-      error: (error, _) => _CompactError(
+      error: (_, _) => _CompactError(
         message: l10n.documentsTitle,
-        detail: error.toString(),
         onRetry: () => ref.invalidate(homeDocumentsProvider),
       ),
       data: (items) => items.isEmpty
@@ -107,9 +107,8 @@ class _EventsPreview extends ConsumerWidget {
         height: 68,
         borderRadius: 16,
       ),
-      error: (error, _) => _CompactError(
+      error: (_, _) => _CompactError(
         message: l10n.eventsErrorTitle,
-        detail: error.toString(),
         onRetry: () => ref.invalidate(homeCalendarProvider),
       ),
       data: (events) => events.isEmpty
@@ -133,6 +132,12 @@ class _NewsPreview extends ConsumerWidget {
         width: double.infinity,
         height: 68,
         borderRadius: 16,
+      );
+    }
+    if (state.error != null && news.isEmpty) {
+      return _CompactError(
+        message: l10n.newsErrorTitle,
+        onRetry: () => ref.read(newsListProvider.notifier).refresh(),
       );
     }
     if (news.isEmpty) {
@@ -253,17 +258,19 @@ class _NewsPreviewTile extends StatelessWidget {
                         : AppColors.lightTextPrimary,
                   ),
                 ),
-                const SizedBox(height: 3),
-                Text(
-                  news.content,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextSecondary
-                        : AppColors.lightTextSecondary,
+                if (news.content.isNotEmpty) ...[
+                  const SizedBox(height: 3),
+                  Text(
+                    news.content,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.bodySmall.copyWith(
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.lightTextSecondary,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -274,14 +281,13 @@ class _NewsPreviewTile extends StatelessWidget {
 }
 
 /// Fallback compacto de error con reintento: no rompe el resto.
+/// No renderiza la excepción cruda (solo título + reintento).
 class _CompactError extends StatelessWidget {
   final String message;
-  final String? detail;
   final VoidCallback onRetry;
 
   const _CompactError({
     required this.message,
-    this.detail,
     required this.onRetry,
   });
 
@@ -313,15 +319,6 @@ class _CompactError extends StatelessWidget {
                       : AppColors.lightTextSecondary,
                 ),
               ),
-              if (detail != null)
-                Text(
-                  detail!,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTypography.labelSmall.copyWith(
-                    color: AppColors.mutedFor(isDark),
-                  ),
-                ),
             ],
           ),
         ),

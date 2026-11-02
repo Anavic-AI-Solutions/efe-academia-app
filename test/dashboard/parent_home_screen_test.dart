@@ -13,6 +13,7 @@ import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/domain/parent_home_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/dashboard/screens/parent_home_screen.dart';
+import 'package:efe_mobile/features/dashboard/screens/widgets/parent_quick_actions.dart';
 import 'package:efe_mobile/features/dashboard/screens/widgets/parent_summary_sections.dart';
 import 'package:efe_mobile/features/documents/domain/document_model.dart';
 import 'package:efe_mobile/features/documents/providers/document_provider.dart';
@@ -188,8 +189,8 @@ GoRouter _router() => GoRouter(
       ],
     );
 
-double _top(WidgetTester tester, String text) =>
-    tester.getTopLeft(find.text(text)).dy;
+double _topOf(WidgetTester tester, Finder finder) =>
+    tester.getTopLeft(finder).dy;
 
 Future<void> _pumpHome(
   WidgetTester tester, {
@@ -483,8 +484,8 @@ void main() {
     // Resumen visible tras las acciones rápidas.
     expect(find.byType(ParentSummarySections), findsOneWidget);
     expect(
-      _top(tester, 'Boletín'),
-      lessThan(_top(tester, 'DOCUMENTOS')),
+      _topOf(tester, find.byType(ParentQuickActions)),
+      lessThan(_topOf(tester, find.byType(ParentSummarySections))),
     );
 
     // Scroll: las secciones siguen montadas.
