@@ -23,8 +23,8 @@ Aplicación móvil Flutter para la gestión integral de escuelas de enfermería:
 
 | Herramienta | Versión mínima |
 |-------------|----------------|
-| Flutter SDK | 3.24.x (stable) |
-| Dart SDK | 3.5.x |
+| Flutter SDK | 3.44.x (stable) |
+| Dart SDK | 3.12.x |
 | Android Studio / Xcode | Para emuladores/dispositivos |
 | Git | 2.x |
 

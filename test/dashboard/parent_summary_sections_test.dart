@@ -101,8 +101,7 @@ GoRouter _router() => GoRouter(
             GoRoute(
               path: ':id',
               builder: (_, s) => Scaffold(
-                body: Center(
-                    child: Text('document:${s.pathParameters['id']}')),
+                body: Center(child: Text('document:${s.pathParameters['id']}')),
               ),
             ),
           ],
@@ -186,8 +185,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('error en documentos muestra retry y reintenta',
-      (tester) async {
+  testWidgets('error en documentos muestra retry y reintenta', (tester) async {
     final router = _router();
     addTearDown(router.dispose);
     var calls = 0;

@@ -27,6 +27,17 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Configure app (preprod)
+        shell: bash
+        run: |
+          cat > .env <<'EOF'
+          API_BASE_URL=https://preprod.efeacademia.com/api/v1
+          REVERB_HOST=preprod.efeacademia.com
+          REVERB_PORT=443
+          REVERB_APP_KEY=${{ secrets.REVERB_APP_KEY }}
+          REVERB_SCHEME=https
+          EOF
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:

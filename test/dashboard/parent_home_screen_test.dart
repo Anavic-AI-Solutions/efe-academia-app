@@ -180,8 +180,7 @@ GoRouter _router() => GoRouter(
             routes: [
               GoRoute(
                 path: ':id',
-                builder: (_, s) =>
-                    Text('document:${s.pathParameters['id']}'),
+                builder: (_, s) => Text('document:${s.pathParameters['id']}'),
               ),
             ]),
         GoRoute(path: '/events', builder: (_, __) => const Text('events-list')),

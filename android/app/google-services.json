@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "742359363329",
+    "project_id": "efe-app-d3d42",
+    "storage_bucket": "efe-app-d3d42.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742359363329:android:21e06413ad5de6d5b23500",
+        "android_client_info": {
+          "package_name": "com.efe.efe_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAvnjdY3nj2qXArFBtXe-Bz33zKb5yElI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742359363329:android:da3dc219ef3f527fb23500",
+        "android_client_info": {
+          "package_name": "com.efeacademia.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
