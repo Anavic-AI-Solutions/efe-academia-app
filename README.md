@@ -155,9 +155,8 @@ Al hacer push a `master`:
 
 El APK usa la **debug key** de `android/app/build.gradle` (instalable, pero no
 apta para Play Store). Para publicar, configurá un keystore real y reemplazá
-`signingConfigs.debug`. El workflow toma `REVERB_APP_KEY` del secret homónimo
-del repositorio; si no está definido, el chat realtime queda deshabilitado
-(la app sigue funcionando por REST).
+`signingConfigs.debug`. El workflow usa la `REVERB_APP_KEY` de preprod (`2zyreglsvrwtreqv7fxe`)
+y `REVERB_HOST=preprod.efeacademia.com`; el chat realtime queda habilitado.
 
 También podés ejecutar **Build & Release** manualmente
 (`workflow_dispatch`) desde cualquier rama: el job `build-android` sube el

@@ -21,7 +21,7 @@ jobs:
           API_BASE_URL=https://preprod.efeacademia.com/api/v1
           REVERB_HOST=preprod.efeacademia.com
           REVERB_PORT=443
-          REVERB_APP_KEY=${{ secrets.REVERB_APP_KEY }}
+          REVERB_APP_KEY=2zyreglsvrwtreqv7fxe
           REVERB_SCHEME=https
           EOF
 
@@ -62,7 +62,7 @@ jobs:
           API_BASE_URL=https://preprod.efeacademia.com/api/v1
           REVERB_HOST=preprod.efeacademia.com
           REVERB_PORT=443
-          REVERB_APP_KEY=${{ secrets.REVERB_APP_KEY }}
+          REVERB_APP_KEY=2zyreglsvrwtreqv7fxe
           REVERB_SCHEME=https
           EOF
 
@@ -99,7 +99,7 @@ jobs:
           API_BASE_URL=https://preprod.efeacademia.com/api/v1
           REVERB_HOST=preprod.efeacademia.com
           REVERB_PORT=443
-          REVERB_APP_KEY=${{ secrets.REVERB_APP_KEY }}
+          REVERB_APP_KEY=2zyreglsvrwtreqv7fxe
           REVERB_SCHEME=https
           EOF
 
