@@ -120,8 +120,10 @@ jobs:
 
       # Firma con la debug key configurada en android/app/build.gradle.
       # Para publicar en Play Store hay que configurar un keystore real.
-      - name: Lock gradle wrapper
-        run: chmod 444 android/gradle/wrapper/gradle-wrapper.properties
+      - name: Pre-cache Gradle 8.14.0
+        run: |
+          mkdir -p ~/.gradle/wrapper/dists/gradle-8.14.0-all/291b7b334bdcf8584859d4e043360b19
+          curl -fsSL -o ~/.gradle/wrapper/dists/gradle-8.14.0-all/291b7b334bdcf8584859d4e043360b19/gradle-8.14.0-all.zip https://services.gradle.org/distributions/gradle-8.14.0-all.zip
 
       - name: Build APK
         run: flutter build apk --release --android-skip-build-dependency-validation
