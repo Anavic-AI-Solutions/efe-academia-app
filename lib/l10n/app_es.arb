@@ -668,5 +668,5 @@
   "kpiSummary": "Resumen de KPIs",
   "statisticsLoadError": "No se pudieron cargar las estadísticas",
   "noData": "No hay datos",
-  "noDataSubtitle": "No hay información disponible",
+  "noDataSubtitle": "No hay información disponible"
 }
