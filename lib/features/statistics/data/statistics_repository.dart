@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'statistics_api.dart';
-import 'statistics_model.dart';
+import '../data/statistics_api.dart';
+import '../domain/statistics_model.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 
 class StatisticsRepository {

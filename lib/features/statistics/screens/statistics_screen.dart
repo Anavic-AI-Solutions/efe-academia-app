@@ -56,13 +56,13 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
                         role: role,
                       ),
                 )
-              : _buildContent(statistics, role, isDark, l10n);
+              : _buildContent(statistics, role, isDark);
   }
 
-  Widget _buildContent(StatisticsState stats, String role, bool isDark,
-      AppLocalizations l10n) {
+  Widget _buildContent(StatisticsState stats, String role, bool isDark) {
     final metrics = stats.data.metrics;
     final details = stats.data.details;
+    final l10n = context.l10n;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -134,7 +134,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
             ..._buildDetailsList(details, isDark),
           ] else ...[
             EmptyState(
-              icon: PhosphorIconsRegular.list,
+              icon: PhosphorIconsRegular.barChart,
               title: l10n.noData,
               subtitle: l10n.noDataSubtitle,
             ),

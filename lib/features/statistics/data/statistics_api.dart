@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../../../core/api/api_client.dart';
-import 'statistics_model.dart';
+import '../domain/statistics_model.dart';
 
 class StatisticsApi {
   final ApiClient _client;

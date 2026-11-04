@@ -98,7 +98,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             total: pagination.total,
             enabled: !pagination.isLoading,
             onPageChanged: (page) =>
-                ref.read(libraryProvider.notifier).load(cursor: null),
+                ref.read(libraryProvider.notifier).load(nextCursor: null),
           ),
         ],
       ),

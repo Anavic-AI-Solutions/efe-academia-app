@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/statistics_repository.dart';
+import '../data/statistics_api.dart';
 import '../domain/statistics_model.dart';
 
 final statisticsRepositoryProvider =
@@ -22,7 +23,7 @@ class StatisticsState {
   final bool isLoading;
   final String? error;
 
-  const StatisticsState({
+  StatisticsState({
     required this.data,
     this.isLoading = false,
     this.error,
@@ -46,7 +47,7 @@ class StatisticsListNotifier extends StateNotifier<StatisticsState> {
   int _requestId = 0;
 
   StatisticsListNotifier(this._repository)
-      : super(const StatisticsState(
+      : super(StatisticsState(
             data: StatisticsModel(metrics: {}, details: [], role: 'student')));
 
   Future<void> load({String? role}) async {

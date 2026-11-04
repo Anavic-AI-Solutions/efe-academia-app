@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/library_api.dart';
 import '../data/library_repository.dart';
 import '../../classrooms/domain/material_model.dart';
+import 'package:efe_mobile/core/api/api_client.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/pagination/async_list_state.dart';
 
@@ -27,7 +29,7 @@ class LibraryListNotifier
   int _requestId = 0;
 
   LibraryListNotifier(this._repository)
-      : super(const AsyncListState(page: CursorPagination.empty()));
+      : super(AsyncListState(page: CursorPagination.empty()));
 
   Future<void> load({String? search, String? cursor}) async {
     final requestId = ++_requestId;
