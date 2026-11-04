@@ -56,8 +56,10 @@ class CustomBottomNav extends ConsumerWidget {
         isDark ? AppColors.darkTextSecondary : AppColors.navInactive;
     // Hidden (0) while loading or on error.
     final unreadChats = ref.watch(chatUnreadCountProvider).valueOrNull ?? 0;
-    // Parents get a “Pagos” tab in place of “Aulas”.
+    // Parents get a "Pagos" tab in place of "Aulas".
     final isParent = ref.watch(authProvider).user?.role == 'parent';
+    // Fifth item: Menú (visible for all roles).
+    final showMenu = ref.watch(authProvider).user?.role != null;
 
     return Container(
       decoration: BoxDecoration(
@@ -128,6 +130,20 @@ class CustomBottomNav extends ConsumerWidget {
                 accent: accent,
                 inactive: inactive,
               ),
+              if (showMenu) ...[
+                _NavItem(
+                  icon: PhosphorIconsRegular.grid,
+                  selectedIcon: PhosphorIconsFill.grid,
+                  label: l10n.navMenu,
+                  isSelected: navigationShell.currentIndex == 4,
+                  onTap: () => navigationShell.goBranch(
+                    4,
+                    initialLocation: 4 == navigationShell.currentIndex,
+                  ),
+                  accent: accent,
+                  inactive: inactive,
+                ),
+              ],
             ],
           ),
         ),
@@ -409,6 +425,44 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/search',
         builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: '/menu',
+        builder: (context, state) => const MenuScreen(),
+        routes: const [
+          GoRoute(
+            path: 'history',
+            builder: (context, state) => HistoryScreen(),
+          ),
+          GoRoute(
+            path: 'library',
+            builder: (context, state) => LibraryScreen(),
+          ),
+          GoRoute(
+            path: 'faqs',
+            builder: (context, state) => FaqScreen(),
+          ),
+          GoRoute(
+            path: 'statistics',
+            builder: (context, state) => StatisticsScreen(),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/history',
+        builder: (context, state) => const ClassroomHistoryScreen(),
+      ),
+      GoRoute(
+        path: '/library',
+        builder: (context, state) => const LibraryScreen(),
+      ),
+      GoRoute(
+        path: '/faqs',
+        builder: (context, state) => const FaqScreen(),
+      ),
+      GoRoute(
+        path: '/statistics',
+        builder: (context, state) => const StatisticsScreen(),
       ),
     ],
   );

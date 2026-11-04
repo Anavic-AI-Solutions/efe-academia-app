@@ -186,7 +186,7 @@ void main() {
         matching: find.text(text),
       );
 
-  testWidgets('bottom nav shows the 4 destinations with visible labels',
+  testWidgets('bottom nav shows the 5 destinations with visible labels',
       (tester) async {
     await _pumpApp(tester, 'student');
 
@@ -194,6 +194,7 @@ void main() {
     expect(navLabel('Aulas'), findsOneWidget);
     expect(navLabel('Chat'), findsOneWidget);
     expect(navLabel('Perfil'), findsOneWidget);
+    expect(navLabel('Menú'), findsOneWidget);
 
     // The old center search button is gone.
     expect(find.byIcon(PhosphorIconsFill.magnifyingGlass), findsNothing);
