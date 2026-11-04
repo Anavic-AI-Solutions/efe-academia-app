@@ -11,7 +11,7 @@ import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
-import '../../library/data/library_repository.dart';
+import '../providers/library_provider.dart';
 import '../../classrooms/screens/widgets/material_tile.dart';
 
 class LibraryScreen extends ConsumerStatefulWidget {

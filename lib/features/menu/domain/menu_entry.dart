@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+
 class MenuEntry {
   final String label;
   final IconData icon;

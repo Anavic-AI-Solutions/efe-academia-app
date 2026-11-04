@@ -67,6 +67,11 @@ class ClassroomListState {
     String? error,
     String? search,
     bool clearError = false,
+    String? branch,
+    String? level,
+    String? year,
+    String? status,
+    String? studentId,
   }) {
     return ClassroomListState(
       page: page ?? this.page,
@@ -76,7 +81,7 @@ class ClassroomListState {
       branch: branch,
       level: level,
       year: year,
-      status: status,
+      status: status ?? this.status,
       studentId: studentId,
     );
   }
