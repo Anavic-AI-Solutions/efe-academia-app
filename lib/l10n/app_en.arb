@@ -440,5 +440,5 @@
   "kpiSummary": "KPI Summary",
   "statisticsLoadError": "Failed to load statistics",
   "noData": "No data",
-  "noDataSubtitle": "No data available",
+  "noDataSubtitle": "No data available"
 }
