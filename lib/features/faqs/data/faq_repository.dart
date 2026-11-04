@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'faq_api.dart';
-import 'faq_model.dart';
+import '../data/faq_api.dart';
+import '../domain/faq_model.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 
 class FaqRepository {
@@ -9,11 +9,11 @@ class FaqRepository {
 
   Future<CursorPagination<FaqModel>> getFaqs({
     String? search,
-    String? cursor,
+    String? nextCursor,
   }) async {
     final response = await _api.getFaqs(
       search: search,
-      cursor: cursor,
+      nextCursor: nextCursor,
     );
 
     final data = (response.data['data'] as List?)

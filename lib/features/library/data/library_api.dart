@@ -7,12 +7,12 @@ class LibraryApi {
 
   Future<Response> getMaterials({
     String? search,
-    String? cursor,
+    String? nextCursor,
     int perPage = 20,
   }) =>
       _client.get('/materials', queryParameters: {
         if (search != null && search.isNotEmpty) 'search': search,
-        if (cursor != null && cursor.isNotEmpty) 'cursor': cursor,
+        if (nextCursor != null && nextCursor.isNotEmpty) 'cursor': nextCursor,
         'per_page': perPage,
       });
 }

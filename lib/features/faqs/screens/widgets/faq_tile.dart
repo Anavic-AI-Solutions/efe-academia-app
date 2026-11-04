@@ -3,7 +3,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../app/theme/app_colors.dart';
-import '../domain/faq_model.dart';
+import '../../domain/faq_model.dart';
 
 class FaqTile extends StatelessWidget {
   final FaqModel faq;

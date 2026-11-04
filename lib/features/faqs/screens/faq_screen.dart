@@ -13,6 +13,7 @@ import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../data/faq_repository.dart';
 import '../domain/faq_model.dart';
+import '../providers/faq_provider.dart';
 import 'widgets/faq_tile.dart';
 
 class FaqScreen extends ConsumerStatefulWidget {

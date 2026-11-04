@@ -37,7 +37,6 @@ class _ClassroomHistoryScreenState extends ConsumerState<ClassroomHistoryScreen>
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final role = ref.watch(authProvider).user?.role;
 
     final listState = ref.watch(classroomListProvider);
 
