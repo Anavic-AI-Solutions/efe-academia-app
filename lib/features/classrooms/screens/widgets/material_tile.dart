@@ -12,6 +12,7 @@ class MaterialTile extends StatelessWidget {
   final bool canManage;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final VoidCallback? onOpenUrl;
 
   const MaterialTile({
     super.key,
@@ -19,6 +20,7 @@ class MaterialTile extends StatelessWidget {
     this.canManage = false,
     this.onEdit,
     this.onDelete,
+    this.onOpenUrl,
   });
 
   @override
@@ -136,6 +138,19 @@ class MaterialTile extends StatelessWidget {
               ],
             ),
           ),
+          if (onOpenUrl != null) ...[
+            IconButton(
+              icon: Icon(
+                PhosphorIconsRegular.openInNew,
+                size: 18,
+                color: isDark
+                    ? AppColors.darkTextTertiary
+                    : AppColors.lightTextTertiary,
+              ),
+              tooltip: l10n.open,
+              onPressed: onOpenUrl,
+            ),
+          ],
           if (canManage)
             PopupMenuButton<String>(
               icon: Icon(

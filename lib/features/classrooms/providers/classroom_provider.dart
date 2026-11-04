@@ -213,3 +213,14 @@ final classroomMaterialsProvider = StateNotifierProvider.family<
     (page) => repository.getClassroomMaterials(classroomId, page: page),
   );
 });
+
+// ---------------------------------------------------------------------------
+// History provider: archived classrooms, scoped by role/student
+// ---------------------------------------------------------------------------
+
+final classroomHistoryProvider =
+    StateNotifierProvider<ClassroomListNotifier, ClassroomListState>((ref) {
+  final repository = ref.watch(classroomRepositoryProvider);
+  return ClassroomListNotifier(repository)
+    ..load(status: 'archived');
+});

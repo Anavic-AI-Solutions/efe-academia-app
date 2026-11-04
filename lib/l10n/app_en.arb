@@ -8,6 +8,7 @@
   "navClasses": "Classrooms",
   "navChat": "Chat",
   "navProfile": "Profile",
+  "navMenu": "Menu",
   "authWelcomeBack": "Welcome back",
   "authSignInSubtitle": "Sign in to your account",
   "authEmailLabel": "Email address",
@@ -430,5 +431,14 @@
   "pushPrimerLater": "Not now",
   "trayOpen": "Open EFE",
   "trayAutostart": "Launch at startup",
-  "trayQuit": "Quit"
+  "trayQuit": "Quit",
+  "libraryTitle": "Library",
+  "librarySearchHint": "Search materials...",
+  "faqsTitle": "FAQ",
+  "faqsSearchHint": "Search FAQs...",
+  "statisticsTitle": "Statistics",
+  "kpiSummary": "KPI Summary",
+  "statisticsLoadError": "Failed to load statistics",
+  "noData": "No data",
+  "noDataSubtitle": "No data available",
 }
