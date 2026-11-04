@@ -32,6 +32,11 @@ import '../features/birthdays/screens/birthday_list_screen.dart';
 import '../features/events/screens/calendar_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
+import '../features/classrooms/screens/classroom_history_screen.dart';
+import '../features/menu/screens/menu_screen.dart';
+import '../features/library/screens/library_screen.dart';
+import '../features/faqs/screens/faq_screen.dart';
+import '../features/statistics/screens/statistics_screen.dart';
 import '../app/theme/app_colors.dart';
 import '../core/widgets/badge_counter.dart';
 import '../l10n/l10n.dart';
@@ -132,8 +137,8 @@ class CustomBottomNav extends ConsumerWidget {
               ),
               if (showMenu) ...[
                 _NavItem(
-                  icon: PhosphorIconsRegular.grid,
-                  selectedIcon: PhosphorIconsFill.grid,
+                  icon: PhosphorIconsRegular.list,
+                  selectedIcon: PhosphorIconsFill.list,
                   label: l10n.navMenu,
                   isSelected: navigationShell.currentIndex == 4,
                   onTap: () => navigationShell.goBranch(
@@ -428,11 +433,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/menu',
-        builder: (context, state) => const MenuScreen(),
-        routes: const [
+        builder: (context, state) => MenuScreen(),
+        routes: [
           GoRoute(
             path: 'history',
-            builder: (context, state) => HistoryScreen(),
+            builder: (context, state) => ClassroomHistoryScreen(),
           ),
           GoRoute(
             path: 'library',
@@ -450,19 +455,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/history',
-        builder: (context, state) => const ClassroomHistoryScreen(),
+        builder: (context, state) => ClassroomHistoryScreen(),
       ),
       GoRoute(
         path: '/library',
-        builder: (context, state) => const LibraryScreen(),
+        builder: (context, state) => LibraryScreen(),
       ),
       GoRoute(
         path: '/faqs',
-        builder: (context, state) => const FaqScreen(),
+        builder: (context, state) => FaqScreen(),
       ),
       GoRoute(
         path: '/statistics',
-        builder: (context, state) => const StatisticsScreen(),
+        builder: (context, state) => StatisticsScreen(),
       ),
     ],
   );

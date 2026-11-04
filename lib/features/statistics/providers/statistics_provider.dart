@@ -12,17 +12,42 @@ final statisticsApiProvider = Provider<StatisticsApi>((ref) {
 });
 
 final statisticsDashboardProvider =
-    StateNotifierProvider<StatisticsListNotifier, StatisticsModel>((ref) {
+    StateNotifierProvider<StatisticsListNotifier, StatisticsState>((ref) {
   final repository = ref.watch(statisticsRepositoryProvider);
   return StatisticsListNotifier(repository);
 });
 
-class StatisticsListNotifier extends StateNotifier<StatisticsModel> {
+class StatisticsState {
+  final StatisticsModel data;
+  final bool isLoading;
+  final String? error;
+
+  const StatisticsState({
+    required this.data,
+    this.isLoading = false,
+    this.error,
+  });
+
+  StatisticsState copyWith({
+    StatisticsModel? data,
+    bool? isLoading,
+    String? error,
+  }) {
+    return StatisticsState(
+      data: data ?? this.data,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error,
+    );
+  }
+}
+
+class StatisticsListNotifier extends StateNotifier<StatisticsState> {
   final StatisticsRepository _repository;
   int _requestId = 0;
 
-  StatisticsListNotifier(this._repository) :
-      super(StatisticsModel(metrics: {}, details: [], role: 'student'));
+  StatisticsListNotifier(this._repository)
+      : super(const StatisticsState(
+            data: StatisticsModel(metrics: {}, details: [], role: 'student')));
 
   Future<void> load({String? role}) async {
     final requestId = ++_requestId;
@@ -30,28 +55,16 @@ class StatisticsListNotifier extends StateNotifier<StatisticsModel> {
     try {
       final result = await _repository.getDashboard(role: role);
       if (requestId != _requestId) return;
-      state = result.copyWith(isLoading: false);
+      state = state.copyWith(data: result, isLoading: false);
     } catch (e) {
       if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  StatisticsModel copyWith({
-    StatisticsModel? page,
-    bool? isLoading,
-    String? error,
-  }) {
-    return StatisticsModel(
-      metrics: page?.metrics ?? metrics,
-      details: page?.details ?? details,
-      role: page?.role ?? role,
-    );
-  }
-
-  Map<String, dynamic> get metrics => state.metrics;
-  List<dynamic> get details => state.details;
-  String get role => state.role;
+  Map<String, dynamic> get metrics => state.data.metrics;
+  List<dynamic> get details => state.data.details;
+  String get role => state.data.role;
   bool get isLoading => state.isLoading;
   String? get error => state.error;
 }

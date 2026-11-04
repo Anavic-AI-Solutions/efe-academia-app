@@ -141,13 +141,13 @@ class MaterialTile extends StatelessWidget {
           if (onOpenUrl != null) ...[
             IconButton(
               icon: Icon(
-                PhosphorIconsRegular.openInNew,
+                PhosphorIconsRegular.link,
                 size: 18,
                 color: isDark
                     ? AppColors.darkTextTertiary
                     : AppColors.lightTextTertiary,
               ),
-              tooltip: l10n.open,
+              tooltip: l10n.documentsOpen,
               onPressed: onOpenUrl,
             ),
           ],

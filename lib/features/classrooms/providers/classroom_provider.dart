@@ -94,7 +94,10 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
     load();
   }
 
-  Future<void> load({int page = 1}) async {
+  Future<void> load({int page = 1, String? status}) async {
+    if (status != null) {
+      state = state.copyWith(status: status);
+    }
     final requestId = ++_requestId;
     state = state.copyWith(isLoading: true, clearError: true);
     try {

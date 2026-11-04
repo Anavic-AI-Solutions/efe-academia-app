@@ -27,7 +27,7 @@ class FaqRepository {
 
     return CursorPagination(
       data: data,
-      cursor: cursorStr,
+      nextCursor: cursorStr,
       hasMore: hasMore,
       total: total,
     );

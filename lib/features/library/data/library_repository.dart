@@ -26,7 +26,7 @@ class LibraryRepository {
 
     return CursorPagination(
       data: data,
-      cursor: cursorStr,
+      nextCursor: cursorStr,
       hasMore: hasMore,
       total: total,
     );
