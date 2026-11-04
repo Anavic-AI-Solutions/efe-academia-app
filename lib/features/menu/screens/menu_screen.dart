@@ -64,7 +64,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               ),
               title: Text(entry.label),
               trailing: const Icon(
-                PhosphorIconsRegular.chevronRight,
+                PhosphorIconsRegular.arrowRight,
               ),
               onTap: () => context.push(entry.route),
             ),

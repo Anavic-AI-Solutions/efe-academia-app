@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../l10n/l10n.dart';
-import 'faq_model.dart';
+import '../../../../app/theme/app_colors.dart';
+import '../domain/faq_model.dart';
 
 class FaqTile extends StatelessWidget {
   final FaqModel faq;
@@ -17,7 +18,7 @@ class FaqTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? AppColors.darkText : AppColors.lightText;
+    final color = isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -43,7 +44,7 @@ class FaqTile extends StatelessWidget {
                 faq.answer,
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppColors.textSecondary,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
                   height: 1.5,
                 ),
                 overflow: TextOverflow.ellipsis,

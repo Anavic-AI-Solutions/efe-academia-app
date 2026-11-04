@@ -9,7 +9,8 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
-import 'providers/statistics_provider.dart';
+import '../providers/statistics_provider.dart';
+import '../domain/statistics_model.dart';
 
 class StatisticsScreen extends ConsumerStatefulWidget {
   const StatisticsScreen({super.key});
@@ -43,9 +44,8 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
       ),
       body: statistics.isLoading
           ? const LoadingShimmer(
-              rowCount: 3,
-              columnCount: 2,
-              height: 300,
+              width: double.infinity,
+              height: 200,
             )
           : statistics.error != null
               ? ErrorView(
@@ -56,10 +56,11 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
                         role: role,
                       ),
                 )
-              : _buildContent(statistics, role);
+              : _buildContent(statistics, role, isDark, l10n);
   }
 
-  Widget _buildContent(StatisticsState stats, String role) {
+  Widget _buildContent(StatisticsState stats, String role, bool isDark,
+      AppLocalizations l10n) {
     final metrics = stats.data.metrics;
     final details = stats.data.details;
 
@@ -130,10 +131,10 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            ..._buildDetailsList(details),
+            ..._buildDetailsList(details, isDark),
           ] else ...[
             EmptyState(
-              icon: PhosphorIconsRegular.chart,
+              icon: PhosphorIconsRegular.list,
               title: l10n.noData,
               subtitle: l10n.noDataSubtitle,
             ),
@@ -143,7 +144,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
     );
   }
 
-  List<Widget> _buildDetailsList(List<dynamic> details) {
+  List<Widget> _buildDetailsList(List<dynamic> details, bool isDark) {
     final List<Widget> widgets = [];
 
     for (var detail in details) {
@@ -151,6 +152,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
         widgets.add(_detailRow(
           title: detail['label'] ?? '',
           subtitle: detail['value'] ?? '',
+          isDark: isDark,
         ));
       }
     }
@@ -161,9 +163,8 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   Widget _detailRow({
     required String title,
     required String subtitle,
+    required bool isDark,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(

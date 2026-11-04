@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'library_api.dart';
+import '../../classrooms/domain/material_model.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 
 class LibraryRepository {

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'statistics_repository.dart';
-import 'statistics_model.dart';
+import '../data/statistics_repository.dart';
+import '../domain/statistics_model.dart';
 
 final statisticsRepositoryProvider =
     Provider<StatisticsRepository>((ref) {

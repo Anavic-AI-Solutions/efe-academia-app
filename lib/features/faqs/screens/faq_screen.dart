@@ -11,8 +11,8 @@ import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
-import 'data/faq_repository.dart';
-import 'domain/faq_model.dart';
+import '../data/faq_repository.dart';
+import '../domain/faq_model.dart';
 import 'widgets/faq_tile.dart';
 
 class FaqScreen extends ConsumerStatefulWidget {
@@ -55,7 +55,7 @@ class _FaqScreenState extends ConsumerState<FaqScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: Tooltip(
-              message: l10n.search,
+              message: l10n.commonSearchHint,
               child: IconButton(
                 icon: Icon(
                   PhosphorIconsRegular.magnifyingGlass,
