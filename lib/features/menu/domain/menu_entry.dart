@@ -26,8 +26,8 @@ class MenuEntry {
   static List<MenuEntry> allEntries() => [
     MenuEntry(
       label: 'Menú',
-      icon: PhosphorIconsRegular.grid,
-      selectedIcon: PhosphorIconsFill.grid,
+      icon: PhosphorIconsRegular.list,
+      selectedIcon: PhosphorIconsFill.list,
       route: '/menu',
     ),
     MenuEntry(

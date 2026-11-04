@@ -38,73 +38,16 @@ class _ClassroomHistoryScreenState extends ConsumerState<ClassroomHistoryScreen>
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final role = ref.watch(authProvider).user?.role;
-    final isParent = role == 'parent';
-    final studentId = ref.watch(parentSelectedStudentProvider);
-
-    // Parents can filter by selected child; students see only their own.
-    String? effectiveStudentId;
-    if (isParent && studentId != null) {
-      effectiveStudentId = studentId;
-    } else if (role == 'student') {
-      final studentData = ref.watch(authProvider).user?.studentData;
-      effectiveStudentId = studentData?.id.toString();
-    }
 
     final listState = ref.watch(classroomListProvider);
-
-    ref.listen<String?>(parentSelectedStudentProvider, (next) {
-      if (!mounted) return;
-      if (role != 'parent') return;
-      ref.read(classroomListProvider.notifier).setStudent(next).then((_) {
-        if (mounted) _scrollToTop();
-      });
-    });
-    if (isParent) {
-      final selected = ref.watch(parentSelectedStudentProvider);
-      if (selected != null &&
-          selected != listState.studentId &&
-          !listState.isLoading) {
-        Future.microtask(() {
-          if (!mounted) return;
-          final want = ref.read(parentSelectedStudentProvider);
-          final current = ref.read(classroomListProvider).studentId;
-          if (want != null && want != current) {
-            ref.read(classroomListProvider.notifier).setStudent(want).then((_) {
-              if (mounted) _scrollToTop();
-            });
-          }
-        });
-      }
-    }
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       appBar: AppBar(
         title: Text(l10n.classroomsTitle),
-        actions: [
-          if (role != 'student') ...[
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Tooltip(
-                message: l10n.chooseChild,
-                child: DropdownButton<String>(
-                  underline: const SizedBox(),
-                  hint: Text(l10n.studentsTitle),
-                  value: effectiveStudentId,
-                  items: _buildParentChildDropdown(context, role),
-                  onChanged: (value) {
-                    ref.read(parentSelectedStudentProvider.notifier).state = value;
-                  },
-                ),
-              ),
-            ),
-          ],
-        ],
       ),
       body: Column(
         children: [
-          if (isParent && effectiveStudentId == null)
-            _buildParentChildSelector(),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             child: Row(
@@ -117,13 +60,6 @@ class _ClassroomHistoryScreenState extends ConsumerState<ClassroomHistoryScreen>
                         ref.read(classroomListProvider.notifier).search(value),
                   ),
                 ),
-                if (!isParent) ...[
-                  const SizedBox(width: 10),
-                  class RoomFilterButton(
-                    activeCount: listState.count,
-                    onTap: () => _applyFilters(context),
-                  ),
-                ],
               ],
             ),
           ),
@@ -137,10 +73,11 @@ class _ClassroomHistoryScreenState extends ConsumerState<ClassroomHistoryScreen>
                 itemCount: listState.page.data.length,
                 itemBuilder: (context, index) {
                   final classroom = listState.page.data[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 11),
-                    child: ProfessorClassroomListCard(
-                      classroom: classroom,
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 11),
+                    child: ListTile(
+                      title: Text(classroom.name),
+                      subtitle: Text(classroom.description),
                       onTap: () =>
                           context.push('/classrooms/${classroom.id}'),
                     ),
@@ -162,84 +99,5 @@ class _ClassroomHistoryScreenState extends ConsumerState<ClassroomHistoryScreen>
         ],
       ),
     );
-  }
-
-  Widget _buildParentChildSelector() {
-    final relations = ref.watch(relationsProvider);
-    final selected = ref.watch(parentSelectedStudentProvider);
-    final children =
-        relations.relations.where((r) => r.role == 'student').toList();
-
-    if (children.isEmpty) return const SizedBox.shrink();
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-      child: DropdownButtonFormField<String>(
-        value: children.any((c) => c.userId.toString() == selected)
-            ? selected
-            : null,
-        hint: Text(context.l10n.studentsTitle),
-        items: children
-            .map(
-              (c) => DropdownMenuItem(
-                value: c.userId.toString(),
-                child: Text(c.fullname, overflow: TextOverflow.ellipsis),
-              ),
-            )
-            .toList(),
-        onChanged: (value) async {
-          ref.read(parentSelectedStudentProvider.notifier).state = value;
-          await ref.read(classroomListProvider.notifier).setStudent(value);
-          _scrollToTop();
-        },
-      ),
-    );
-  }
-
-  Widget _buildParentChildDropdown(
-      BuildContext context, String? role) {
-    final relations = ref.watch(relationsProvider);
-    final selected = effectiveStudentId;
-    final children =
-        relations.relations.where((r) => r.role == 'student').toList();
-
-    if (children.isEmpty) return const [];
-
-    return children.map((c) => DropdownMenuItem<String>(
-      value: c.userId.toString(),
-      child: Text(c.fullname, overflow: TextOverflow.ellipsis),
-    )).toList();
-  }
-
-  void _scrollToTop() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.jumpTo(0);
-      }
-    });
-  }
-
-  Future<void> _applyFilters(BuildContext context) async {
-    final selection = await showClassroomFilterSheet(
-      context,
-      initial: ClassroomFilterSelection(
-        status: 'archived',
-        studentId: effectiveStudentId,
-      ),
-    );
-    if (selection == null) return;
-    await _applySelection(selection);
-  }
-
-  void _applySelection(ClassroomFilterSelection selection) async {
-    if (!mounted) return;
-    await ref.read(classroomListProvider.notifier).applyFilters(
-          branch: selection.branch,
-          level: selection.level,
-          year: selection.year,
-          status: selection.status,
-          studentId: selection.studentId,
-        );
-    _scrollToTop();
   }
 }

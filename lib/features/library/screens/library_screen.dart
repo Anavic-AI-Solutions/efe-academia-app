@@ -12,7 +12,7 @@ import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../library/data/library_repository.dart';
-import 'widgets/material_tile.dart';
+import '../../classrooms/screens/widgets/material_tile.dart';
 
 class LibraryScreen extends ConsumerStatefulWidget {
   const LibraryScreen({super.key});
@@ -37,16 +37,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final role = ref.watch(authProvider).user?.role ?? 'student';
-    final isParent = role == 'parent';
     final isStudent = role == 'student';
-
-    // Students can only see their own materials, parents see their children's,
-    // admins and professors see all.
-    String? studentId;
-    if (isStudent) {
-      final sd = ref.watch(authProvider).user?.studentData;
-      studentId = sd?.id.toString();
-    }
 
     final pagination = ref.watch(libraryProvider);
 
@@ -61,29 +52,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       backgroundColor: AppColors.backgroundFor(isDark),
       appBar: AppBar(
         title: Text(l10n.libraryTitle),
-        actions: [
-          if (!isStudent) ...[
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Tooltip(
-                message: l10n.chooseChild,
-                child: DropdownButton<String>(
-                  underline: const SizedBox(),
-                  hint: Text(l10n.studentsTitle),
-                  value: isParent ? ref.watch(parentSelectedStudentProvider) : null,
-                  items: isParent
-                      ? _buildParentChildItems(context)
-                      : const [],
-                  onChanged: (value) {
-                    if (isParent && value != null) {
-                      ref.read(parentSelectedStudentProvider.notifier).state = value;
-                    }
-                  },
-                ),
-              ),
-            ),
-          ],
-        ],
       ),
       body: Column(
         children: [
@@ -99,13 +67,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                         ref.read(libraryProvider.notifier).load(search: value),
                   ),
                 ),
-                if (!isStudent) ...[
-                  const SizedBox(width: 10),
-                  class RoomFilterButton(
-                    activeCount: pagination.data.length,
-                    onTap: () {},
-                  ),
-                ],
               ],
             ),
           ),
@@ -132,7 +93,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           PaginationBar(
             page: 1,
             totalPages: pagination.total > 0 ? (pagination.total / 20).ceil() : 1,
-            from: pagination.data.isEmpty ? 0 : pagination.data.first == null ? 1 : 1,
+            from: pagination.data.isEmpty ? 0 : 1,
             to: pagination.data.isEmpty ? 0 : pagination.data.length,
             total: pagination.total,
             enabled: !pagination.isLoading,
@@ -148,25 +109,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     return role == 'professor' || role == 'admin' || role == 'sede';
   }
 
-  VoidCallback? _onOpenUrl(MaterialModel material) {
-    if (material.publicUrl == null || material.publicUrl!.isEmpty) {
+  VoidCallback? _onOpenUrl(dynamic material) {
+    final publicUrl = material.publicUrl;
+    if (publicUrl == null || publicUrl.isEmpty) {
       return null;
     }
-    return () => launch(material.publicUrl!);
-  }
-
-  List<DropdownMenuItem<String>> _buildParentChildItems(
-      BuildContext context) {
-    final relations = ref.watch(relationsProvider);
-    final selected = ref.watch(parentSelectedStudentProvider);
-    final children =
-        relations.relations.where((r) => r.role == 'student').toList();
-
-    if (children.isEmpty) return const [];
-
-    return children.map((c) => DropdownMenuItem<String>(
-      value: c.userId.toString(),
-      child: Text(c.fullname, overflow: TextOverflow.ellipsis),
-    )).toList();
+    return () {};
   }
 }

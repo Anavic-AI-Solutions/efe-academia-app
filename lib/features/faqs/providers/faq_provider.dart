@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'faq_repository.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
+import 'package:efe_mobile/core/pagination/async_list_state.dart';
 
 final faqRepositoryProvider = Provider<FaqRepository>((ref) {
   final api = ref.watch(faqApiProvider);
@@ -12,16 +13,19 @@ final faqApiProvider = Provider<FaqApi>((ref) {
 });
 
 final faqListProvider =
-    StateNotifierProvider<FaqListNotifier, CursorPagination<FaqModel>>((ref) {
-  final repository = ref.watch(faqRepositoryProvider);
-  return FaqListNotifier(repository);
-});
+    StateNotifierProvider<FaqListNotifier, AsyncListState<FaqModel>>(
+  (ref) {
+    final repository = ref.watch(faqRepositoryProvider);
+    return FaqListNotifier(repository);
+  },
+);
 
-class FaqListNotifier extends StateNotifier<CursorPagination<FaqModel>> {
+class FaqListNotifier extends StateNotifier<AsyncListState<FaqModel>> {
   final FaqRepository _repository;
   int _requestId = 0;
 
-  FaqListNotifier(this._repository) : super(CursorPagination.empty());
+  FaqListNotifier(this._repository)
+      : super(const AsyncListState(page: CursorPagination.empty()));
 
   Future<void> load({String? search, String? cursor}) async {
     final requestId = ++_requestId;
@@ -32,30 +36,17 @@ class FaqListNotifier extends StateNotifier<CursorPagination<FaqModel>> {
         cursor: cursor,
       );
       if (requestId != _requestId) return;
-      state = result.copyWith(isLoading: false);
+      state = state.copyWith(page: result, isLoading: false);
     } catch (e) {
       if (requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  CursorPagination<FaqModel> copyWith({
-    CursorPagination<FaqModel>? page,
-    bool? isLoading,
-    String? error,
-  }) {
-    return CursorPagination(
-      cursor: page?.cursor ?? cursor,
-      data: page?.data ?? data,
-      hasMore: page?.hasMore ?? hasMore,
-      total: page?.total ?? total,
-    );
-  }
-
-  String? get cursor => state.cursor;
-  List<FaqModel> get data => state.data;
-  bool get hasMore => state.hasMore;
-  int get total => state.total;
+  String? get cursor => state.page.nextCursor;
+  List<FaqModel> get data => state.page.data;
+  bool get hasMore => state.page.hasMore;
+  int get total => state.page.total ?? 0;
   bool get isLoading => state.isLoading;
   String? get error => state.error;
 }
