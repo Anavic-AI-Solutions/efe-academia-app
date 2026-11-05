@@ -33,6 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navProfile => 'Profile';
 
   @override
+  String get navMenu => 'Menu';
+
+  @override
   String get authWelcomeBack => 'Welcome back';
 
   @override
@@ -1325,4 +1328,195 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trayQuit => 'Quit';
+
+  @override
+  String get libraryTitle => 'Library';
+
+  @override
+  String get librarySearchHint => 'Search materials...';
+
+  @override
+  String get faqsTitle => 'FAQ';
+
+  @override
+  String get faqsSearchHint => 'Search FAQs...';
+
+  @override
+  String get statisticsTitle => 'Statistics';
+
+  @override
+  String get kpiSummary => 'KPI Summary';
+
+  @override
+  String get statisticsLoadError => 'Failed to load statistics';
+
+  @override
+  String get noData => 'No data';
+
+  @override
+  String get noDataSubtitle => 'No data available';
+
+  @override
+  String get menuGroupAcademic => 'Academic';
+
+  @override
+  String get menuGroupCommunication => 'Communication';
+
+  @override
+  String get menuGroupAccountSupport => 'Account & support';
+
+  @override
+  String get menuCalendar => 'Calendar';
+
+  @override
+  String get menuCourses => 'Courses';
+
+  @override
+  String get menuCommunication => 'Communication';
+
+  @override
+  String get menuNotifications => 'Notifications';
+
+  @override
+  String get menuProfile => 'Profile';
+
+  @override
+  String get menuFees => 'Fees';
+
+  @override
+  String get menuHistory => 'History';
+
+  @override
+  String get menuLibrary => 'Library';
+
+  @override
+  String get menuDocuments => 'Documents';
+
+  @override
+  String get menuFaq => 'FAQ';
+
+  @override
+  String get menuBirthdays => 'Birthdays';
+
+  @override
+  String get menuStatistics => 'Statistics';
+
+  @override
+  String get historyTitle => 'History';
+
+  @override
+  String get historySearchHint => 'Search archived courses...';
+
+  @override
+  String get historyEmptyTitle => 'No archived courses';
+
+  @override
+  String get historyEmptySubtitle => 'Archived courses will appear here';
+
+  @override
+  String get historyEmptySearch => 'No archived courses match that search';
+
+  @override
+  String get historyLoadError => 'Could not load history';
+
+  @override
+  String get historyArchivedBadge => 'Archived';
+
+  @override
+  String get historyChooseChild => 'Choose a child to see their history';
+
+  @override
+  String get libraryEmptyTitle => 'No materials';
+
+  @override
+  String get libraryEmptySubtitle => 'There are no materials available yet';
+
+  @override
+  String get libraryEmptySearch => 'No materials match that search';
+
+  @override
+  String get libraryLoadError => 'Could not load materials';
+
+  @override
+  String get libraryOpenError => 'Could not open the link';
+
+  @override
+  String get libraryNoLink => 'This material has no available link';
+
+  @override
+  String get libraryLoadingMore => 'Loading more materials...';
+
+  @override
+  String get faqsEmptyTitle => 'No questions';
+
+  @override
+  String get faqsEmptySubtitle => 'There are no FAQs yet';
+
+  @override
+  String get faqsEmptySearch => 'No questions match that search';
+
+  @override
+  String get faqsLoadError => 'Could not load FAQs';
+
+  @override
+  String get statisticsDetailsTitle => 'Details';
+
+  @override
+  String get statisticsEmptyTitle => 'No statistics';
+
+  @override
+  String get statisticsEmptySubtitle => 'There is no data to show yet';
+
+  @override
+  String statisticsMoreItems(int count) {
+    return '+$count more';
+  }
+
+  @override
+  String get statisticsTotalStudents => 'Students';
+
+  @override
+  String get statisticsTotalClassrooms => 'Classrooms';
+
+  @override
+  String get statisticsFeesPaidThisYear => 'Fees paid (year)';
+
+  @override
+  String get statisticsFeesOverdue => 'Overdue fees';
+
+  @override
+  String get statisticsTotalOwed => 'Amount owed';
+
+  @override
+  String get statisticsFeesPendingReview => 'Receipts under review';
+
+  @override
+  String get statisticsOpenTickets => 'Open tickets';
+
+  @override
+  String get statisticsAbsencesThisMonth => 'Absences this month';
+
+  @override
+  String get statisticsClassroomsCount => 'Classrooms';
+
+  @override
+  String get statisticsAbsencesToday => 'Absences today';
+
+  @override
+  String get statisticsFeesPaid => 'Fees paid';
+
+  @override
+  String get statisticsFeesPending => 'Pending fees';
+
+  @override
+  String get statisticsChildrenCount => 'Children';
+
+  @override
+  String get statisticsTotalAbsences => 'Total absences';
+
+  @override
+  String get statisticsTotalClasses => 'Total classes';
+
+  @override
+  String get statisticsAbsenceRate => 'Absence rate';
 }

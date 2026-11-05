@@ -28,6 +28,7 @@ import 'package:efe_mobile/features/relations/domain/relation_model.dart';
 import 'package:efe_mobile/features/relations/providers/relations_provider.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
+import 'package:efe_mobile/features/menu/screens/menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -198,6 +199,17 @@ void main() {
 
     // The old center search button is gone.
     expect(find.byIcon(PhosphorIconsFill.magnifyingGlass), findsNothing);
+  });
+
+  testWidgets('menu destination opens the menu screen', (tester) async {
+    await _pumpApp(tester, 'student');
+
+    await tester.tap(navLabel('Menú'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MenuScreen), findsOneWidget);
+    expect(find.text('Académico'), findsOneWidget);
+    expect(find.text('Calendario'), findsOneWidget);
   });
 
   testWidgets('parent nav shows Pagos and opens the parent fees screen',

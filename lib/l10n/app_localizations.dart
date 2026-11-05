@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'Perfil'**
   String get navProfile;
 
+  /// No description provided for @navMenu.
+  ///
+  /// In es, this message translates to:
+  /// **'Menú'**
+  String get navMenu;
+
   /// No description provided for @authWelcomeBack.
   ///
   /// In es, this message translates to:
@@ -2473,6 +2479,384 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Salir'**
   String get trayQuit;
+
+  /// No description provided for @libraryTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Biblioteca'**
+  String get libraryTitle;
+
+  /// No description provided for @librarySearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar materiales...'**
+  String get librarySearchHint;
+
+  /// No description provided for @faqsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Preguntas frecuentes'**
+  String get faqsTitle;
+
+  /// No description provided for @faqsSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar preguntas...'**
+  String get faqsSearchHint;
+
+  /// No description provided for @statisticsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Estadísticas'**
+  String get statisticsTitle;
+
+  /// No description provided for @kpiSummary.
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen de KPIs'**
+  String get kpiSummary;
+
+  /// No description provided for @statisticsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar las estadísticas'**
+  String get statisticsLoadError;
+
+  /// No description provided for @noData.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay datos'**
+  String get noData;
+
+  /// No description provided for @noDataSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay información disponible'**
+  String get noDataSubtitle;
+
+  /// No description provided for @menuGroupAcademic.
+  ///
+  /// In es, this message translates to:
+  /// **'Académico'**
+  String get menuGroupAcademic;
+
+  /// No description provided for @menuGroupCommunication.
+  ///
+  /// In es, this message translates to:
+  /// **'Comunicación'**
+  String get menuGroupCommunication;
+
+  /// No description provided for @menuGroupAccountSupport.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuenta y soporte'**
+  String get menuGroupAccountSupport;
+
+  /// No description provided for @menuCalendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario'**
+  String get menuCalendar;
+
+  /// No description provided for @menuCourses.
+  ///
+  /// In es, this message translates to:
+  /// **'Cursos'**
+  String get menuCourses;
+
+  /// No description provided for @menuCommunication.
+  ///
+  /// In es, this message translates to:
+  /// **'Comunicación'**
+  String get menuCommunication;
+
+  /// No description provided for @menuNotifications.
+  ///
+  /// In es, this message translates to:
+  /// **'Notificaciones'**
+  String get menuNotifications;
+
+  /// No description provided for @menuProfile.
+  ///
+  /// In es, this message translates to:
+  /// **'Perfil'**
+  String get menuProfile;
+
+  /// No description provided for @menuFees.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas'**
+  String get menuFees;
+
+  /// No description provided for @menuHistory.
+  ///
+  /// In es, this message translates to:
+  /// **'Historial'**
+  String get menuHistory;
+
+  /// No description provided for @menuLibrary.
+  ///
+  /// In es, this message translates to:
+  /// **'Biblioteca'**
+  String get menuLibrary;
+
+  /// No description provided for @menuDocuments.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get menuDocuments;
+
+  /// No description provided for @menuFaq.
+  ///
+  /// In es, this message translates to:
+  /// **'FAQ'**
+  String get menuFaq;
+
+  /// No description provided for @menuBirthdays.
+  ///
+  /// In es, this message translates to:
+  /// **'Cumpleaños'**
+  String get menuBirthdays;
+
+  /// No description provided for @menuStatistics.
+  ///
+  /// In es, this message translates to:
+  /// **'Estadísticas'**
+  String get menuStatistics;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Historial'**
+  String get historyTitle;
+
+  /// No description provided for @historySearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar cursos archivados...'**
+  String get historySearchHint;
+
+  /// No description provided for @historyEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin cursos archivados'**
+  String get historyEmptyTitle;
+
+  /// No description provided for @historyEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Los cursos archivados aparecerán acá'**
+  String get historyEmptySubtitle;
+
+  /// No description provided for @historyEmptySearch.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos cursos archivados con esa búsqueda'**
+  String get historyEmptySearch;
+
+  /// No description provided for @historyLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar el historial'**
+  String get historyLoadError;
+
+  /// No description provided for @historyArchivedBadge.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivado'**
+  String get historyArchivedBadge;
+
+  /// No description provided for @historyChooseChild.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí un hijo para ver su historial'**
+  String get historyChooseChild;
+
+  /// No description provided for @libraryEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin materiales'**
+  String get libraryEmptyTitle;
+
+  /// No description provided for @libraryEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay materiales disponibles'**
+  String get libraryEmptySubtitle;
+
+  /// No description provided for @libraryEmptySearch.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos materiales con esa búsqueda'**
+  String get libraryEmptySearch;
+
+  /// No description provided for @libraryLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los materiales'**
+  String get libraryLoadError;
+
+  /// No description provided for @libraryOpenError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir el enlace'**
+  String get libraryOpenError;
+
+  /// No description provided for @libraryNoLink.
+  ///
+  /// In es, this message translates to:
+  /// **'Este material no tiene un enlace disponible'**
+  String get libraryNoLink;
+
+  /// No description provided for @libraryLoadingMore.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más materiales...'**
+  String get libraryLoadingMore;
+
+  /// No description provided for @faqsEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin preguntas'**
+  String get faqsEmptyTitle;
+
+  /// No description provided for @faqsEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay preguntas frecuentes'**
+  String get faqsEmptySubtitle;
+
+  /// No description provided for @faqsEmptySearch.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos preguntas con esa búsqueda'**
+  String get faqsEmptySearch;
+
+  /// No description provided for @faqsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar las preguntas frecuentes'**
+  String get faqsLoadError;
+
+  /// No description provided for @statisticsDetailsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles'**
+  String get statisticsDetailsTitle;
+
+  /// No description provided for @statisticsEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin estadísticas'**
+  String get statisticsEmptyTitle;
+
+  /// No description provided for @statisticsEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay datos para mostrar'**
+  String get statisticsEmptySubtitle;
+
+  /// No description provided for @statisticsMoreItems.
+  ///
+  /// In es, this message translates to:
+  /// **'+{count} más'**
+  String statisticsMoreItems(int count);
+
+  /// No description provided for @statisticsTotalStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos'**
+  String get statisticsTotalStudents;
+
+  /// No description provided for @statisticsTotalClassrooms.
+  ///
+  /// In es, this message translates to:
+  /// **'Aulas'**
+  String get statisticsTotalClassrooms;
+
+  /// No description provided for @statisticsFeesPaidThisYear.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas pagadas (año)'**
+  String get statisticsFeesPaidThisYear;
+
+  /// No description provided for @statisticsFeesOverdue.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas en mora'**
+  String get statisticsFeesOverdue;
+
+  /// No description provided for @statisticsTotalOwed.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto adeudado'**
+  String get statisticsTotalOwed;
+
+  /// No description provided for @statisticsFeesPendingReview.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobantes en revisión'**
+  String get statisticsFeesPendingReview;
+
+  /// No description provided for @statisticsOpenTickets.
+  ///
+  /// In es, this message translates to:
+  /// **'Tickets abiertos'**
+  String get statisticsOpenTickets;
+
+  /// No description provided for @statisticsAbsencesThisMonth.
+  ///
+  /// In es, this message translates to:
+  /// **'Inasistencias del mes'**
+  String get statisticsAbsencesThisMonth;
+
+  /// No description provided for @statisticsClassroomsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'Aulas'**
+  String get statisticsClassroomsCount;
+
+  /// No description provided for @statisticsAbsencesToday.
+  ///
+  /// In es, this message translates to:
+  /// **'Inasistencias hoy'**
+  String get statisticsAbsencesToday;
+
+  /// No description provided for @statisticsFeesPaid.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas pagadas'**
+  String get statisticsFeesPaid;
+
+  /// No description provided for @statisticsFeesPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas pendientes'**
+  String get statisticsFeesPending;
+
+  /// No description provided for @statisticsChildrenCount.
+  ///
+  /// In es, this message translates to:
+  /// **'Hijos'**
+  String get statisticsChildrenCount;
+
+  /// No description provided for @statisticsTotalAbsences.
+  ///
+  /// In es, this message translates to:
+  /// **'Total de inasistencias'**
+  String get statisticsTotalAbsences;
+
+  /// No description provided for @statisticsTotalClasses.
+  ///
+  /// In es, this message translates to:
+  /// **'Total de clases'**
+  String get statisticsTotalClasses;
+
+  /// No description provided for @statisticsAbsenceRate.
+  ///
+  /// In es, this message translates to:
+  /// **'Tasa de inasistencias'**
+  String get statisticsAbsenceRate;
 }
 
 class _AppLocalizationsDelegate

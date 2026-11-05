@@ -1,57 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../../../l10n/l10n.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_typography.dart';
+import '../../../../core/widgets/app_card.dart';
 import '../../domain/faq_model.dart';
 
-class FaqTile extends StatelessWidget {
+class FaqTile extends StatefulWidget {
   final FaqModel faq;
-  final VoidCallback? onTap;
 
   const FaqTile({
     super.key,
     required this.faq,
-    this.onTap,
   });
+
+  @override
+  State<FaqTile> createState() => _FaqTileState();
+}
+
+class _FaqTileState extends State<FaqTile> {
+  bool _expanded = false;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final primary =
+        isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final secondary =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final accent = AppColors.accentFor(isDark);
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                faq.question,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: color,
+    return AppCard(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.zero,
+      onTap: () => setState(() => _expanded = !_expanded),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.faq.question,
+                    style: AppTypography.titleSmall.copyWith(color: primary),
+                  ),
                 ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                faq.answer,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                const SizedBox(width: 10),
+                AnimatedRotation(
+                  turns: _expanded ? 0.5 : 0,
+                  duration: const Duration(milliseconds: 180),
+                  child: Icon(
+                    PhosphorIconsRegular.caretDown,
+                    size: 18,
+                    color: accent,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          AnimatedCrossFade(
+            duration: const Duration(milliseconds: 180),
+            crossFadeState: _expanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            firstChild: const SizedBox(width: double.infinity),
+            secondChild: Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+              child: Text(
+                widget.faq.answer,
+                style: AppTypography.bodySmall.copyWith(
+                  color: secondary,
                   height: 1.5,
                 ),
-                overflow: TextOverflow.ellipsis,
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

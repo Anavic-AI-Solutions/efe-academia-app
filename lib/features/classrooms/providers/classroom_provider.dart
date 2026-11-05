@@ -78,11 +78,11 @@ class ClassroomListState {
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
       search: search ?? this.search,
-      branch: branch,
-      level: level,
-      year: year,
+      branch: branch ?? this.branch,
+      level: level ?? this.level,
+      year: year ?? this.year,
       status: status ?? this.status,
-      studentId: studentId,
+      studentId: studentId ?? this.studentId,
     );
   }
 }
@@ -94,12 +94,18 @@ class ClassroomListState {
 class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
   final ClassroomRepository _repository;
   int _requestId = 0;
+  int _lastRequestedPage = 1;
 
-  ClassroomListNotifier(this._repository) : super(ClassroomListState()) {
-    load();
+  ClassroomListNotifier(
+    this._repository, {
+    String? initialStatus,
+    bool autoLoad = true,
+  }) : super(ClassroomListState(status: initialStatus)) {
+    if (autoLoad) load();
   }
 
   Future<void> load({int page = 1, String? status}) async {
+    _lastRequestedPage = page;
     if (status != null) {
       state = state.copyWith(status: status);
     }
@@ -115,17 +121,20 @@ class ClassroomListNotifier extends StateNotifier<ClassroomListState> {
         status: state.status,
         studentId: state.studentId,
       );
-      if (requestId != _requestId) return;
+      if (!mounted || requestId != _requestId) return;
       if (result.data.isEmpty && page > 1 && result.total > 0) {
         await load(page: 1);
         return;
       }
       state = state.copyWith(page: result, isLoading: false);
     } catch (e) {
-      if (requestId != _requestId) return;
+      if (!mounted || requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
+
+  /// Retries the exact request that failed, including a failed search.
+  Future<void> retry() => load(page: _lastRequestedPage);
 
   Future<void> refresh() => load(page: state.page.page);
 
@@ -226,9 +235,12 @@ final classroomMaterialsProvider = StateNotifierProvider.family<
 // History provider: archived classrooms, scoped by role/student
 // ---------------------------------------------------------------------------
 
-final classroomHistoryProvider =
-    StateNotifierProvider<ClassroomListNotifier, ClassroomListState>((ref) {
+final classroomHistoryProvider = StateNotifierProvider.autoDispose<
+    ClassroomListNotifier, ClassroomListState>((ref) {
   final repository = ref.watch(classroomRepositoryProvider);
-  return ClassroomListNotifier(repository)
-    ..load(status: 'archived');
+  return ClassroomListNotifier(
+    repository,
+    initialStatus: 'archived',
+    autoLoad: false,
+  );
 });

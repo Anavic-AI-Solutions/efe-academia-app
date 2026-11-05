@@ -63,8 +63,6 @@ class CustomBottomNav extends ConsumerWidget {
     final unreadChats = ref.watch(chatUnreadCountProvider).valueOrNull ?? 0;
     // Parents get a "Pagos" tab in place of "Aulas".
     final isParent = ref.watch(authProvider).user?.role == 'parent';
-    // Fifth item: Menú (visible for all roles).
-    final showMenu = ref.watch(authProvider).user?.role != null;
 
     return Container(
       decoration: BoxDecoration(
@@ -135,20 +133,18 @@ class CustomBottomNav extends ConsumerWidget {
                 accent: accent,
                 inactive: inactive,
               ),
-              if (showMenu) ...[
-                _NavItem(
-                  icon: PhosphorIconsRegular.list,
-                  selectedIcon: PhosphorIconsFill.list,
-                  label: l10n.navMenu,
-                  isSelected: navigationShell.currentIndex == 4,
-                  onTap: () => navigationShell.goBranch(
-                    4,
-                    initialLocation: 4 == navigationShell.currentIndex,
-                  ),
-                  accent: accent,
-                  inactive: inactive,
+              _NavItem(
+                icon: PhosphorIconsRegular.list,
+                selectedIcon: PhosphorIconsFill.list,
+                label: l10n.navMenu,
+                isSelected: navigationShell.currentIndex == 4,
+                onTap: () => navigationShell.goBranch(
+                  4,
+                  initialLocation: 4 == navigationShell.currentIndex,
                 ),
-              ],
+                accent: accent,
+                inactive: inactive,
+              ),
             ],
           ),
         ),
@@ -360,6 +356,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/menu',
+                builder: (context, state) => const MenuScreen(),
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
@@ -432,42 +436,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SearchScreen(),
       ),
       GoRoute(
-        path: '/menu',
-        builder: (context, state) => MenuScreen(),
-        routes: [
-          GoRoute(
-            path: 'history',
-            builder: (context, state) => ClassroomHistoryScreen(),
-          ),
-          GoRoute(
-            path: 'library',
-            builder: (context, state) => LibraryScreen(),
-          ),
-          GoRoute(
-            path: 'faqs',
-            builder: (context, state) => FaqScreen(),
-          ),
-          GoRoute(
-            path: 'statistics',
-            builder: (context, state) => StatisticsScreen(),
-          ),
-        ],
-      ),
-      GoRoute(
         path: '/history',
-        builder: (context, state) => ClassroomHistoryScreen(),
+        builder: (context, state) => const ClassroomHistoryScreen(),
       ),
       GoRoute(
         path: '/library',
-        builder: (context, state) => LibraryScreen(),
+        builder: (context, state) => const LibraryScreen(),
       ),
       GoRoute(
         path: '/faqs',
-        builder: (context, state) => FaqScreen(),
+        builder: (context, state) => const FaqScreen(),
       ),
       GoRoute(
         path: '/statistics',
-        builder: (context, state) => StatisticsScreen(),
+        builder: (context, state) => const StatisticsScreen(),
       ),
     ],
   );

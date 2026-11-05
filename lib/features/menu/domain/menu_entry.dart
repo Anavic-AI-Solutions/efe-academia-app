@@ -1,95 +1,175 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+/// Groups used to organise the menu sections.
+enum MenuGroup { academic, communication, accountSupport }
+
+/// The exact twelve sections exposed by the mobile menu.
+///
+/// This enum is intentionally closed: adding a new value here means adding a
+/// new section to the product, which must be reflected in the role matrix and
+/// in the localized labels.
+enum MenuSection {
+  calendar,
+  courses,
+  communication,
+  notifications,
+  profile,
+  fees,
+  history,
+  library,
+  documents,
+  faq,
+  birthdays,
+  statistics,
+}
+
 class MenuEntry {
-  final String label;
+  final MenuSection section;
+  final MenuGroup group;
   final IconData icon;
-  final IconData selectedIcon;
   final String route;
-  final String? tooltip;
-  final bool showInBottomNav;
-  final bool isAcademic;
-  final bool isCommunication;
-  final bool isAccount;
-  final bool isSupport;
 
   const MenuEntry({
-    required this.label,
+    required this.section,
+    required this.group,
     required this.icon,
-    required this.selectedIcon,
     required this.route,
-    this.tooltip,
-    this.showInBottomNav = true,
-    this.isAcademic = false,
-    this.isCommunication = false,
-    this.isAccount = false,
-    this.isSupport = false,
   });
 
-  static List<MenuEntry> allEntries() => [
+  /// All sections in display order: academic, communication, account.
+  static const List<MenuEntry> all = [
     MenuEntry(
-      label: 'Menú',
-      icon: PhosphorIconsRegular.list,
-      selectedIcon: PhosphorIconsFill.list,
-      route: '/menu',
+      section: MenuSection.calendar,
+      group: MenuGroup.academic,
+      icon: PhosphorIconsRegular.calendarBlank,
+      route: '/calendar',
     ),
     MenuEntry(
-      label: 'Historial',
-      icon: PhosphorIconsRegular.clock,
-      selectedIcon: PhosphorIconsFill.clock,
+      section: MenuSection.courses,
+      group: MenuGroup.academic,
+      icon: PhosphorIconsRegular.chalkboardTeacher,
+      route: '/classrooms',
+    ),
+    MenuEntry(
+      section: MenuSection.history,
+      group: MenuGroup.academic,
+      icon: PhosphorIconsRegular.clockCounterClockwise,
       route: '/history',
-      isAcademic: true,
     ),
     MenuEntry(
-      label: 'Biblioteca',
+      section: MenuSection.library,
+      group: MenuGroup.academic,
       icon: PhosphorIconsRegular.bookOpen,
-      selectedIcon: PhosphorIconsFill.bookOpen,
       route: '/library',
-      isCommunication: true,
     ),
     MenuEntry(
-      label: 'FAQ',
-      icon: PhosphorIconsRegular.helpCircle,
-      selectedIcon: PhosphorIconsFill.helpCircle,
-      route: '/faqs',
-      isSupport: true,
+      section: MenuSection.documents,
+      group: MenuGroup.academic,
+      icon: PhosphorIconsRegular.fileText,
+      route: '/documents',
     ),
     MenuEntry(
-      label: 'Estadísticas',
-      icon: PhosphorIconsRegular.barChart,
-      selectedIcon: PhosphorIconsFill.barChart,
+      section: MenuSection.statistics,
+      group: MenuGroup.academic,
+      icon: PhosphorIconsRegular.chartBar,
       route: '/statistics',
-      isAccount: true,
+    ),
+    MenuEntry(
+      section: MenuSection.communication,
+      group: MenuGroup.communication,
+      icon: PhosphorIconsRegular.chatCircle,
+      route: '/chat',
+    ),
+    MenuEntry(
+      section: MenuSection.notifications,
+      group: MenuGroup.communication,
+      icon: PhosphorIconsRegular.bell,
+      route: '/notifications',
+    ),
+    MenuEntry(
+      section: MenuSection.profile,
+      group: MenuGroup.accountSupport,
+      icon: PhosphorIconsRegular.userCircle,
+      route: '/profile',
+    ),
+    MenuEntry(
+      section: MenuSection.fees,
+      group: MenuGroup.accountSupport,
+      icon: PhosphorIconsRegular.wallet,
+      route: '/fees',
+    ),
+    MenuEntry(
+      section: MenuSection.birthdays,
+      group: MenuGroup.accountSupport,
+      icon: PhosphorIconsRegular.cake,
+      route: '/birthdays',
+    ),
+    MenuEntry(
+      section: MenuSection.faq,
+      group: MenuGroup.accountSupport,
+      icon: PhosphorIconsRegular.question,
+      route: '/faqs',
     ),
   ];
 
+  /// Menu sections visible for [role].
+  ///
+  /// Unknown roles only get the sections available to everyone: they must not
+  /// see notifications, fees or birthdays.
   static List<MenuEntry> forRole(String role) {
-    final all = allEntries();
-    switch (role) {
-      case 'admin':
-        return all;
-      case 'sede':
-        return all;
-      case 'professor':
-        return [
-          ...all.where((e) => e.isAcademic || e.isCommunication),
-        ];
-      case 'parent':
-        return [
-          ...all.where((e) => !e.isAccount || e.route == '/menu'),
-          MenuEntry(
-            label: 'Pagos',
-            icon: PhosphorIconsRegular.wallet,
-            selectedIcon: PhosphorIconsFill.wallet,
-            route: '/payments',
-          ),
-        ];
-      case 'student':
-        return [
-          ...all.where((e) => e.route == '/menu' || e.route == '/history'),
-        ];
+    final normalized = _normalizeRole(role);
+    return all.where((entry) => entry.isVisibleFor(normalized)).toList();
+  }
+
+  bool isVisibleFor(String role) {
+    final normalized = _normalizeRole(role);
+    switch (section) {
+      case MenuSection.notifications:
+      case MenuSection.fees:
+        return normalized == 'student' || normalized == 'parent';
+      case MenuSection.birthdays:
+        return normalized == 'admin' ||
+            normalized == 'branch' ||
+            normalized == 'professor' ||
+            normalized == 'parent';
       default:
-        return all;
+        return true;
     }
   }
+
+  /// The route can depend on the role (parents pay from the payments tab).
+  String routeFor(String role) {
+    final normalized = _normalizeRole(role);
+    if (section == MenuSection.fees && normalized == 'parent') {
+      return '/payments';
+    }
+    return route;
+  }
+
+  /// Routes that live inside the main shell and therefore switch tabs instead
+  /// of stacking a new page on top of the menu.
+  bool isShellTabFor(String role) {
+    final normalized = _normalizeRole(role);
+    switch (section) {
+      case MenuSection.courses:
+      case MenuSection.communication:
+      case MenuSection.profile:
+        return true;
+      case MenuSection.fees:
+        return normalized == 'parent';
+      default:
+        return false;
+    }
+  }
+
+  static String _normalizeRole(String role) {
+    final value = role.trim().toLowerCase();
+    // The mobile API exposes the branch role as "branch"; accept the web name
+    // as a fallback so both spellings behave the same.
+    return value == 'sede' ? 'branch' : value;
+  }
 }
+
+/// Convenience function matching the interface documented in the plan.
+List<MenuEntry> menuEntriesForRole(String role) => MenuEntry.forRole(role);
