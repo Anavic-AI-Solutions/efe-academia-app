@@ -14,12 +14,19 @@ class FaqModel {
   });
 
   factory FaqModel.fromJson(Map<String, dynamic> json) {
+    final data = json['data'];
+    final attrs = json['attributes'] as Map<String, dynamic>? ??
+        (data is Map ? data['attributes'] as Map<String, dynamic>? : null) ??
+        json;
+    final rawId =
+        json['id'] ?? (data is Map ? data['id'] : null) ?? attrs['id'];
+
     return FaqModel(
-      id: json['id'] as String,
-      question: json['question'] as String,
-      answer: json['answer'] as String,
-      category: json['category'] as String?,
-      createdAt: json['created_at'] as String?,
+      id: rawId?.toString() ?? '',
+      question: attrs['question']?.toString() ?? '',
+      answer: attrs['answer']?.toString() ?? '',
+      category: attrs['category']?.toString(),
+      createdAt: attrs['created_at']?.toString(),
     );
   }
 

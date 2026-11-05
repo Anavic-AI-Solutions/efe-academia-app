@@ -535,30 +535,33 @@ class _MaterialFormSheetState extends ConsumerState<MaterialFormSheet> {
           ] else ...[
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 220),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  for (final student in _students ?? const <StudentModel>[])
-                    CheckboxListTile(
-                      dense: true,
-                      contentPadding: EdgeInsets.zero,
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(
-                        student.fullname,
-                        style: const TextStyle(fontSize: 13),
+              child: Material(
+                type: MaterialType.transparency,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    for (final student in _students ?? const <StudentModel>[])
+                      CheckboxListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        title: Text(
+                          student.fullname,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                        value: _studentIds.contains(student.id),
+                        onChanged: _isSaving
+                            ? null
+                            : (checked) => setState(() {
+                                  if (checked ?? false) {
+                                    _studentIds.add(student.id);
+                                  } else {
+                                    _studentIds.remove(student.id);
+                                  }
+                                }),
                       ),
-                      value: _studentIds.contains(student.id),
-                      onChanged: _isSaving
-                          ? null
-                          : (checked) => setState(() {
-                                if (checked ?? false) {
-                                  _studentIds.add(student.id);
-                                } else {
-                                  _studentIds.remove(student.id);
-                                }
-                              }),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

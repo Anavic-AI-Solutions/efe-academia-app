@@ -1,43 +1,48 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/statistics_repository.dart';
-import '../data/statistics_api.dart';
-import '../domain/statistics_model.dart';
 
-final statisticsRepositoryProvider =
-    Provider<StatisticsRepository>((ref) {
-  return StatisticsRepository(ref.watch(statisticsApiProvider));
-});
+import '../../../core/api/api_provider.dart';
+import '../data/statistics_api.dart';
+import '../data/statistics_repository.dart';
+import '../domain/statistics_model.dart';
 
 final statisticsApiProvider = Provider<StatisticsApi>((ref) {
   return StatisticsApi(ref.watch(apiClientProvider));
 });
 
-final statisticsDashboardProvider =
-    StateNotifierProvider<StatisticsListNotifier, StatisticsState>((ref) {
-  final repository = ref.watch(statisticsRepositoryProvider);
-  return StatisticsListNotifier(repository);
+final statisticsRepositoryProvider = Provider<StatisticsRepository>((ref) {
+  return StatisticsRepository(ref.watch(statisticsApiProvider));
 });
+
+final statisticsDashboardProvider =
+    StateNotifierProvider.autoDispose<StatisticsListNotifier, StatisticsState>(
+  (ref) => StatisticsListNotifier(ref.watch(statisticsRepositoryProvider)),
+);
 
 class StatisticsState {
   final StatisticsModel data;
   final bool isLoading;
+  final bool hasLoaded;
   final String? error;
 
   StatisticsState({
     required this.data,
     this.isLoading = false,
+    this.hasLoaded = false,
     this.error,
   });
 
   StatisticsState copyWith({
     StatisticsModel? data,
     bool? isLoading,
+    bool? hasLoaded,
     String? error,
+    bool clearError = false,
   }) {
     return StatisticsState(
       data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      hasLoaded: hasLoaded ?? this.hasLoaded,
+      error: clearError ? null : (error ?? this.error),
     );
   }
 }
@@ -47,25 +52,27 @@ class StatisticsListNotifier extends StateNotifier<StatisticsState> {
   int _requestId = 0;
 
   StatisticsListNotifier(this._repository)
-      : super(StatisticsState(
-            data: StatisticsModel(metrics: {}, details: [], role: 'student')));
+      : super(StatisticsState(data: StatisticsModel.empty()));
 
-  Future<void> load({String? role}) async {
+  Future<void> load() async {
     final requestId = ++_requestId;
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final result = await _repository.getDashboard(role: role);
-      if (requestId != _requestId) return;
-      state = state.copyWith(data: result, isLoading: false);
+      final result = await _repository.getDashboard();
+      if (!mounted || requestId != _requestId) return;
+      state = state.copyWith(
+        data: result,
+        isLoading: false,
+        hasLoaded: true,
+        clearError: true,
+      );
     } catch (e) {
-      if (requestId != _requestId) return;
-      state = state.copyWith(isLoading: false, error: e.toString());
+      if (!mounted || requestId != _requestId) return;
+      state = state.copyWith(
+        isLoading: false,
+        hasLoaded: true,
+        error: e.toString(),
+      );
     }
   }
-
-  Map<String, dynamic> get metrics => state.data.metrics;
-  List<dynamic> get details => state.data.details;
-  String get role => state.data.role;
-  bool get isLoading => state.isLoading;
-  String? get error => state.error;
 }

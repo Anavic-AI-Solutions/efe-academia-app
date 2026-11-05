@@ -1,35 +1,41 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/faq_api.dart';
 import '../domain/faq_model.dart';
-import 'package:efe_mobile/core/api/cursor_pagination.dart';
+import 'package:efe_mobile/core/api/page_pagination.dart';
 
 class FaqRepository {
   final FaqApi _api;
   FaqRepository(this._api);
 
-  Future<CursorPagination<FaqModel>> getFaqs({
+  Future<PageResult<FaqModel>> getFaqs({
     String? search,
-    String? nextCursor,
+    int page = 1,
+    int perPage = 10,
   }) async {
     final response = await _api.getFaqs(
       search: search,
-      nextCursor: nextCursor,
+      page: page,
+      perPage: perPage,
     );
 
-    final data = (response.data['data'] as List?)
-        ?.map((json) => FaqModel.fromJson(json))
-        .toList() ??
-        [];
+    final body = response.data is Map<String, dynamic>
+        ? response.data as Map<String, dynamic>
+        : <String, dynamic>{};
+    final rawData = body['data'];
+    final data = rawData is List
+        ? rawData
+            .whereType<Map<String, dynamic>>()
+            .map(FaqModel.fromJson)
+            .toList()
+        : <FaqModel>[];
+    final meta = body['meta'] is Map<String, dynamic>
+        ? body['meta'] as Map<String, dynamic>
+        : <String, dynamic>{};
 
-    final cursorStr = response.data['cursor'] as String?;
-    final hasMore = response.data['has_more'] as bool? ?? false;
-    final total = response.data['total'] as int? ?? data.length;
-
-    return CursorPagination(
+    return PageResult(
       data: data,
-      nextCursor: cursorStr,
-      hasMore: hasMore,
-      total: total,
+      page: (meta['current_page'] as num?)?.toInt() ?? page,
+      perPage: (meta['per_page'] as num?)?.toInt() ?? perPage,
+      total: (meta['total'] as num?)?.toInt() ?? data.length,
     );
   }
 }

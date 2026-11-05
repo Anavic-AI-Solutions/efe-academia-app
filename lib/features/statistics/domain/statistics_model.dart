@@ -1,26 +1,34 @@
 class StatisticsModel {
-  final Map<String, dynamic> metrics;
-  final List<dynamic> details;
   final String role;
+  final Map<String, dynamic> metrics;
+  final Map<String, dynamic> details;
 
   StatisticsModel({
+    required this.role,
     required this.metrics,
     required this.details,
-    required this.role,
   });
 
-  factory StatisticsModel.fromJson(Map<String, dynamic> json, [String role = 'student']) {
+  factory StatisticsModel.empty() => StatisticsModel(
+        role: '',
+        metrics: const {},
+        details: const {},
+      );
+
+  factory StatisticsModel.fromJson(Map<String, dynamic> json) {
     return StatisticsModel(
-      metrics: json['metrics'] as Map<String, dynamic>,
-      details: json['details'] as List<dynamic>,
-      role: role,
+      role: json['role']?.toString() ?? '',
+      metrics: _asMap(json['metrics']),
+      details: _asMap(json['details']),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'metrics': metrics,
-      'details': details,
-    };
+  bool get isEmpty => metrics.isEmpty && details.isEmpty;
+
+  static Map<String, dynamic> _asMap(dynamic value) {
+    if (value is Map) {
+      return value.map((key, item) => MapEntry(key.toString(), item));
+    }
+    return const {};
   }
 }

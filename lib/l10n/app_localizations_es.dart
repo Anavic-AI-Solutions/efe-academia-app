@@ -33,6 +33,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navProfile => 'Perfil';
 
   @override
+  String get navMenu => 'Menú';
+
+  @override
   String get authWelcomeBack => 'Bienvenido de nuevo';
 
   @override
@@ -1330,4 +1333,196 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get trayQuit => 'Salir';
+
+  @override
+  String get libraryTitle => 'Biblioteca';
+
+  @override
+  String get librarySearchHint => 'Buscar materiales...';
+
+  @override
+  String get faqsTitle => 'Preguntas frecuentes';
+
+  @override
+  String get faqsSearchHint => 'Buscar preguntas...';
+
+  @override
+  String get statisticsTitle => 'Estadísticas';
+
+  @override
+  String get kpiSummary => 'Resumen de KPIs';
+
+  @override
+  String get statisticsLoadError => 'No se pudieron cargar las estadísticas';
+
+  @override
+  String get noData => 'No hay datos';
+
+  @override
+  String get noDataSubtitle => 'No hay información disponible';
+
+  @override
+  String get menuGroupAcademic => 'Académico';
+
+  @override
+  String get menuGroupCommunication => 'Comunicación';
+
+  @override
+  String get menuGroupAccountSupport => 'Cuenta y soporte';
+
+  @override
+  String get menuCalendar => 'Calendario';
+
+  @override
+  String get menuCourses => 'Cursos';
+
+  @override
+  String get menuCommunication => 'Comunicación';
+
+  @override
+  String get menuNotifications => 'Notificaciones';
+
+  @override
+  String get menuProfile => 'Perfil';
+
+  @override
+  String get menuFees => 'Cuotas';
+
+  @override
+  String get menuHistory => 'Historial';
+
+  @override
+  String get menuLibrary => 'Biblioteca';
+
+  @override
+  String get menuDocuments => 'Documentos';
+
+  @override
+  String get menuFaq => 'FAQ';
+
+  @override
+  String get menuBirthdays => 'Cumpleaños';
+
+  @override
+  String get menuStatistics => 'Estadísticas';
+
+  @override
+  String get historyTitle => 'Historial';
+
+  @override
+  String get historySearchHint => 'Buscar cursos archivados...';
+
+  @override
+  String get historyEmptyTitle => 'Sin cursos archivados';
+
+  @override
+  String get historyEmptySubtitle => 'Los cursos archivados aparecerán acá';
+
+  @override
+  String get historyEmptySearch =>
+      'No encontramos cursos archivados con esa búsqueda';
+
+  @override
+  String get historyLoadError => 'No se pudo cargar el historial';
+
+  @override
+  String get historyArchivedBadge => 'Archivado';
+
+  @override
+  String get historyChooseChild => 'Elegí un hijo para ver su historial';
+
+  @override
+  String get libraryEmptyTitle => 'Sin materiales';
+
+  @override
+  String get libraryEmptySubtitle => 'Todavía no hay materiales disponibles';
+
+  @override
+  String get libraryEmptySearch => 'No encontramos materiales con esa búsqueda';
+
+  @override
+  String get libraryLoadError => 'No se pudieron cargar los materiales';
+
+  @override
+  String get libraryOpenError => 'No se pudo abrir el enlace';
+
+  @override
+  String get libraryNoLink => 'Este material no tiene un enlace disponible';
+
+  @override
+  String get libraryLoadingMore => 'Cargando más materiales...';
+
+  @override
+  String get faqsEmptyTitle => 'Sin preguntas';
+
+  @override
+  String get faqsEmptySubtitle => 'Todavía no hay preguntas frecuentes';
+
+  @override
+  String get faqsEmptySearch => 'No encontramos preguntas con esa búsqueda';
+
+  @override
+  String get faqsLoadError => 'No se pudieron cargar las preguntas frecuentes';
+
+  @override
+  String get statisticsDetailsTitle => 'Detalles';
+
+  @override
+  String get statisticsEmptyTitle => 'Sin estadísticas';
+
+  @override
+  String get statisticsEmptySubtitle => 'Todavía no hay datos para mostrar';
+
+  @override
+  String statisticsMoreItems(int count) {
+    return '+$count más';
+  }
+
+  @override
+  String get statisticsTotalStudents => 'Alumnos';
+
+  @override
+  String get statisticsTotalClassrooms => 'Aulas';
+
+  @override
+  String get statisticsFeesPaidThisYear => 'Cuotas pagadas (año)';
+
+  @override
+  String get statisticsFeesOverdue => 'Cuotas en mora';
+
+  @override
+  String get statisticsTotalOwed => 'Monto adeudado';
+
+  @override
+  String get statisticsFeesPendingReview => 'Comprobantes en revisión';
+
+  @override
+  String get statisticsOpenTickets => 'Tickets abiertos';
+
+  @override
+  String get statisticsAbsencesThisMonth => 'Inasistencias del mes';
+
+  @override
+  String get statisticsClassroomsCount => 'Aulas';
+
+  @override
+  String get statisticsAbsencesToday => 'Inasistencias hoy';
+
+  @override
+  String get statisticsFeesPaid => 'Cuotas pagadas';
+
+  @override
+  String get statisticsFeesPending => 'Cuotas pendientes';
+
+  @override
+  String get statisticsChildrenCount => 'Hijos';
+
+  @override
+  String get statisticsTotalAbsences => 'Total de inasistencias';
+
+  @override
+  String get statisticsTotalClasses => 'Total de clases';
+
+  @override
+  String get statisticsAbsenceRate => 'Tasa de inasistencias';
 }

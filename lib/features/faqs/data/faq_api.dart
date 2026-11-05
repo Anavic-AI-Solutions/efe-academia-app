@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import '../../../core/api/api_client.dart';
-import '../domain/faq_model.dart';
 
 class FaqApi {
   final ApiClient _client;
