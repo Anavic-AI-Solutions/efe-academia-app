@@ -138,11 +138,15 @@ class MenuEntry {
     }
   }
 
-  /// The route can depend on the role (parents pay from the payments tab).
+  /// The route can depend on the role (parents pay from the payments tab and
+  /// browse their children's courses from a stacked section).
   String routeFor(String role) {
     final normalized = _normalizeRole(role);
     if (section == MenuSection.fees && normalized == 'parent') {
       return '/payments';
+    }
+    if (section == MenuSection.courses && normalized == 'parent') {
+      return '/parent-courses';
     }
     return route;
   }
@@ -153,6 +157,10 @@ class MenuEntry {
     final normalized = _normalizeRole(role);
     switch (section) {
       case MenuSection.courses:
+        // Parents have no "Cursos" tab: branch 1 is their "Pagos" tab, so
+        // pushing a stacked route avoids highlighting Pagos while browsing
+        // courses.
+        return normalized != 'parent';
       case MenuSection.communication:
       case MenuSection.profile:
         return true;

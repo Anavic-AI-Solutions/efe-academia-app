@@ -126,6 +126,15 @@ void main() {
       }
     });
 
+    test('parent courses use a stacked route instead of the Pagos tab', () {
+      final courses = entryFor(MenuSection.courses);
+
+      expect(courses.routeFor('parent'), '/parent-courses');
+      expect(courses.isShellTabFor('parent'), isFalse);
+      expect(courses.routeFor('student'), '/classrooms');
+      expect(courses.isShellTabFor('student'), isTrue);
+    });
+
     test('stacked sections are pushed on top of the menu', () {
       for (final section in [
         MenuSection.calendar,

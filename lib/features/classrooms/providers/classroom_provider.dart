@@ -244,3 +244,13 @@ final classroomHistoryProvider = StateNotifierProvider.autoDispose<
     autoLoad: false,
   );
 });
+
+/// Courses of every child linked to the authenticated parent.
+///
+/// The backend scopes the request to the parent's children; no `student_id`
+/// is sent so all the children's courses are returned instead of only the
+/// selected one. The screen intentionally has no child selector.
+final parentCoursesProvider = StateNotifierProvider.autoDispose<
+    ClassroomListNotifier, ClassroomListState>((ref) {
+  return ClassroomListNotifier(ref.watch(classroomRepositoryProvider));
+});
