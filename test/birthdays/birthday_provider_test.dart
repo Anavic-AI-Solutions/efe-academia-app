@@ -164,6 +164,67 @@ void main() {
       expect(client.lastPath, '/birthdays');
       expect(client.lastQueryParameters?['scope'], 'today');
     });
+
+    test('getBirthdays pide scope=upcoming y days=30', () async {
+      final client = _StubApiClient(data: {'data': []});
+      final api = BirthdayApi(client);
+
+      await api.getBirthdays();
+
+      expect(client.lastPath, '/birthdays');
+      expect(client.lastQueryParameters?['scope'], 'upcoming');
+      expect(client.lastQueryParameters?['days'], 30);
+    });
+  });
+
+  group('upcomingBirthdaysProvider', () {
+    test('parsea la lista y marca disponible', () async {
+      final container = ProviderContainer(
+        overrides: [
+          apiClientProvider.overrideWithValue(
+            _StubApiClient(
+              data: {
+                'data': [
+                  _birthdayJson(),
+                  _birthdayJson(
+                    id: 'b2',
+                    name: 'Luis Paz',
+                    daysUntil: 5,
+                    birthDate: '2017-11-11',
+                  ),
+                ],
+              },
+            ),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final birthdays =
+          await container.read(upcomingBirthdaysProvider.future);
+
+      expect(birthdays, hasLength(2));
+      expect(birthdays.first.daysUntil, 0);
+      expect(birthdays.first.birthDate, DateTime.parse('2018-10-08'));
+      expect(container.read(birthdaysAvailableProvider), isTrue);
+    });
+
+    test('404 de próximos devuelve lista vacía disponible=false', () async {
+      final container = ProviderContainer(
+        overrides: [
+          apiClientProvider.overrideWithValue(
+            _StubApiClient(error: _httpError(404)),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final birthdays =
+          await container.read(upcomingBirthdaysProvider.future);
+
+      expect(birthdays, isEmpty);
+      expect(container.read(birthdaysAvailableProvider), isFalse);
+    });
   });
 
   group('todayBirthdaysProvider', () {

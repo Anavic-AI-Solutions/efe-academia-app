@@ -29,8 +29,22 @@ final birthdaysAvailableProvider = StateProvider<bool>((ref) => true);
 final todayBirthdaysProvider =
     FutureProvider.autoDispose<List<BirthdayModel>>((ref) async {
   final api = ref.watch(birthdayApiProvider);
+  return _loadBirthdays(ref, api.getTodayBirthdays);
+});
+
+/// Cumpleaños de hoy + próximos 30 días para la sección del menú.
+final upcomingBirthdaysProvider =
+    FutureProvider.autoDispose<List<BirthdayModel>>((ref) async {
+  final api = ref.watch(birthdayApiProvider);
+  return _loadBirthdays(ref, api.getBirthdays);
+});
+
+Future<List<BirthdayModel>> _loadBirthdays(
+  Ref ref,
+  Future<Response> Function() request,
+) async {
   try {
-    final response = await api.getTodayBirthdays();
+    final response = await request();
     final data = response.data;
     final items = data is Map<String, dynamic>
         ? (data['data'] as List<dynamic>? ?? [])
@@ -46,7 +60,7 @@ final todayBirthdaysProvider =
     }
     rethrow;
   }
-});
+}
 
 bool _isBackendMissing(DioException e) {
   final statusCode = e.response?.statusCode;
