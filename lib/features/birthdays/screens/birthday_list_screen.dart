@@ -57,6 +57,21 @@ class BirthdayListScreen extends ConsumerWidget {
     );
   }
 
+  Widget _refreshable(WidgetRef ref, Widget child) {
+    return RefreshIndicator(
+      onRefresh: () => ref.refresh(upcomingBirthdaysProvider.future),
+      child: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildData(
     BuildContext context,
     WidgetRef ref, {
@@ -65,18 +80,24 @@ class BirthdayListScreen extends ConsumerWidget {
     required AppLocalizations l10n,
   }) {
     if (!available) {
-      return EmptyState(
-        icon: PhosphorIconsRegular.cake,
-        title: l10n.homeBirthdaysSoon,
-        accentColor: _birthdayAccent,
+      return _refreshable(
+        ref,
+        EmptyState(
+          icon: PhosphorIconsRegular.cake,
+          title: l10n.homeBirthdaysSoon,
+          accentColor: _birthdayAccent,
+        ),
       );
     }
 
     if (items.isEmpty) {
-      return EmptyState(
-        icon: PhosphorIconsRegular.cake,
-        title: l10n.birthdaysNoUpcoming,
-        accentColor: _birthdayAccent,
+      return _refreshable(
+        ref,
+        EmptyState(
+          icon: PhosphorIconsRegular.cake,
+          title: l10n.birthdaysNoUpcoming,
+          accentColor: _birthdayAccent,
+        ),
       );
     }
 

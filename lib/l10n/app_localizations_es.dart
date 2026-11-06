@@ -1533,7 +1533,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get birthdaysUpcomingSection => 'Próximos 30 días';
 
   @override
-  String get birthdaysNoUpcoming => 'No hay cumpleaños en los próximos 30 días';
+  String get birthdaysNoUpcoming =>
+      'No hay más cumpleaños en los próximos 30 días';
 
   @override
   String get birthdaysToday => 'Hoy';

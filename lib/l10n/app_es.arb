@@ -732,7 +732,7 @@
   "statisticsAbsenceRate": "Tasa de inasistencias",
   "birthdaysTodaySection": "Cumpleaños de hoy",
   "birthdaysUpcomingSection": "Próximos 30 días",
-  "birthdaysNoUpcoming": "No hay cumpleaños en los próximos 30 días",
+  "birthdaysNoUpcoming": "No hay más cumpleaños en los próximos 30 días",
   "birthdaysToday": "Hoy",
   "birthdaysTomorrow": "Mañana",
   "birthdaysInDays": "En {count} días",

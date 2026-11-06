@@ -23,7 +23,7 @@ final birthdaysAvailableProvider = StateProvider<bool>((ref) => true);
 
 /// Cumpleaños de hoy para el home del profesor.
 ///
-/// Ante 404/501 (backend aún no implementado) devuelve `[]` con
+/// Ante 404/501 (despliegue viejo sin el endpoint) devuelve `[]` con
 /// [birthdaysAvailableProvider] en `false`. Cualquier otro error se propaga
 /// para que la sección muestre su `ErrorView` aislado sin tumbar el home.
 final todayBirthdaysProvider =

@@ -497,7 +497,7 @@
   "statisticsAbsenceRate": "Absence rate",
   "birthdaysTodaySection": "Today's birthdays",
   "birthdaysUpcomingSection": "Next 30 days",
-  "birthdaysNoUpcoming": "No birthdays in the next 30 days",
+  "birthdaysNoUpcoming": "No more birthdays in the next 30 days",
   "birthdaysToday": "Today",
   "birthdaysTomorrow": "Tomorrow",
   "birthdaysInDays": "In {count} days",

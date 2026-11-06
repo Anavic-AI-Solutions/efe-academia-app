@@ -2873,7 +2873,7 @@ abstract class AppLocalizations {
   /// No description provided for @birthdaysNoUpcoming.
   ///
   /// In es, this message translates to:
-  /// **'No hay cumpleaños en los próximos 30 días'**
+  /// **'No hay más cumpleaños en los próximos 30 días'**
   String get birthdaysNoUpcoming;
 
   /// No description provided for @birthdaysToday.

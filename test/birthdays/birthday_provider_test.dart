@@ -200,8 +200,7 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      final birthdays =
-          await container.read(upcomingBirthdaysProvider.future);
+      final birthdays = await container.read(upcomingBirthdaysProvider.future);
 
       expect(birthdays, hasLength(2));
       expect(birthdays.first.daysUntil, 0);
@@ -219,8 +218,7 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      final birthdays =
-          await container.read(upcomingBirthdaysProvider.future);
+      final birthdays = await container.read(upcomingBirthdaysProvider.future);
 
       expect(birthdays, isEmpty);
       expect(container.read(birthdaysAvailableProvider), isFalse);

@@ -20,8 +20,8 @@ const _birthdayAccent = Color(0xFFE8A0BF);
 
 /// Cumpleaños de hoy en el home del profesor: avatar + nombre + edad.
 ///
-/// Vacío normal → `EmptyState` pastel. Backend aún no implementado
-/// (404/501) → "Disponible próximamente", sin error rojo. Tap en un
+/// Vacío normal → `EmptyState` pastel. El endpoint ya existe; 404/501 queda
+/// como fallback para despliegues viejos, sin error rojo. Tap en un
 /// cumpleaños con `studentAppId` → `/students/{id}`. Un error de otro
 /// origen muestra `ErrorView` compacto sin tumbar el resto del home.
 class HomeBirthdaysSection extends ConsumerWidget {

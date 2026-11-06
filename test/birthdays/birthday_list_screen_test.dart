@@ -118,7 +118,7 @@ void main() {
       expect(find.text('Cumpleaños de hoy'), findsOneWidget);
       expect(find.text('Próximos 30 días'), findsOneWidget);
       expect(
-        find.text('No hay cumpleaños en los próximos 30 días'),
+        find.text('No hay más cumpleaños en los próximos 30 días'),
         findsOneWidget,
       );
       expect(tester.takeException(), isNull);
@@ -128,7 +128,7 @@ void main() {
       await _pumpBirthdays(tester);
 
       expect(
-        find.text('No hay cumpleaños en los próximos 30 días'),
+        find.text('No hay más cumpleaños en los próximos 30 días'),
         findsOneWidget,
       );
       expect(find.text('Cumpleaños de hoy'), findsNothing);
@@ -179,6 +179,50 @@ void main() {
       await tester.tap(find.text('Reintentar'));
       await tester.pumpAndSettle();
       expect(calls, 2);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('pull-to-refresh funciona en el fallback', (tester) async {
+      var calls = 0;
+      await _pumpBirthdays(
+        tester,
+        birthdaysAvailable: false,
+        birthdays: (ref) async {
+          calls++;
+          return <BirthdayModel>[];
+        },
+      );
+      expect(calls, 1);
+
+      await tester.fling(
+        find.byType(Scrollable),
+        const Offset(0, 400),
+        1000,
+      );
+      await tester.pumpAndSettle();
+
+      expect(calls, 2);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('sin studentAppId no navega al alumno', (tester) async {
+      await _pumpBirthdays(
+        tester,
+        birthdays: (ref) async => [
+          BirthdayModel(
+            id: 'b1',
+            name: 'Sin App',
+            ageTurning: 8,
+            birthDate: DateTime(2018, 1, 1),
+          ),
+        ],
+      );
+
+      await tester.tap(find.text('Sin App'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BirthdayListScreen), findsOneWidget);
+      expect(find.textContaining('Student'), findsNothing);
       expect(tester.takeException(), isNull);
     });
   });
