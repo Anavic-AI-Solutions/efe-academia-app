@@ -5,6 +5,14 @@ import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/birthdays/domain/birthday_model.dart';
 import 'package:efe_mobile/features/birthdays/providers/birthday_provider.dart';
+import 'package:efe_mobile/features/classrooms/data/classroom_repository.dart';
+import 'package:efe_mobile/features/classrooms/domain/classroom_filters.dart';
+import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
+import 'package:efe_mobile/features/classrooms/domain/material_model.dart';
+import 'package:efe_mobile/features/classrooms/domain/professor_model.dart';
+import 'package:efe_mobile/features/classrooms/providers/classroom_provider.dart';
+import 'package:efe_mobile/features/classrooms/screens/parent_courses_screen.dart';
+import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
 import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
@@ -142,6 +150,57 @@ class _FakeFeeRepository implements FeeRepository {
   Future<Never> getInvoiceFile(String feeId) => throw UnimplementedError();
 }
 
+/// Keeps the parent courses screen off the real API in tests.
+class _FakeEmptyClassroomRepository implements ClassroomRepository {
+  @override
+  Future<PageResult<ClassroomModel>> getClassrooms({
+    String? search,
+    int page = 1,
+    int limit = 20,
+    String? branch,
+    String? level,
+    String? year,
+    String? status,
+    String? studentId,
+  }) async =>
+      PageResult(
+        data: const [ClassroomModel(id: 'c1', name: 'Curso de prueba')],
+        page: page,
+        perPage: limit,
+        total: 1,
+      );
+
+  @override
+  Future<ClassroomModel> getClassroom(String id) => throw UnimplementedError();
+
+  @override
+  Future<PageResult<StudentModel>> getClassroomStudents(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<PageResult<ProfessorModel>> getClassroomProfessors(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<PageResult<MaterialModel>> getClassroomMaterials(
+    String id, {
+    int page = 1,
+    int limit = 20,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<ClassroomFilters> getFilters() async => const ClassroomFilters();
+}
+
 Future<void> _pumpApp(WidgetTester tester, String role) async {
   final feeRepository = _FakeFeeRepository();
   final container = ProviderContainer(
@@ -161,6 +220,9 @@ Future<void> _pumpApp(WidgetTester tester, String role) async {
       feeRepositoryProvider.overrideWithValue(feeRepository),
       feeListProvider.overrideWith((ref) => FeeListNotifier(feeRepository)),
       parentFeesProvider.overrideWith((ref) => FeeListNotifier(feeRepository)),
+      // La sección Cursos de padres no toca red en estos tests.
+      classroomRepositoryProvider
+          .overrideWithValue(_FakeEmptyClassroomRepository()),
     ],
   );
   addTearDown(container.dispose);
@@ -220,6 +282,20 @@ void main() {
     await tester.tap(navLabel('Pagos'));
     await tester.pumpAndSettle();
     expect(find.byType(ParentFeesScreen), findsOneWidget);
+  });
+
+  testWidgets('parent menu courses opens stacked and does not select Pagos',
+      (tester) async {
+    await _pumpApp(tester, 'parent');
+
+    await tester.tap(navLabel('Menú'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cursos'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ParentCoursesScreen), findsOneWidget);
+    expect(navLabel('Pagos'), findsNothing);
+    expect(find.text('Curso de prueba'), findsOneWidget);
   });
 
   testWidgets('parent home Cuotas action switches to the Pagos tab',

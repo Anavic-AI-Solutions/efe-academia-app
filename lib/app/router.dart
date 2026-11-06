@@ -33,6 +33,7 @@ import '../features/events/screens/calendar_screen.dart';
 import '../features/events/screens/event_list_screen.dart';
 import '../features/search/screens/search_screen.dart';
 import '../features/classrooms/screens/classroom_history_screen.dart';
+import '../features/classrooms/screens/parent_courses_screen.dart';
 import '../features/menu/screens/menu_screen.dart';
 import '../features/library/screens/library_screen.dart';
 import '../features/faqs/screens/faq_screen.dart';
@@ -438,6 +439,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/history',
         builder: (context, state) => const ClassroomHistoryScreen(),
+      ),
+      GoRoute(
+        path: '/parent-courses',
+        builder: (context, state) => const ParentCoursesScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => ClassroomDetailScreen(
+              classroomId: state.pathParameters['id']!,
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: '/library',
