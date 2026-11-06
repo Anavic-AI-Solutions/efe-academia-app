@@ -5,6 +5,14 @@ class BirthdayApi {
   final ApiClient _client;
   BirthdayApi(this._client);
 
-  Future<Response> getTodayBirthdays() =>
-      _client.get('/birthdays', queryParameters: const {'scope': 'today'});
+  Future<Response> getBirthdays({
+    String scope = 'upcoming',
+    int days = 30,
+  }) =>
+      _client.get('/birthdays', queryParameters: {
+        'scope': scope,
+        'days': days,
+      });
+
+  Future<Response> getTodayBirthdays() => getBirthdays(scope: 'today');
 }

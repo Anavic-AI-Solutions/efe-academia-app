@@ -24,8 +24,10 @@ class BirthdayModel with _$BirthdayModel {
           '',
       name: attrs['name']?.toString() ?? '',
       ageTurning: _parseInt(attrs['age_turning'] ?? attrs['ageTurning']),
-      studentAppId: attrs['student_app_id']?.toString() ??
-          attrs['studentAppId']?.toString(),
+      studentAppId: _nonEmpty(
+        attrs['student_app_id']?.toString() ??
+            attrs['studentAppId']?.toString(),
+      ),
       birthDate: attrs['birth_date'] != null
           ? DateTime.tryParse(attrs['birth_date'].toString())
           : attrs['birthDate'] != null
@@ -39,5 +41,10 @@ class BirthdayModel with _$BirthdayModel {
     if (value is int) return value;
     if (value is String) return int.tryParse(value) ?? 0;
     return 0;
+  }
+
+  static String? _nonEmpty(String? value) {
+    final text = value?.trim();
+    return text == null || text.isEmpty ? null : text;
   }
 }
