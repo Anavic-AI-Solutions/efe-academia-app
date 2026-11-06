@@ -1525,4 +1525,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get statisticsAbsenceRate => 'Tasa de inasistencias';
+
+  @override
+  String get birthdaysTodaySection => 'Cumpleaños de hoy';
+
+  @override
+  String get birthdaysUpcomingSection => 'Próximos 30 días';
+
+  @override
+  String get birthdaysNoUpcoming => 'No hay cumpleaños en los próximos 30 días';
+
+  @override
+  String get birthdaysToday => 'Hoy';
+
+  @override
+  String get birthdaysTomorrow => 'Mañana';
+
+  @override
+  String birthdaysInDays(int count) {
+    return 'En $count días';
+  }
+
+  @override
+  String birthdaysTurning(int age) {
+    return 'Cumple $age años';
+  }
 }

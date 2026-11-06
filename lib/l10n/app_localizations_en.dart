@@ -1519,4 +1519,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statisticsAbsenceRate => 'Absence rate';
+
+  @override
+  String get birthdaysTodaySection => 'Today\'s birthdays';
+
+  @override
+  String get birthdaysUpcomingSection => 'Next 30 days';
+
+  @override
+  String get birthdaysNoUpcoming => 'No birthdays in the next 30 days';
+
+  @override
+  String get birthdaysToday => 'Today';
+
+  @override
+  String get birthdaysTomorrow => 'Tomorrow';
+
+  @override
+  String birthdaysInDays(int count) {
+    return 'In $count days';
+  }
+
+  @override
+  String birthdaysTurning(int age) {
+    return 'Turns $age';
+  }
 }

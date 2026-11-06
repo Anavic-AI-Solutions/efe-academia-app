@@ -2857,6 +2857,48 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tasa de inasistencias'**
   String get statisticsAbsenceRate;
+
+  /// No description provided for @birthdaysTodaySection.
+  ///
+  /// In es, this message translates to:
+  /// **'Cumpleaños de hoy'**
+  String get birthdaysTodaySection;
+
+  /// No description provided for @birthdaysUpcomingSection.
+  ///
+  /// In es, this message translates to:
+  /// **'Próximos 30 días'**
+  String get birthdaysUpcomingSection;
+
+  /// No description provided for @birthdaysNoUpcoming.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay cumpleaños en los próximos 30 días'**
+  String get birthdaysNoUpcoming;
+
+  /// No description provided for @birthdaysToday.
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy'**
+  String get birthdaysToday;
+
+  /// No description provided for @birthdaysTomorrow.
+  ///
+  /// In es, this message translates to:
+  /// **'Mañana'**
+  String get birthdaysTomorrow;
+
+  /// No description provided for @birthdaysInDays.
+  ///
+  /// In es, this message translates to:
+  /// **'En {count} días'**
+  String birthdaysInDays(int count);
+
+  /// No description provided for @birthdaysTurning.
+  ///
+  /// In es, this message translates to:
+  /// **'Cumple {age} años'**
+  String birthdaysTurning(int age);
 }
 
 class _AppLocalizationsDelegate

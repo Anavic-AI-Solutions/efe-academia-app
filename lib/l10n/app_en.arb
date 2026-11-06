@@ -494,5 +494,12 @@
   "statisticsChildrenCount": "Children",
   "statisticsTotalAbsences": "Total absences",
   "statisticsTotalClasses": "Total classes",
-  "statisticsAbsenceRate": "Absence rate"
+  "statisticsAbsenceRate": "Absence rate",
+  "birthdaysTodaySection": "Today's birthdays",
+  "birthdaysUpcomingSection": "Next 30 days",
+  "birthdaysNoUpcoming": "No birthdays in the next 30 days",
+  "birthdaysToday": "Today",
+  "birthdaysTomorrow": "Tomorrow",
+  "birthdaysInDays": "In {count} days",
+  "birthdaysTurning": "Turns {age}"
 }

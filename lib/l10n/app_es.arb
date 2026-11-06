@@ -729,5 +729,26 @@
   "statisticsChildrenCount": "Hijos",
   "statisticsTotalAbsences": "Total de inasistencias",
   "statisticsTotalClasses": "Total de clases",
-  "statisticsAbsenceRate": "Tasa de inasistencias"
+  "statisticsAbsenceRate": "Tasa de inasistencias",
+  "birthdaysTodaySection": "Cumpleaños de hoy",
+  "birthdaysUpcomingSection": "Próximos 30 días",
+  "birthdaysNoUpcoming": "No hay cumpleaños en los próximos 30 días",
+  "birthdaysToday": "Hoy",
+  "birthdaysTomorrow": "Mañana",
+  "birthdaysInDays": "En {count} días",
+  "@birthdaysInDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "birthdaysTurning": "Cumple {age} años",
+  "@birthdaysTurning": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  }
 }
