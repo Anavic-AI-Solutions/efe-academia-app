@@ -36,10 +36,17 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final dashboardState = ref.watch(dashboardProvider);
-    final user = ref.watch(authProvider).user;
+    final authState = ref.watch(authProvider);
+    final user = authState.user;
     final unreadCount = ref.watch(unreadCountProvider).valueOrNull ?? 0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = context.l10n;
+
+    // Don't mount the role-specific home (and its autoDispose sections) until
+    // auth resolves; otherwise the dashboard re-creates the grid mid-session.
+    if (user == null) {
+      return _buildLoading(context, isDark);
+    }
 
     if (dashboardState.isLoading && dashboardState.data == null) {
       return _buildLoading(context, isDark);
