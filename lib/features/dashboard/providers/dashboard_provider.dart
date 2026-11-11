@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_provider.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../data/dashboard_api.dart';
 import '../data/dashboard_repository.dart';
 import '../domain/dashboard_data.dart';
@@ -53,14 +54,18 @@ class DashboardState {
 class DashboardNotifier extends StateNotifier<DashboardState> {
   final DashboardRepository _repository;
 
-  DashboardNotifier(this._repository) : super(const DashboardState()) {
-    loadDashboard();
+  DashboardNotifier(this._repository, {bool enabled = true})
+      : super(const DashboardState()) {
+    if (enabled) {
+      loadDashboard();
+    }
   }
 
   Future<void> loadDashboard() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final data = await _repository.getDashboard();
+      if (!mounted) return;
       print(
         '[Dashboard] SUCCESS students=${data.totalStudents} '
         'classrooms=${data.totalClassrooms} attendance=${data.attendanceRate} '
@@ -68,6 +73,7 @@ class DashboardNotifier extends StateNotifier<DashboardState> {
       );
       state = state.copyWith(data: data, isLoading: false);
     } catch (e) {
+      if (!mounted) return;
       print('[Dashboard] ERROR: $e');
       state = state.copyWith(
         isLoading: false,
@@ -79,7 +85,14 @@ class DashboardNotifier extends StateNotifier<DashboardState> {
   Future<void> refresh() => loadDashboard();
 }
 
+/// Dashboard data is user-scoped: rebuild it whenever the authenticated user
+/// changes (login, logout, account switch) so a new session never renders the
+/// previous user's classrooms/metrics.
 final dashboardProvider =
-    StateNotifierProvider<DashboardNotifier, DashboardState>((ref) {
-  return DashboardNotifier(ref.watch(dashboardRepositoryProvider));
+    StateNotifierProvider.autoDispose<DashboardNotifier, DashboardState>((ref) {
+  final userId = ref.watch(authProvider.select((state) => state.user?.id));
+  return DashboardNotifier(
+    ref.watch(dashboardRepositoryProvider),
+    enabled: userId != null,
+  );
 });
