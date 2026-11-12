@@ -13,6 +13,8 @@ import '../../notifications/providers/notification_provider.dart';
 import '../../qualifications/providers/qualification_provider.dart';
 import '../../relations/providers/relations_provider.dart';
 import '../../relations/providers/selected_child_provider.dart';
+import '../../search/screens/search_screen.dart';
+import '../../students/providers/student_grades_provider.dart';
 import '../../students/providers/student_provider.dart';
 import '../data/role_mode_api.dart';
 import '../data/role_mode_repository.dart';
@@ -53,7 +55,9 @@ class RoleSwitchController extends StateNotifier<RoleSwitchState> {
           .read(authProvider.notifier)
           .applyActiveRole(role: result.role, roles: result.roles);
       _ref.read(parentSelectedStudentProvider.notifier).state =
-          result.role == 'parent' ? result.selectedStudentId : null;
+          result.role == 'parent'
+              ? result.selectedStudentUserId?.toString()
+              : null;
 
       _invalidateRoleScopedProviders();
       state = const RoleSwitchState();
@@ -85,6 +89,7 @@ class RoleSwitchController extends StateNotifier<RoleSwitchState> {
     _ref.invalidate(studentClassroomsProvider);
     _ref.invalidate(studentAbsencesProvider);
     _ref.invalidate(studentFeesProvider);
+    _ref.invalidate(studentGradesProvider);
 
     _ref.invalidate(feeListProvider);
     _ref.invalidate(parentFeesProvider);
@@ -103,6 +108,7 @@ class RoleSwitchController extends StateNotifier<RoleSwitchState> {
     _ref.invalidate(documentListProvider);
     _ref.invalidate(eventListProvider);
     _ref.invalidate(newsListProvider);
+    _ref.invalidate(searchProvider);
   }
 }
 

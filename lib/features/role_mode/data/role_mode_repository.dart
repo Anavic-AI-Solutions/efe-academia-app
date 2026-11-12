@@ -27,10 +27,16 @@ class RoleModeRepository {
       throw ApiException(message: 'Respuesta inválida al cambiar de modo');
     }
 
+    final selectedStudentUserIdRaw = data['selected_student_user_id'];
+    final selectedStudentUserId = selectedStudentUserIdRaw is int
+        ? selectedStudentUserIdRaw
+        : int.tryParse(selectedStudentUserIdRaw?.toString() ?? '');
+
     return RoleSwitchResult(
       role: newRole,
       roles: roles,
       selectedStudentId: data['selected_student_id']?.toString(),
+      selectedStudentUserId: selectedStudentUserId,
     );
   }
 }
