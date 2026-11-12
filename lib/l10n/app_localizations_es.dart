@@ -1551,4 +1551,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String birthdaysTurning(int age) {
     return 'Cumple $age años';
   }
+
+  @override
+  String get roleModeTitle => 'Modo de uso';
+
+  @override
+  String get roleModeSubtitle => 'Elegí con qué rol querés usar la app';
+
+  @override
+  String get roleModeCurrent => 'Modo actual';
+
+  @override
+  String get roleModeChange => 'Cambiar modo';
+
+  @override
+  String roleModeSwitched(String role) {
+    return 'Ahora estás en modo $role';
+  }
+
+  @override
+  String get roleModeSwitchError =>
+      'No pudimos cambiar el modo. Intentá de nuevo.';
+
+  @override
+  String get roleModeLoading => 'Cambiando modo…';
+
+  @override
+  String get roleModeDescriptionProfessor =>
+      'Tus aulas, alumnos y calificaciones';
+
+  @override
+  String get roleModeDescriptionParent =>
+      'Las cuotas, el boletín y los cursos de tus hijos';
+
+  @override
+  String get roleModeDescriptionStudent => 'Tus materias, notas y asistencias';
+
+  @override
+  String get roleModeDescriptionAdmin =>
+      'La administración completa de la escuela';
+
+  @override
+  String get roleModeDescriptionBranch => 'La información de tu sede';
 }

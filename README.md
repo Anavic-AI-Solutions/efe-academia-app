@@ -16,6 +16,7 @@ Aplicación móvil Flutter para la gestión integral de escuelas de enfermería:
 - **Chat**: Mensajería entre roles con notificaciones push
 - **Noticias/Eventos/Notificaciones**: Feed unificado con shimmer loading
 - **Cuotas**: Listado y detalle de pagos pendientes
+- **Modo por rol**: los usuarios con varios roles pueden alternar entre profesor, padre, alumno, admin o branch
 - **Perfil**: Configuración de tema (claro/oscuro/sistema), idioma, logout
 - **Tema unificado**: Sistema visual azul coherente en todas las pantallas (claro/oscuro)
 

@@ -23,6 +23,7 @@ import '../providers/dashboard_provider.dart';
 import 'parent_home_screen.dart';
 import 'professor_home_screen.dart';
 import 'widgets/quick_action_grid.dart';
+import '../../role_mode/widgets/mode_switch_chip.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -129,8 +130,9 @@ class DashboardScreen extends ConsumerWidget {
 
     final rawName = user?.name.trim() ?? '';
     final displayName = rawName.isEmpty ? l10n.commonUser : rawName;
-    final firstName =
-        rawName.isEmpty ? l10n.commonUser : rawName.split(' ').first;
+    final firstName = rawName.isEmpty
+        ? l10n.commonUser
+        : rawName.split(' ').first;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -141,6 +143,7 @@ class DashboardScreen extends ConsumerWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             HomeHeader(
+              badge: const ModeSwitchChip(),
               name: displayName,
               title: l10n.dashboardWelcome(firstName),
               avatarUrl: user?.avatarUrl,
@@ -339,8 +342,9 @@ class _ParentClassroomCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color:
-                        isDark ? AppColors.darkTextPrimary : AppColors.lightInk,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightInk,
                   ),
                 ),
                 const SizedBox(height: 3),

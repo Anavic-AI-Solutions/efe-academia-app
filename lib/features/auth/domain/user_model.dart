@@ -36,6 +36,6 @@ extension UserModelRoleX on UserModel {
 
   bool get canManageMaterials {
     const allowed = {'professor', 'admin', 'branch'};
-    return allowed.contains(role) || roles.any(allowed.contains);
+    return allowed.contains(role);
   }
 }

@@ -28,6 +28,7 @@ import 'widgets/parent_child_card.dart';
 import 'widgets/parent_overdue_fees_card.dart';
 import 'widgets/parent_quick_actions.dart';
 import 'widgets/parent_summary_sections.dart';
+import '../../role_mode/widgets/mode_switch_chip.dart';
 
 /// Home del rol padre: alerta de mora, hijos con promedio/asistencia y
 /// acciones rápidas (Cuotas, Boletín, Chat).
@@ -72,8 +73,9 @@ class ParentHomeScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final parentHome = data?.parentHome ?? const ParentHomeData();
     final relationsState = ref.watch(relationsProvider);
-    final children =
-        relationsState.relations.where((r) => r.role == 'student').toList();
+    final children = relationsState.relations
+        .where((r) => r.role == 'student')
+        .toList();
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -92,6 +94,7 @@ class ParentHomeScreen extends ConsumerWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             HomeHeader(
+              badge: const ModeSwitchChip(),
               name: user?.name ?? '',
               greeting: l10n.parentGreeting,
               title: _familyTitle(user?.name ?? '', l10n),
@@ -245,10 +248,7 @@ class ParentHomeScreen extends ConsumerWidget {
   /// `student_id` del resumen si está presente; si no, el `user_id`
   /// (degradación para backends viejos).
   String _studentRouteId(RelationModel child, ParentHomeData? parentHome) {
-    final summary = _summaryFor(
-      parentHome?.children ?? const [],
-      child.userId,
-    );
+    final summary = _summaryFor(parentHome?.children ?? const [], child.userId);
     final studentId = summary?.studentId ?? '';
     return studentId.isNotEmpty ? studentId : child.userId.toString();
   }
