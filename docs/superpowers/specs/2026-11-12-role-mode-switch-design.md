@@ -90,7 +90,9 @@ Alternativas descartadas:
 - Valida `role` contra `getSwitchableRoles()`; si no, 422.
 - Guarda `active_role` en el token actual y, si existe sesión, en la sesión.
 - Ajusta `current_selected_id` según la decisión 2.
-- Devuelve `{role, roles, selected_student_id}`.
+- Devuelve `{role, roles, selected_student_id, selected_student_user_id}`.
+  `selected_student_id` es el UUID de `StudentData`; `selected_student_user_id`
+  es el id de usuario que usan los selectores de hijos de la app.
 
 ### Respuestas de autenticación
 
@@ -125,7 +127,10 @@ es una frontera de seguridad.
 Solo se corrige el bug de multi-rol: en `ClassroomsPolicy::view` y
 `MaterialPolicy::view`, la rama profesor devuelve `true` únicamente si está
 asignado; si no, continúa con las ramas parent/student en vez de cortar con
-`false`. El resto de las policies sigue con roles reales.
+`false`. En `MaterialPolicy::view`, la rama student usa `realStudentData()` y
+no `studentData()`, para que un profesor no pueda acceder a materiales ajenos
+fijando `current_selected_id` a un alumno arbitrario. El resto de las policies
+sigue con roles reales.
 
 ## App
 
@@ -136,6 +141,8 @@ asignado; si no, continúa con las ramas parent/student en vez de cortar con
 - `RoleSwitchController` con estado propio `idle / switching / error`. No
   contamina `AuthState`.
 - `AuthNotifier.applyActiveRole(role, roles)` actualiza solo el usuario.
+- `RoleSwitchController` usa `selected_student_user_id` para preseleccionar el
+  hijo en `parentSelectedStudentProvider`, y refresca también búsqueda y notas.
 - `UserModel.canManageMaterials` mira solo el rol activo.
 
 ### UI
