@@ -1454,6 +1454,100 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get requestsDetailLoadError => 'No se pudo cargar la solicitud';
+
+  @override
+  String get requestsSectionDocuments => 'Documentación';
+
+  @override
+  String get requestsNoDocuments => 'Sin documentación cargada';
+
+  @override
+  String get requestsDocumentFrontDni => 'DNI frente';
+
+  @override
+  String get requestsDocumentSelfie => 'Selfie';
+
+  @override
+  String get requestsDocumentOther => 'Documento';
+
+  @override
+  String get requestsSectionChildren => 'Alumnos vinculados';
+
+  @override
+  String get requestsPhone => 'Teléfono';
+
+  @override
+  String get requestsAddress => 'Dirección';
+
+  @override
+  String get requestsOpenDocumentError => 'No se pudo abrir el documento';
+
+  @override
+  String get requestsActionApprove => 'Aceptar';
+
+  @override
+  String get requestsActionReject => 'Rechazar';
+
+  @override
+  String get requestsApproveTitle => 'Aprobar solicitud';
+
+  @override
+  String get requestsApproveStudentBody => 'Elegí el curso para el alumno.';
+
+  @override
+  String get requestsApproveParentTitle => 'Aprobar tutor';
+
+  @override
+  String get requestsApproveParentBody =>
+      'Se aprobará el tutor. Los hijos pendientes se pueden aprobar desde su propia solicitud.';
+
+  @override
+  String get requestsRejectTitle => 'Rechazar solicitud';
+
+  @override
+  String get requestsRejectStudentBody =>
+      'El alumno quedará rechazado y se eliminará su acceso.';
+
+  @override
+  String get requestsRejectParentBody =>
+      'El tutor y sus hijos pendientes quedarán rechazados y se eliminarán sus accesos.';
+
+  @override
+  String get requestsApproveConfirm => 'Aprobar';
+
+  @override
+  String get requestsRejectConfirm => 'Rechazar';
+
+  @override
+  String get requestsApprovedSuccess => 'Solicitud aprobada';
+
+  @override
+  String get requestsRejectedSuccess => 'Solicitud rechazada';
+
+  @override
+  String get requestsNoChange => 'La solicitud ya estaba resuelta';
+
+  @override
+  String get requestsActionError => 'No se pudo completar la acción';
+
+  @override
+  String get requestsClassroomPickerTitle => 'Elegir curso';
+
+  @override
+  String get requestsClassroomPickerSearch => 'Buscar curso...';
+
+  @override
+  String get requestsClassroomPickerEmpty => 'No hay cursos disponibles';
+
+  @override
+  String get requestsClassroomPickerLoadError =>
+      'No se pudieron cargar los cursos';
+
+  @override
+  String get requestsClassroomPickerConfirm => 'Aprobar y asignar curso';
+
+  @override
   String get historyTitle => 'Historial';
 
   @override

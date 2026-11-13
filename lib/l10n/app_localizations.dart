@@ -2702,6 +2702,186 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{1 hijo} other{{count} hijos}}'**
   String requestsChildrenCount(int count);
 
+  /// No description provided for @requestsDetailLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar la solicitud'**
+  String get requestsDetailLoadError;
+
+  /// No description provided for @requestsSectionDocuments.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentación'**
+  String get requestsSectionDocuments;
+
+  /// No description provided for @requestsNoDocuments.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin documentación cargada'**
+  String get requestsNoDocuments;
+
+  /// No description provided for @requestsDocumentFrontDni.
+  ///
+  /// In es, this message translates to:
+  /// **'DNI frente'**
+  String get requestsDocumentFrontDni;
+
+  /// No description provided for @requestsDocumentSelfie.
+  ///
+  /// In es, this message translates to:
+  /// **'Selfie'**
+  String get requestsDocumentSelfie;
+
+  /// No description provided for @requestsDocumentOther.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento'**
+  String get requestsDocumentOther;
+
+  /// No description provided for @requestsSectionChildren.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos vinculados'**
+  String get requestsSectionChildren;
+
+  /// No description provided for @requestsPhone.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get requestsPhone;
+
+  /// No description provided for @requestsAddress.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección'**
+  String get requestsAddress;
+
+  /// No description provided for @requestsOpenDocumentError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir el documento'**
+  String get requestsOpenDocumentError;
+
+  /// No description provided for @requestsActionApprove.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptar'**
+  String get requestsActionApprove;
+
+  /// No description provided for @requestsActionReject.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar'**
+  String get requestsActionReject;
+
+  /// No description provided for @requestsApproveTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar solicitud'**
+  String get requestsApproveTitle;
+
+  /// No description provided for @requestsApproveStudentBody.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí el curso para el alumno.'**
+  String get requestsApproveStudentBody;
+
+  /// No description provided for @requestsApproveParentTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar tutor'**
+  String get requestsApproveParentTitle;
+
+  /// No description provided for @requestsApproveParentBody.
+  ///
+  /// In es, this message translates to:
+  /// **'Se aprobará el tutor. Los hijos pendientes se pueden aprobar desde su propia solicitud.'**
+  String get requestsApproveParentBody;
+
+  /// No description provided for @requestsRejectTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar solicitud'**
+  String get requestsRejectTitle;
+
+  /// No description provided for @requestsRejectStudentBody.
+  ///
+  /// In es, this message translates to:
+  /// **'El alumno quedará rechazado y se eliminará su acceso.'**
+  String get requestsRejectStudentBody;
+
+  /// No description provided for @requestsRejectParentBody.
+  ///
+  /// In es, this message translates to:
+  /// **'El tutor y sus hijos pendientes quedarán rechazados y se eliminarán sus accesos.'**
+  String get requestsRejectParentBody;
+
+  /// No description provided for @requestsApproveConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar'**
+  String get requestsApproveConfirm;
+
+  /// No description provided for @requestsRejectConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar'**
+  String get requestsRejectConfirm;
+
+  /// No description provided for @requestsApprovedSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitud aprobada'**
+  String get requestsApprovedSuccess;
+
+  /// No description provided for @requestsRejectedSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitud rechazada'**
+  String get requestsRejectedSuccess;
+
+  /// No description provided for @requestsNoChange.
+  ///
+  /// In es, this message translates to:
+  /// **'La solicitud ya estaba resuelta'**
+  String get requestsNoChange;
+
+  /// No description provided for @requestsActionError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo completar la acción'**
+  String get requestsActionError;
+
+  /// No description provided for @requestsClassroomPickerTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir curso'**
+  String get requestsClassroomPickerTitle;
+
+  /// No description provided for @requestsClassroomPickerSearch.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar curso...'**
+  String get requestsClassroomPickerSearch;
+
+  /// No description provided for @requestsClassroomPickerEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay cursos disponibles'**
+  String get requestsClassroomPickerEmpty;
+
+  /// No description provided for @requestsClassroomPickerLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los cursos'**
+  String get requestsClassroomPickerLoadError;
+
+  /// No description provided for @requestsClassroomPickerConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar y asignar curso'**
+  String get requestsClassroomPickerConfirm;
+
   /// No description provided for @historyTitle.
   ///
   /// In es, this message translates to:

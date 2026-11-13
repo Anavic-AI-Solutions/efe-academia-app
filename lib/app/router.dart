@@ -35,6 +35,8 @@ import '../features/search/screens/search_screen.dart';
 import '../features/classrooms/screens/classroom_history_screen.dart';
 import '../features/classrooms/screens/parent_courses_screen.dart';
 import '../features/menu/screens/menu_screen.dart';
+import '../features/requests/domain/request_model.dart';
+import '../features/requests/screens/request_detail_screen.dart';
 import '../features/requests/screens/request_list_screen.dart';
 import '../features/library/screens/library_screen.dart';
 import '../features/faqs/screens/faq_screen.dart';
@@ -437,6 +439,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/requests',
         builder: (context, state) => const RequestListScreen(),
+        routes: [
+          GoRoute(
+            path: ':kind/:id',
+            builder: (context, state) => RequestDetailScreen(
+              kind: RequestKind.fromValue(state.pathParameters['kind']),
+              id: state.pathParameters['id']!,
+              parentId: state.uri.queryParameters['parentId'],
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: '/parent-courses',

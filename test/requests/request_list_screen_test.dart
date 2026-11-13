@@ -73,11 +73,11 @@ Future<void> _pumpList(
   await tester.pumpWidget(
     UncontrolledProviderScope(
       container: container,
-      child: MaterialApp(
-        locale: const Locale('es', 'AR'),
+      child: const MaterialApp(
+        locale: Locale('es', 'AR'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const RequestListScreen(),
+        home: RequestListScreen(),
       ),
     ),
   );

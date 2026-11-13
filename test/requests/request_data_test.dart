@@ -360,26 +360,26 @@ void main() {
   group('RequestListNotifier', () {
     test('forwards search, status and type and resets page', () async {
       final repository = _FakeRequestRepository([
-        PageResult(
-          data: const [RequestModel(id: 'r1')],
+        const PageResult(
+          data: [RequestModel(id: 'r1')],
           page: 1,
           perPage: 20,
           total: 1,
         ),
-        PageResult(
-          data: const [RequestModel(id: 'r2')],
+        const PageResult(
+          data: [RequestModel(id: 'r2')],
           page: 1,
           perPage: 20,
           total: 1,
         ),
-        PageResult(
-          data: const [RequestModel(id: 'r3')],
+        const PageResult(
+          data: [RequestModel(id: 'r3')],
           page: 1,
           perPage: 20,
           total: 1,
         ),
-        PageResult(
-          data: const [RequestModel(id: 'r4')],
+        const PageResult(
+          data: [RequestModel(id: 'r4')],
           page: 1,
           perPage: 20,
           total: 1,

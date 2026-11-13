@@ -1449,6 +1449,99 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get requestsDetailLoadError => 'Could not load request';
+
+  @override
+  String get requestsSectionDocuments => 'Documentation';
+
+  @override
+  String get requestsNoDocuments => 'No documentation uploaded';
+
+  @override
+  String get requestsDocumentFrontDni => 'ID front';
+
+  @override
+  String get requestsDocumentSelfie => 'Selfie';
+
+  @override
+  String get requestsDocumentOther => 'Document';
+
+  @override
+  String get requestsSectionChildren => 'Linked students';
+
+  @override
+  String get requestsPhone => 'Phone';
+
+  @override
+  String get requestsAddress => 'Address';
+
+  @override
+  String get requestsOpenDocumentError => 'Could not open the document';
+
+  @override
+  String get requestsActionApprove => 'Approve';
+
+  @override
+  String get requestsActionReject => 'Reject';
+
+  @override
+  String get requestsApproveTitle => 'Approve request';
+
+  @override
+  String get requestsApproveStudentBody => 'Choose the course for the student.';
+
+  @override
+  String get requestsApproveParentTitle => 'Approve guardian';
+
+  @override
+  String get requestsApproveParentBody =>
+      'The guardian will be approved. Pending children can be approved from their own request.';
+
+  @override
+  String get requestsRejectTitle => 'Reject request';
+
+  @override
+  String get requestsRejectStudentBody =>
+      'The student will be rejected and their access removed.';
+
+  @override
+  String get requestsRejectParentBody =>
+      'The guardian and their pending children will be rejected and their access removed.';
+
+  @override
+  String get requestsApproveConfirm => 'Approve';
+
+  @override
+  String get requestsRejectConfirm => 'Reject';
+
+  @override
+  String get requestsApprovedSuccess => 'Request approved';
+
+  @override
+  String get requestsRejectedSuccess => 'Request rejected';
+
+  @override
+  String get requestsNoChange => 'The request was already resolved';
+
+  @override
+  String get requestsActionError => 'Could not complete the action';
+
+  @override
+  String get requestsClassroomPickerTitle => 'Choose course';
+
+  @override
+  String get requestsClassroomPickerSearch => 'Search course...';
+
+  @override
+  String get requestsClassroomPickerEmpty => 'No courses available';
+
+  @override
+  String get requestsClassroomPickerLoadError => 'Could not load courses';
+
+  @override
+  String get requestsClassroomPickerConfirm => 'Approve and assign course';
+
+  @override
   String get historyTitle => 'History';
 
   @override
