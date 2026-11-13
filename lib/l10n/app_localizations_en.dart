@@ -69,8 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authCheckEmail => 'Check Your Email';
 
   @override
-  String get authResetInstructions =>
-      'Enter your email and we\'ll send you a link to reset your password.';
+  String get authResetInstructions => 'Enter your email and we\'ll send you a link to reset your password.';
 
   @override
   String authResetLinkSent(String email) {
@@ -90,8 +89,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validationInvalidEmail => 'Invalid email';
 
   @override
-  String get validationPasswordLength =>
-      'Password must be at least 8 characters';
+  String get validationPasswordLength => 'Password must be at least 8 characters';
 
   @override
   String get validationPasswordsDoNotMatch => 'Passwords do not match';
@@ -251,8 +249,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsEmptyTitle => 'No classrooms found';
 
   @override
-  String get classroomsEmptyFiltered =>
-      'Try adjusting or clearing your filters';
+  String get classroomsEmptyFiltered => 'Try adjusting or clearing your filters';
 
   @override
   String get classroomsEmptySearch => 'Try a different search term';
@@ -324,8 +321,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsFiltersLoadError => 'Could not load filters';
 
   @override
-  String get classroomsFiltersLoadErrorDetail =>
-      'Check your connection and try again.';
+  String get classroomsFiltersLoadErrorDetail => 'Check your connection and try again.';
 
   @override
   String classroomsFilterChipBranch(String value) {
@@ -859,8 +855,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get professorMyClassrooms => 'My classrooms';
 
   @override
-  String get professorMyClassroomsEmpty =>
-      'You have no classrooms assigned yet';
+  String get professorMyClassroomsEmpty => 'You have no classrooms assigned yet';
 
   @override
   String professorClassroomsCount(int count) {
@@ -944,8 +939,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceUnsavedTitle => 'Unsaved changes';
 
   @override
-  String get attendanceUnsavedMessage =>
-      'If you leave now, attendance changes will be lost.';
+  String get attendanceUnsavedMessage => 'If you leave now, attendance changes will be lost.';
 
   @override
   String get attendanceUnsavedStay => 'Stay';
@@ -1017,8 +1011,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get absenceMarkDate => 'Date';
 
   @override
-  String get absenceMarkInfo =>
-      'Adds to the day\'s roll without removing the other absent students.';
+  String get absenceMarkInfo => 'Adds to the day\'s roll without removing the other absent students.';
 
   @override
   String get absenceMarked => 'Absence recorded';
@@ -1231,8 +1224,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boletinNoGrades => 'No grades recorded for this period';
 
   @override
-  String get boletinNoAccess =>
-      'You don\'t have access to this student\'s report card';
+  String get boletinNoAccess => 'You don\'t have access to this student\'s report card';
 
   @override
   String get boletinDownloadError => 'Could not download the report card';
@@ -1283,12 +1275,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feesProofHint => 'JPG, PNG or PDF · up to 10 MB';
 
   @override
-  String get feesProofInvalidFile =>
-      'Invalid file. JPG, PNG or PDF · up to 10 MB';
+  String get feesProofInvalidFile => 'Invalid file. JPG, PNG or PDF · up to 10 MB';
 
   @override
-  String get feesProofSuccess =>
-      'Receipt uploaded. An administrator will review it.';
+  String get feesProofSuccess => 'Receipt uploaded. An administrator will review it.';
 
   @override
   String get feesProofError => 'Could not upload the receipt';

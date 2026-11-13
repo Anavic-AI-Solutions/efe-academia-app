@@ -69,8 +69,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authCheckEmail => 'Revisá tu correo';
 
   @override
-  String get authResetInstructions =>
-      'Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
+  String get authResetInstructions => 'Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
 
   @override
   String authResetLinkSent(String email) {
@@ -90,8 +89,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get validationInvalidEmail => 'Correo electrónico inválido';
 
   @override
-  String get validationPasswordLength =>
-      'La contraseña debe tener al menos 8 caracteres';
+  String get validationPasswordLength => 'La contraseña debe tener al menos 8 caracteres';
 
   @override
   String get validationPasswordsDoNotMatch => 'Las contraseñas no coinciden';
@@ -180,8 +178,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileLogout => 'Cerrar sesión';
 
   @override
-  String get profileLogoutConfirm =>
-      '¿Estás seguro de que querés cerrar sesión?';
+  String get profileLogoutConfirm => '¿Estás seguro de que querés cerrar sesión?';
 
   @override
   String get languageSpanish => 'Español';
@@ -324,8 +321,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomsFiltersLoadError => 'No se pudieron cargar los filtros';
 
   @override
-  String get classroomsFiltersLoadErrorDetail =>
-      'Revisá tu conexión e intentá de nuevo.';
+  String get classroomsFiltersLoadErrorDetail => 'Revisá tu conexión e intentá de nuevo.';
 
   @override
   String classroomsFilterChipBranch(String value) {
@@ -457,8 +453,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentsEmptySearch => 'Probá con otro término de búsqueda';
 
   @override
-  String get studentsEmptyFilters =>
-      'Ningún estudiante coincide con los filtros seleccionados';
+  String get studentsEmptyFilters => 'Ningún estudiante coincide con los filtros seleccionados';
 
   @override
   String get studentsDetailFallbackTitle => 'Estudiante';
@@ -673,15 +668,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get qualificationsSearchHint => 'Buscar calificaciones...';
 
   @override
-  String get qualificationsLoadError =>
-      'No se pudieron cargar las calificaciones';
+  String get qualificationsLoadError => 'No se pudieron cargar las calificaciones';
 
   @override
   String get qualificationsEmptyTitle => 'No se encontraron calificaciones';
 
   @override
-  String get qualificationsEmptySearchSubtitle =>
-      'Probá con otro término de búsqueda';
+  String get qualificationsEmptySearchSubtitle => 'Probá con otro término de búsqueda';
 
   @override
   String get qualificationsEmptySubtitle => 'No hay calificaciones disponibles';
@@ -696,8 +689,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get notificationsMarkAllRead => 'Marcar todas como leídas';
 
   @override
-  String get notificationsLoadError =>
-      'No se pudieron cargar las notificaciones';
+  String get notificationsLoadError => 'No se pudieron cargar las notificaciones';
 
   @override
   String get notificationsEmptyTitle => 'No hay notificaciones';
@@ -727,8 +719,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatMessagesLoadError => 'No se pudieron cargar los mensajes';
 
   @override
-  String get chatMessagesEmpty =>
-      'Todavía no hay mensajes\n¡Iniciá la conversación!';
+  String get chatMessagesEmpty => 'Todavía no hay mensajes\n¡Iniciá la conversación!';
 
   @override
   String get chatInputHint => 'Escribí un mensaje...';
@@ -751,8 +742,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatNewEmptyTitle => 'Sin personas vinculadas';
 
   @override
-  String get chatNewEmptySubtitle =>
-      'Todavía no tenés personas con las que chatear';
+  String get chatNewEmptySubtitle => 'Todavía no tenés personas con las que chatear';
 
   @override
   String chatNewNoResults(String query) {
@@ -949,8 +939,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get attendanceUnsavedTitle => 'Cambios sin guardar';
 
   @override
-  String get attendanceUnsavedMessage =>
-      'Si salís ahora, se perderán los cambios de asistencia.';
+  String get attendanceUnsavedMessage => 'Si salís ahora, se perderán los cambios de asistencia.';
 
   @override
   String get attendanceUnsavedStay => 'Seguir acá';
@@ -1022,8 +1011,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get absenceMarkDate => 'Fecha';
 
   @override
-  String get absenceMarkInfo =>
-      'Se agrega al parte del día sin quitar a los demás ausentes.';
+  String get absenceMarkInfo => 'Se agrega al parte del día sin quitar a los demás ausentes.';
 
   @override
   String get absenceMarked => 'Inasistencia registrada';
@@ -1233,8 +1221,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get boletinObservations => 'Observaciones';
 
   @override
-  String get boletinNoGrades =>
-      'No hay calificaciones registradas para este período';
+  String get boletinNoGrades => 'No hay calificaciones registradas para este período';
 
   @override
   String get boletinNoAccess => 'No tenés acceso al boletín de este alumno';
@@ -1288,12 +1275,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get feesProofHint => 'JPG, PNG o PDF · hasta 10 MB';
 
   @override
-  String get feesProofInvalidFile =>
-      'Archivo no válido. JPG, PNG o PDF · hasta 10 MB';
+  String get feesProofInvalidFile => 'Archivo no válido. JPG, PNG o PDF · hasta 10 MB';
 
   @override
-  String get feesProofSuccess =>
-      'Comprobante subido. Un administrador lo revisará.';
+  String get feesProofSuccess => 'Comprobante subido. Un administrador lo revisará.';
 
   @override
   String get feesProofError => 'No se pudo subir el comprobante';
