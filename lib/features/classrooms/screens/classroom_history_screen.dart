@@ -107,6 +107,15 @@ class _ClassroomHistoryScreenState
 
     ref.listen<AuthState>(authProvider, (_, __) => _ensureInitialLoad());
 
+    ref.listen<String?>(authProvider.select((state) => state.user?.role), (
+      previous,
+      next,
+    ) {
+      if (previous == null || previous == next) return;
+      _didInitialLoad = false;
+      _ensureInitialLoad();
+    });
+
     ref.listen<String?>(parentSelectedStudentProvider, (_, next) {
       if (!mounted || !isParent || next == null) return;
       final current = ref.read(classroomHistoryProvider).studentId;
@@ -161,8 +170,9 @@ class _ClassroomHistoryScreenState
   Widget _buildChildSelector(AppLocalizations l10n) {
     final relations = ref.watch(relationsProvider);
     final selected = ref.watch(parentSelectedStudentProvider);
-    final children =
-        relations.relations.where((relation) => relation.role == 'student');
+    final children = relations.relations.where(
+      (relation) => relation.role == 'student',
+    );
 
     if (children.isEmpty) return const SizedBox.shrink();
 
@@ -215,8 +225,9 @@ class _ClassroomHistoryScreenState
       return EmptyState(
         icon: PhosphorIconsRegular.clockCounterClockwise,
         title: l10n.historyEmptyTitle,
-        subtitle:
-            searching ? l10n.historyEmptySearch : l10n.historyEmptySubtitle,
+        subtitle: searching
+            ? l10n.historyEmptySearch
+            : l10n.historyEmptySubtitle,
       );
     }
 
@@ -228,9 +239,7 @@ class _ClassroomHistoryScreenState
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
         itemCount: state.page.data.length,
         itemBuilder: (context, index) {
-          return _ArchivedClassroomCard(
-            classroom: state.page.data[index],
-          );
+          return _ArchivedClassroomCard(classroom: state.page.data[index]);
         },
       ),
     );

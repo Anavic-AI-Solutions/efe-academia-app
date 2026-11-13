@@ -16,6 +16,7 @@ class HomeHeader extends StatelessWidget {
   final VoidCallback? onSearch;
   final String? greeting;
   final Widget? child;
+  final Widget? badge;
 
   const HomeHeader({
     super.key,
@@ -27,6 +28,7 @@ class HomeHeader extends StatelessWidget {
     this.onSearch,
     this.greeting,
     this.child,
+    this.badge,
   });
 
   String _greeting(BuildContext context) {
@@ -98,10 +100,8 @@ class HomeHeader extends StatelessWidget {
               ],
             ],
           ),
-          if (child != null) ...[
-            const SizedBox(height: 18),
-            child,
-          ],
+          if (badge != null) ...[const SizedBox(height: 10), badge!],
+          if (child != null) ...[const SizedBox(height: 18), child],
         ],
       ),
     );

@@ -750,5 +750,24 @@
         "type": "int"
       }
     }
-  }
+  },
+  "roleModeTitle": "Modo de uso",
+  "roleModeSubtitle": "Elegí con qué rol querés usar la app",
+  "roleModeCurrent": "Modo actual",
+  "roleModeChange": "Cambiar modo",
+  "roleModeSwitched": "Ahora estás en modo {role}",
+  "@roleModeSwitched": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "roleModeSwitchError": "No pudimos cambiar el modo. Intentá de nuevo.",
+  "roleModeLoading": "Cambiando modo…",
+  "roleModeDescriptionProfessor": "Tus aulas, alumnos y calificaciones",
+  "roleModeDescriptionParent": "Las cuotas, el boletín y los cursos de tus hijos",
+  "roleModeDescriptionStudent": "Tus materias, notas y asistencias",
+  "roleModeDescriptionAdmin": "La administración completa de la escuela",
+  "roleModeDescriptionBranch": "La información de tu sede"
 }

@@ -58,8 +58,9 @@ class CustomBottomNav extends ConsumerWidget {
     final l10n = context.l10n;
     // Single unified accent for every role.
     const accent = AppColors.primary;
-    final inactive =
-        isDark ? AppColors.darkTextSecondary : AppColors.navInactive;
+    final inactive = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.navInactive;
     // Hidden (0) while loading or on error.
     final unreadChats = ref.watch(chatUnreadCountProvider).valueOrNull ?? 0;
     // Parents get a "Pagos" tab in place of "Aulas".
@@ -102,10 +103,9 @@ class CustomBottomNav extends ConsumerWidget {
                     : PhosphorIconsFill.chalkboardTeacher,
                 label: isParent ? l10n.navPayments : l10n.navClasses,
                 isSelected: navigationShell.currentIndex == 1,
-                onTap: () => navigationShell.goBranch(
-                  1,
-                  initialLocation: 1 == navigationShell.currentIndex,
-                ),
+                onTap: () {
+                  context.go(isParent ? '/payments' : '/classrooms');
+                },
                 accent: accent,
                 inactive: inactive,
               ),
@@ -242,13 +242,12 @@ class ScaffoldWithNav extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
-  final isParent = authState.user?.role == 'parent';
+  final authStatus = ref.watch(authProvider.select((state) => state.status));
 
   return GoRouter(
     initialLocation: '/dashboard',
     redirect: (context, state) {
-      final isLoggedIn = authState.status == AuthStatus.authenticated;
+      final isLoggedIn = authStatus == AuthStatus.authenticated;
       final isLoginRoute = state.matchedLocation == '/login';
 
       if (!isLoggedIn && !isLoginRoute) return '/login';
@@ -257,10 +256,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginScreen(),
-      ),
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
         path: '/forgot-password',
         builder: (context, state) => const ForgotPasswordScreen(),
@@ -278,7 +274,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
-            initialLocation: isParent ? '/payments' : null,
             routes: [
               GoRoute(
                 path: '/classrooms',
@@ -394,9 +389,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: ':id',
-            builder: (context, state) => FeeDetailScreen(
-              feeId: state.pathParameters['id']!,
-            ),
+            builder: (context, state) =>
+                FeeDetailScreen(feeId: state.pathParameters['id']!),
           ),
         ],
       ),
@@ -414,9 +408,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: ':id',
-            builder: (context, state) => DocumentDetailScreen(
-              documentId: state.pathParameters['id']!,
-            ),
+            builder: (context, state) =>
+                DocumentDetailScreen(documentId: state.pathParameters['id']!),
           ),
         ],
       ),
@@ -446,9 +439,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: ':id',
-            builder: (context, state) => ClassroomDetailScreen(
-              classroomId: state.pathParameters['id']!,
-            ),
+            builder: (context, state) =>
+                ClassroomDetailScreen(classroomId: state.pathParameters['id']!),
           ),
         ],
       ),
@@ -456,10 +448,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/library',
         builder: (context, state) => const LibraryScreen(),
       ),
-      GoRoute(
-        path: '/faqs',
-        builder: (context, state) => const FaqScreen(),
-      ),
+      GoRoute(path: '/faqs', builder: (context, state) => const FaqScreen()),
       GoRoute(
         path: '/statistics',
         builder: (context, state) => const StatisticsScreen(),

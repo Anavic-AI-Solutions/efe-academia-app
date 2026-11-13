@@ -34,11 +34,7 @@ class AuthState {
   final UserModel? user;
   final String? error;
 
-  const AuthState({
-    this.status = AuthStatus.initial,
-    this.user,
-    this.error,
-  });
+  const AuthState({this.status = AuthStatus.initial, this.user, this.error});
 
   AuthState copyWith({
     AuthStatus? status,
@@ -63,7 +59,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final PushRepository? _pushRepository;
 
   AuthNotifier(this._repository, [this._pushRepository])
-      : super(const AuthState()) {
+    : super(const AuthState()) {
     _init();
   }
 
@@ -80,10 +76,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final user = await _repository.getCurrentUser();
       // ignore: avoid_print
       print('[Auth] _init: user=${user.email} name=${user.name}');
-      state = state.copyWith(
-        status: AuthStatus.authenticated,
-        user: user,
-      );
+      state = state.copyWith(status: AuthStatus.authenticated, user: user);
     } catch (e) {
       print('[Auth] _init ERROR: $e');
       state = state.copyWith(status: AuthStatus.unauthenticated);
@@ -96,16 +89,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final user = await _repository.login(email: email, password: password);
       print('[Auth] login SUCCESS user=${user.email} role=${user.role}');
-      state = state.copyWith(
-        status: AuthStatus.authenticated,
-        user: user,
-      );
+      state = state.copyWith(status: AuthStatus.authenticated, user: user);
     } catch (e) {
       print('[Auth] login ERROR: $e');
-      state = state.copyWith(
-        status: AuthStatus.error,
-        error: e.toString(),
-      );
+      state = state.copyWith(status: AuthStatus.error, error: e.toString());
     }
   }
 
@@ -125,17 +112,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
         passwordConfirmation: passwordConfirmation,
       );
       print('[Auth] register SUCCESS user=${user.email}');
-      state = state.copyWith(
-        status: AuthStatus.authenticated,
-        user: user,
-      );
+      state = state.copyWith(status: AuthStatus.authenticated, user: user);
     } catch (e) {
       print('[Auth] register ERROR: $e');
-      state = state.copyWith(
-        status: AuthStatus.error,
-        error: e.toString(),
-      );
+      state = state.copyWith(status: AuthStatus.error, error: e.toString());
     }
+  }
+
+  void applyActiveRole({required String role, required List<String> roles}) {
+    final currentUser = state.user;
+    if (currentUser == null) return;
+    state = state.copyWith(
+      user: currentUser.copyWith(role: role, roles: roles),
+    );
   }
 
   Future<void> logout() async {
@@ -156,10 +145,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(status: AuthStatus.unauthenticated);
     } catch (e) {
       print('[Auth] forgotPassword ERROR: $e');
-      state = state.copyWith(
-        status: AuthStatus.error,
-        error: e.toString(),
-      );
+      state = state.copyWith(status: AuthStatus.error, error: e.toString());
     }
   }
 

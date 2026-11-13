@@ -63,7 +63,7 @@ import 'app_localizations_es.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('es')
+    Locale('es'),
   ];
 
   /// No description provided for @commonCancel.
@@ -2899,6 +2899,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cumple {age} años'**
   String birthdaysTurning(int age);
+
+  /// No description provided for @roleModeTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Modo de uso'**
+  String get roleModeTitle;
+
+  /// No description provided for @roleModeSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí con qué rol querés usar la app'**
+  String get roleModeSubtitle;
+
+  /// No description provided for @roleModeCurrent.
+  ///
+  /// In es, this message translates to:
+  /// **'Modo actual'**
+  String get roleModeCurrent;
+
+  /// No description provided for @roleModeChange.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar modo'**
+  String get roleModeChange;
+
+  /// No description provided for @roleModeSwitched.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora estás en modo {role}'**
+  String roleModeSwitched(String role);
+
+  /// No description provided for @roleModeSwitchError.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cambiar el modo. Intentá de nuevo.'**
+  String get roleModeSwitchError;
+
+  /// No description provided for @roleModeLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiando modo…'**
+  String get roleModeLoading;
+
+  /// No description provided for @roleModeDescriptionProfessor.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus aulas, alumnos y calificaciones'**
+  String get roleModeDescriptionProfessor;
+
+  /// No description provided for @roleModeDescriptionParent.
+  ///
+  /// In es, this message translates to:
+  /// **'Las cuotas, el boletín y los cursos de tus hijos'**
+  String get roleModeDescriptionParent;
+
+  /// No description provided for @roleModeDescriptionStudent.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus materias, notas y asistencias'**
+  String get roleModeDescriptionStudent;
+
+  /// No description provided for @roleModeDescriptionAdmin.
+  ///
+  /// In es, this message translates to:
+  /// **'La administración completa de la escuela'**
+  String get roleModeDescriptionAdmin;
+
+  /// No description provided for @roleModeDescriptionBranch.
+  ///
+  /// In es, this message translates to:
+  /// **'La información de tu sede'**
+  String get roleModeDescriptionBranch;
 }
 
 class _AppLocalizationsDelegate
@@ -2928,8 +3000,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

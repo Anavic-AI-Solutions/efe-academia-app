@@ -21,6 +21,7 @@ import '../domain/professor_classroom_summary.dart';
 import '../providers/dashboard_provider.dart';
 import 'widgets/home_summary_grid.dart';
 import 'widgets/professor_classroom_card.dart';
+import '../../role_mode/widgets/mode_switch_chip.dart';
 
 class ProfessorHomeScreen extends ConsumerStatefulWidget {
   const ProfessorHomeScreen({super.key});
@@ -62,7 +63,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
 
     final data = dashboardState.data;
     final classrooms = data?.classrooms ?? const <ProfessorClassroomSummary>[];
-    final selectedId = _selectedClassroomId ??
+    final selectedId =
+        _selectedClassroomId ??
         (classrooms.isNotEmpty ? classrooms.first.id : null);
 
     return Scaffold(
@@ -82,6 +84,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             HomeHeader(
+              badge: const ModeSwitchChip(),
               name: user?.name ?? '',
               avatarUrl: user?.avatarUrl,
               unreadCount: unreadCount,
@@ -151,8 +154,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
-                                    '/classrooms/$selectedId/attendance',
-                                  ),
+                                  '/classrooms/$selectedId/attendance',
+                                ),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -163,8 +166,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
-                                    '/classrooms/$selectedId/grades',
-                                  ),
+                                  '/classrooms/$selectedId/grades',
+                                ),
                         ),
                       ),
                     ],

@@ -25,52 +25,58 @@ class ErrorInterceptor extends Interceptor {
 
     switch (statusCode) {
       case 401:
-        handler.reject(_wrapError(
+        handler.reject(
+          _wrapError(
             err,
-            UnauthorizedException(
-              detail: _extractErrorDetail(err),
-            )));
+            UnauthorizedException(detail: _extractErrorDetail(err)),
+          ),
+        );
         return;
       case 403:
-        handler.reject(_wrapError(
-            err,
-            ForbiddenException(
-              detail: _extractErrorDetail(err),
-            )));
+        handler.reject(
+          _wrapError(err, ForbiddenException(detail: _extractErrorDetail(err))),
+        );
         return;
       case 404:
-        handler.reject(_wrapError(
-            err,
-            NotFoundException(
-              detail: _extractErrorDetail(err),
-            )));
+        handler.reject(
+          _wrapError(err, NotFoundException(detail: _extractErrorDetail(err))),
+        );
         return;
       case 422:
         final fieldErrors = _parseFieldErrors(err);
-        handler.reject(_wrapError(
+        handler.reject(
+          _wrapError(
             err,
             ValidationException(
               fieldErrors: fieldErrors,
               detail: _extractErrorDetail(err),
-            )));
+            ),
+          ),
+        );
         return;
       case 500:
-        handler.reject(_wrapError(
+        handler.reject(
+          _wrapError(
             err,
             ApiException(
               statusCode: 500,
               message: 'Error interno del servidor',
               detail: _extractErrorDetail(err),
-            )));
+            ),
+          ),
+        );
         return;
       default:
-        handler.reject(_wrapError(
+        handler.reject(
+          _wrapError(
             err,
             ApiException(
               statusCode: statusCode,
               message: 'La solicitud falló',
               detail: _extractErrorDetail(err),
-            )));
+            ),
+          ),
+        );
         return;
     }
   }
@@ -91,6 +97,18 @@ class ErrorInterceptor extends Interceptor {
       if (errors is List && errors.isNotEmpty) {
         return errors[0]['detail']?.toString();
       }
+
+      // ApiResponder shape: {"error": {"message": ..., "detail": ...}}
+      final error = data['error'];
+      if (error is Map<String, dynamic>) {
+        final detail = error['detail']?.toString();
+        if (detail != null && detail.isNotEmpty) return detail;
+        final message = error['message']?.toString();
+        if (message != null && message.isNotEmpty) return message;
+      }
+
+      final message = data['message']?.toString();
+      if (message != null && message.isNotEmpty) return message;
     }
     return err.message;
   }

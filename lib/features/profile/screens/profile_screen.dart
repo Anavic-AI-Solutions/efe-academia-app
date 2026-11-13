@@ -15,6 +15,7 @@ import '../../../app/locale/locale_provider.dart';
 import '../../../app/theme/theme_provider.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
+import '../../role_mode/widgets/mode_section.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -33,10 +34,7 @@ class ProfileScreen extends ConsumerWidget {
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
-          LargeTitleBar(
-            title: l10n.navProfile,
-            showBackButton: false,
-          ),
+          LargeTitleBar(title: l10n.navProfile, showBackButton: false),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
@@ -101,7 +99,7 @@ class ProfileScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                const ModeSection(),
 
                 // Preferences section
                 SectionHeader(
@@ -422,11 +420,7 @@ class _SettingsTile extends StatelessWidget {
         ListTile(
           onTap: onTap,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          leading: Icon(
-            icon,
-            size: 20,
-            color: AppColors.accentFor(isDark),
-          ),
+          leading: Icon(icon, size: 20, color: AppColors.accentFor(isDark)),
           title: Text(
             title,
             style: AppTypography.bodyLarge.copyWith(
@@ -435,7 +429,8 @@ class _SettingsTile extends StatelessWidget {
                   : AppColors.lightTextPrimary,
             ),
           ),
-          trailing: trailing ??
+          trailing:
+              trailing ??
               Icon(
                 PhosphorIconsRegular.caretRight,
                 size: 16,

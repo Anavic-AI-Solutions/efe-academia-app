@@ -1544,4 +1544,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String birthdaysTurning(int age) {
     return 'Turns $age';
   }
+
+  @override
+  String get roleModeTitle => 'Mode';
+
+  @override
+  String get roleModeSubtitle => 'Choose which role to use the app with';
+
+  @override
+  String get roleModeCurrent => 'Current mode';
+
+  @override
+  String get roleModeChange => 'Switch mode';
+
+  @override
+  String roleModeSwitched(String role) {
+    return 'You\'re now in $role mode';
+  }
+
+  @override
+  String get roleModeSwitchError => 'We couldn\'t switch modes. Try again.';
+
+  @override
+  String get roleModeLoading => 'Switching mode…';
+
+  @override
+  String get roleModeDescriptionProfessor =>
+      'Your classrooms, students and grades';
+
+  @override
+  String get roleModeDescriptionParent =>
+      'Your children\'s fees, report card and courses';
+
+  @override
+  String get roleModeDescriptionStudent =>
+      'Your subjects, grades and attendance';
+
+  @override
+  String get roleModeDescriptionAdmin => 'The school\'s full administration';
+
+  @override
+  String get roleModeDescriptionBranch => 'Your branch\'s information';
 }

@@ -501,5 +501,24 @@
   "birthdaysToday": "Today",
   "birthdaysTomorrow": "Tomorrow",
   "birthdaysInDays": "In {count} days",
-  "birthdaysTurning": "Turns {age}"
+  "birthdaysTurning": "Turns {age}",
+  "roleModeTitle": "Mode",
+  "roleModeSubtitle": "Choose which role to use the app with",
+  "roleModeCurrent": "Current mode",
+  "roleModeChange": "Switch mode",
+  "roleModeSwitched": "You're now in {role} mode",
+  "@roleModeSwitched": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "roleModeSwitchError": "We couldn't switch modes. Try again.",
+  "roleModeLoading": "Switching mode…",
+  "roleModeDescriptionProfessor": "Your classrooms, students and grades",
+  "roleModeDescriptionParent": "Your children's fees, report card and courses",
+  "roleModeDescriptionStudent": "Your subjects, grades and attendance",
+  "roleModeDescriptionAdmin": "The school's full administration",
+  "roleModeDescriptionBranch": "Your branch's information"
 }
