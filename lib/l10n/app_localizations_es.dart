@@ -1407,6 +1407,53 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuStatistics => 'Estadísticas';
 
   @override
+  String get menuRequests => 'Solicitudes';
+
+  @override
+  String get requestsTitle => 'Solicitudes';
+
+  @override
+  String get requestsSearchHint => 'Buscar solicitudes...';
+
+  @override
+  String get requestsTypeAll => 'Todos';
+
+  @override
+  String get requestsTypeStudents => 'Alumnos';
+
+  @override
+  String get requestsTypeParents => 'Padres/Tutores';
+
+  @override
+  String get requestsEmptyTitle => 'No hay solicitudes';
+
+  @override
+  String get requestsEmptySubtitle => 'No hay solicitudes para estos filtros';
+
+  @override
+  String get requestsEmptySearch => 'Probá con otro nombre, email o DNI';
+
+  @override
+  String get requestsLoadError => 'No se pudieron cargar las solicitudes';
+
+  @override
+  String get requestsKindStudent => 'Alumno';
+
+  @override
+  String get requestsKindParent => 'Padre/Tutor';
+
+  @override
+  String requestsChildrenCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hijos',
+      one: '1 hijo',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get historyTitle => 'Historial';
 
   @override

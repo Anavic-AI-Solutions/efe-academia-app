@@ -6,8 +6,8 @@ List<MenuSection> _sectionsFor(String role) =>
 
 void main() {
   group('MenuEntry role matrix', () {
-    test('exposes exactly the twelve product sections', () {
-      expect(MenuEntry.all, hasLength(12));
+    test('exposes exactly the thirteen product sections', () {
+      expect(MenuEntry.all, hasLength(13));
       expect(
         MenuEntry.all.map((entry) => entry.section).toSet(),
         MenuSection.values.toSet(),
@@ -70,6 +70,24 @@ void main() {
           _sectionsFor(role),
           isNot(contains(MenuSection.fees)),
           reason: '$role must not see fees',
+        );
+      }
+    });
+
+    test('requests only for admin, branch and sede', () {
+      for (final role in ['admin', 'branch', 'sede']) {
+        expect(
+          _sectionsFor(role),
+          contains(MenuSection.requests),
+          reason: '$role should see requests',
+        );
+      }
+
+      for (final role in ['student', 'parent', 'professor', 'unknown', '']) {
+        expect(
+          _sectionsFor(role),
+          isNot(contains(MenuSection.requests)),
+          reason: '$role must not see requests',
         );
       }
     });
@@ -139,6 +157,7 @@ void main() {
       for (final section in [
         MenuSection.calendar,
         MenuSection.notifications,
+        MenuSection.requests,
         MenuSection.history,
         MenuSection.library,
         MenuSection.documents,

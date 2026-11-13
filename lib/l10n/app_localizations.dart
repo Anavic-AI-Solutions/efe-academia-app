@@ -63,7 +63,7 @@ import 'app_localizations_es.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('es'),
+    Locale('es')
   ];
 
   /// No description provided for @commonCancel.
@@ -2624,6 +2624,84 @@ abstract class AppLocalizations {
   /// **'Estadísticas'**
   String get menuStatistics;
 
+  /// No description provided for @menuRequests.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitudes'**
+  String get menuRequests;
+
+  /// No description provided for @requestsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitudes'**
+  String get requestsTitle;
+
+  /// No description provided for @requestsSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar solicitudes...'**
+  String get requestsSearchHint;
+
+  /// No description provided for @requestsTypeAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Todos'**
+  String get requestsTypeAll;
+
+  /// No description provided for @requestsTypeStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos'**
+  String get requestsTypeStudents;
+
+  /// No description provided for @requestsTypeParents.
+  ///
+  /// In es, this message translates to:
+  /// **'Padres/Tutores'**
+  String get requestsTypeParents;
+
+  /// No description provided for @requestsEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay solicitudes'**
+  String get requestsEmptyTitle;
+
+  /// No description provided for @requestsEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay solicitudes para estos filtros'**
+  String get requestsEmptySubtitle;
+
+  /// No description provided for @requestsEmptySearch.
+  ///
+  /// In es, this message translates to:
+  /// **'Probá con otro nombre, email o DNI'**
+  String get requestsEmptySearch;
+
+  /// No description provided for @requestsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar las solicitudes'**
+  String get requestsLoadError;
+
+  /// No description provided for @requestsKindStudent.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno'**
+  String get requestsKindStudent;
+
+  /// No description provided for @requestsKindParent.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre/Tutor'**
+  String get requestsKindParent;
+
+  /// No description provided for @requestsChildrenCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, one{1 hijo} other{{count} hijos}}'**
+  String requestsChildrenCount(int count);
+
   /// No description provided for @historyTitle.
   ///
   /// In es, this message translates to:
@@ -3000,9 +3078,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
-  );
+      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }

@@ -96,6 +96,8 @@ class MenuScreen extends ConsumerWidget {
         return l10n.menuCalendar;
       case MenuSection.courses:
         return l10n.menuCourses;
+      case MenuSection.requests:
+        return l10n.menuRequests;
       case MenuSection.communication:
         return l10n.menuCommunication;
       case MenuSection.notifications:

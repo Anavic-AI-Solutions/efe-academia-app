@@ -684,6 +684,26 @@
   "menuFaq": "FAQ",
   "menuBirthdays": "Cumpleaños",
   "menuStatistics": "Estadísticas",
+  "menuRequests": "Solicitudes",
+  "requestsTitle": "Solicitudes",
+  "requestsSearchHint": "Buscar solicitudes...",
+  "requestsTypeAll": "Todos",
+  "requestsTypeStudents": "Alumnos",
+  "requestsTypeParents": "Padres/Tutores",
+  "requestsEmptyTitle": "No hay solicitudes",
+  "requestsEmptySubtitle": "No hay solicitudes para estos filtros",
+  "requestsEmptySearch": "Probá con otro nombre, email o DNI",
+  "requestsLoadError": "No se pudieron cargar las solicitudes",
+  "requestsKindStudent": "Alumno",
+  "requestsKindParent": "Padre/Tutor",
+  "requestsChildrenCount": "{count, plural, one{1 hijo} other{{count} hijos}}",
+  "@requestsChildrenCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "historyTitle": "Historial",
   "historySearchHint": "Buscar cursos archivados...",
   "historyEmptyTitle": "Sin cursos archivados",

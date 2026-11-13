@@ -12,6 +12,7 @@ enum MenuGroup { academic, communication, accountSupport }
 enum MenuSection {
   calendar,
   courses,
+  requests,
   communication,
   notifications,
   profile,
@@ -50,6 +51,12 @@ class MenuEntry {
       group: MenuGroup.academic,
       icon: PhosphorIconsRegular.chalkboardTeacher,
       route: '/classrooms',
+    ),
+    MenuEntry(
+      section: MenuSection.requests,
+      group: MenuGroup.academic,
+      icon: PhosphorIconsRegular.clipboardText,
+      route: '/requests',
     ),
     MenuEntry(
       section: MenuSection.history,
@@ -133,6 +140,8 @@ class MenuEntry {
             normalized == 'branch' ||
             normalized == 'professor' ||
             normalized == 'parent';
+      case MenuSection.requests:
+        return normalized == 'admin' || normalized == 'branch';
       default:
         return true;
     }

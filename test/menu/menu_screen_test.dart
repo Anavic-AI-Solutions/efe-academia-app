@@ -2,6 +2,7 @@ import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
 import 'package:efe_mobile/features/menu/screens/menu_screen.dart';
+import 'package:efe_mobile/features/menu/screens/widgets/menu_tile.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,7 +71,7 @@ Future<ProviderContainer> _pumpMenu(WidgetTester tester, String role) async {
 }
 
 void main() {
-  testWidgets('admin menu lists the twelve sections grouped by area',
+  testWidgets('admin menu lists the thirteen sections grouped by area',
       (tester) async {
     await _pumpMenu(tester, 'admin');
 
@@ -79,6 +80,7 @@ void main() {
     const labels = [
       'Calendario',
       'Cursos',
+      'Solicitudes',
       'Historial',
       'Biblioteca',
       'Documentos',
@@ -90,12 +92,13 @@ void main() {
     ];
 
     for (final label in labels) {
+      final finder = find.widgetWithText(MenuTile, label);
       await tester.scrollUntilVisible(
-        find.text(label),
+        finder,
         120,
         scrollable: find.byType(Scrollable).first,
       );
-      expect(find.text(label), findsOneWidget, reason: 'missing $label');
+      expect(finder, findsOneWidget, reason: 'missing $label');
     }
 
     // Admin must not see student-only sections.
