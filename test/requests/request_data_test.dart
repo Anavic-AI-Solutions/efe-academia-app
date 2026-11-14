@@ -234,6 +234,25 @@ void main() {
       expect(api.calls.single['page'], 2);
     });
 
+    test('uses meta.current_page when the backend clamps the page', () async {
+      final api = _FakeRequestApi()
+        ..payloads.add({
+          'data': [],
+          'meta': {
+            'current_page': 1,
+            'last_page': 2,
+            'per_page': 20,
+            'total': 40,
+          },
+        });
+      final repository = RequestRepository(api);
+
+      final result = await repository.getRequests(page: 3);
+
+      expect(result.page, 1);
+      expect(result.totalPages, 2);
+    });
+
     test('parses a student detail with media', () async {
       final api = _FakeRequestApi()
         ..payloads.add({

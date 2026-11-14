@@ -25,11 +25,25 @@ class RequestRepository {
         page: page,
         perPage: perPage,
       );
-      return PageResult.fromJson(
-        response.data,
+      final body = response.data is Map<String, dynamic>
+          ? response.data as Map<String, dynamic>
+          : <String, dynamic>{};
+      final result = PageResult.fromJson(
+        body,
         page: page,
         perPage: perPage,
         parse: RequestModel.fromJson,
+      );
+      final meta = body['meta'] is Map<String, dynamic>
+          ? body['meta'] as Map<String, dynamic>
+          : <String, dynamic>{};
+      final currentPage = (meta['current_page'] as num?)?.toInt() ?? page;
+
+      return PageResult(
+        data: result.data,
+        page: currentPage,
+        perPage: result.perPage,
+        total: result.total,
       );
     } on DioException catch (e) {
       throw _handleDioError(e);

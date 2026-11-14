@@ -168,6 +168,8 @@ class _RequestDetailScreenState extends ConsumerState<RequestDetailScreen> {
         SnackBar(content: Text(message)),
       );
 
+      ref.invalidate(requestDetailProvider(_key));
+
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop(true);
       }

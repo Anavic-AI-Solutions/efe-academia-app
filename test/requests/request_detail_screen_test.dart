@@ -22,10 +22,12 @@ class _FakeRequestRepository implements RequestRepository {
   _FakeRequestRepository({
     required this.details,
     this.pages = const [],
+    this.approveResult = true,
   });
 
   final List<RequestModel> details;
   final List<PageResult<RequestModel>> pages;
+  final bool approveResult;
   final List<Map<String, Object?>> calls = [];
 
   @override
@@ -54,7 +56,7 @@ class _FakeRequestRepository implements RequestRepository {
       'id': request.id,
       'classroomId': classroomId,
     });
-    return true;
+    return approveResult;
   }
 
   @override
@@ -287,6 +289,103 @@ void main() {
     );
     expect(approveCall['classroomId'], 'c1');
     expect(find.text('Solicitud aprobada'), findsOneWidget);
+  });
+
+  testWidgets('approving a resolved request shows the no-change message',
+      (tester) async {
+    final repository = _FakeRequestRepository(
+      details: [_student()],
+      approveResult: false,
+    );
+    final classrooms = _FakeClassroomRepository();
+
+    await _pumpDetail(tester, repository, classrooms: classrooms);
+
+    await tester.tap(find.text('Aceptar'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Inglés 1'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Aprobar'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('La solicitud ya estaba resuelta'), findsOneWidget);
+  });
+
+  testWidgets('reopening a resolved request hides actions', (tester) async {
+    final repository = _FakeRequestRepository(
+      details: [_student(), _student(status: 'approved')],
+      pages: [
+        PageResult(
+          data: [_student()],
+          page: 1,
+          perPage: 20,
+          total: 1,
+        ),
+        PageResult(
+          data: [_student(status: 'approved')],
+          page: 1,
+          perPage: 20,
+          total: 1,
+        ),
+      ],
+    );
+    final classrooms = _FakeClassroomRepository();
+    final router = GoRouter(
+      initialLocation: '/requests',
+      routes: [
+        GoRoute(
+          path: '/requests',
+          builder: (_, __) => const RequestListScreen(),
+          routes: [
+            GoRoute(
+              path: ':kind/:id',
+              builder: (_, state) => RequestDetailScreen(
+                kind: RequestKind.fromValue(state.pathParameters['kind']),
+                id: state.pathParameters['id']!,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+    final container = ProviderContainer(
+      overrides: [
+        requestRepositoryProvider.overrideWithValue(repository),
+        classroomRepositoryProvider.overrideWithValue(classrooms),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp.router(
+          routerConfig: router,
+          locale: const Locale('es', 'AR'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Ana'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Aceptar'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Inglés 1'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Aprobar'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(RequestListScreen), findsOneWidget);
+
+    await tester.tap(find.text('Ana'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Aceptar'), findsNothing);
+    expect(find.text('Aprobado'), findsOneWidget);
   });
 
   testWidgets('reject asks for confirmation and calls the repository',
