@@ -4,6 +4,7 @@ import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:efe_mobile/features/students/domain/student_parent_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -28,6 +29,10 @@ PageResult<StudentModel> _page(
     );
 
 class _FakeStudentRepository implements StudentRepository {
+  @override
+  Future<List<StudentParentModel>> getParents(String studentId) async =>
+      const [];
+
   final List<Map<String, Object?>> calls = [];
   final List<Future<PageResult<StudentModel>> Function()> _responses = [];
 

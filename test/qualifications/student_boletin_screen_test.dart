@@ -27,6 +27,7 @@ import 'package:efe_mobile/features/qualifications/providers/qualification_provi
 import 'package:efe_mobile/features/qualifications/screens/student_boletin_screen.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:efe_mobile/features/students/domain/student_parent_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +119,10 @@ class _FakeQualificationRepository implements QualificationRepository {
 /// Repositorio de alumnos falso: solo resuelve las aulas del hijo (el resto
 /// de la ficha no se usa en esta pantalla); puede fallar para el ErrorView.
 class _FakeStudentRepository implements StudentRepository {
+  @override
+  Future<List<StudentParentModel>> getParents(String studentId) async =>
+      const [];
+
   _FakeStudentRepository({
     this.classrooms = const [],
     this.failClassrooms = false,

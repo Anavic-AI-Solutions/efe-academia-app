@@ -13,7 +13,9 @@ import '../../auth/providers/auth_provider.dart';
 import '../providers/student_provider.dart';
 import 'widgets/student_detail_header.dart';
 import 'widgets/student_info_tab.dart';
+import 'widgets/student_parents_tab.dart';
 import 'widgets/student_related_tabs.dart';
+import 'widgets/student_request_tab.dart';
 
 class StudentDetailScreen extends ConsumerWidget {
   final String studentId;
@@ -31,13 +33,17 @@ class StudentDetailScreen extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final studentAsync = ref.watch(studentDetailProvider(studentId));
     final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
+    final role = ref.watch(authProvider).user?.role ?? '';
+    final showRequestTabs =
+        role == 'admin' || role == 'branch' || role == 'sede';
     final accent = AppColors.accentFor(isDark);
 
     return studentAsync.when(
       loading: () => _buildLoading(context, isDark, l10n),
       error: (e, _) => _buildError(context, isDark, l10n, e, ref),
       data: (student) => DefaultTabController(
-        length: 4,
+        key: ValueKey('student-tabs-$showRequestTabs'),
+        length: showRequestTabs ? 6 : 4,
         child: Scaffold(
           backgroundColor: AppColors.backgroundFor(isDark),
           body: Column(
@@ -61,6 +67,10 @@ class StudentDetailScreen extends ConsumerWidget {
                   Tab(text: l10n.studentsTabAbsences),
                   Tab(text: l10n.studentsTabFees),
                   Tab(text: l10n.studentsTabInfo),
+                  if (showRequestTabs) ...[
+                    Tab(text: l10n.studentsTabRequest),
+                    Tab(text: l10n.studentsTabParents),
+                  ],
                 ],
               ),
               Expanded(
@@ -83,6 +93,10 @@ class StudentDetailScreen extends ConsumerWidget {
                     StudentInfoTab(
                       student: student,
                     ),
+                    if (showRequestTabs) ...[
+                      StudentRequestTab(student: student),
+                      StudentParentsTab(student: student),
+                    ],
                   ],
                 ),
               ),

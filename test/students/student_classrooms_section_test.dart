@@ -3,6 +3,7 @@ import 'package:efe_mobile/core/widgets/error_view.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:efe_mobile/features/students/domain/student_parent_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:efe_mobile/features/students/screens/widgets/student_classrooms_section.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
@@ -12,6 +13,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 class _FakeStudentRepository implements StudentRepository {
+  @override
+  Future<List<StudentParentModel>> getParents(String studentId) async =>
+      const [];
+
   _FakeStudentRepository({this.classrooms = const [], this.fails = false});
 
   final List<ClassroomModel> classrooms;

@@ -61,6 +61,32 @@ class _FakeStudentApi implements StudentApi {
           {'id': 'c1', 'name': '3G X', 'shift': 'Mañana'},
         ],
       });
+
+  @override
+  Future<Response> getParents(String studentId) async => _response({
+        'data': [
+          {
+            'type': 'parent_data',
+            'id': 'p1',
+            'attributes': {
+              'fullname': 'María López',
+              'email': 'maria@example.com',
+              'phone': '123456',
+              'address': 'Calle 1',
+              'identity_number': '99887766',
+              'status': 'approved',
+              'media': [
+                {
+                  'collection_name': 'front_dni',
+                  'file_name': 'dni.jpg',
+                  'mime_type': 'image/jpeg',
+                  'url': 'https://example.com/dni.jpg',
+                },
+              ],
+            },
+          },
+        ],
+      });
 }
 
 void main() {
@@ -115,6 +141,18 @@ void main() {
       expect(classrooms.single.id, 'c1');
       expect(classrooms.single.name, '3G X');
       expect(classrooms.single.shift, 'Mañana');
+    });
+
+    test('parses the student parents with media', () async {
+      final repository = StudentRepository(_FakeStudentApi());
+
+      final parents = await repository.getParents('s1');
+
+      expect(parents.single.id, 'p1');
+      expect(parents.single.fullname, 'María López');
+      expect(parents.single.phone, '123456');
+      expect(parents.single.media.single.collectionName, 'front_dni');
+      expect(parents.single.media.single.url, 'https://example.com/dni.jpg');
     });
   });
 }

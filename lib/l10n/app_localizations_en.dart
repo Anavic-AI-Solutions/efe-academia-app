@@ -481,6 +481,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get studentsTabInfo => 'Info';
 
   @override
+  String get studentsTabRequest => 'Request';
+
+  @override
+  String get studentsTabParents => 'Parents';
+
+  @override
+  String get studentsRequestLoadError => 'Could not load the request';
+
+  @override
+  String get studentsParentsLoadError => 'Could not load parents/guardians';
+
+  @override
+  String get studentsParentsEmpty => 'No linked parents/guardians';
+
+  @override
+  String get studentsRequestCreatedAt => 'Request date';
+
+  @override
   String get studentsNoGrades => 'No grades available';
 
   @override

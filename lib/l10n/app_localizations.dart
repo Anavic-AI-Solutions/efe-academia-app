@@ -938,6 +938,42 @@ abstract class AppLocalizations {
   /// **'Información'**
   String get studentsTabInfo;
 
+  /// No description provided for @studentsTabRequest.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitud'**
+  String get studentsTabRequest;
+
+  /// No description provided for @studentsTabParents.
+  ///
+  /// In es, this message translates to:
+  /// **'Padres'**
+  String get studentsTabParents;
+
+  /// No description provided for @studentsRequestLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cargar la solicitud'**
+  String get studentsRequestLoadError;
+
+  /// No description provided for @studentsParentsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los padres/tutores'**
+  String get studentsParentsLoadError;
+
+  /// No description provided for @studentsParentsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin padres/tutores vinculados'**
+  String get studentsParentsEmpty;
+
+  /// No description provided for @studentsRequestCreatedAt.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de solicitud'**
+  String get studentsRequestCreatedAt;
+
   /// No description provided for @studentsNoGrades.
   ///
   /// In es, this message translates to:

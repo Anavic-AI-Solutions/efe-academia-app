@@ -482,6 +482,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentsTabInfo => 'Información';
 
   @override
+  String get studentsTabRequest => 'Solicitud';
+
+  @override
+  String get studentsTabParents => 'Padres';
+
+  @override
+  String get studentsRequestLoadError => 'No se pudo cargar la solicitud';
+
+  @override
+  String get studentsParentsLoadError =>
+      'No se pudieron cargar los padres/tutores';
+
+  @override
+  String get studentsParentsEmpty => 'Sin padres/tutores vinculados';
+
+  @override
+  String get studentsRequestCreatedAt => 'Fecha de solicitud';
+
+  @override
   String get studentsNoGrades => 'No hay notas disponibles';
 
   @override

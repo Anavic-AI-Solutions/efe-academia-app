@@ -12,6 +12,7 @@ import '../data/student_api.dart';
 import '../data/student_repository.dart';
 import '../domain/absence_model.dart';
 import '../domain/student_model.dart';
+import '../domain/student_parent_model.dart';
 
 // ---------------------------------------------------------------------------
 // Providers
@@ -196,6 +197,11 @@ final studentDetailProvider =
 final studentClassroomsProvider =
     FutureProvider.family<List<ClassroomModel>, String>((ref, studentId) {
   return ref.watch(studentRepositoryProvider).getClassrooms(studentId);
+});
+
+final studentParentsProvider =
+    FutureProvider.family<List<StudentParentModel>, String>((ref, studentId) {
+  return ref.watch(studentRepositoryProvider).getParents(studentId);
 });
 
 // ---------------------------------------------------------------------------

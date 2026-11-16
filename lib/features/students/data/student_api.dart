@@ -26,4 +26,7 @@ class StudentApi {
 
   Future<Response> getClassrooms(String studentId) =>
       _client.get('/students/$studentId/classrooms');
+
+  Future<Response> getParents(String studentId) =>
+      _client.get('/students/$studentId/parents');
 }

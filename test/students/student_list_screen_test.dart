@@ -4,6 +4,7 @@ import 'package:efe_mobile/core/widgets/empty_state.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:efe_mobile/features/students/domain/student_parent_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:efe_mobile/features/students/screens/student_list_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,10 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/localized_app.dart';
 
 class _FakeStudentRepository implements StudentRepository {
+  @override
+  Future<List<StudentParentModel>> getParents(String studentId) async =>
+      const [];
+
   _FakeStudentRepository({this.total = 1});
 
   final int total;

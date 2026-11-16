@@ -18,10 +18,14 @@ import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
+import 'package:efe_mobile/features/requests/data/request_repository.dart';
+import 'package:efe_mobile/features/requests/domain/request_model.dart';
+import 'package:efe_mobile/features/requests/providers/request_provider.dart';
 import 'package:efe_mobile/features/students/data/absence_repository.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/absence_model.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:efe_mobile/features/students/domain/student_parent_model.dart';
 import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:efe_mobile/features/students/screens/student_detail_screen.dart';
 import 'package:efe_mobile/features/students/screens/widgets/student_grades_grid.dart';
@@ -72,10 +76,15 @@ class _FakeAuthRepository implements AuthRepository {
 }
 
 class _FakeStudentRepository implements StudentRepository {
-  _FakeStudentRepository({this.student, this.fails = false});
+  _FakeStudentRepository({
+    this.student,
+    this.fails = false,
+    this.parents = const [],
+  });
 
   final StudentModel? student;
   final bool fails;
+  final List<StudentParentModel> parents;
 
   @override
   Future<StudentModel> getStudent(String id) async {
@@ -88,6 +97,10 @@ class _FakeStudentRepository implements StudentRepository {
       const [];
 
   @override
+  Future<List<StudentParentModel>> getParents(String studentId) async =>
+      parents;
+
+  @override
   Future<PageResult<StudentModel>> getStudents({
     String? search,
     String? status,
@@ -96,6 +109,33 @@ class _FakeStudentRepository implements StudentRepository {
     int page = 1,
     int limit = 20,
   }) =>
+      Future.error(UnimplementedError());
+}
+
+class _FakeRequestRepository implements RequestRepository {
+  _FakeRequestRepository({required this.detail});
+
+  final RequestModel detail;
+
+  @override
+  Future<PageResult<RequestModel>> getRequests({
+    String? search,
+    String status = 'pending',
+    String type = 'all',
+    int page = 1,
+    int perPage = 20,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<RequestModel> getRequest(RequestKind kind, String id) async => detail;
+
+  @override
+  Future<bool> approve(RequestModel request, {String? classroomId}) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<bool> reject(RequestModel request) =>
       Future.error(UnimplementedError());
 }
 
@@ -230,6 +270,7 @@ Future<void> _pumpDetail(
   _FakeQualificationRepository? qualifications,
   _FakeAbsenceRepository? absences,
   _FakeFeeRepository? fees,
+  RequestRepository? requests,
   String role = 'student',
   String? classroomId,
 }) async {
@@ -245,6 +286,9 @@ Future<void> _pumpDetail(
         absenceRepositoryProvider
             .overrideWithValue(absences ?? _FakeAbsenceRepository()),
         feeRepositoryProvider.overrideWithValue(fees ?? _FakeFeeRepository()),
+        requestRepositoryProvider.overrideWithValue(
+          requests ?? _FakeRequestRepository(detail: _studentRequest),
+        ),
         dashboardRepositoryProvider
             .overrideWithValue(const _FakeDashboardRepository()),
       ],
@@ -281,6 +325,17 @@ const _student = StudentModel(
   classroomCount: 3,
 );
 
+const _studentRequest = RequestModel(
+  id: 's1',
+  kind: RequestKind.student,
+  fullname: 'Ana Gómez',
+  email: 'ana@example.com',
+  identityNumber: '30111222',
+  branch: 'Reconquista',
+  year: '2026',
+  status: 'approved',
+);
+
 void main() {
   testWidgets('renders the hero header and the tabs', (tester) async {
     await _pumpDetail(
@@ -296,6 +351,91 @@ void main() {
     expect(find.text('Inasistencias'), findsOneWidget);
     expect(find.text('Cuotas'), findsOneWidget);
     expect(find.text('Información'), findsOneWidget);
+    expect(find.text('Solicitud'), findsNothing);
+    expect(find.text('Padres'), findsNothing);
+  });
+
+  testWidgets('admin sees request and parents tabs', (tester) async {
+    await _pumpDetail(
+      tester,
+      role: 'admin',
+      students: _FakeStudentRepository(student: _student),
+    );
+
+    expect(find.text('Solicitud'), findsOneWidget);
+    expect(find.text('Padres'), findsOneWidget);
+  });
+
+  testWidgets('request tab shows the student request data', (tester) async {
+    await _pumpDetail(
+      tester,
+      role: 'admin',
+      students: _FakeStudentRepository(student: _student),
+      requests: _FakeRequestRepository(
+        detail: const RequestModel(
+          id: 's1',
+          kind: RequestKind.student,
+          fullname: 'Ana Gómez',
+          email: 'ana@example.com',
+          identityNumber: '30111222',
+          branch: 'Reconquista',
+          year: '2026',
+          status: 'approved',
+          media: [
+            RequestMedia(
+              collectionName: 'front_dni',
+              fileName: 'dni.jpg',
+              url: 'https://example.com/dni.jpg',
+            ),
+          ],
+        ),
+      ),
+    );
+
+    await _openTab(tester, 'Solicitud');
+
+    expect(find.text('ana@example.com'), findsOneWidget);
+    expect(find.text('30111222'), findsOneWidget);
+    expect(find.text('Aprobado'), findsOneWidget);
+    expect(find.text('DNI frente'), findsOneWidget);
+  });
+
+  testWidgets('parents tab shows linked parents and their documents',
+      (tester) async {
+    await _pumpDetail(
+      tester,
+      role: 'admin',
+      students: _FakeStudentRepository(
+        student: _student,
+        parents: const [
+          StudentParentModel(
+            id: 'p1',
+            fullname: 'María López',
+            email: 'maria@example.com',
+            phone: '123456',
+            address: 'Calle 1',
+            identityNumber: '99887766',
+            status: 'approved',
+            media: [
+              RequestMedia(
+                collectionName: 'front_dni',
+                fileName: 'dni.jpg',
+                url: 'https://example.com/dni.jpg',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
+    await _openTab(tester, 'Padres');
+
+    expect(find.text('María López'), findsOneWidget);
+    expect(find.text('maria@example.com'), findsOneWidget);
+    expect(find.text('123456'), findsOneWidget);
+    expect(find.text('Calle 1'), findsOneWidget);
+    expect(find.text('Aprobado'), findsOneWidget);
+    expect(find.text('DNI frente'), findsOneWidget);
   });
 
   testWidgets('shows the info tab with stats and sections', (tester) async {
