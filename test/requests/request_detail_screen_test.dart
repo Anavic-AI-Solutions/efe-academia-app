@@ -538,6 +538,46 @@ void main() {
     expect(find.text('Aprobado'), findsOneWidget);
   });
 
+  testWidgets('classroom picker keeps the list below the header with keyboard open',
+      (tester) async {
+    tester.view.physicalSize = const Size(400, 700);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          requestClassroomOptionsProvider.overrideWith(
+            (ref, search) async => const [
+              ClassroomModel(id: 'c1', name: 'Inglés 1'),
+              ClassroomModel(id: 'c2', name: 'Inglés 2'),
+            ],
+          ),
+        ],
+        child: MediaQuery(
+          data: const MediaQueryData(
+            size: Size(400, 700),
+            viewInsets: EdgeInsets.only(bottom: 300),
+          ),
+          child: const MaterialApp(
+            locale: Locale('es', 'AR'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(body: ClassroomPickerSheet()),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final search = tester.getRect(find.byType(TextField));
+    final firstCourse = tester.getRect(find.text('Inglés 1'));
+    final sheetSize = tester.getSize(find.byType(ClassroomPickerSheet));
+
+    expect(firstCourse.top, greaterThanOrEqualTo(search.bottom));
+    expect(sheetSize.height, lessThanOrEqualTo(660));
+  });
+
   testWidgets('classroom picker searches on the server', (tester) async {
     final classrooms = _FakeClassroomRepository();
     final container = ProviderContainer(

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,110 +44,133 @@ class _ClassroomPickerSheetState extends ConsumerState<ClassroomPickerSheet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final media = MediaQuery.of(context);
+    final availableHeight = media.size.height - media.viewInsets.bottom;
+    final sheetHeight = math.min(520.0, availableHeight * 0.85);
     final options = ref.watch(requestClassroomOptionsProvider(_search));
+    final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
 
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
+      padding: EdgeInsets.only(bottom: media.viewInsets.bottom),
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 440,
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        l10n.requestsClassroomPickerTitle,
-                        style: AppTypography.titleMedium.copyWith(
-                          color: isDark
-                              ? AppColors.darkTextPrimary
-                              : AppColors.lightTextPrimary,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.close_rounded),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: AppSearchBar(
-                  controller: _searchController,
-                  hintText: l10n.requestsClassroomPickerSearch,
-                  onChanged: _onSearchChanged,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: options.when(
-                  loading: () => const ListShimmer(itemCount: 4, itemHeight: 52),
-                  error: (error, _) => _ErrorState(
-                    message: l10n.requestsClassroomPickerLoadError,
-                    retryLabel: l10n.commonRetry,
-                    onRetry: () => ref.invalidate(
-                      requestClassroomOptionsProvider(_search),
+          height: sheetHeight,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            child: Material(
+              color: surface,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const SizedBox(height: 10),
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppColors.darkBorder
+                          : AppColors.lightBorder,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  data: (classrooms) {
-                    if (classrooms.isEmpty) {
-                      return _EmptyState(
-                        message: l10n.requestsClassroomPickerEmpty,
-                      );
-                    }
-
-                    return ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      itemCount: classrooms.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
-                      itemBuilder: (context, index) {
-                        final classroom = classrooms[index];
-                        return ListTile(
-                          tileColor: isDark
-                              ? AppColors.darkSurface
-                              : AppColors.lightSurface,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          leading: Icon(
-                            PhosphorIconsRegular.chalkboardTeacher,
-                            color: AppColors.accentFor(isDark),
-                          ),
-                          title: Text(
-                            classroom.name,
-                            style: AppTypography.titleSmall.copyWith(
-                              color: isDark
-                                  ? AppColors.darkTextPrimary
-                                  : AppColors.lightTextPrimary,
+                  Material(
+                    color: surface,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              l10n.requestsClassroomPickerTitle,
+                              style: AppTypography.titleMedium.copyWith(
+                                color: isDark
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.lightTextPrimary,
+                              ),
                             ),
                           ),
-                          subtitle: classroom.branch.isNotEmpty
-                              ? Text(classroom.branch)
-                              : null,
-                          onTap: () => Navigator.of(context).pop(classroom),
-                        );
-                      },
-                    );
-                  },
-                ),
+                          IconButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: const Icon(Icons.close_rounded),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: surface,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                      child: AppSearchBar(
+                        controller: _searchController,
+                        hintText: l10n.requestsClassroomPickerSearch,
+                        onChanged: _onSearchChanged,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ClipRect(
+                      child: options.when(
+                        loading: () =>
+                            const ListShimmer(itemCount: 4, itemHeight: 52),
+                        error: (error, _) => _ErrorState(
+                          message: l10n.requestsClassroomPickerLoadError,
+                          retryLabel: l10n.commonRetry,
+                          onRetry: () => ref.invalidate(
+                            requestClassroomOptionsProvider(_search),
+                          ),
+                        ),
+                        data: (classrooms) {
+                          if (classrooms.isEmpty) {
+                            return _EmptyState(
+                              message: l10n.requestsClassroomPickerEmpty,
+                            );
+                          }
+
+                          return ListView.separated(
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                            itemCount: classrooms.length,
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(height: 8),
+                            itemBuilder: (context, index) {
+                              final classroom = classrooms[index];
+                              return ListTile(
+                                tileColor: isDark
+                                    ? AppColors.darkSurface
+                                    : AppColors.lightSurface,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                leading: Icon(
+                                  PhosphorIconsRegular.chalkboardTeacher,
+                                  color: AppColors.accentFor(isDark),
+                                ),
+                                title: Text(
+                                  classroom.name,
+                                  style: AppTypography.titleSmall.copyWith(
+                                    color: isDark
+                                        ? AppColors.darkTextPrimary
+                                        : AppColors.lightTextPrimary,
+                                  ),
+                                ),
+                                subtitle: classroom.branch.isNotEmpty
+                                    ? Text(classroom.branch)
+                                    : null,
+                                onTap: () =>
+                                    Navigator.of(context).pop(classroom),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
