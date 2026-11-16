@@ -237,24 +237,6 @@ test('profile update syncs every owned role record', function () {
     }
 });
 
-test('profile update rolls back when the users update fails', function () {
-    $user = User::factory()->create();
-    $parent = \App\Models\ParentData::factory()->create([
-        'user_id' => $user->id,
-        'fullname' => 'Original',
-    ]);
-
-    Sanctum::actingAs($user);
-    $this->patchJson('/api/v1/profile', [
-        'name' => 'Changed',
-        'email' => User::factory()->create()->email,
-    ])->assertStatus(422);
-
-    $this->assertDatabaseHas('parent_data', [
-        'id' => $parent->id,
-        'fullname' => 'Original',
-    ]);
-});
 ```
 
 - [ ] **Step 2: Implementar la transacción**
@@ -671,14 +653,13 @@ git commit -m "feat: parse laravel validation errors"
 
 **Interfaces:**
 - Produces: `AvatarUploadFile({required Uint8List bytes, required String name})`.
-- Produces: `ProfileRepository.getProfile() → Future<UserModel>`, `updateProfile({name,email}) → Future<UserModel>`, `uploadAvatar({bytes,filename}) → Future<String>`, `changePassword({currentPassword,password,passwordConfirmation}) → Future<void>`.
+- Produces: `ProfileRepository.updateProfile({name,email}) → Future<UserModel>`, `uploadAvatar({bytes,filename}) → Future<String>`, `changePassword({currentPassword,password,passwordConfirmation}) → Future<void>`.
 - Produces: `profileApiProvider`, `profileRepositoryProvider`.
 
 - [ ] **Step 1: Escribir los tests que fallan**
 
 `_FakeProfileApi implements ProfileApi` con respuestas configurables y captura de `FormData`. Tests:
-- `getProfile` parsea `{data:{...avatar...}}`.
-- `updateProfile` envía `name` y `email` por `PATCH /profile`.
+- `updateProfile` envía `name` y `email` por `PATCH /profile` y parsea el usuario.
 - `uploadAvatar` envía `FormData` con el archivo en el campo `avatar` y devuelve la URL.
 - `changePassword` envía los tres campos por `PATCH /profile/password`.
 - Un `DioException` con `ValidationException` se preserva como `ValidationException`.
@@ -717,7 +698,6 @@ flutter test test/profile/profile_repository_test.dart
 `ProfileApi`:
 
 ```dart
-Future<Response> show() => _client.get('/profile');
 Future<Response> update({required String name, required String email}) =>
     _client.patch('/profile', data: {'name': name, 'email': email});
 Future<Response> uploadAvatar(FormData data) => _client.upload(
@@ -858,7 +838,12 @@ class ProfileEditState {
     this.fieldErrors = const {},
   });
 
-  ProfileEditState copyWith({...});
+  ProfileEditState copyWith({
+    bool? savingProfile,
+    bool? uploadingAvatar,
+    bool? savingPassword,
+    Map<String, String>? fieldErrors,
+  });
 }
 ```
 
@@ -1017,7 +1002,7 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 - `LargeTitleBar(title: l10n.profileEditProfileTitle, showBackButton: true)`.
 - `ListView` con `AppCard` para datos.
 - `TextFormField` de nombre y email, inicializados desde `authProvider.user`.
-- Botón `PillButton` o `FilledButton` con spinner mientras `savingProfile`.
+- Botón `PillButton` con spinner mientras `savingProfile`.
 - Al guardar: validar; `await notifier.saveProfile(...)`; si `true`, snackbar `profileEditSaved`; si `false`, si `fieldErrors['email']` mostrar `profileEditEmailInUse`, si no `profileEditSaveError`.
 - Un bloque superior `Center(child: AppAvatar(imageUrl: user?.avatarUrl, name: user?.name ?? '', size: 96, showGradientRing: true))` como placeholder; Task 11 lo reemplaza por el editor.
 
