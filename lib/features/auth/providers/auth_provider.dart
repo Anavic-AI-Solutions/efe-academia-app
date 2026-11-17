@@ -119,6 +119,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  /// Replaces the authenticated user, e.g. after the profile is edited.
+  void applyUser(UserModel user) {
+    state = state.copyWith(status: AuthStatus.authenticated, user: user);
+  }
+
   void applyActiveRole({required String role, required List<String> roles}) {
     final currentUser = state.user;
     if (currentUser == null) return;
