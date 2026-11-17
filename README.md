@@ -4,8 +4,10 @@ Aplicación móvil Flutter para la gestión integral de escuelas de enfermería:
 
 ## Guía de instalación y uso (usuarios)
 
-¿Querés instalar la app y entrar por primera vez? Seguí la
-[Guía de instalación y uso](docs/GUIA_INSTALACION_Y_USO.md) (Windows).
+¿Querés instalar la app y entrar por primera vez?
+
+- **Windows:** [Guía de instalación y uso en Windows](docs/GUIA_INSTALACION_Y_USO.md)
+- **Android:** [Guía de instalación en Android](docs/GUIA_INSTALACION_ANDROID.md) (descarga e instalación del APK)
 
 ## Características principales
 
