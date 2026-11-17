@@ -74,8 +74,10 @@ class _FakeProfileRepository implements ProfileRepository {
 
   String? avatarResult;
   Object? avatarError;
+  Completer<String>? avatarGate;
 
   Object? passwordError;
+  Completer<void>? passwordGate;
 
   Map<String, dynamic>? lastUpdate;
   Map<String, dynamic>? lastUpload;
@@ -98,6 +100,7 @@ class _FakeProfileRepository implements ProfileRepository {
     required String filename,
   }) async {
     lastUpload = {'filename': filename, 'length': bytes.length};
+    if (avatarGate != null) return avatarGate!.future;
     if (avatarError != null) throw avatarError!;
     return avatarResult!;
   }
@@ -113,6 +116,7 @@ class _FakeProfileRepository implements ProfileRepository {
       'password': password,
       'password_confirmation': passwordConfirmation,
     };
+    if (passwordGate != null) return passwordGate!.future;
     if (passwordError != null) throw passwordError!;
   }
 }
@@ -212,6 +216,43 @@ void main() {
 
       expect(container.read(profileEditProvider).savingProfile, isFalse);
     });
+
+    test('keeps the avatar returned by the server over the old one', () async {
+      final auth = _TestAuthNotifier()..seed(_currentUser);
+      final repo = _FakeProfileRepository()
+        ..updateResult = const UserModel(
+          id: '1',
+          name: 'New',
+          email: 'new@example.com',
+          role: 'professor',
+          avatarUrl: 'https://cdn/server.png',
+        );
+      final container = _containerFor(auth, repo);
+
+      final ok = await container
+          .read(profileEditProvider.notifier)
+          .saveProfile(name: 'New', email: 'new@example.com');
+
+      expect(ok, isTrue);
+      expect(container.read(authProvider).user?.avatarUrl,
+          'https://cdn/server.png');
+      expect(container.read(authProvider).user?.branchName, 'Sede Centro');
+    });
+
+    test('returns false without throwing when disposed mid-flight', () async {
+      final auth = _TestAuthNotifier()..seed(_currentUser);
+      final repo = _FakeProfileRepository()
+        ..updateGate = Completer<UserModel>();
+      final container = _containerFor(auth, repo);
+      final notifier = container.read(profileEditProvider.notifier);
+
+      final future =
+          notifier.saveProfile(name: 'New', email: 'new@example.com');
+      container.dispose();
+      repo.updateGate!.complete(_currentUser);
+
+      await expectLater(future, completion(isFalse));
+    });
   });
 
   group('ProfileEditNotifier.uploadAvatar', () {
@@ -249,6 +290,22 @@ void main() {
 
       expect(url, isNull);
       expect(container.read(authProvider).user, _currentUser);
+    });
+
+    test('returns null without throwing when disposed mid-flight', () async {
+      final auth = _TestAuthNotifier()..seed(_currentUser);
+      final repo = _FakeProfileRepository()..avatarGate = Completer<String>();
+      final container = _containerFor(auth, repo);
+      final notifier = container.read(profileEditProvider.notifier);
+
+      final future = notifier.uploadAvatar(
+        bytes: Uint8List.fromList([1]),
+        filename: 'photo.png',
+      );
+      container.dispose();
+      repo.avatarGate!.complete('https://cdn/new.png');
+
+      await expectLater(future, completion(isNull));
     });
   });
 
@@ -313,6 +370,23 @@ void main() {
       expect(ok, isFalse);
       expect(container.read(profileEditProvider).fieldErrors, isEmpty);
       expect(container.read(authProvider).user, _currentUser);
+    });
+
+    test('returns false without throwing when disposed mid-flight', () async {
+      final auth = _TestAuthNotifier()..seed(_currentUser);
+      final repo = _FakeProfileRepository()..passwordGate = Completer<void>();
+      final container = _containerFor(auth, repo);
+      final notifier = container.read(profileEditProvider.notifier);
+
+      final future = notifier.changePassword(
+        currentPassword: 'old-secret',
+        newPassword: 'new-secret',
+        confirmation: 'new-secret',
+      );
+      container.dispose();
+      repo.passwordGate!.complete();
+
+      await expectLater(future, completion(isFalse));
     });
 
     test('toggles savingPassword while the request is in flight', () async {

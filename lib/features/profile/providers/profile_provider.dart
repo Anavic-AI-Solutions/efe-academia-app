@@ -70,20 +70,24 @@ class ProfileEditNotifier extends StateNotifier<ProfileEditState> {
     state = state.copyWith(savingProfile: true, fieldErrors: const {});
     try {
       final updated = await _repository.updateProfile(name: name, email: email);
+      if (!mounted) return false;
       final current = _ref.read(authProvider).user;
       final merged = updated.copyWith(
-        avatarUrl: current?.avatarUrl,
-        branchName: current?.branchName,
+        avatarUrl: updated.avatarUrl ?? current?.avatarUrl,
+        branchName: updated.branchName ?? current?.branchName,
       );
       _ref.read(authProvider.notifier).applyUser(merged);
       return true;
     } on ValidationException catch (e) {
+      if (!mounted) return false;
       state = state.copyWith(fieldErrors: e.fieldErrors);
       return false;
     } catch (_) {
       return false;
     } finally {
-      state = state.copyWith(savingProfile: false);
+      if (mounted) {
+        state = state.copyWith(savingProfile: false);
+      }
     }
   }
 
@@ -97,6 +101,7 @@ class ProfileEditNotifier extends StateNotifier<ProfileEditState> {
         bytes: bytes,
         filename: filename,
       );
+      if (!mounted) return null;
       final current = _ref.read(authProvider).user;
       if (current != null) {
         _ref
@@ -105,12 +110,15 @@ class ProfileEditNotifier extends StateNotifier<ProfileEditState> {
       }
       return url;
     } on ValidationException catch (e) {
+      if (!mounted) return null;
       state = state.copyWith(fieldErrors: e.fieldErrors);
       return null;
     } catch (_) {
       return null;
     } finally {
-      state = state.copyWith(uploadingAvatar: false);
+      if (mounted) {
+        state = state.copyWith(uploadingAvatar: false);
+      }
     }
   }
 
@@ -126,14 +134,18 @@ class ProfileEditNotifier extends StateNotifier<ProfileEditState> {
         password: newPassword,
         passwordConfirmation: confirmation,
       );
+      if (!mounted) return false;
       return true;
     } on ValidationException catch (e) {
+      if (!mounted) return false;
       state = state.copyWith(fieldErrors: e.fieldErrors);
       return false;
     } catch (_) {
       return false;
     } finally {
-      state = state.copyWith(savingPassword: false);
+      if (mounted) {
+        state = state.copyWith(savingPassword: false);
+      }
     }
   }
 

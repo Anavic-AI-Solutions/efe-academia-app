@@ -233,4 +233,52 @@ void main() {
     expect(find.text('dup@example.com'), findsOneWidget);
     expect(find.text('New Name'), findsOneWidget);
   });
+
+  testWidgets('an email 422 that is not a conflict shows profileEditSaveError',
+      (tester) async {
+    final repo = _FakeProfileRepository()
+      ..updateError = ValidationException(
+        fieldErrors: {'email': 'El email no es válido'},
+      );
+    await _pumpScreen(tester, repo);
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Old Name'),
+      'New Name',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'old@example.com'),
+      'bad@example.com',
+    );
+    await _tapSave(tester);
+
+    expect(find.text('No se pudo actualizar el perfil.'), findsOneWidget);
+    expect(find.text('Ese email ya está en uso.'), findsNothing);
+  });
+
+  testWidgets('sends the email trimmed and lowercased', (tester) async {
+    final repo = _FakeProfileRepository()
+      ..updateResult = const UserModel(
+        id: '1',
+        name: 'New Name',
+        email: 'new@example.com',
+        role: 'professor',
+      );
+    await _pumpScreen(tester, repo);
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Old Name'),
+      'New Name',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'old@example.com'),
+      'New@Example.COM',
+    );
+    await _tapSave(tester);
+
+    expect(repo.lastUpdate, {
+      'name': 'New Name',
+      'email': 'new@example.com',
+    });
+  });
 }

@@ -82,15 +82,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final l10n = context.l10n;
     final ok = await ref.read(profileEditProvider.notifier).saveProfile(
           name: _nameController.text.trim(),
-          email: _emailController.text.trim(),
+          email: _emailController.text.trim().toLowerCase(),
         );
     if (!mounted) return;
 
-    final hasEmailError =
-        ref.read(profileEditProvider).fieldErrors.containsKey('email');
+    final emailError = ref.read(profileEditProvider).fieldErrors['email'];
     final message = ok
         ? l10n.profileEditSaved
-        : (hasEmailError
+        : (_isEmailConflict(emailError)
             ? l10n.profileEditEmailInUse
             : l10n.profileEditSaveError);
 
@@ -179,6 +178,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       url == null ? l10n.profileEditPhotoError : l10n.profileEditPhotoUploaded,
       isError: url == null,
     );
+  }
+
+  bool _isEmailConflict(String? message) {
+    if (message == null) return false;
+    final text = message.toLowerCase();
+    return text.contains('ya existe') ||
+        text.contains('ya está') ||
+        text.contains('en uso') ||
+        text.contains('already exists') ||
+        text.contains('taken');
   }
 
   bool _isValidAvatar(AvatarUploadFile file) {
