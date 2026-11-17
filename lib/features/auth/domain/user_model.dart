@@ -25,7 +25,7 @@ class UserModel with _$UserModel {
       email: attrs['email'] ?? '',
       role: attrs['role'] ?? '',
       roles: (attrs['roles'] as List<dynamic>?)?.cast<String>() ?? [],
-      avatarUrl: attrs['avatar_url'],
+      avatarUrl: (attrs['avatar_url'] ?? attrs['avatar'])?.toString(),
       branchName: attrs['branch_name'],
     );
   }
