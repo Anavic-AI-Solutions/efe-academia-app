@@ -24,6 +24,7 @@ import '../features/fees/screens/parent_fee_detail_screen.dart';
 import '../features/fees/screens/parent_fees_screen.dart';
 import '../features/relations/screens/new_chat_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
+import '../features/profile/screens/edit_profile_screen.dart';
 import '../features/notifications/screens/notification_list_screen.dart';
 import '../features/news/screens/news_list_screen.dart';
 import '../features/documents/screens/document_detail_screen.dart';
@@ -352,6 +353,12 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfileScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    builder: (context, state) => const EditProfileScreen(),
+                  ),
+                ],
               ),
             ],
           ),
