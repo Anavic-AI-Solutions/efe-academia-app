@@ -47,9 +47,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final l10n = context.l10n;
-    final ok = await ref
-        .read(profileEditProvider.notifier)
-        .saveProfile(
+    final ok = await ref.read(profileEditProvider.notifier).saveProfile(
           name: _nameController.text.trim(),
           email: _emailController.text.trim(),
         );
@@ -59,7 +57,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         ref.read(profileEditProvider).fieldErrors.containsKey('email');
     final message = ok
         ? l10n.profileEditSaved
-        : (hasEmailError ? l10n.profileEditEmailInUse : l10n.profileEditSaveError);
+        : (hasEmailError
+            ? l10n.profileEditEmailInUse
+            : l10n.profileEditSaveError);
     final isError = !ok;
 
     ScaffoldMessenger.of(context).showSnackBar(

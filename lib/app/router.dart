@@ -62,9 +62,8 @@ class CustomBottomNav extends ConsumerWidget {
     final l10n = context.l10n;
     // Single unified accent for every role.
     const accent = AppColors.primary;
-    final inactive = isDark
-        ? AppColors.darkTextSecondary
-        : AppColors.navInactive;
+    final inactive =
+        isDark ? AppColors.darkTextSecondary : AppColors.navInactive;
     // Hidden (0) while loading or on error.
     final unreadChats = ref.watch(chatUnreadCountProvider).valueOrNull ?? 0;
     // Parents get a "Pagos" tab in place of "Aulas".
