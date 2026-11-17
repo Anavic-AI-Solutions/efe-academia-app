@@ -59,7 +59,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final PushRepository? _pushRepository;
 
   AuthNotifier(this._repository, [this._pushRepository])
-    : super(const AuthState()) {
+      : super(const AuthState()) {
     _init();
   }
 

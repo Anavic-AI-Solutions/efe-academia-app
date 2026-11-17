@@ -87,7 +87,7 @@ class ProfileScreen extends ConsumerWidget {
                       _SettingsTile(
                         icon: PhosphorIconsRegular.user,
                         title: l10n.profileEditProfile,
-                        onTap: () {},
+                        onTap: () => context.push('/profile/edit'),
                         isDark: isDark,
                       ),
                       _SettingsTile(
@@ -429,8 +429,7 @@ class _SettingsTile extends StatelessWidget {
                   : AppColors.lightTextPrimary,
             ),
           ),
-          trailing:
-              trailing ??
+          trailing: trailing ??
               Icon(
                 PhosphorIconsRegular.caretRight,
                 size: 16,

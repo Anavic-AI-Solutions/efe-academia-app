@@ -221,10 +221,11 @@ void main() {
         ..avatarResult = 'https://cdn/new.png';
       final container = _containerFor(auth, repo);
 
-      final url = await container.read(profileEditProvider.notifier).uploadAvatar(
-            bytes: Uint8List.fromList([1, 2, 3]),
-            filename: 'photo.png',
-          );
+      final url =
+          await container.read(profileEditProvider.notifier).uploadAvatar(
+                bytes: Uint8List.fromList([1, 2, 3]),
+                filename: 'photo.png',
+              );
 
       expect(url, 'https://cdn/new.png');
       expect(repo.lastUpload, {'filename': 'photo.png', 'length': 3});
@@ -240,10 +241,11 @@ void main() {
         ..avatarError = ApiException(message: 'boom');
       final container = _containerFor(auth, repo);
 
-      final url = await container.read(profileEditProvider.notifier).uploadAvatar(
-            bytes: Uint8List.fromList([1]),
-            filename: 'photo.png',
-          );
+      final url =
+          await container.read(profileEditProvider.notifier).uploadAvatar(
+                bytes: Uint8List.fromList([1]),
+                filename: 'photo.png',
+              );
 
       expect(url, isNull);
       expect(container.read(authProvider).user, _currentUser);
@@ -256,13 +258,12 @@ void main() {
       final repo = _FakeProfileRepository();
       final container = _containerFor(auth, repo);
 
-      final ok = await container
-          .read(profileEditProvider.notifier)
-          .changePassword(
-            currentPassword: 'old-secret',
-            newPassword: 'new-secret',
-            confirmation: 'new-secret',
-          );
+      final ok =
+          await container.read(profileEditProvider.notifier).changePassword(
+                currentPassword: 'old-secret',
+                newPassword: 'new-secret',
+                confirmation: 'new-secret',
+              );
 
       expect(ok, isTrue);
       expect(repo.lastPassword, {
@@ -282,13 +283,12 @@ void main() {
         );
       final container = _containerFor(auth, repo);
 
-      final ok = await container
-          .read(profileEditProvider.notifier)
-          .changePassword(
-            currentPassword: 'wrong',
-            newPassword: 'new-secret',
-            confirmation: 'new-secret',
-          );
+      final ok =
+          await container.read(profileEditProvider.notifier).changePassword(
+                currentPassword: 'wrong',
+                newPassword: 'new-secret',
+                confirmation: 'new-secret',
+              );
 
       expect(ok, isFalse);
       expect(
@@ -303,13 +303,12 @@ void main() {
         ..passwordError = ApiException(message: 'boom');
       final container = _containerFor(auth, repo);
 
-      final ok = await container
-          .read(profileEditProvider.notifier)
-          .changePassword(
-            currentPassword: 'old-secret',
-            newPassword: 'new-secret',
-            confirmation: 'new-secret',
-          );
+      final ok =
+          await container.read(profileEditProvider.notifier).changePassword(
+                currentPassword: 'old-secret',
+                newPassword: 'new-secret',
+                confirmation: 'new-secret',
+              );
 
       expect(ok, isFalse);
       expect(container.read(profileEditProvider).fieldErrors, isEmpty);
@@ -321,13 +320,12 @@ void main() {
       final repo = _FakeProfileRepository();
       final container = _containerFor(auth, repo);
 
-      final future = container
-          .read(profileEditProvider.notifier)
-          .changePassword(
-            currentPassword: 'old-secret',
-            newPassword: 'new-secret',
-            confirmation: 'new-secret',
-          );
+      final future =
+          container.read(profileEditProvider.notifier).changePassword(
+                currentPassword: 'old-secret',
+                newPassword: 'new-secret',
+                confirmation: 'new-secret',
+              );
 
       expect(container.read(profileEditProvider).savingPassword, isTrue);
       await future;

@@ -61,7 +61,7 @@ class ProfileEditNotifier extends StateNotifier<ProfileEditState> {
   final ProfileRepository _repository;
 
   ProfileEditNotifier(this._ref, this._repository)
-    : super(const ProfileEditState());
+      : super(const ProfileEditState());
 
   Future<bool> saveProfile({
     required String name,
@@ -144,5 +144,5 @@ class ProfileEditNotifier extends StateNotifier<ProfileEditState> {
 
 final profileEditProvider =
     StateNotifierProvider.autoDispose<ProfileEditNotifier, ProfileEditState>(
-      (ref) => ProfileEditNotifier(ref, ref.watch(profileRepositoryProvider)),
-    );
+  (ref) => ProfileEditNotifier(ref, ref.watch(profileRepositoryProvider)),
+);
