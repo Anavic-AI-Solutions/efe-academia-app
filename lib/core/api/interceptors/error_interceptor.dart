@@ -107,6 +107,12 @@ class ErrorInterceptor extends Interceptor {
         if (message != null && message.isNotEmpty) return message;
       }
 
+      // Laravel shape: {"message": ..., "errors": {"field": [messages]}}
+      if (errors is Map && errors.isNotEmpty) {
+        final first = errors.values.first;
+        if (first is List && first.isNotEmpty) return first.first.toString();
+      }
+
       final message = data['message']?.toString();
       if (message != null && message.isNotEmpty) return message;
     }
@@ -119,6 +125,15 @@ class ErrorInterceptor extends Interceptor {
 
     if (data is Map<String, dynamic>) {
       final errors = data['errors'];
+      if (errors is Map) {
+        for (final entry in errors.entries) {
+          final messages = entry.value;
+          if (messages is List && messages.isNotEmpty) {
+            fieldErrors[entry.key.toString()] = messages.first.toString();
+          }
+        }
+        return fieldErrors;
+      }
       if (errors is List) {
         for (final error in errors) {
           if (error is Map<String, dynamic>) {
