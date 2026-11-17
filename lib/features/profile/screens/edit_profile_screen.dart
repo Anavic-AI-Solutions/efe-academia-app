@@ -40,12 +40,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   );
 
   final _formKey = GlobalKey<FormState>();
+  final _passwordFormKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
+  late final TextEditingController _currentPasswordController;
+  late final TextEditingController _newPasswordController;
+  late final TextEditingController _confirmPasswordController;
 
   AvatarUploadFile? _preview;
   bool _uploading = false;
   String? _photoError;
+  bool _obscureCurrentPassword = true;
+  bool _obscureNewPassword = true;
+  bool _obscureConfirmPassword = true;
+  String? _passwordError;
 
   @override
   void initState() {
@@ -53,12 +61,18 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final user = ref.read(authProvider).user;
     _nameController = TextEditingController(text: user?.name ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
+    _currentPasswordController = TextEditingController();
+    _newPasswordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -81,6 +95,38 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             : l10n.profileEditSaveError);
 
     _showSnackBar(message, isError: !ok);
+  }
+
+  Future<void> _handleChangePassword() async {
+    final isValid = _passwordFormKey.currentState!.validate();
+    final l10n = context.l10n;
+    if (_passwordError != null) {
+      setState(() => _passwordError = null);
+    }
+    if (!isValid) return;
+
+    final ok = await ref.read(profileEditProvider.notifier).changePassword(
+          currentPassword: _currentPasswordController.text,
+          newPassword: _newPasswordController.text,
+          confirmation: _confirmPasswordController.text,
+        );
+    if (!mounted) return;
+
+    if (ok) {
+      _currentPasswordController.clear();
+      _newPasswordController.clear();
+      _confirmPasswordController.clear();
+      _showSnackBar(l10n.profileEditPasswordSaved, isError: false);
+      return;
+    }
+
+    final fieldErrors = ref.read(profileEditProvider).fieldErrors;
+    final message = fieldErrors.containsKey('current_password')
+        ? l10n.profileEditCurrentPasswordIncorrect
+        : (fieldErrors.containsKey('password')
+            ? l10n.profileEditPasswordInvalid
+            : l10n.profileEditPasswordError);
+    setState(() => _passwordError = message);
   }
 
   Future<AvatarUploadFile?> _defaultPickAvatar() async {
@@ -153,6 +199,50 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           borderRadius: BorderRadius.circular(12),
         ),
       ),
+    );
+  }
+
+  Widget _buildPasswordField({
+    required Key fieldKey,
+    required Key toggleKey,
+    required TextEditingController controller,
+    required String labelText,
+    required bool obscured,
+    required VoidCallback onToggle,
+    required FormFieldValidator<String> validator,
+    required bool isDark,
+    TextInputAction textInputAction = TextInputAction.next,
+    VoidCallback? onFieldSubmitted,
+  }) {
+    final l10n = context.l10n;
+    return TextFormField(
+      key: fieldKey,
+      controller: controller,
+      obscureText: obscured,
+      enableSuggestions: false,
+      autocorrect: false,
+      textInputAction: textInputAction,
+      onFieldSubmitted:
+          onFieldSubmitted == null ? null : (_) => onFieldSubmitted(),
+      style: AppTypography.bodyMedium.copyWith(
+        color: AppColors.inkFor(isDark),
+      ),
+      decoration: InputDecoration(
+        labelText: labelText,
+        suffixIcon: IconButton(
+          key: toggleKey,
+          tooltip: obscured
+              ? l10n.profileEditShowPassword
+              : l10n.profileEditHidePassword,
+          icon: Icon(
+            obscured ? PhosphorIconsRegular.eyeSlash : PhosphorIconsRegular.eye,
+            size: 20,
+            color: AppColors.mutedFor(isDark),
+          ),
+          onPressed: onToggle,
+        ),
+      ),
+      validator: validator,
     );
   }
 
@@ -289,6 +379,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final savingProfile = ref.watch(
       profileEditProvider.select((state) => state.savingProfile),
     );
+    final savingPassword = ref.watch(
+      profileEditProvider.select((state) => state.savingPassword),
+    );
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -350,7 +443,88 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                     ),
                   ),
                 ),
-                // Task 12 adds the password form here.
+                const SizedBox(height: 24),
+                SectionHeader(title: l10n.profileEditPasswordSection),
+                const SizedBox(height: 8),
+                AppCard(
+                  child: Form(
+                    key: _passwordFormKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildPasswordField(
+                          fieldKey: const ValueKey('profile-current-password'),
+                          toggleKey: const ValueKey(
+                            'profile-current-password-toggle',
+                          ),
+                          controller: _currentPasswordController,
+                          labelText: l10n.profileEditCurrentPassword,
+                          obscured: _obscureCurrentPassword,
+                          onToggle: () => setState(
+                            () => _obscureCurrentPassword =
+                                !_obscureCurrentPassword,
+                          ),
+                          validator: (value) =>
+                              AppValidators.required(value, l10n),
+                          isDark: isDark,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildPasswordField(
+                          fieldKey: const ValueKey('profile-new-password'),
+                          toggleKey: const ValueKey(
+                            'profile-new-password-toggle',
+                          ),
+                          controller: _newPasswordController,
+                          labelText: l10n.profileEditNewPassword,
+                          obscured: _obscureNewPassword,
+                          onToggle: () => setState(
+                            () => _obscureNewPassword = !_obscureNewPassword,
+                          ),
+                          validator: (value) =>
+                              AppValidators.password(value, l10n),
+                          isDark: isDark,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildPasswordField(
+                          fieldKey: const ValueKey('profile-confirm-password'),
+                          toggleKey: const ValueKey(
+                            'profile-confirm-password-toggle',
+                          ),
+                          controller: _confirmPasswordController,
+                          labelText: l10n.profileEditConfirmPassword,
+                          obscured: _obscureConfirmPassword,
+                          onToggle: () => setState(
+                            () => _obscureConfirmPassword =
+                                !_obscureConfirmPassword,
+                          ),
+                          validator: (value) => AppValidators.confirmPassword(
+                            value,
+                            _newPasswordController.text,
+                            l10n,
+                          ),
+                          isDark: isDark,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: _handleChangePassword,
+                        ),
+                        const SizedBox(height: 20),
+                        PillButton(
+                          label: l10n.profileEditPasswordSave,
+                          isLoading: savingPassword,
+                          onPressed: _handleChangePassword,
+                        ),
+                        if (_passwordError != null) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            _passwordError!,
+                            style: AppTypography.bodySmall.copyWith(
+                              color: AppColors.error,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
