@@ -11,6 +11,7 @@ import 'package:efe_mobile/features/profile/domain/avatar_upload_file.dart';
 import 'package:efe_mobile/features/profile/providers/profile_provider.dart';
 import 'package:efe_mobile/features/profile/screens/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -196,17 +197,34 @@ void main() {
     expect(auth.state.user?.avatarUrl, 'https://cdn/new.png');
   });
 
-  testWidgets('the avatar exposes a change-photo semantics label',
+  testWidgets('the avatar exposes an activatable change-photo semantics action',
       (tester) async {
-    await _pumpScreen(tester, _FakeProfileRepository());
+    final semantics = tester.ensureSemantics();
+    try {
+      final repo = _FakeProfileRepository();
+      final auth = await _pumpScreen(
+        tester,
+        repo,
+        pickAvatar: () async =>
+            AvatarUploadFile(bytes: _pngBytes, name: 'avatar.png'),
+      );
 
-    final semantics = tester.widget<Semantics>(
-      find.byWidgetPredicate(
-        (widget) =>
-            widget is Semantics && widget.properties.label == _changePhotoLabel,
-      ),
-    );
-    expect(semantics.properties.button, isTrue);
+      final node =
+          tester.getSemantics(find.bySemanticsLabel(_changePhotoLabel));
+      final data = node.getSemanticsData();
+      expect(data.label, _changePhotoLabel);
+      expect(data.hasAction(SemanticsAction.tap), isTrue);
+
+      // Activate through the semantics node, the way assistive tech does,
+      // rather than through a pointer tap.
+      node.owner!.performAction(node.id, SemanticsAction.tap);
+      await tester.pumpAndSettle();
+
+      expect(repo.uploadCalls, 1);
+      expect(auth.state.user?.avatarUrl, 'https://cdn/new.png');
+    } finally {
+      semantics.dispose();
+    }
   });
 
   testWidgets(

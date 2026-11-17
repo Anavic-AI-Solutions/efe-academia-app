@@ -161,6 +161,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     required AppLocalizations l10n,
     required UserModel? user,
   }) {
+    final VoidCallback? onTap = _uploading ? null : _handlePickAvatar;
+
     final avatar = _preview != null
         ? Container(
             width: 102,
@@ -204,11 +206,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           child: Semantics(
             label: l10n.profileEditChangePhoto,
             button: true,
+            enabled: !_uploading,
             container: true,
             excludeSemantics: true,
+            onTap: onTap,
             child: GestureDetector(
               key: const ValueKey('profile-avatar-editor'),
-              onTap: _uploading ? null : _handlePickAvatar,
+              onTap: onTap,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
