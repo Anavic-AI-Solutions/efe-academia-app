@@ -392,6 +392,156 @@ abstract class AppLocalizations {
   /// **'¿Estás seguro de que querés cerrar sesión?'**
   String get profileLogoutConfirm;
 
+  /// No description provided for @profileEditProfileTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar perfil'**
+  String get profileEditProfileTitle;
+
+  /// No description provided for @profileEditPhotoSection.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de perfil'**
+  String get profileEditPhotoSection;
+
+  /// No description provided for @profileEditChangePhoto.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar foto'**
+  String get profileEditChangePhoto;
+
+  /// No description provided for @profileEditPhotoHint.
+  ///
+  /// In es, this message translates to:
+  /// **'JPG, PNG o GIF · máx. 2 MB'**
+  String get profileEditPhotoHint;
+
+  /// No description provided for @profileEditPhotoInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegí una imagen JPG, PNG o GIF de hasta 2 MB.'**
+  String get profileEditPhotoInvalid;
+
+  /// No description provided for @profileEditPhotoUploaded.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto actualizada.'**
+  String get profileEditPhotoUploaded;
+
+  /// No description provided for @profileEditPhotoError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo subir la foto.'**
+  String get profileEditPhotoError;
+
+  /// No description provided for @profileEditDataSection.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos personales'**
+  String get profileEditDataSection;
+
+  /// No description provided for @profileEditNameLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get profileEditNameLabel;
+
+  /// No description provided for @profileEditEmailLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Email'**
+  String get profileEditEmailLabel;
+
+  /// No description provided for @profileEditSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar cambios'**
+  String get profileEditSave;
+
+  /// No description provided for @profileEditSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Perfil actualizado.'**
+  String get profileEditSaved;
+
+  /// No description provided for @profileEditSaveError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo actualizar el perfil.'**
+  String get profileEditSaveError;
+
+  /// No description provided for @profileEditEmailInUse.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese email ya está en uso.'**
+  String get profileEditEmailInUse;
+
+  /// No description provided for @profileEditPasswordSection.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña'**
+  String get profileEditPasswordSection;
+
+  /// No description provided for @profileEditCurrentPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña actual'**
+  String get profileEditCurrentPassword;
+
+  /// No description provided for @profileEditNewPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva contraseña'**
+  String get profileEditNewPassword;
+
+  /// No description provided for @profileEditConfirmPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar contraseña'**
+  String get profileEditConfirmPassword;
+
+  /// No description provided for @profileEditPasswordSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar contraseña'**
+  String get profileEditPasswordSave;
+
+  /// No description provided for @profileEditPasswordSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña actualizada.'**
+  String get profileEditPasswordSaved;
+
+  /// No description provided for @profileEditPasswordError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cambiar la contraseña.'**
+  String get profileEditPasswordError;
+
+  /// No description provided for @profileEditCurrentPasswordIncorrect.
+  ///
+  /// In es, this message translates to:
+  /// **'La contraseña actual no es correcta.'**
+  String get profileEditCurrentPasswordIncorrect;
+
+  /// No description provided for @profileEditPasswordInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'La contraseña no es válida.'**
+  String get profileEditPasswordInvalid;
+
+  /// No description provided for @profileEditShowPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar contraseña'**
+  String get profileEditShowPassword;
+
+  /// No description provided for @profileEditHidePassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar contraseña'**
+  String get profileEditHidePassword;
+
   /// No description provided for @languageSpanish.
   ///
   /// In es, this message translates to:

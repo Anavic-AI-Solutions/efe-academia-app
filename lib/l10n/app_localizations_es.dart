@@ -187,6 +187,83 @@ class AppLocalizationsEs extends AppLocalizations {
       '¿Estás seguro de que querés cerrar sesión?';
 
   @override
+  String get profileEditProfileTitle => 'Editar perfil';
+
+  @override
+  String get profileEditPhotoSection => 'Foto de perfil';
+
+  @override
+  String get profileEditChangePhoto => 'Cambiar foto';
+
+  @override
+  String get profileEditPhotoHint => 'JPG, PNG o GIF · máx. 2 MB';
+
+  @override
+  String get profileEditPhotoInvalid =>
+      'Elegí una imagen JPG, PNG o GIF de hasta 2 MB.';
+
+  @override
+  String get profileEditPhotoUploaded => 'Foto actualizada.';
+
+  @override
+  String get profileEditPhotoError => 'No se pudo subir la foto.';
+
+  @override
+  String get profileEditDataSection => 'Datos personales';
+
+  @override
+  String get profileEditNameLabel => 'Nombre';
+
+  @override
+  String get profileEditEmailLabel => 'Email';
+
+  @override
+  String get profileEditSave => 'Guardar cambios';
+
+  @override
+  String get profileEditSaved => 'Perfil actualizado.';
+
+  @override
+  String get profileEditSaveError => 'No se pudo actualizar el perfil.';
+
+  @override
+  String get profileEditEmailInUse => 'Ese email ya está en uso.';
+
+  @override
+  String get profileEditPasswordSection => 'Contraseña';
+
+  @override
+  String get profileEditCurrentPassword => 'Contraseña actual';
+
+  @override
+  String get profileEditNewPassword => 'Nueva contraseña';
+
+  @override
+  String get profileEditConfirmPassword => 'Confirmar contraseña';
+
+  @override
+  String get profileEditPasswordSave => 'Cambiar contraseña';
+
+  @override
+  String get profileEditPasswordSaved => 'Contraseña actualizada.';
+
+  @override
+  String get profileEditPasswordError => 'No se pudo cambiar la contraseña.';
+
+  @override
+  String get profileEditCurrentPasswordIncorrect =>
+      'La contraseña actual no es correcta.';
+
+  @override
+  String get profileEditPasswordInvalid => 'La contraseña no es válida.';
+
+  @override
+  String get profileEditShowPassword => 'Mostrar contraseña';
+
+  @override
+  String get profileEditHidePassword => 'Ocultar contraseña';
+
+  @override
   String get languageSpanish => 'Español';
 
   @override

@@ -186,6 +186,82 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileLogoutConfirm => 'Are you sure you want to logout?';
 
   @override
+  String get profileEditProfileTitle => 'Edit profile';
+
+  @override
+  String get profileEditPhotoSection => 'Profile photo';
+
+  @override
+  String get profileEditChangePhoto => 'Change photo';
+
+  @override
+  String get profileEditPhotoHint => 'JPG, PNG or GIF · max 2 MB';
+
+  @override
+  String get profileEditPhotoInvalid => 'Choose a JPG, PNG or GIF up to 2 MB.';
+
+  @override
+  String get profileEditPhotoUploaded => 'Photo updated.';
+
+  @override
+  String get profileEditPhotoError => 'Could not upload the photo.';
+
+  @override
+  String get profileEditDataSection => 'Personal details';
+
+  @override
+  String get profileEditNameLabel => 'Name';
+
+  @override
+  String get profileEditEmailLabel => 'Email';
+
+  @override
+  String get profileEditSave => 'Save changes';
+
+  @override
+  String get profileEditSaved => 'Profile updated.';
+
+  @override
+  String get profileEditSaveError => 'Could not update the profile.';
+
+  @override
+  String get profileEditEmailInUse => 'That email is already in use.';
+
+  @override
+  String get profileEditPasswordSection => 'Password';
+
+  @override
+  String get profileEditCurrentPassword => 'Current password';
+
+  @override
+  String get profileEditNewPassword => 'New password';
+
+  @override
+  String get profileEditConfirmPassword => 'Confirm password';
+
+  @override
+  String get profileEditPasswordSave => 'Change password';
+
+  @override
+  String get profileEditPasswordSaved => 'Password updated.';
+
+  @override
+  String get profileEditPasswordError => 'Could not change the password.';
+
+  @override
+  String get profileEditCurrentPasswordIncorrect =>
+      'The current password is incorrect.';
+
+  @override
+  String get profileEditPasswordInvalid => 'The password is invalid.';
+
+  @override
+  String get profileEditShowPassword => 'Show password';
+
+  @override
+  String get profileEditHidePassword => 'Hide password';
+
+  @override
   String get languageSpanish => 'Español';
 
   @override
