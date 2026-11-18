@@ -36,6 +36,7 @@ import '../features/search/screens/search_screen.dart';
 import '../features/classrooms/screens/classroom_history_screen.dart';
 import '../features/classrooms/screens/parent_courses_screen.dart';
 import '../features/menu/screens/menu_screen.dart';
+import '../features/management/screens/management_hub_screen.dart';
 import '../features/requests/domain/request_model.dart';
 import '../features/requests/screens/request_detail_screen.dart';
 import '../features/requests/screens/request_list_screen.dart';
@@ -475,6 +476,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/statistics',
         builder: (context, state) => const StatisticsScreen(),
+      ),
+      GoRoute(
+        path: '/management',
+        builder: (context, state) => const ManagementHubScreen(),
       ),
     ],
   );

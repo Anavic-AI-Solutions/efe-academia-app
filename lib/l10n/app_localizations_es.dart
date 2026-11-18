@@ -1506,6 +1506,42 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuRequests => 'Solicitudes';
 
   @override
+  String get menuManagement => 'Administración';
+
+  @override
+  String get menuGroupManagement => 'Administración';
+
+  @override
+  String get managementTitle => 'Administración';
+
+  @override
+  String get managementPeople => 'Personas';
+
+  @override
+  String get managementAcademic => 'Académico';
+
+  @override
+  String get managementContent => 'Contenido';
+
+  @override
+  String get managementStudents => 'Alumnos';
+
+  @override
+  String get managementClassrooms => 'Aulas';
+
+  @override
+  String get managementNews => 'Noticias';
+
+  @override
+  String get managementEvents => 'Eventos';
+
+  @override
+  String get managementDocuments => 'Documentos';
+
+  @override
+  String get managementFaqs => 'Preguntas frecuentes';
+
+  @override
   String get requestsTitle => 'Solicitudes';
 
   @override

@@ -81,6 +81,8 @@ class MenuScreen extends ConsumerWidget {
 
   String _groupLabel(MenuGroup group, AppLocalizations l10n) {
     switch (group) {
+      case MenuGroup.management:
+        return l10n.menuGroupManagement;
       case MenuGroup.academic:
         return l10n.menuGroupAcademic;
       case MenuGroup.communication:
@@ -92,6 +94,8 @@ class MenuScreen extends ConsumerWidget {
 
   String _sectionLabel(MenuSection section, AppLocalizations l10n) {
     switch (section) {
+      case MenuSection.management:
+        return l10n.menuManagement;
       case MenuSection.calendar:
         return l10n.menuCalendar;
       case MenuSection.courses:

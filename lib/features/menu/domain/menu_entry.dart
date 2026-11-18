@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 /// Groups used to organise the menu sections.
-enum MenuGroup { academic, communication, accountSupport }
+enum MenuGroup { management, academic, communication, accountSupport }
 
-/// The exact twelve sections exposed by the mobile menu.
+/// The exact fourteen sections exposed by the mobile menu.
 ///
 /// This enum is intentionally closed: adding a new value here means adding a
 /// new section to the product, which must be reflected in the role matrix and
 /// in the localized labels.
 enum MenuSection {
+  management,
   calendar,
   courses,
   requests,
@@ -38,8 +39,15 @@ class MenuEntry {
     required this.route,
   });
 
-  /// All sections in display order: academic, communication, account.
+  /// All sections in display order: management, academic, communication,
+  /// account.
   static const List<MenuEntry> all = [
+    MenuEntry(
+      section: MenuSection.management,
+      group: MenuGroup.management,
+      icon: PhosphorIconsRegular.gearSix,
+      route: '/management',
+    ),
     MenuEntry(
       section: MenuSection.calendar,
       group: MenuGroup.academic,
@@ -132,6 +140,8 @@ class MenuEntry {
   bool isVisibleFor(String role) {
     final normalized = _normalizeRole(role);
     switch (section) {
+      case MenuSection.management:
+        return normalized == 'admin' || normalized == 'branch';
       case MenuSection.notifications:
       case MenuSection.fees:
         return normalized == 'student' || normalized == 'parent';

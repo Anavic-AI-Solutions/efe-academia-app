@@ -48,6 +48,11 @@ class _FakeAuthRepository implements AuthRepository {
 }
 
 Future<ProviderContainer> _pumpMenu(WidgetTester tester, String role) async {
+  // Tall surface so the whole menu is laid out and can be counted.
+  tester.view.physicalSize = const Size(800, 1600);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
+
   final container = ProviderContainer(
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role)),
@@ -71,13 +76,16 @@ Future<ProviderContainer> _pumpMenu(WidgetTester tester, String role) async {
 }
 
 void main() {
-  testWidgets('admin menu lists the thirteen sections grouped by area',
+  testWidgets('admin menu lists the twelve sections grouped by area',
       (tester) async {
     await _pumpMenu(tester, 'admin');
 
     expect(find.text('Académico'), findsOneWidget);
+    expect(find.text('Administración'), findsNWidgets(2));
+    expect(find.byType(MenuTile), findsNWidgets(12));
 
     const labels = [
+      'Administración',
       'Calendario',
       'Cursos',
       'Solicitudes',
@@ -104,6 +112,18 @@ void main() {
     // Admin must not see student-only sections.
     expect(find.text('Notificaciones'), findsNothing);
     expect(find.text('Cuotas'), findsNothing);
+  });
+
+  testWidgets('professor, parent and student do not see management',
+      (tester) async {
+    for (final role in ['professor', 'parent', 'student']) {
+      await _pumpMenu(tester, role);
+      expect(
+        find.text('Administración'),
+        findsNothing,
+        reason: '$role must not see the management section',
+      );
+    }
   });
 
   testWidgets('student menu shows notifications and fees, not birthdays',

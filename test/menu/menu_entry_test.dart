@@ -6,8 +6,8 @@ List<MenuSection> _sectionsFor(String role) =>
 
 void main() {
   group('MenuEntry role matrix', () {
-    test('exposes exactly the thirteen product sections', () {
-      expect(MenuEntry.all, hasLength(13));
+    test('exposes exactly the fourteen product sections', () {
+      expect(MenuEntry.all, hasLength(14));
       expect(
         MenuEntry.all.map((entry) => entry.section).toSet(),
         MenuSection.values.toSet(),
@@ -110,6 +110,30 @@ void main() {
       }
     });
 
+    test('management only for admin, branch and sede', () {
+      for (final role in ['admin', 'branch', 'sede']) {
+        expect(
+          _sectionsFor(role),
+          contains(MenuSection.management),
+          reason: '$role should see management',
+        );
+      }
+
+      for (final role in [
+        'professor',
+        'parent',
+        'student',
+        'unknown',
+        '',
+      ]) {
+        expect(
+          _sectionsFor(role),
+          isNot(contains(MenuSection.management)),
+          reason: '$role must not see management',
+        );
+      }
+    });
+
     test('unknown roles keep exactly the nine shared sections', () {
       expect(_sectionsFor('unknown'), hasLength(9));
       expect(_sectionsFor(''), hasLength(9));
@@ -155,6 +179,7 @@ void main() {
 
     test('stacked sections are pushed on top of the menu', () {
       for (final section in [
+        MenuSection.management,
         MenuSection.calendar,
         MenuSection.notifications,
         MenuSection.requests,

@@ -2816,6 +2816,78 @@ abstract class AppLocalizations {
   /// **'Solicitudes'**
   String get menuRequests;
 
+  /// No description provided for @menuManagement.
+  ///
+  /// In es, this message translates to:
+  /// **'Administración'**
+  String get menuManagement;
+
+  /// No description provided for @menuGroupManagement.
+  ///
+  /// In es, this message translates to:
+  /// **'Administración'**
+  String get menuGroupManagement;
+
+  /// No description provided for @managementTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Administración'**
+  String get managementTitle;
+
+  /// No description provided for @managementPeople.
+  ///
+  /// In es, this message translates to:
+  /// **'Personas'**
+  String get managementPeople;
+
+  /// No description provided for @managementAcademic.
+  ///
+  /// In es, this message translates to:
+  /// **'Académico'**
+  String get managementAcademic;
+
+  /// No description provided for @managementContent.
+  ///
+  /// In es, this message translates to:
+  /// **'Contenido'**
+  String get managementContent;
+
+  /// No description provided for @managementStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos'**
+  String get managementStudents;
+
+  /// No description provided for @managementClassrooms.
+  ///
+  /// In es, this message translates to:
+  /// **'Aulas'**
+  String get managementClassrooms;
+
+  /// No description provided for @managementNews.
+  ///
+  /// In es, this message translates to:
+  /// **'Noticias'**
+  String get managementNews;
+
+  /// No description provided for @managementEvents.
+  ///
+  /// In es, this message translates to:
+  /// **'Eventos'**
+  String get managementEvents;
+
+  /// No description provided for @managementDocuments.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get managementDocuments;
+
+  /// No description provided for @managementFaqs.
+  ///
+  /// In es, this message translates to:
+  /// **'Preguntas frecuentes'**
+  String get managementFaqs;
+
   /// No description provided for @requestsTitle.
   ///
   /// In es, this message translates to:
