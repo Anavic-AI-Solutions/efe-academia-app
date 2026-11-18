@@ -4,6 +4,9 @@
 **Servidor:** preprod (`https://preprod.efeacademia.com/api/v1`)
 **Versión de esta guía:** 1.0 (acompaña al release `v1.0.1`)
 
+> ¿Buscás instalar en un **teléfono o tablet Android**? Usá la
+> [Guía de instalación en Android](GUIA_INSTALACION_ANDROID.md).
+
 ---
 
 ## 1. Qué es EFE Mobile
