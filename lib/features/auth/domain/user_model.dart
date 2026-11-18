@@ -32,11 +32,18 @@ class UserModel with _$UserModel {
 }
 
 extension UserModelRoleX on UserModel {
-  bool get isProfessor => role == 'professor';
+  /// The mobile API exposes the branch role as "branch"; the web name "sede"
+  /// is accepted as a fallback so both spellings behave the same.
+  String get _normalizedRole {
+    final value = role.trim().toLowerCase();
+    return value == 'sede' ? 'branch' : value;
+  }
 
-  bool get isAdmin => role == 'admin';
+  bool get isProfessor => _normalizedRole == 'professor';
 
-  bool get isBranch => role == 'branch';
+  bool get isAdmin => _normalizedRole == 'admin';
+
+  bool get isBranch => _normalizedRole == 'branch';
 
   bool get isStaff => isAdmin || isBranch;
 
@@ -60,8 +67,5 @@ extension UserModelRoleX on UserModel {
 
   bool get canDeleteQualifications => isStaff;
 
-  bool get canManageMaterials {
-    const allowed = {'professor', 'admin', 'branch'};
-    return allowed.contains(role);
-  }
+  bool get canManageMaterials => isStaff || isProfessor;
 }

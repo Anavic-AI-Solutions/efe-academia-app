@@ -51,6 +51,11 @@ class _FakeAuthRepository implements AuthRepository {
 }
 
 Future<void> _pumpHub(WidgetTester tester, String role) async {
+  // Tall surface so every hub link is laid out and can be found.
+  tester.view.physicalSize = const Size(800, 1200);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
+
   final container = ProviderContainer(
     overrides: [
       authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role)),
@@ -90,32 +95,32 @@ Future<void> _pumpHub(WidgetTester tester, String role) async {
   await tester.pumpAndSettle();
 }
 
+void _expectStaffHubLinks(WidgetTester tester) {
+  expect(find.text('Personas'), findsOneWidget);
+  expect(find.text('Académico'), findsOneWidget);
+  expect(find.text('Contenido'), findsOneWidget);
+
+  for (final label in [
+    'Alumnos',
+    'Aulas',
+    'Noticias',
+    'Eventos',
+    'Documentos',
+    'Preguntas frecuentes',
+  ]) {
+    expect(find.text(label), findsOneWidget, reason: 'missing $label');
+  }
+
+  expect(find.byType(EmptyState), findsNothing);
+}
+
 void main() {
-  testWidgets('admin hub lists the six management links', (tester) async {
-    await _pumpHub(tester, 'admin');
-
-    expect(find.text('Personas'), findsOneWidget);
-    expect(find.text('Académico'), findsOneWidget);
-    expect(find.text('Contenido'), findsOneWidget);
-
-    for (final label in [
-      'Alumnos',
-      'Aulas',
-      'Noticias',
-      'Eventos',
-      'Documentos',
-      'Preguntas frecuentes',
-    ]) {
-      await tester.scrollUntilVisible(
-        find.text(label),
-        120,
-        scrollable: find.byType(Scrollable).first,
-      );
-      expect(find.text(label), findsOneWidget, reason: 'missing $label');
-    }
-
-    expect(find.byType(EmptyState), findsNothing);
-  });
+  for (final role in ['admin', 'branch', 'sede']) {
+    testWidgets('$role hub lists the six management links', (tester) async {
+      await _pumpHub(tester, role);
+      _expectStaffHubLinks(tester);
+    });
+  }
 
   testWidgets('tapping Noticias opens the news screen', (tester) async {
     await _pumpHub(tester, 'admin');

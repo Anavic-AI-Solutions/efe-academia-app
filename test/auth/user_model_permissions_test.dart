@@ -52,6 +52,30 @@ void main() {
     });
   });
 
+  group('sede', () {
+    test('is treated as branch', () {
+      final user = _user('sede');
+
+      expect(user.isAdmin, isFalse);
+      expect(user.isBranch, isTrue);
+      expect(user.isStaff, isTrue);
+      expect(user.isProfessor, isFalse);
+
+      expect(user.canManageProfessors, isFalse);
+      expect(user.canManageFaqs, isFalse);
+
+      expect(user.canManageStudents, isTrue);
+      expect(user.canManageParents, isTrue);
+      expect(user.canManageClassrooms, isTrue);
+      expect(user.canManageMaterials, isTrue);
+      expect(user.canManageNews, isTrue);
+      expect(user.canManageEvents, isTrue);
+      expect(user.canManageDocuments, isTrue);
+      expect(user.canManageQualifications, isTrue);
+      expect(user.canDeleteQualifications, isTrue);
+    });
+  });
+
   group('professor', () {
     test('manages events and qualifications only', () {
       final user = _user('professor');
