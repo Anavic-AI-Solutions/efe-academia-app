@@ -22,6 +22,7 @@ import 'package:efe_mobile/features/fees/screens/fee_detail_screen.dart';
 import 'package:efe_mobile/features/fees/screens/fee_list_screen.dart';
 import 'package:efe_mobile/features/fees/screens/invoice_viewer_screen.dart';
 import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/core/utils/upload_file.dart';
 import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/notifications/providers/notification_provider.dart';
@@ -79,6 +80,30 @@ class _FakeNewsRepository implements NewsRepository {
   @override
   Future<CursorPagination<NewsModel>> getNews({String? cursor}) async =>
       CursorPagination.empty();
+
+  @override
+  Future<NewsModel> createNews({
+    required String title,
+    required String description,
+    required String content,
+    DateTime? eventDate,
+    UploadFile? image,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<NewsModel> updateNews(
+    String id, {
+    required String title,
+    required String description,
+    required String content,
+    DateTime? eventDate,
+    UploadFile? image,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deleteNews(String id) => throw UnimplementedError();
 }
 
 class _FakeFeeApi implements FeeApi {

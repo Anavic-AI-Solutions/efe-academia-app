@@ -21,6 +21,39 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonUser => 'Usuario';
 
   @override
+  String get commonCreate => 'Crear';
+
+  @override
+  String get commonEdit => 'Editar';
+
+  @override
+  String get commonDelete => 'Eliminar';
+
+  @override
+  String get commonSave => 'Guardar';
+
+  @override
+  String get commonSaving => 'Guardando...';
+
+  @override
+  String get commonSaved => 'Guardado';
+
+  @override
+  String get commonSaveError => 'No se pudo guardar';
+
+  @override
+  String get commonDeleteError => 'No se pudo eliminar';
+
+  @override
+  String get commonDeleteMessage => 'Esta acción no se puede deshacer.';
+
+  @override
+  String get commonDeleteConfirm => 'Eliminar';
+
+  @override
+  String get commonFormRequired => 'Este campo es obligatorio';
+
+  @override
   String get navHome => 'Inicio';
 
   @override
@@ -904,6 +937,45 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get newsEmptySubtitle => 'Volvé más tarde para ver novedades';
+
+  @override
+  String get newsFormCreateTitle => 'Nueva noticia';
+
+  @override
+  String get newsFormEditTitle => 'Editar noticia';
+
+  @override
+  String get newsFormTitle => 'Título';
+
+  @override
+  String get newsFormDescription => 'Descripción';
+
+  @override
+  String get newsFormContent => 'Contenido';
+
+  @override
+  String get newsFormDate => 'Fecha del evento';
+
+  @override
+  String get newsFormImage => 'Imagen';
+
+  @override
+  String get newsFormPickImage => 'Elegir imagen';
+
+  @override
+  String get newsFormImageHint => 'JPG o PNG hasta 10 MB';
+
+  @override
+  String get newsCreated => 'Noticia creada';
+
+  @override
+  String get newsUpdated => 'Noticia actualizada';
+
+  @override
+  String get newsDeleted => 'Noticia eliminada';
+
+  @override
+  String get newsDeleteTitle => 'Eliminar noticia';
 
   @override
   String get eventsTitle => 'Eventos';

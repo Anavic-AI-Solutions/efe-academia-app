@@ -8,6 +8,7 @@ import 'package:efe_mobile/features/events/domain/event_model.dart';
 import 'package:efe_mobile/features/events/providers/event_provider.dart';
 import 'package:efe_mobile/features/events/screens/event_list_screen.dart';
 import 'package:efe_mobile/features/news/data/news_repository.dart';
+import 'package:efe_mobile/core/utils/upload_file.dart';
 import 'package:efe_mobile/features/news/domain/news_model.dart';
 import 'package:efe_mobile/features/news/providers/news_provider.dart';
 import 'package:efe_mobile/features/news/screens/news_list_screen.dart';
@@ -25,6 +26,30 @@ class _NeverNewsRepository implements NewsRepository {
   @override
   Future<CursorPagination<NewsModel>> getNews({String? cursor}) =>
       Completer<CursorPagination<NewsModel>>().future;
+
+  @override
+  Future<NewsModel> createNews({
+    required String title,
+    required String description,
+    required String content,
+    DateTime? eventDate,
+    UploadFile? image,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<NewsModel> updateNews(
+    String id, {
+    required String title,
+    required String description,
+    required String content,
+    DateTime? eventDate,
+    UploadFile? image,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deleteNews(String id) => throw UnimplementedError();
 }
 
 class _NeverEventRepository implements EventRepository {

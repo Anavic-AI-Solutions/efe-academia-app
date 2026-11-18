@@ -122,6 +122,72 @@ abstract class AppLocalizations {
   /// **'Usuario'**
   String get commonUser;
 
+  /// No description provided for @commonCreate.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear'**
+  String get commonCreate;
+
+  /// No description provided for @commonEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar'**
+  String get commonEdit;
+
+  /// No description provided for @commonDelete.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get commonDelete;
+
+  /// No description provided for @commonSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get commonSave;
+
+  /// No description provided for @commonSaving.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando...'**
+  String get commonSaving;
+
+  /// No description provided for @commonSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardado'**
+  String get commonSaved;
+
+  /// No description provided for @commonSaveError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar'**
+  String get commonSaveError;
+
+  /// No description provided for @commonDeleteError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo eliminar'**
+  String get commonDeleteError;
+
+  /// No description provided for @commonDeleteMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta acción no se puede deshacer.'**
+  String get commonDeleteMessage;
+
+  /// No description provided for @commonDeleteConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get commonDeleteConfirm;
+
+  /// No description provided for @commonFormRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Este campo es obligatorio'**
+  String get commonFormRequired;
+
   /// No description provided for @navHome.
   ///
   /// In es, this message translates to:
@@ -1741,6 +1807,84 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Volvé más tarde para ver novedades'**
   String get newsEmptySubtitle;
+
+  /// No description provided for @newsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva noticia'**
+  String get newsFormCreateTitle;
+
+  /// No description provided for @newsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar noticia'**
+  String get newsFormEditTitle;
+
+  /// No description provided for @newsFormTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Título'**
+  String get newsFormTitle;
+
+  /// No description provided for @newsFormDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get newsFormDescription;
+
+  /// No description provided for @newsFormContent.
+  ///
+  /// In es, this message translates to:
+  /// **'Contenido'**
+  String get newsFormContent;
+
+  /// No description provided for @newsFormDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha del evento'**
+  String get newsFormDate;
+
+  /// No description provided for @newsFormImage.
+  ///
+  /// In es, this message translates to:
+  /// **'Imagen'**
+  String get newsFormImage;
+
+  /// No description provided for @newsFormPickImage.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir imagen'**
+  String get newsFormPickImage;
+
+  /// No description provided for @newsFormImageHint.
+  ///
+  /// In es, this message translates to:
+  /// **'JPG o PNG hasta 10 MB'**
+  String get newsFormImageHint;
+
+  /// No description provided for @newsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Noticia creada'**
+  String get newsCreated;
+
+  /// No description provided for @newsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Noticia actualizada'**
+  String get newsUpdated;
+
+  /// No description provided for @newsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Noticia eliminada'**
+  String get newsDeleted;
+
+  /// No description provided for @newsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar noticia'**
+  String get newsDeleteTitle;
 
   /// No description provided for @eventsTitle.
   ///

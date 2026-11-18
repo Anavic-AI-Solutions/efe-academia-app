@@ -21,6 +21,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonUser => 'User';
 
   @override
+  String get commonCreate => 'Create';
+
+  @override
+  String get commonEdit => 'Edit';
+
+  @override
+  String get commonDelete => 'Delete';
+
+  @override
+  String get commonSave => 'Save';
+
+  @override
+  String get commonSaving => 'Saving...';
+
+  @override
+  String get commonSaved => 'Saved';
+
+  @override
+  String get commonSaveError => 'Could not save';
+
+  @override
+  String get commonDeleteError => 'Could not delete';
+
+  @override
+  String get commonDeleteMessage => 'This action cannot be undone.';
+
+  @override
+  String get commonDeleteConfirm => 'Delete';
+
+  @override
+  String get commonFormRequired => 'This field is required';
+
+  @override
   String get navHome => 'Home';
 
   @override
@@ -896,6 +929,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newsEmptySubtitle => 'Check back later for updates';
+
+  @override
+  String get newsFormCreateTitle => 'New news item';
+
+  @override
+  String get newsFormEditTitle => 'Edit news item';
+
+  @override
+  String get newsFormTitle => 'Title';
+
+  @override
+  String get newsFormDescription => 'Description';
+
+  @override
+  String get newsFormContent => 'Content';
+
+  @override
+  String get newsFormDate => 'Event date';
+
+  @override
+  String get newsFormImage => 'Image';
+
+  @override
+  String get newsFormPickImage => 'Choose image';
+
+  @override
+  String get newsFormImageHint => 'JPG or PNG up to 10 MB';
+
+  @override
+  String get newsCreated => 'News item created';
+
+  @override
+  String get newsUpdated => 'News item updated';
+
+  @override
+  String get newsDeleted => 'News item deleted';
+
+  @override
+  String get newsDeleteTitle => 'Delete news item';
 
   @override
   String get eventsTitle => 'Events';

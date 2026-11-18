@@ -18,8 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$NewsModel {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   DateTime? get eventDate => throw _privateConstructorUsedError;
+  List<String> get mediaUrls => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
 
   /// Create a copy of NewsModel
@@ -37,8 +39,10 @@ abstract class $NewsModelCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      String description,
       String content,
       DateTime? eventDate,
+      List<String> mediaUrls,
       DateTime? createdAt});
 }
 
@@ -59,8 +63,10 @@ class _$NewsModelCopyWithImpl<$Res, $Val extends NewsModel>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? description = null,
     Object? content = null,
     Object? eventDate = freezed,
+    Object? mediaUrls = null,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -72,6 +78,10 @@ class _$NewsModelCopyWithImpl<$Res, $Val extends NewsModel>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -80,6 +90,10 @@ class _$NewsModelCopyWithImpl<$Res, $Val extends NewsModel>
           ? _value.eventDate
           : eventDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      mediaUrls: null == mediaUrls
+          ? _value.mediaUrls
+          : mediaUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -99,8 +113,10 @@ abstract class _$$NewsModelImplCopyWith<$Res>
   $Res call(
       {String id,
       String title,
+      String description,
       String content,
       DateTime? eventDate,
+      List<String> mediaUrls,
       DateTime? createdAt});
 }
 
@@ -119,8 +135,10 @@ class __$$NewsModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? description = null,
     Object? content = null,
     Object? eventDate = freezed,
+    Object? mediaUrls = null,
     Object? createdAt = freezed,
   }) {
     return _then(_$NewsModelImpl(
@@ -132,6 +150,10 @@ class __$$NewsModelImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -140,6 +162,10 @@ class __$$NewsModelImplCopyWithImpl<$Res>
           ? _value.eventDate
           : eventDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      mediaUrls: null == mediaUrls
+          ? _value._mediaUrls
+          : mediaUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -154,24 +180,39 @@ class _$NewsModelImpl implements _NewsModel {
   const _$NewsModelImpl(
       {required this.id,
       required this.title,
+      this.description = '',
       required this.content,
       this.eventDate,
-      this.createdAt});
+      final List<String> mediaUrls = const [],
+      this.createdAt})
+      : _mediaUrls = mediaUrls;
 
   @override
   final String id;
   @override
   final String title;
   @override
+  @JsonKey()
+  final String description;
+  @override
   final String content;
   @override
   final DateTime? eventDate;
+  final List<String> _mediaUrls;
+  @override
+  @JsonKey()
+  List<String> get mediaUrls {
+    if (_mediaUrls is EqualUnmodifiableListView) return _mediaUrls;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mediaUrls);
+  }
+
   @override
   final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'NewsModel(id: $id, title: $title, content: $content, eventDate: $eventDate, createdAt: $createdAt)';
+    return 'NewsModel(id: $id, title: $title, description: $description, content: $content, eventDate: $eventDate, mediaUrls: $mediaUrls, createdAt: $createdAt)';
   }
 
   @override
@@ -181,16 +222,20 @@ class _$NewsModelImpl implements _NewsModel {
             other is _$NewsModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.eventDate, eventDate) ||
                 other.eventDate == eventDate) &&
+            const DeepCollectionEquality()
+                .equals(other._mediaUrls, _mediaUrls) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, content, eventDate, createdAt);
+  int get hashCode => Object.hash(runtimeType, id, title, description, content,
+      eventDate, const DeepCollectionEquality().hash(_mediaUrls), createdAt);
 
   /// Create a copy of NewsModel
   /// with the given fields replaced by the non-null parameter values.
@@ -205,8 +250,10 @@ abstract class _NewsModel implements NewsModel {
   const factory _NewsModel(
       {required final String id,
       required final String title,
+      final String description,
       required final String content,
       final DateTime? eventDate,
+      final List<String> mediaUrls,
       final DateTime? createdAt}) = _$NewsModelImpl;
 
   @override
@@ -214,9 +261,13 @@ abstract class _NewsModel implements NewsModel {
   @override
   String get title;
   @override
+  String get description;
+  @override
   String get content;
   @override
   DateTime? get eventDate;
+  @override
+  List<String> get mediaUrls;
   @override
   DateTime? get createdAt;
 
