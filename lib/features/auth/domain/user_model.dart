@@ -34,6 +34,32 @@ class UserModel with _$UserModel {
 extension UserModelRoleX on UserModel {
   bool get isProfessor => role == 'professor';
 
+  bool get isAdmin => role == 'admin';
+
+  bool get isBranch => role == 'branch';
+
+  bool get isStaff => isAdmin || isBranch;
+
+  bool get canManageStudents => isStaff;
+
+  bool get canManageProfessors => isAdmin;
+
+  bool get canManageParents => isStaff;
+
+  bool get canManageClassrooms => isStaff;
+
+  bool get canManageNews => isStaff;
+
+  bool get canManageEvents => isStaff || isProfessor;
+
+  bool get canManageDocuments => isStaff;
+
+  bool get canManageFaqs => isAdmin;
+
+  bool get canManageQualifications => isStaff || isProfessor;
+
+  bool get canDeleteQualifications => isStaff;
+
   bool get canManageMaterials {
     const allowed = {'professor', 'admin', 'branch'};
     return allowed.contains(role);
