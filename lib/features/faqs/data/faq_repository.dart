@@ -1,6 +1,9 @@
-import '../data/faq_api.dart';
+import 'package:dio/dio.dart';
+
+import '../../../core/api/api_exception.dart';
+import '../../../core/api/page_pagination.dart';
+import 'faq_api.dart';
 import '../domain/faq_model.dart';
-import 'package:efe_mobile/core/api/page_pagination.dart';
 
 class FaqRepository {
   final FaqApi _api;
@@ -36,6 +39,64 @@ class FaqRepository {
       page: (meta['current_page'] as num?)?.toInt() ?? page,
       perPage: (meta['per_page'] as num?)?.toInt() ?? perPage,
       total: (meta['total'] as num?)?.toInt() ?? data.length,
+    );
+  }
+
+  Future<FaqModel> createFaq({
+    required String question,
+    required String answer,
+  }) async {
+    try {
+      final response = await _api.createFaq(
+        _payload(question: question, answer: answer),
+      );
+      return FaqModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<FaqModel> updateFaq(
+    String id, {
+    required String question,
+    required String answer,
+  }) async {
+    try {
+      final response = await _api.updateFaq(
+        id,
+        _payload(question: question, answer: answer),
+      );
+      return FaqModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<void> deleteFaq(String id) async {
+    try {
+      await _api.deleteFaq(id);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Map<String, dynamic> _payload({
+    required String question,
+    required String answer,
+  }) {
+    return {
+      'question': question,
+      'answer': answer,
+    };
+  }
+
+  /// Propaga tal cual la excepción que armó el interceptor (incluida
+  /// [ValidationException] con sus errores por campo).
+  ApiException _handleDioError(DioException e) {
+    if (e.error is ApiException) return e.error as ApiException;
+    return ApiException(
+      message: e.message ?? 'Ocurrió un error inesperado',
+      statusCode: e.response?.statusCode,
     );
   }
 }

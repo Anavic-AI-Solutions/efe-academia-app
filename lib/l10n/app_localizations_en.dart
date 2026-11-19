@@ -1871,6 +1871,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get faqsLoadError => 'Could not load FAQs';
 
   @override
+  String get faqFormCreateTitle => 'New question';
+
+  @override
+  String get faqFormEditTitle => 'Edit question';
+
+  @override
+  String get faqFormQuestion => 'Question';
+
+  @override
+  String get faqFormAnswer => 'Answer';
+
+  @override
+  String get faqCreated => 'Question created';
+
+  @override
+  String get faqUpdated => 'Question updated';
+
+  @override
+  String get faqDeleted => 'Question deleted';
+
+  @override
+  String get faqDeleteTitle => 'Delete question';
+
+  @override
   String get statisticsDetailsTitle => 'Details';
 
   @override

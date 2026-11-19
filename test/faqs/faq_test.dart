@@ -42,6 +42,20 @@ class _FakeFaqApi implements FaqApi {
     calls.add({'search': search, 'page': page, 'perPage': perPage});
     return _response(payloads.removeAt(0));
   }
+
+  @override
+  Future<Response> createFaq(Map<String, dynamic> data) async => _response(
+        _faqJson('new', question: data['question'] as String? ?? '¿Pregunta?'),
+      );
+
+  @override
+  Future<Response> updateFaq(String id, Map<String, dynamic> data) async =>
+      _response(
+        _faqJson(id, question: data['question'] as String? ?? '¿Pregunta?'),
+      );
+
+  @override
+  Future<Response> deleteFaq(String id) async => _response(null);
 }
 
 class _FakeFaqRepository implements FaqRepository {
@@ -57,6 +71,24 @@ class _FakeFaqRepository implements FaqRepository {
   }) async {
     return pages.removeAt(0);
   }
+
+  @override
+  Future<FaqModel> createFaq({
+    required String question,
+    required String answer,
+  }) async =>
+      FaqModel(id: 'new', question: question, answer: answer);
+
+  @override
+  Future<FaqModel> updateFaq(
+    String id, {
+    required String question,
+    required String answer,
+  }) async =>
+      FaqModel(id: id, question: question, answer: answer);
+
+  @override
+  Future<void> deleteFaq(String id) async {}
 }
 
 class _DelayedFaqRepository implements FaqRepository {
@@ -71,6 +103,24 @@ class _DelayedFaqRepository implements FaqRepository {
     int perPage = 10,
   }) =>
       future;
+
+  @override
+  Future<FaqModel> createFaq({
+    required String question,
+    required String answer,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<FaqModel> updateFaq(
+    String id, {
+    required String question,
+    required String answer,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deleteFaq(String id) => throw UnimplementedError();
 }
 
 PageResult<FaqModel> _page(
@@ -244,11 +294,11 @@ void main() {
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: MaterialApp(
-          locale: const Locale('es', 'AR'),
+        child: const MaterialApp(
+          locale: Locale('es', 'AR'),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: const FaqScreen(),
+          home: FaqScreen(),
         ),
       ),
     );

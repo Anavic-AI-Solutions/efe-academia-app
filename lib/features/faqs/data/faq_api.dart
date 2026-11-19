@@ -15,4 +15,12 @@ class FaqApi {
         'page': page,
         'per_page': perPage,
       });
+
+  Future<Response> createFaq(Map<String, dynamic> data) =>
+      _client.post('/faqs', data: data);
+
+  Future<Response> updateFaq(String id, Map<String, dynamic> data) =>
+      _client.patch('/faqs/$id', data: data);
+
+  Future<Response> deleteFaq(String id) => _client.delete('/faqs/$id');
 }

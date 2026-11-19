@@ -1880,6 +1880,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get faqsLoadError => 'No se pudieron cargar las preguntas frecuentes';
 
   @override
+  String get faqFormCreateTitle => 'Nueva pregunta';
+
+  @override
+  String get faqFormEditTitle => 'Editar pregunta';
+
+  @override
+  String get faqFormQuestion => 'Pregunta';
+
+  @override
+  String get faqFormAnswer => 'Respuesta';
+
+  @override
+  String get faqCreated => 'Pregunta creada';
+
+  @override
+  String get faqUpdated => 'Pregunta actualizada';
+
+  @override
+  String get faqDeleted => 'Pregunta eliminada';
+
+  @override
+  String get faqDeleteTitle => 'Eliminar pregunta';
+
+  @override
   String get statisticsDetailsTitle => 'Detalles';
 
   @override

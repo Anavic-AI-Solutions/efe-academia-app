@@ -3536,6 +3536,54 @@ abstract class AppLocalizations {
   /// **'No se pudieron cargar las preguntas frecuentes'**
   String get faqsLoadError;
 
+  /// No description provided for @faqFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva pregunta'**
+  String get faqFormCreateTitle;
+
+  /// No description provided for @faqFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar pregunta'**
+  String get faqFormEditTitle;
+
+  /// No description provided for @faqFormQuestion.
+  ///
+  /// In es, this message translates to:
+  /// **'Pregunta'**
+  String get faqFormQuestion;
+
+  /// No description provided for @faqFormAnswer.
+  ///
+  /// In es, this message translates to:
+  /// **'Respuesta'**
+  String get faqFormAnswer;
+
+  /// No description provided for @faqCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Pregunta creada'**
+  String get faqCreated;
+
+  /// No description provided for @faqUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Pregunta actualizada'**
+  String get faqUpdated;
+
+  /// No description provided for @faqDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Pregunta eliminada'**
+  String get faqDeleted;
+
+  /// No description provided for @faqDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar pregunta'**
+  String get faqDeleteTitle;
+
   /// No description provided for @statisticsDetailsTitle.
   ///
   /// In es, this message translates to:
