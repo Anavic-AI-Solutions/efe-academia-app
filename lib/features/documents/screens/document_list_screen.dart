@@ -9,11 +9,14 @@ import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/large_title_bar.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/domain/user_model.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../providers/document_provider.dart';
+import 'widgets/document_form_sheet.dart';
 import 'widgets/document_tile.dart';
 
-/// Lista de documentos (solo lectura): clon de `NewsListScreen`
-/// con shimmer / vacío / error / scroll infinito.
+/// Lista de documentos: shimmer / vacío / error / scroll infinito. El staff
+/// ve el FAB para crear.
 class DocumentListScreen extends ConsumerStatefulWidget {
   const DocumentListScreen({super.key});
 
@@ -43,15 +46,42 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
     }
   }
 
+  Future<void> _openForm() async {
+    final l10n = context.l10n;
+    final saved = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const DocumentFormSheet(document: null),
+    );
+    if (saved != true || !mounted) return;
+    ref.invalidate(documentListProvider);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.documentCreated)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final state = ref.watch(documentListProvider);
     final documents = state.pagination.data;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final canManage = ref.watch(authProvider).user?.canManageDocuments ?? false;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
+      floatingActionButton: canManage
+          ? FloatingActionButton(
+              key: const Key('document-fab'),
+              onPressed: _openForm,
+              backgroundColor: AppColors.primary,
+              child: const Icon(
+                PhosphorIconsRegular.plus,
+                color: Colors.white,
+              ),
+            )
+          : null,
       body: Column(
         children: [
           LargeTitleBar(title: l10n.documentsTitle),

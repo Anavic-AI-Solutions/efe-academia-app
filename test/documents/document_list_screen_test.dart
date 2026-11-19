@@ -22,6 +22,16 @@ class _FakeDocumentApi implements DocumentApi {
       throw UnimplementedError();
 
   @override
+  Future<Response> createDocument(FormData data) => throw UnimplementedError();
+
+  @override
+  Future<Response> updateDocument(String id, FormData data) =>
+      throw UnimplementedError();
+
+  @override
+  Future<Response> deleteDocument(String id) => throw UnimplementedError();
+
+  @override
   String downloadUrl(String id) => 'https://example.com/documents/$id/download';
 }
 

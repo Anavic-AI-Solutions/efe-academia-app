@@ -1354,6 +1354,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get documentsOpenError => 'Could not open the document';
 
   @override
+  String get documentFormCreateTitle => 'New document';
+
+  @override
+  String get documentFormEditTitle => 'Edit document';
+
+  @override
+  String get documentFormTitle => 'Title';
+
+  @override
+  String get documentFormDescription => 'Description';
+
+  @override
+  String get documentFormFile => 'File';
+
+  @override
+  String get documentFormPickFile => 'Choose file';
+
+  @override
+  String get documentFormFileHint =>
+      'PDF, Word, Excel, PowerPoint or image up to 20 MB';
+
+  @override
+  String get documentCreated => 'Document created';
+
+  @override
+  String get documentUpdated => 'Document updated';
+
+  @override
+  String get documentDeleted => 'Document deleted';
+
+  @override
+  String get documentDeleteTitle => 'Delete document';
+
+  @override
   String get homeDocuments => 'Documents';
 
   @override

@@ -2594,6 +2594,72 @@ abstract class AppLocalizations {
   /// **'No se pudo abrir el documento'**
   String get documentsOpenError;
 
+  /// No description provided for @documentFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo documento'**
+  String get documentFormCreateTitle;
+
+  /// No description provided for @documentFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar documento'**
+  String get documentFormEditTitle;
+
+  /// No description provided for @documentFormTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Título'**
+  String get documentFormTitle;
+
+  /// No description provided for @documentFormDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get documentFormDescription;
+
+  /// No description provided for @documentFormFile.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivo'**
+  String get documentFormFile;
+
+  /// No description provided for @documentFormPickFile.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir archivo'**
+  String get documentFormPickFile;
+
+  /// No description provided for @documentFormFileHint.
+  ///
+  /// In es, this message translates to:
+  /// **'PDF, Word, Excel, PowerPoint o imagen hasta 20 MB'**
+  String get documentFormFileHint;
+
+  /// No description provided for @documentCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento creado'**
+  String get documentCreated;
+
+  /// No description provided for @documentUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento actualizado'**
+  String get documentUpdated;
+
+  /// No description provided for @documentDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento eliminado'**
+  String get documentDeleted;
+
+  /// No description provided for @documentDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar documento'**
+  String get documentDeleteTitle;
+
   /// No description provided for @homeDocuments.
   ///
   /// In es, this message translates to:
