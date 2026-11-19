@@ -227,41 +227,27 @@ class _NewsFormSheetState extends ConsumerState<NewsFormSheet> {
         ),
         const SizedBox(height: 12),
         _FieldLabel(label: l10n.newsFormDate),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton(
-                key: const Key('news-date-button'),
-                onPressed: _isSaving ? null : _pickDate,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                  side: BorderSide(
-                    color: AppColors.primary.withValues(alpha: 0.5),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  _eventDate == null
-                      ? l10n.newsFormDate
-                      : AppFormatters.formatDate(_eventDate!),
-                  style: const TextStyle(fontSize: 12),
-                ),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            key: const Key('news-date-button'),
+            onPressed: _isSaving ? null : _pickDate,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.primary,
+              side: BorderSide(
+                color: AppColors.primary.withValues(alpha: 0.5),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
-            if (_eventDate != null)
-              IconButton(
-                key: const Key('news-clear-date'),
-                onPressed: _isSaving
-                    ? null
-                    : () => setState(() {
-                          _eventDate = null;
-                          _eventDateError = null;
-                        }),
-                icon: const Icon(Icons.close, size: 18),
-              ),
-          ],
+            child: Text(
+              _eventDate == null
+                  ? l10n.newsFormDate
+                  : AppFormatters.formatDate(_eventDate!),
+              style: const TextStyle(fontSize: 12),
+            ),
+          ),
         ),
         if (_eventDateError != null)
           Text(

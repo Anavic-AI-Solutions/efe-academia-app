@@ -224,6 +224,26 @@ void main() {
     expect(result.value, isTrue);
   });
 
+  testWidgets('edición prellena la fecha y la mantiene al guardar',
+      (tester) async {
+    final repository = _FakeNewsRepository();
+    final news = NewsModel(
+      id: 'n1',
+      title: 'Con fecha',
+      content: 'Contenido',
+      eventDate: DateTime(2026, 12, 1),
+    );
+    await _pumpForm(tester, repository, news: news);
+
+    expect(find.text('01/12/2026'), findsOneWidget);
+    expect(find.byKey(const Key('news-clear-date')), findsNothing);
+
+    await _tapSave(tester);
+
+    expect(repository.updatedId, 'n1');
+    expect(repository.updatedArgs!['eventDate'], DateTime(2026, 12, 1));
+  });
+
   testWidgets('un 422 pinta el error en el campo', (tester) async {
     final repository = _FakeNewsRepository()
       ..error =
