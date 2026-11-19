@@ -11,6 +11,7 @@ class EventModel with _$EventModel {
     DateTime? start,
     DateTime? end,
     @Default(0xFF3B82F6) int color,
+    int? createdBy,
   }) = _EventModel;
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
@@ -29,7 +30,15 @@ class EventModel with _$EventModel {
       start: startRaw is String ? DateTime.tryParse(startRaw) : null,
       end: endRaw is String ? DateTime.tryParse(endRaw) : null,
       color: _parseColor(attrs['color']),
+      createdBy: _parseInt(attrs['created_by']),
     );
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value);
+    return null;
   }
 
   static int _parseColor(dynamic value) {

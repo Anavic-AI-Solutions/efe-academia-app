@@ -100,6 +100,17 @@ class _FakeEventApi implements EventApi {
         statusCode: 200,
         data: payload,
       );
+
+  @override
+  Future<Response> createEvent(Map<String, dynamic> data) =>
+      throw UnimplementedError();
+
+  @override
+  Future<Response> updateEvent(String id, Map<String, dynamic> data) =>
+      throw UnimplementedError();
+
+  @override
+  Future<Response> deleteEvent(String id) => throw UnimplementedError();
 }
 
 void main() {

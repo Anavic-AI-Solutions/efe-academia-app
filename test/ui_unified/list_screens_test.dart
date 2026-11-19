@@ -63,6 +63,30 @@ class _NeverEventRepository implements EventRepository {
     required String endDate,
   }) =>
       Completer<List<EventModel>>().future;
+
+  @override
+  Future<EventModel> createEvent({
+    required String title,
+    String description = '',
+    required DateTime start,
+    required DateTime end,
+    int color = 0xFF3B82F6,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<EventModel> updateEvent(
+    String id, {
+    required String title,
+    String description = '',
+    required DateTime start,
+    required DateTime end,
+    int color = 0xFF3B82F6,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deleteEvent(String id) => throw UnimplementedError();
 }
 
 class _NeverNotificationRepository implements NotificationRepository {

@@ -1886,6 +1886,78 @@ abstract class AppLocalizations {
   /// **'Eliminar noticia'**
   String get newsDeleteTitle;
 
+  /// No description provided for @eventFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo evento'**
+  String get eventFormCreateTitle;
+
+  /// No description provided for @eventFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar evento'**
+  String get eventFormEditTitle;
+
+  /// No description provided for @eventFormTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Título'**
+  String get eventFormTitle;
+
+  /// No description provided for @eventFormDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get eventFormDescription;
+
+  /// No description provided for @eventFormStart.
+  ///
+  /// In es, this message translates to:
+  /// **'Inicio'**
+  String get eventFormStart;
+
+  /// No description provided for @eventFormEnd.
+  ///
+  /// In es, this message translates to:
+  /// **'Fin'**
+  String get eventFormEnd;
+
+  /// No description provided for @eventFormColor.
+  ///
+  /// In es, this message translates to:
+  /// **'Color'**
+  String get eventFormColor;
+
+  /// No description provided for @eventFormInvalidRange.
+  ///
+  /// In es, this message translates to:
+  /// **'El fin debe ser posterior al inicio'**
+  String get eventFormInvalidRange;
+
+  /// No description provided for @eventCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Evento creado'**
+  String get eventCreated;
+
+  /// No description provided for @eventUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Evento actualizado'**
+  String get eventUpdated;
+
+  /// No description provided for @eventDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Evento eliminado'**
+  String get eventDeleted;
+
+  /// No description provided for @eventDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar evento'**
+  String get eventDeleteTitle;
+
   /// No description provided for @eventsTitle.
   ///
   /// In es, this message translates to:

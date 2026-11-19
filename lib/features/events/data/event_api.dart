@@ -19,4 +19,12 @@ class EventApi {
         'start_date': startDate,
         'end_date': endDate,
       });
+
+  Future<Response> createEvent(Map<String, dynamic> data) =>
+      _client.post('/events', data: data);
+
+  Future<Response> updateEvent(String id, Map<String, dynamic> data) =>
+      _client.patch('/events/$id', data: data);
+
+  Future<Response> deleteEvent(String id) => _client.delete('/events/$id');
 }

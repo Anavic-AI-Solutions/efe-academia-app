@@ -978,6 +978,42 @@ class AppLocalizationsEs extends AppLocalizations {
   String get newsDeleteTitle => 'Eliminar noticia';
 
   @override
+  String get eventFormCreateTitle => 'Nuevo evento';
+
+  @override
+  String get eventFormEditTitle => 'Editar evento';
+
+  @override
+  String get eventFormTitle => 'Título';
+
+  @override
+  String get eventFormDescription => 'Descripción';
+
+  @override
+  String get eventFormStart => 'Inicio';
+
+  @override
+  String get eventFormEnd => 'Fin';
+
+  @override
+  String get eventFormColor => 'Color';
+
+  @override
+  String get eventFormInvalidRange => 'El fin debe ser posterior al inicio';
+
+  @override
+  String get eventCreated => 'Evento creado';
+
+  @override
+  String get eventUpdated => 'Evento actualizado';
+
+  @override
+  String get eventDeleted => 'Evento eliminado';
+
+  @override
+  String get eventDeleteTitle => 'Eliminar evento';
+
+  @override
   String get eventsTitle => 'Eventos';
 
   @override

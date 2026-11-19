@@ -22,6 +22,7 @@ mixin _$EventModel {
   DateTime? get start => throw _privateConstructorUsedError;
   DateTime? get end => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
+  int? get createdBy => throw _privateConstructorUsedError;
 
   /// Create a copy of EventModel
   /// with the given fields replaced by the non-null parameter values.
@@ -42,7 +43,8 @@ abstract class $EventModelCopyWith<$Res> {
       String description,
       DateTime? start,
       DateTime? end,
-      int color});
+      int color,
+      int? createdBy});
 }
 
 /// @nodoc
@@ -66,6 +68,7 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
     Object? start = freezed,
     Object? end = freezed,
     Object? color = null,
+    Object? createdBy = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -92,6 +95,10 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
+      createdBy: freezed == createdBy
+          ? _value.createdBy
+          : createdBy // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -110,7 +117,8 @@ abstract class _$$EventModelImplCopyWith<$Res>
       String description,
       DateTime? start,
       DateTime? end,
-      int color});
+      int color,
+      int? createdBy});
 }
 
 /// @nodoc
@@ -132,6 +140,7 @@ class __$$EventModelImplCopyWithImpl<$Res>
     Object? start = freezed,
     Object? end = freezed,
     Object? color = null,
+    Object? createdBy = freezed,
   }) {
     return _then(_$EventModelImpl(
       id: null == id
@@ -158,6 +167,10 @@ class __$$EventModelImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
+      createdBy: freezed == createdBy
+          ? _value.createdBy
+          : createdBy // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -171,7 +184,8 @@ class _$EventModelImpl implements _EventModel {
       this.description = '',
       this.start,
       this.end,
-      this.color = 0xFF3B82F6});
+      this.color = 0xFF3B82F6,
+      this.createdBy});
 
   @override
   final String id;
@@ -187,10 +201,12 @@ class _$EventModelImpl implements _EventModel {
   @override
   @JsonKey()
   final int color;
+  @override
+  final int? createdBy;
 
   @override
   String toString() {
-    return 'EventModel(id: $id, title: $title, description: $description, start: $start, end: $end, color: $color)';
+    return 'EventModel(id: $id, title: $title, description: $description, start: $start, end: $end, color: $color, createdBy: $createdBy)';
   }
 
   @override
@@ -204,12 +220,14 @@ class _$EventModelImpl implements _EventModel {
                 other.description == description) &&
             (identical(other.start, start) || other.start == start) &&
             (identical(other.end, end) || other.end == end) &&
-            (identical(other.color, color) || other.color == color));
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.createdBy, createdBy) ||
+                other.createdBy == createdBy));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, description, start, end, color);
+  int get hashCode => Object.hash(
+      runtimeType, id, title, description, start, end, color, createdBy);
 
   /// Create a copy of EventModel
   /// with the given fields replaced by the non-null parameter values.
@@ -227,7 +245,8 @@ abstract class _EventModel implements EventModel {
       final String description,
       final DateTime? start,
       final DateTime? end,
-      final int color}) = _$EventModelImpl;
+      final int color,
+      final int? createdBy}) = _$EventModelImpl;
 
   @override
   String get id;
@@ -241,6 +260,8 @@ abstract class _EventModel implements EventModel {
   DateTime? get end;
   @override
   int get color;
+  @override
+  int? get createdBy;
 
   /// Create a copy of EventModel
   /// with the given fields replaced by the non-null parameter values.

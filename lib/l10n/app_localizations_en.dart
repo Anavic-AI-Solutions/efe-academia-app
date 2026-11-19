@@ -970,6 +970,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newsDeleteTitle => 'Delete news item';
 
   @override
+  String get eventFormCreateTitle => 'New event';
+
+  @override
+  String get eventFormEditTitle => 'Edit event';
+
+  @override
+  String get eventFormTitle => 'Title';
+
+  @override
+  String get eventFormDescription => 'Description';
+
+  @override
+  String get eventFormStart => 'Start';
+
+  @override
+  String get eventFormEnd => 'End';
+
+  @override
+  String get eventFormColor => 'Color';
+
+  @override
+  String get eventFormInvalidRange => 'End must be after start';
+
+  @override
+  String get eventCreated => 'Event created';
+
+  @override
+  String get eventUpdated => 'Event updated';
+
+  @override
+  String get eventDeleted => 'Event deleted';
+
+  @override
+  String get eventDeleteTitle => 'Delete event';
+
+  @override
   String get eventsTitle => 'Events';
 
   @override
