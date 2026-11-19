@@ -104,6 +104,7 @@ class _NewsListScreenState extends ConsumerState<NewsListScreen> {
       floatingActionButton: canManage
           ? FloatingActionButton(
               key: const Key('news-fab'),
+              tooltip: l10n.commonCreate,
               onPressed: () => _openForm(null),
               backgroundColor: AppColors.primary,
               child: const Icon(

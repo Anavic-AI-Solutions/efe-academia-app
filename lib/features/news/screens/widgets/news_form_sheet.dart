@@ -111,9 +111,8 @@ class _NewsFormSheetState extends ConsumerState<NewsFormSheet> {
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
 
-    final titleError = title.isEmpty ? l10n.commonFormRequired : _titleError;
-    final contentError =
-        content.isEmpty ? l10n.commonFormRequired : _contentError;
+    final titleError = title.isEmpty ? l10n.commonFormRequired : null;
+    final contentError = content.isEmpty ? l10n.commonFormRequired : null;
 
     setState(() {
       _titleError = titleError;

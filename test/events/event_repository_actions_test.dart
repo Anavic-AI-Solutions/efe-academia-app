@@ -91,7 +91,7 @@ void main() {
       expect(event.createdBy, 7);
     });
 
-    test('omite la descripción vacía', () async {
+    test('incluye la descripción vacía al crear', () async {
       final api = _FakeEventApi();
       final repository = EventRepository(api);
 
@@ -101,7 +101,8 @@ void main() {
         end: DateTime(2026, 12, 1, 11),
       );
 
-      expect(api.created!.containsKey('description'), isFalse);
+      expect(api.created!.containsKey('description'), isTrue);
+      expect(api.created!['description'], '');
       expect(api.created!['color'], '#3B82F6');
     });
   });
@@ -122,7 +123,8 @@ void main() {
 
       expect(api.updatedId, 'e1');
       expect(api.updated!['title'], 'Editado');
-      expect(api.updated!.containsKey('description'), isFalse);
+      expect(api.updated!.containsKey('description'), isTrue);
+      expect(api.updated!['description'], '');
       expect(api.updated!['start_date'], '2026-12-02T09:00:00.000');
       expect(api.updated!['end_date'], '2026-12-02T10:00:00.000');
       expect(api.updated!['color'], '#EF4444');

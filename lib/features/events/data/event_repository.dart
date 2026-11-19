@@ -110,7 +110,7 @@ class EventRepository {
   }) {
     return {
       'title': title,
-      if (description.isNotEmpty) 'description': description,
+      'description': description,
       'start_date': start.toIso8601String(),
       'end_date': end.toIso8601String(),
       'color': _hexColor(color),

@@ -130,6 +130,7 @@ class _FaqScreenState extends ConsumerState<FaqScreen> {
       floatingActionButton: canManage
           ? FloatingActionButton(
               key: const Key('faq-fab'),
+              tooltip: l10n.commonCreate,
               onPressed: () => _openForm(null),
               backgroundColor: AppColors.primary,
               child: const Icon(

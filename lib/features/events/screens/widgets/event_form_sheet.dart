@@ -127,6 +127,7 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
 
     setState(() {
       _titleError = titleError;
+      _descriptionError = null;
       _rangeError = rangeError;
       _startError = null;
       _endError = null;

@@ -33,12 +33,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonSave => 'Guardar';
 
   @override
-  String get commonSaving => 'Guardando...';
-
-  @override
-  String get commonSaved => 'Guardado';
-
-  @override
   String get commonSaveError => 'No se pudo guardar';
 
   @override
@@ -963,7 +957,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get newsFormPickImage => 'Elegir imagen';
 
   @override
-  String get newsFormImageHint => 'JPG o PNG hasta 10 MB';
+  String get newsFormImageHint => 'JPG, PNG o WebP hasta 10 MB';
 
   @override
   String get newsCreated => 'Noticia creada';

@@ -56,6 +56,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
     );
     if (saved != true || !mounted) return;
     ref.invalidate(documentListProvider);
+    ref.invalidate(homeDocumentsProvider);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.documentCreated)),
     );
@@ -74,6 +75,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
       floatingActionButton: canManage
           ? FloatingActionButton(
               key: const Key('document-fab'),
+              tooltip: l10n.commonCreate,
               onPressed: _openForm,
               backgroundColor: AppColors.primary,
               child: const Icon(

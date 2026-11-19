@@ -146,18 +146,6 @@ abstract class AppLocalizations {
   /// **'Guardar'**
   String get commonSave;
 
-  /// No description provided for @commonSaving.
-  ///
-  /// In es, this message translates to:
-  /// **'Guardando...'**
-  String get commonSaving;
-
-  /// No description provided for @commonSaved.
-  ///
-  /// In es, this message translates to:
-  /// **'Guardado'**
-  String get commonSaved;
-
   /// No description provided for @commonSaveError.
   ///
   /// In es, this message translates to:
@@ -1859,7 +1847,7 @@ abstract class AppLocalizations {
   /// No description provided for @newsFormImageHint.
   ///
   /// In es, this message translates to:
-  /// **'JPG o PNG hasta 10 MB'**
+  /// **'JPG, PNG o WebP hasta 10 MB'**
   String get newsFormImageHint;
 
   /// No description provided for @newsCreated.

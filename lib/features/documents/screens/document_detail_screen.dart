@@ -41,6 +41,7 @@ class DocumentDetailScreen extends ConsumerWidget {
     if (saved != true || !context.mounted) return;
     ref.invalidate(documentDetailProvider(documentId));
     ref.invalidate(documentListProvider);
+    ref.invalidate(homeDocumentsProvider);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.documentUpdated)),
     );
@@ -68,6 +69,7 @@ class DocumentDetailScreen extends ConsumerWidget {
       if (!context.mounted) return;
       ref.invalidate(documentDetailProvider(documentId));
       ref.invalidate(documentListProvider);
+      ref.invalidate(homeDocumentsProvider);
       context.pop();
       messenger.showSnackBar(
         SnackBar(content: Text(l10n.documentDeleted)),
