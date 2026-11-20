@@ -219,11 +219,12 @@ const _classroom = ClassroomModel(
   year: '2026',
 );
 
-Future<void> _pumpProfessorDetail(
+Future<void> _pumpDetailForRole(
   WidgetTester tester,
   _FakeClassroomRepository repository,
-  _FakeMaterialRepository materialRepository,
-) async {
+  _FakeMaterialRepository materialRepository, {
+  String role = 'professor',
+}) async {
   final router = GoRouter(
     initialLocation: '/classrooms/c1',
     routes: [
@@ -247,7 +248,7 @@ Future<void> _pumpProfessorDetail(
 
   final container = ProviderContainer(
     overrides: [
-      authRepositoryProvider.overrideWithValue(_FakeAuthRepository()),
+      authRepositoryProvider.overrideWithValue(_FakeAuthRepository(role: role)),
       classroomRepositoryProvider.overrideWithValue(repository),
       materialRepositoryProvider.overrideWithValue(materialRepository),
     ],
@@ -332,7 +333,7 @@ void main() {
   testWidgets('el profesor ve el CTA y el menú en la pestaña Materiales',
       (tester) async {
     final materials = [const MaterialModel(id: 'm1', name: 'Apunte 1')];
-    await _pumpProfessorDetail(
+    await _pumpDetailForRole(
       tester,
       _FakeClassroomRepository(classroom: _classroom, materials: materials),
       _FakeMaterialRepository(sharedMaterials: materials),
@@ -364,6 +365,62 @@ void main() {
     );
   });
 
+  testWidgets('el admin ve el CTA y el menú en la pestaña Materiales',
+      (tester) async {
+    final materials = [const MaterialModel(id: 'm1', name: 'Apunte 1')];
+    await _pumpDetailForRole(
+      tester,
+      _FakeClassroomRepository(classroom: _classroom, materials: materials),
+      _FakeMaterialRepository(sharedMaterials: materials),
+      role: 'admin',
+    );
+
+    await _openTab(tester, 'Materiales');
+
+    expect(find.text('Cargar material'), findsOneWidget);
+    expect(
+      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('la sede ve el CTA y el menú en la pestaña Materiales',
+      (tester) async {
+    final materials = [const MaterialModel(id: 'm1', name: 'Apunte 1')];
+    await _pumpDetailForRole(
+      tester,
+      _FakeClassroomRepository(classroom: _classroom, materials: materials),
+      _FakeMaterialRepository(sharedMaterials: materials),
+      role: 'sede',
+    );
+
+    await _openTab(tester, 'Materiales');
+
+    expect(find.text('Cargar material'), findsOneWidget);
+    expect(
+      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('el padre no ve el CTA ni el menú', (tester) async {
+    final materials = [const MaterialModel(id: 'm1', name: 'Apunte 1')];
+    await _pumpDetailForRole(
+      tester,
+      _FakeClassroomRepository(classroom: _classroom, materials: materials),
+      _FakeMaterialRepository(sharedMaterials: materials),
+      role: 'parent',
+    );
+
+    await _openTab(tester, 'Materiales');
+
+    expect(find.text('Cargar material'), findsNothing);
+    expect(
+      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      findsNothing,
+    );
+  });
+
   testWidgets('el tile muestra el conteo de alumnos específicos',
       (tester) async {
     final materials = [
@@ -374,7 +431,7 @@ void main() {
         studentIds: ['s1', 's2'],
       ),
     ];
-    await _pumpProfessorDetail(
+    await _pumpDetailForRole(
       tester,
       _FakeClassroomRepository(classroom: _classroom, materials: materials),
       _FakeMaterialRepository(sharedMaterials: materials),
@@ -388,7 +445,7 @@ void main() {
   testWidgets('un material legado sin archivos renderiza sin romper',
       (tester) async {
     final materials = [const MaterialModel(id: 'm1', name: 'Solo link')];
-    await _pumpProfessorDetail(
+    await _pumpDetailForRole(
       tester,
       _FakeClassroomRepository(classroom: _classroom, materials: materials),
       _FakeMaterialRepository(sharedMaterials: materials),
@@ -402,7 +459,7 @@ void main() {
 
   testWidgets('tocar Cargar material abre el formulario', (tester) async {
     final materials = <MaterialModel>[];
-    await _pumpProfessorDetail(
+    await _pumpDetailForRole(
       tester,
       _FakeClassroomRepository(classroom: _classroom, materials: materials),
       _FakeMaterialRepository(sharedMaterials: materials),
@@ -423,7 +480,7 @@ void main() {
       sharedMaterials: materials,
       detail: const MaterialModel(id: 'm1', name: 'Apunte 1'),
     );
-    await _pumpProfessorDetail(
+    await _pumpDetailForRole(
       tester,
       _FakeClassroomRepository(classroom: _classroom, materials: materials),
       materialRepo,
@@ -443,7 +500,7 @@ void main() {
       (tester) async {
     final materials = [const MaterialModel(id: 'm1', name: 'Apunte 1')];
     final materialRepo = _FakeMaterialRepository(sharedMaterials: materials);
-    await _pumpProfessorDetail(
+    await _pumpDetailForRole(
       tester,
       _FakeClassroomRepository(classroom: _classroom, materials: materials),
       materialRepo,
@@ -468,7 +525,7 @@ void main() {
   testWidgets('un error al eliminar muestra el snackbar sin romper',
       (tester) async {
     final materials = [const MaterialModel(id: 'm1', name: 'Apunte 1')];
-    await _pumpProfessorDetail(
+    await _pumpDetailForRole(
       tester,
       _FakeClassroomRepository(classroom: _classroom, materials: materials),
       _FakeMaterialRepository(sharedMaterials: materials, failDelete: true),
