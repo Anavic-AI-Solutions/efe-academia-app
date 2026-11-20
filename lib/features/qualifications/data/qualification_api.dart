@@ -51,4 +51,10 @@ class QualificationApi {
         if (description != null && description.isNotEmpty)
           'description': description,
       });
+
+  Future<Response> updateQualification(String id, Map<String, dynamic> data) =>
+      _client.patch('/qualifications/$id', data: data);
+
+  Future<Response> deleteQualification(String id) =>
+      _client.delete('/qualifications/$id');
 }

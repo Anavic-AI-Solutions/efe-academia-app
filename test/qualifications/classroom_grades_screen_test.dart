@@ -72,6 +72,22 @@ class _FakeQualificationRepository implements QualificationRepository {
       'description': description ?? '',
     };
   }
+
+  @override
+  Future<void> updateQualification({
+    required String id,
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? category,
+    String? description,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deleteQualification(String id) => throw UnimplementedError();
 }
 
 const _students = [

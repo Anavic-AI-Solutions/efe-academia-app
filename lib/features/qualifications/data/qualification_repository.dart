@@ -97,6 +97,40 @@ class QualificationRepository {
     }
   }
 
+  Future<void> updateQualification({
+    required String id,
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? category,
+    String? description,
+  }) async {
+    try {
+      await _api.updateQualification(id, {
+        'student_id': studentId,
+        'classroom_id': classroomId,
+        'score': score,
+        'type': type,
+        'period': period,
+        if (category != null && category.isNotEmpty) 'category': category,
+        if (description != null && description.isNotEmpty)
+          'description': description,
+      });
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<void> deleteQualification(String id) async {
+    try {
+      await _api.deleteQualification(id);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   Future<BoletinData> getBoletin(String studentId, String classroomId) async {
     try {
       final response = await _api.getBoletin(studentId, classroomId);

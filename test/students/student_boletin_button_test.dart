@@ -51,6 +51,22 @@ class _FakeQualificationRepository implements QualificationRepository {
       throw UnimplementedError();
 
   @override
+  Future<void> updateQualification({
+    required String id,
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? category,
+    String? description,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deleteQualification(String id) => throw UnimplementedError();
+
+  @override
   Future<CursorPagination<QualificationModel>> getQualifications({
     String? studentId,
     String? classroomId,

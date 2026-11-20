@@ -51,6 +51,16 @@ class _FakeQualificationApi implements QualificationApi {
   Future<Response> getQualification(String id) => throw UnimplementedError();
 
   @override
+  Future<Response> updateQualification(
+    String id,
+    Map<String, dynamic> data,
+  ) =>
+      throw UnimplementedError();
+
+  @override
+  Future<Response> deleteQualification(String id) => throw UnimplementedError();
+
+  @override
   Future<Response> getBoletin(String studentId, String classroomId) =>
       throw UnimplementedError();
 

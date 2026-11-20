@@ -89,6 +89,17 @@ class _FakeQualificationApi implements QualificationApi {
     String? description,
   }) =>
       Future.error(UnimplementedError());
+
+  @override
+  Future<Response> updateQualification(
+    String id,
+    Map<String, dynamic> data,
+  ) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<Response> deleteQualification(String id) =>
+      Future.error(UnimplementedError());
 }
 
 /// Stub del transporte HTTP: captura el path sin salir a la red.

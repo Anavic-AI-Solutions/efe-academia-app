@@ -114,6 +114,22 @@ class _FakeQualificationRepository implements QualificationRepository {
     String? description,
   }) =>
       throw UnimplementedError();
+
+  @override
+  Future<void> updateQualification({
+    required String id,
+    required String studentId,
+    required String classroomId,
+    required String score,
+    required String type,
+    required String period,
+    String? category,
+    String? description,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deleteQualification(String id) => throw UnimplementedError();
 }
 
 /// Repositorio de alumnos falso: solo resuelve las aulas del hijo (el resto
