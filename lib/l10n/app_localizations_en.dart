@@ -1198,6 +1198,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gradeFormError => 'Failed to save the grade';
 
   @override
+  String get gradeFormEditTitle => 'Edit grade';
+
+  @override
+  String get gradeFormScoreTextHint =>
+      '0 to 10 or Excelente, Muy bueno, Bueno, Regular, Insuficiente, Mal';
+
+  @override
+  String get gradeFormCategory => 'Category';
+
+  @override
+  String get gradeFormDelete => 'Delete grade';
+
+  @override
+  String get gradeFormDeleteTitle => 'Delete grade';
+
+  @override
+  String get gradeFormDeleted => 'Grade deleted';
+
+  @override
+  String get gradeFormUpdated => 'Grade updated';
+
+  @override
+  String get gradeFormDeleteError => 'Could not delete grade';
+
+  @override
   String get studentGradeFromDetail => 'Add grade';
 
   @override

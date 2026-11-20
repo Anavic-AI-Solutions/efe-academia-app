@@ -1,4 +1,5 @@
 import '../../qualifications/domain/qualification_model.dart';
+import '../../qualifications/domain/qualification_score.dart';
 
 /// Periods shown in the grade grid (same as the web grade table).
 const gradeGridPeriods = ['1', '2', '3'];
@@ -34,28 +35,6 @@ class GradeGridRow {
     required this.cells,
     required this.average,
   });
-}
-
-/// Converts a raw score (number or text) into its numeric value, using the
-/// same text map as the web grade table. Returns null when it cannot be
-/// computed.
-double? qualificationScoreValue(String? raw) {
-  if (raw == null) return null;
-  final clean = raw.trim().toLowerCase();
-  if (clean.isEmpty) return null;
-
-  final numeric = double.tryParse(clean);
-  if (numeric != null) return numeric;
-
-  const textMap = {
-    'excelente': 10.0,
-    'muy bueno': 9.0,
-    'bueno': 7.0,
-    'regular': 6.0,
-    'insuficiente': 4.0,
-    'mal': 2.0,
-  };
-  return textMap[clean];
 }
 
 /// Builds the three period rows of the grade grid.

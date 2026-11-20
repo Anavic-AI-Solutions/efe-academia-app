@@ -9,7 +9,7 @@ import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summa
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
 import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
-import 'package:efe_mobile/features/qualifications/screens/widgets/create_qualification_sheet.dart';
+import 'package:efe_mobile/features/qualifications/screens/widgets/qualification_form_sheet.dart';
 import 'package:efe_mobile/features/students/screens/widgets/student_related_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -207,7 +207,7 @@ void main() {
     await tester.tap(find.text('Cargar nota'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(CreateQualificationSheet), findsOneWidget);
+    expect(find.byType(QualificationFormSheet), findsOneWidget);
     // Alumno bloqueado: una sola entrada.
     expect(find.text('Ana Gómez'), findsOneWidget);
 
@@ -277,7 +277,7 @@ void main() {
     await tester.tap(find.text('Cargar nota'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(CreateQualificationSheet), findsOneWidget);
+    expect(find.byType(QualificationFormSheet), findsOneWidget);
     // El dropdown de aula defaultea a la primera.
     expect(find.text('3G X'), findsOneWidget);
     // Solo el dropdown de alumno está deshabilitado.

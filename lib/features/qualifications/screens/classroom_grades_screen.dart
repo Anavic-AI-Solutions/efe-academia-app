@@ -11,8 +11,8 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
 import '../domain/classroom_grades_summary.dart';
 import '../providers/qualification_provider.dart';
-import 'widgets/create_qualification_sheet.dart';
 import 'widgets/grade_student_row.dart';
+import 'widgets/qualification_form_sheet.dart';
 
 class ClassroomGradesScreen extends ConsumerWidget {
   final String classroomId;
@@ -101,17 +101,17 @@ class ClassroomGradesScreen extends ConsumerWidget {
     BuildContext context,
     ClassroomGradesSummary summary,
   ) async {
-    final created = await showModalBottomSheet<bool>(
+    final result = await showModalBottomSheet<QualificationFormResult>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => CreateQualificationSheet(
+      builder: (_) => QualificationFormSheet(
         classroomId: classroomId,
         students: summary.students,
       ),
     );
 
-    if (created == true && context.mounted) {
+    if (result == QualificationFormResult.saved && context.mounted) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(content: Text(context.l10n.gradeFormSaved)));

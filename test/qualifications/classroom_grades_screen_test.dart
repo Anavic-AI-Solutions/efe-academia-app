@@ -6,7 +6,7 @@ import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summa
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
 import 'package:efe_mobile/features/qualifications/screens/classroom_grades_screen.dart';
-import 'package:efe_mobile/features/qualifications/screens/widgets/create_qualification_sheet.dart';
+import 'package:efe_mobile/features/qualifications/screens/widgets/qualification_form_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -149,7 +149,7 @@ void main() {
     await tester.tap(find.text('+ Cargar calificación'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(CreateQualificationSheet), findsOneWidget);
+    expect(find.byType(QualificationFormSheet), findsOneWidget);
 
     await tester.enterText(find.byType(TextField).first, '8,5');
     await tester.tap(find.text('Guardar'));

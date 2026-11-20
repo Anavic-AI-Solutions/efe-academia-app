@@ -1205,6 +1205,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gradeFormError => 'No se pudo guardar la calificación';
 
   @override
+  String get gradeFormEditTitle => 'Editar calificación';
+
+  @override
+  String get gradeFormScoreTextHint =>
+      '0 a 10 o Excelente, Muy bueno, Bueno, Regular, Insuficiente, Mal';
+
+  @override
+  String get gradeFormCategory => 'Categoría';
+
+  @override
+  String get gradeFormDelete => 'Eliminar calificación';
+
+  @override
+  String get gradeFormDeleteTitle => 'Eliminar calificación';
+
+  @override
+  String get gradeFormDeleted => 'Calificación eliminada';
+
+  @override
+  String get gradeFormUpdated => 'Calificación actualizada';
+
+  @override
+  String get gradeFormDeleteError => 'No se pudo eliminar la calificación';
+
+  @override
   String get studentGradeFromDetail => 'Cargar nota';
 
   @override

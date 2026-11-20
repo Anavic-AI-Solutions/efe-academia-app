@@ -1,4 +1,5 @@
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
+import 'package:efe_mobile/features/qualifications/domain/qualification_score.dart';
 import 'package:efe_mobile/features/students/domain/student_grade_grid.dart';
 import 'package:flutter_test/flutter_test.dart';
 

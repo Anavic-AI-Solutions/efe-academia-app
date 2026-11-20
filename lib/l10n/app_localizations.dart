@@ -2300,6 +2300,54 @@ abstract class AppLocalizations {
   /// **'No se pudo guardar la calificación'**
   String get gradeFormError;
 
+  /// No description provided for @gradeFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar calificación'**
+  String get gradeFormEditTitle;
+
+  /// No description provided for @gradeFormScoreTextHint.
+  ///
+  /// In es, this message translates to:
+  /// **'0 a 10 o Excelente, Muy bueno, Bueno, Regular, Insuficiente, Mal'**
+  String get gradeFormScoreTextHint;
+
+  /// No description provided for @gradeFormCategory.
+  ///
+  /// In es, this message translates to:
+  /// **'Categoría'**
+  String get gradeFormCategory;
+
+  /// No description provided for @gradeFormDelete.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar calificación'**
+  String get gradeFormDelete;
+
+  /// No description provided for @gradeFormDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar calificación'**
+  String get gradeFormDeleteTitle;
+
+  /// No description provided for @gradeFormDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Calificación eliminada'**
+  String get gradeFormDeleted;
+
+  /// No description provided for @gradeFormUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Calificación actualizada'**
+  String get gradeFormUpdated;
+
+  /// No description provided for @gradeFormDeleteError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo eliminar la calificación'**
+  String get gradeFormDeleteError;
+
   /// No description provided for @studentGradeFromDetail.
   ///
   /// In es, this message translates to:
