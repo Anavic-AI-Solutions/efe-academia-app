@@ -151,6 +151,19 @@ void main() {
 
     expect(find.byType(QualificationFormSheet), findsOneWidget);
 
+    final sheet = tester.widget<QualificationFormSheet>(
+      find.byType(QualificationFormSheet),
+    );
+    expect(sheet.classroomId, 'c1');
+    expect(sheet.classrooms, hasLength(1));
+    expect(sheet.classrooms!.single.id, 'c1');
+    expect(sheet.classrooms!.single.name, '3G X');
+    expect(sheet.students, _students);
+    expect(
+      find.byKey(const Key('qualification-form-classroom')),
+      findsNothing,
+    );
+
     await tester.enterText(find.byType(TextField).first, '8,5');
     await tester.tap(find.text('Guardar'));
     await tester.pumpAndSettle();

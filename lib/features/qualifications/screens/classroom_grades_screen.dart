@@ -10,6 +10,7 @@ import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../l10n/l10n.dart';
 import '../domain/classroom_grades_summary.dart';
+import '../domain/qualification_options.dart';
 import '../providers/qualification_provider.dart';
 import 'widgets/grade_student_row.dart';
 import 'widgets/qualification_form_sheet.dart';
@@ -107,6 +108,12 @@ class ClassroomGradesScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       builder: (_) => QualificationFormSheet(
         classroomId: classroomId,
+        classrooms: [
+          QualificationClassroomOption(
+            id: classroomId,
+            name: summary.classroomName,
+          ),
+        ],
         students: summary.students,
       ),
     );
