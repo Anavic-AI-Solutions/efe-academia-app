@@ -2285,7 +2285,7 @@ abstract class AppLocalizations {
   /// No description provided for @gradeFormScoreInvalid.
   ///
   /// In es, this message translates to:
-  /// **'Ingresá una nota entre 0 y 10'**
+  /// **'Ingresá una nota válida (0 a 10 o texto)'**
   String get gradeFormScoreInvalid;
 
   /// No description provided for @gradeFormSaved.
@@ -2347,6 +2347,30 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo eliminar la calificación'**
   String get gradeFormDeleteError;
+
+  /// No description provided for @gradeFormManage.
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar notas'**
+  String get gradeFormManage;
+
+  /// No description provided for @gradeFormManageTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Notas del alumno'**
+  String get gradeFormManageTitle;
+
+  /// No description provided for @gradeFormManageEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay notas cargadas'**
+  String get gradeFormManageEmpty;
+
+  /// No description provided for @gradeFormManageEmptyHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargá la primera nota con el botón inferior'**
+  String get gradeFormManageEmptyHint;
 
   /// No description provided for @studentGradeFromDetail.
   ///

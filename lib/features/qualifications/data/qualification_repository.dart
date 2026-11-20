@@ -115,8 +115,7 @@ class QualificationRepository {
         'type': type,
         'period': period,
         if (category != null && category.isNotEmpty) 'category': category,
-        if (description != null && description.isNotEmpty)
-          'description': description,
+        'description': description,
       });
     } on DioException catch (e) {
       throw _handleDioError(e);

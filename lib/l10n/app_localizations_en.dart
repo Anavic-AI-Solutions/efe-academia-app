@@ -1189,7 +1189,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gradeFormSave => 'Save';
 
   @override
-  String get gradeFormScoreInvalid => 'Enter a grade between 0 and 10';
+  String get gradeFormScoreInvalid => 'Enter a valid grade (0 to 10 or text)';
 
   @override
   String get gradeFormSaved => 'Grade saved';
@@ -1221,6 +1221,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gradeFormDeleteError => 'Could not delete grade';
+
+  @override
+  String get gradeFormManage => 'Manage grades';
+
+  @override
+  String get gradeFormManageTitle => 'Student grades';
+
+  @override
+  String get gradeFormManageEmpty => 'No grades yet';
+
+  @override
+  String get gradeFormManageEmptyHint =>
+      'Add the first grade with the button below';
 
   @override
   String get studentGradeFromDetail => 'Add grade';

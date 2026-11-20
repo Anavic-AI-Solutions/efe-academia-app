@@ -1196,7 +1196,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gradeFormSave => 'Guardar';
 
   @override
-  String get gradeFormScoreInvalid => 'Ingresá una nota entre 0 y 10';
+  String get gradeFormScoreInvalid =>
+      'Ingresá una nota válida (0 a 10 o texto)';
 
   @override
   String get gradeFormSaved => 'Calificación guardada';
@@ -1228,6 +1229,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gradeFormDeleteError => 'No se pudo eliminar la calificación';
+
+  @override
+  String get gradeFormManage => 'Gestionar notas';
+
+  @override
+  String get gradeFormManageTitle => 'Notas del alumno';
+
+  @override
+  String get gradeFormManageEmpty => 'No hay notas cargadas';
+
+  @override
+  String get gradeFormManageEmptyHint =>
+      'Cargá la primera nota con el botón inferior';
 
   @override
   String get studentGradeFromDetail => 'Cargar nota';

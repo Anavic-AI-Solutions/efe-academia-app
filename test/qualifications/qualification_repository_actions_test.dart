@@ -184,7 +184,7 @@ void main() {
       });
     });
 
-    test('omite category y description vacíos', () async {
+    test('omite category pero envía description aunque esté vacía', () async {
       final api = _FakeQualificationApi();
       final repository = QualificationRepository(api);
 
@@ -196,7 +196,7 @@ void main() {
         type: 'Oral',
         period: '1',
         category: '',
-        description: null,
+        description: '',
       );
 
       expect(api.updatedData, {
@@ -205,6 +205,7 @@ void main() {
         'score': '7',
         'type': 'Oral',
         'period': '1',
+        'description': '',
       });
     });
 

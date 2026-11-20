@@ -642,7 +642,8 @@ void main() {
     );
     await _tapSave(tester);
 
-    expect(find.text('Ingresá una nota entre 0 y 10'), findsOneWidget);
+    expect(
+        find.text('Ingresá una nota válida (0 a 10 o texto)'), findsOneWidget);
     expect(repository.created, isNull);
 
     await tester.enterText(
@@ -651,7 +652,8 @@ void main() {
     );
     await _tapSave(tester);
 
-    expect(find.text('Ingresá una nota entre 0 y 10'), findsOneWidget);
+    expect(
+        find.text('Ingresá una nota válida (0 a 10 o texto)'), findsOneWidget);
     expect(repository.created, isNull);
   });
 
