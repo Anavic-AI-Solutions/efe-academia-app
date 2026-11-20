@@ -32,8 +32,10 @@ class StudentDetailScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final studentAsync = ref.watch(studentDetailProvider(studentId));
-    final isProfessor = ref.watch(authProvider).user?.isProfessor ?? false;
-    final role = ref.watch(authProvider).user?.role ?? '';
+    final user = ref.watch(authProvider).user;
+    final isProfessor = user?.isProfessor ?? false;
+    final canManageQualifications = user?.canManageQualifications ?? false;
+    final role = user?.role ?? '';
     final showRequestTabs =
         role == 'admin' || role == 'branch' || role == 'sede';
     final accent = AppColors.accentFor(isDark);
@@ -79,7 +81,7 @@ class StudentDetailScreen extends ConsumerWidget {
                     StudentGradesTab(
                       studentId: studentId,
                       classroomId: classroomId,
-                      canWrite: isProfessor,
+                      canWrite: canManageQualifications,
                       studentFullname: student.fullname,
                     ),
                     StudentAbsencesTab(

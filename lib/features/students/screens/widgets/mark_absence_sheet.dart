@@ -29,7 +29,7 @@ Set<String> mergeAbsentIds(Iterable<String> existing, String studentId) =>
 
 /// Sheet para marcar la inasistencia de un alumno en una fecha.
 ///
-/// Resuelve el aula igual que CreateQualificationSheet: fija cuando
+/// Resuelve el aula igual que QualificationFormSheet: fija cuando
 /// [classroomId] no es nulo, si no con dropdown de [classrooms].
 /// Hace merge con el parte del día (nunca envía solo al alumno) y devuelve
 /// `true` si la ausencia es nueva o `false` si el alumno ya estaba ausente.

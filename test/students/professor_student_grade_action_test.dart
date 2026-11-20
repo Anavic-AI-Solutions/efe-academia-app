@@ -1,15 +1,16 @@
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
-import 'package:efe_mobile/features/dashboard/data/dashboard_repository.dart';
-import 'package:efe_mobile/features/dashboard/domain/dashboard_data.dart';
-import 'package:efe_mobile/features/dashboard/domain/professor_classroom_summary.dart';
+import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
 import 'package:efe_mobile/features/qualifications/data/qualification_repository.dart';
 import 'package:efe_mobile/features/qualifications/domain/boletin_data.dart';
 import 'package:efe_mobile/features/qualifications/domain/classroom_grades_summary.dart';
 import 'package:efe_mobile/features/qualifications/domain/qualification_model.dart';
 import 'package:efe_mobile/features/qualifications/providers/qualification_provider.dart';
-import 'package:efe_mobile/features/dashboard/providers/dashboard_provider.dart';
 import 'package:efe_mobile/features/qualifications/screens/widgets/qualification_form_sheet.dart';
+import 'package:efe_mobile/features/students/data/student_repository.dart';
+import 'package:efe_mobile/features/students/domain/student_model.dart';
+import 'package:efe_mobile/features/students/domain/student_parent_model.dart';
+import 'package:efe_mobile/features/students/providers/student_provider.dart';
 import 'package:efe_mobile/features/students/screens/widgets/student_related_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -125,27 +126,48 @@ class _FakeQualificationRepository implements QualificationRepository {
       throw UnimplementedError();
 }
 
-class _FakeDashboardRepository implements DashboardRepository {
-  final DashboardData data;
+class _FakeStudentRepository implements StudentRepository {
+  _FakeStudentRepository({this.classrooms = const []});
 
-  _FakeDashboardRepository(this.data);
+  final List<ClassroomModel> classrooms;
 
   @override
-  Future<DashboardData> getDashboard() async => data;
+  Future<List<ClassroomModel>> getClassrooms(String studentId) async =>
+      classrooms;
+
+  @override
+  Future<StudentModel> getStudent(String id) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<List<StudentParentModel>> getParents(String studentId) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<PageResult<StudentModel>> getStudents({
+    String? search,
+    String? status,
+    String? year,
+    String? branch,
+    int page = 1,
+    int limit = 20,
+  }) =>
+      Future.error(UnimplementedError());
 }
 
 Future<void> _pumpGradesTab(
   WidgetTester tester, {
   required _FakeQualificationRepository qualifications,
-  required DashboardData dashboardData,
+  List<ClassroomModel> classrooms = const [],
   String? classroomId,
 }) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
         qualificationRepositoryProvider.overrideWithValue(qualifications),
-        dashboardRepositoryProvider
-            .overrideWithValue(_FakeDashboardRepository(dashboardData)),
+        studentRepositoryProvider.overrideWithValue(
+          _FakeStudentRepository(classrooms: classrooms),
+        ),
       ],
       child: localizedApp(
         home: Scaffold(
@@ -167,8 +189,6 @@ void main() {
     await _pumpGradesTab(
       tester,
       qualifications: _FakeQualificationRepository(),
-      dashboardData: const DashboardData(role: 'professor'),
-      classroomId: null,
     );
 
     expect(find.text('Cargar nota'), findsOneWidget);
@@ -195,12 +215,6 @@ void main() {
     await _pumpGradesTab(
       tester,
       qualifications: repository,
-      dashboardData: const DashboardData(
-        role: 'professor',
-        classrooms: [
-          ProfessorClassroomSummary(id: 'c1', name: '3G X'),
-        ],
-      ),
       classroomId: 'c1',
     );
 
@@ -238,14 +252,9 @@ void main() {
     final container = ProviderContainer(
       overrides: [
         qualificationRepositoryProvider.overrideWithValue(repository),
-        dashboardRepositoryProvider.overrideWithValue(
-          _FakeDashboardRepository(
-            const DashboardData(
-              role: 'professor',
-              classrooms: [
-                ProfessorClassroomSummary(id: 'c1', name: '3G X'),
-              ],
-            ),
+        studentRepositoryProvider.overrideWithValue(
+          _FakeStudentRepository(
+            classrooms: const [ClassroomModel(id: 'c1', name: '3G X')],
           ),
         ),
       ],

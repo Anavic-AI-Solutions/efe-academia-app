@@ -17,6 +17,7 @@ import '../../../qualifications/domain/classroom_grades_summary.dart';
 import '../../../qualifications/domain/qualification_model.dart';
 import '../../../qualifications/domain/qualification_options.dart';
 import '../../../qualifications/screens/widgets/qualification_form_sheet.dart';
+import '../../../qualifications/screens/widgets/qualification_manager_sheet.dart';
 import '../../domain/absence_model.dart';
 import '../../providers/student_grades_provider.dart';
 import '../../providers/student_provider.dart';
@@ -93,18 +94,31 @@ class StudentGradesTab extends ConsumerWidget {
 
     if (!canWrite) return content;
 
-    final classrooms = ref.watch(dashboardProvider).data?.classrooms ??
-        const <ProfessorClassroomSummary>[];
+    // A fixed classroom needs no dropdown, so avoid querying the student's
+    // classrooms in that case.
+    final classrooms = classroomId != null
+        ? const <QualificationClassroomOption>[]
+        : (ref.watch(studentClassroomsProvider(studentId)).valueOrNull ??
+                const [])
+            .map(
+              (classroom) => QualificationClassroomOption(
+                id: classroom.id,
+                name: classroom.name,
+              ),
+            )
+            .toList();
     final hasClassroom = classroomId != null || classrooms.isNotEmpty;
 
     return Column(
       children: [
         Expanded(child: content),
-        _StudentGradeActionBar(
-          enabled: hasClassroom,
+        _StudentGradesActionBar(
+          primaryEnabled: hasClassroom,
           disabledMessage: l10n.studentGradeNoClassrooms,
-          label: l10n.studentGradeFromDetail,
-          onTap: () => _openCreateSheet(context, ref, classrooms),
+          primaryLabel: l10n.studentGradeFromDetail,
+          secondaryLabel: l10n.gradeFormManage,
+          onPrimaryTap: () => _openCreateSheet(context, ref, classrooms),
+          onSecondaryTap: () => _openManagerSheet(context, ref),
         ),
       ],
     );
@@ -113,7 +127,7 @@ class StudentGradesTab extends ConsumerWidget {
   Future<void> _openCreateSheet(
     BuildContext context,
     WidgetRef ref,
-    List<ProfessorClassroomSummary> classrooms,
+    List<QualificationClassroomOption> classrooms,
   ) async {
     final result = await showModalBottomSheet<QualificationFormResult>(
       context: context,
@@ -121,16 +135,7 @@ class StudentGradesTab extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       builder: (_) => QualificationFormSheet(
         classroomId: classroomId,
-        classrooms: classroomId == null
-            ? classrooms
-                .map(
-                  (classroom) => QualificationClassroomOption(
-                    id: classroom.id,
-                    name: classroom.name,
-                  ),
-                )
-                .toList()
-            : null,
+        classrooms: classroomId == null ? classrooms : null,
         students: [
           ClassroomGradeStudent(
             studentId: studentId,
@@ -147,6 +152,24 @@ class StudentGradesTab extends ConsumerWidget {
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(content: Text(context.l10n.gradeFormSaved)));
     }
+  }
+
+  Future<void> _openManagerSheet(BuildContext context, WidgetRef ref) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => QualificationManagerSheet(
+        studentId: studentId,
+        studentFullname: studentFullname,
+        classroomId: classroomId,
+      ),
+    );
+
+    if (!context.mounted) return;
+    // Edits/deletes happen inside the sheet; refresh the grid on close so the
+    // visible grades always match the manager.
+    ref.invalidate(studentGradesProvider(studentId));
   }
 
   List<_GradesSection> _buildSections(
@@ -238,6 +261,93 @@ class _ScrollableCenter extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
           child: child,
+        ),
+      ),
+    );
+  }
+}
+
+/// Grade actions for staff/professors: create a grade or open the manager.
+class _StudentGradesActionBar extends StatelessWidget {
+  final bool primaryEnabled;
+  final String disabledMessage;
+  final String primaryLabel;
+  final String secondaryLabel;
+  final VoidCallback onPrimaryTap;
+  final VoidCallback onSecondaryTap;
+
+  const _StudentGradesActionBar({
+    required this.primaryEnabled,
+    required this.disabledMessage,
+    required this.primaryLabel,
+    required this.secondaryLabel,
+    required this.onPrimaryTap,
+    required this.onSecondaryTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final secondary = SizedBox(
+      height: 46,
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: onSecondaryTap,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          side: BorderSide(
+            color: AppColors.primary.withValues(alpha: 0.5),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        child: Text(
+          secondaryLabel,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+    );
+
+    final primary = SizedBox(
+      height: 46,
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: primaryEnabled ? onPrimaryTap : null,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        child: Text(
+          primaryLabel,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+    );
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+        child: Row(
+          children: [
+            Expanded(child: secondary),
+            const SizedBox(width: 10),
+            Expanded(
+              child: primaryEnabled
+                  ? primary
+                  : Tooltip(message: disabledMessage, child: primary),
+            ),
+          ],
         ),
       ),
     );
