@@ -208,9 +208,15 @@ void main() {
       });
     });
 
-    test('propaga la ValidationException sin reenvolver', () async {
-      final error = ValidationException(fieldErrors: {'score': 'inválido'});
-      final api = _FakeQualificationApi()..error = error;
+    test('propaga la ValidationException del interceptor 422', () async {
+      final validation = ValidationException(
+        fieldErrors: {'score': 'inválido'},
+      );
+      final api = _FakeQualificationApi()
+        ..error = DioException(
+          requestOptions: RequestOptions(path: '/qualifications/q1'),
+          error: validation,
+        );
       final repository = QualificationRepository(api);
 
       await expectLater(
@@ -222,7 +228,7 @@ void main() {
           type: 'Escrito',
           period: '1',
         ),
-        throwsA(same(error)),
+        throwsA(same(validation)),
       );
     });
   });
@@ -237,14 +243,18 @@ void main() {
       expect(api.deletedId, 'q1');
     });
 
-    test('propaga la ValidationException sin reenvolver', () async {
-      final error = ValidationException(fieldErrors: {'id': 'inválido'});
-      final api = _FakeQualificationApi()..error = error;
+    test('propaga la ValidationException del interceptor 422', () async {
+      final validation = ValidationException(fieldErrors: {'id': 'inválido'});
+      final api = _FakeQualificationApi()
+        ..error = DioException(
+          requestOptions: RequestOptions(path: '/qualifications/q1'),
+          error: validation,
+        );
       final repository = QualificationRepository(api);
 
       await expectLater(
         repository.deleteQualification('q1'),
-        throwsA(same(error)),
+        throwsA(same(validation)),
       );
     });
   });
