@@ -194,5 +194,25 @@ void main() {
       expect(find.text('Events screen'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
+
+    testWidgets('header usa acciones compactas en pantalla angosta',
+        (tester) async {
+      tester.view.physicalSize = const Size(360, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await _pumpCalendar(tester, load: (_) async => _octoberEvents());
+
+      final monthTitle = tester.widget<Text>(find.textContaining('2026').first);
+      expect(monthTitle.maxLines, 1);
+      expect(monthTitle.style?.fontSize, 20);
+      expect(find.text('Ver lista'), findsNothing);
+      expect(find.byKey(const ValueKey('calendar-view-list')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      await tester.tap(find.byKey(const ValueKey('calendar-view-list')));
+      await tester.pumpAndSettle();
+      expect(find.text('Events screen'), findsOneWidget);
+    });
   });
 }

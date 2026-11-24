@@ -5,8 +5,16 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_typography.dart';
 
 class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Debajo de este ancho de contenido las acciones con texto se reemplazan
+  /// por [compactActions] para que el header no desborde en teléfonos.
+  static const double compactBreakpoint = 480;
+
   final String title;
   final List<Widget>? actions;
+
+  /// Alternativa con íconos para pantallas angostas. Si es null se usan
+  /// siempre las [actions].
+  final List<Widget>? compactActions;
   final Widget? bottom;
   final bool showBackButton;
   final Color? backgroundColor;
@@ -15,6 +23,7 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.actions,
+    this.compactActions,
     this.bottom,
     this.showBackButton = true,
     this.backgroundColor,
@@ -53,40 +62,52 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             SizedBox(
               height: kToolbarHeight,
-              child: Row(
-                children: [
-                  if (showBackButton)
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: 20,
-                        color: Colors.white,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final compact = constraints.maxWidth < compactBreakpoint;
+                  final effectiveActions = compact && compactActions != null
+                      ? compactActions
+                      : actions;
+
+                  return Row(
+                    children: [
+                      if (showBackButton)
+                        IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            } else {
+                              context.go('/dashboard');
+                            }
+                          },
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(
+                            minWidth: 32,
+                            minHeight: 32,
+                          ),
+                        ),
+                      if (showBackButton) const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTypography.headlineMedium.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: compact ? 20 : null,
+                          ),
+                        ),
                       ),
-                      onPressed: () {
-                        if (Navigator.canPop(context)) {
-                          Navigator.pop(context);
-                        } else {
-                          context.go('/dashboard');
-                        }
-                      },
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(
-                        minWidth: 32,
-                        minHeight: 32,
-                      ),
-                    ),
-                  if (showBackButton) const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: AppTypography.headlineMedium.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  if (actions != null) ...actions!,
-                ],
+                      if (effectiveActions != null) ...effectiveActions,
+                    ],
+                  );
+                },
               ),
             ),
             if (bottom != null) bottom!,

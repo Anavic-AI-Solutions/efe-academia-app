@@ -54,6 +54,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     });
   }
 
+  Widget _monthArrow({
+    required Key key,
+    required IconData icon,
+    required int delta,
+  }) {
+    return IconButton(
+      key: key,
+      onPressed: () => _changeMonth(delta),
+      icon: Icon(icon, color: Colors.white, size: 20),
+    );
+  }
+
   bool _isSameDay(DateTime? a, DateTime b) =>
       a != null && a.year == b.year && a.month == b.month && a.day == b.day;
 
@@ -70,31 +82,27 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     final monthEvents = ref.watch(calendarMonthProvider(_month));
     final daysInMonth = DateTime(_month.year, _month.month + 1, 0).day;
     final leadingBlanks = DateTime(_month.year, _month.month, 1).weekday - 1;
+    final compact =
+        MediaQuery.sizeOf(context).width - 32 < LargeTitleBar.compactBreakpoint;
+    final monthLabel =
+        DateFormat(compact ? 'MMM yyyy' : 'MMMM yyyy').format(_month);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
       body: Column(
         children: [
           LargeTitleBar(
-            title: DateFormat('MMMM yyyy').format(_month),
+            title: monthLabel,
             actions: [
-              IconButton(
+              _monthArrow(
                 key: const ValueKey('calendar-prev-month'),
-                onPressed: () => _changeMonth(-1),
-                icon: const Icon(
-                  PhosphorIconsRegular.caretLeft,
-                  color: Colors.white,
-                  size: 20,
-                ),
+                icon: PhosphorIconsRegular.caretLeft,
+                delta: -1,
               ),
-              IconButton(
+              _monthArrow(
                 key: const ValueKey('calendar-next-month'),
-                onPressed: () => _changeMonth(1),
-                icon: const Icon(
-                  PhosphorIconsRegular.caretRight,
-                  color: Colors.white,
-                  size: 20,
-                ),
+                icon: PhosphorIconsRegular.caretRight,
+                delta: 1,
               ),
               TextButton(
                 onPressed: () => context.push('/events'),
@@ -104,6 +112,28 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
+                ),
+              ),
+            ],
+            compactActions: [
+              _monthArrow(
+                key: const ValueKey('calendar-prev-month'),
+                icon: PhosphorIconsRegular.caretLeft,
+                delta: -1,
+              ),
+              _monthArrow(
+                key: const ValueKey('calendar-next-month'),
+                icon: PhosphorIconsRegular.caretRight,
+                delta: 1,
+              ),
+              IconButton(
+                key: const ValueKey('calendar-view-list'),
+                tooltip: l10n.calendarViewList,
+                onPressed: () => context.push('/events'),
+                icon: const Icon(
+                  PhosphorIconsRegular.listBullets,
+                  color: Colors.white,
+                  size: 22,
                 ),
               ),
             ],
