@@ -493,6 +493,25 @@ void main() {
     expect(repository.updated?['score'], 'Sobresaliente');
   });
 
+  testWidgets('editar una nota vacía la guarda como vacía', (tester) async {
+    final repository = _FakeQualificationRepository();
+    await _pumpForm(
+      tester,
+      repository: repository,
+      form: QualificationFormSheet(
+        qualification: _qualification(scoreLabel: ''),
+        classroomId: 'c1',
+        students: const [_student],
+        initialStudentId: 's1',
+      ),
+    );
+
+    await _tapSave(tester);
+
+    expect(repository.updatedId, 'q1');
+    expect(repository.updated?['score'], '');
+  });
+
   testWidgets('admin ve eliminar en edición', (tester) async {
     final repository = _FakeQualificationRepository();
     await _pumpForm(

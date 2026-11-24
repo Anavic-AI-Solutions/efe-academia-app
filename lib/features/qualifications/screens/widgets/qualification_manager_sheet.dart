@@ -11,6 +11,7 @@ import '../../../auth/providers/auth_provider.dart';
 import '../../../students/providers/student_grades_provider.dart';
 import '../../domain/classroom_grades_summary.dart';
 import '../../domain/qualification_model.dart';
+import '../../domain/qualification_score.dart';
 import '../../providers/qualification_provider.dart';
 import 'qualification_form_sheet.dart';
 
@@ -159,10 +160,12 @@ class _QualificationManagerSheetState
 
     final groups = <String, List<QualificationModel>>{};
     for (final qualification in visible) {
-      final name = qualification.classroomName.isNotEmpty
-          ? qualification.classroomName
-          : l10n.studentGradeClassroom;
-      groups.putIfAbsent(name, () => []).add(qualification);
+      final key = qualification.classroomId.isNotEmpty
+          ? qualification.classroomId
+          : (qualification.classroomName.isNotEmpty
+              ? qualification.classroomName
+              : l10n.studentGradeClassroom);
+      groups.putIfAbsent(key, () => []).add(qualification);
     }
 
     return ListView(
@@ -173,7 +176,9 @@ class _QualificationManagerSheetState
           Padding(
             padding: const EdgeInsets.only(bottom: 8, top: 2),
             child: Text(
-              entry.key,
+              entry.value.first.classroomName.isNotEmpty
+                  ? entry.value.first.classroomName
+                  : l10n.studentGradeClassroom,
               style: AppTypography.labelMedium.copyWith(
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.4,
@@ -242,8 +247,8 @@ class _QualificationManagerSheetState
       await ref
           .read(qualificationRepositoryProvider)
           .deleteQualification(qualification.id);
-      _invalidate(qualification);
       if (!mounted) return;
+      _invalidate(qualification);
       _showSnack(l10n.gradeFormDeleted);
     } catch (_) {
       if (!mounted) return;
@@ -407,12 +412,12 @@ class _ScorePill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = qualification.scoreLabel.isNotEmpty
-        ? qualification.scoreLabel
-        : AppColors.formatGrade(qualification.score);
-    final numeric = double.tryParse(qualification.scoreLabel);
-    final color =
-        numeric != null ? AppColors.gradeColor(numeric) : AppColors.primary;
+    final label = qualification.scoreLabel.trim();
+    final hasScore = label.isNotEmpty;
+    final score = qualificationScoreValue(label);
+    final color = hasScore
+        ? (score != null ? AppColors.gradeColor(score) : AppColors.primary)
+        : AppColors.muted;
 
     return Container(
       constraints: const BoxConstraints(minWidth: 40),
@@ -422,7 +427,7 @@ class _ScorePill extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        label,
+        hasScore ? label : '—',
         textAlign: TextAlign.center,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

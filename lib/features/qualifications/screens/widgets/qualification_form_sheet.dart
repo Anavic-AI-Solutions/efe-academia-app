@@ -172,6 +172,8 @@ class _QualificationFormSheetState
     final score = normalizeQualificationScore(
       _scoreController.text,
       original: widget.qualification?.scoreLabel,
+      allowEmpty: _isEditing &&
+          (widget.qualification?.scoreLabel.trim().isEmpty ?? false),
     );
     if (score == null || studentId == null) {
       setState(() {

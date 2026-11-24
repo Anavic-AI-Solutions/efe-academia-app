@@ -2264,12 +2264,6 @@ abstract class AppLocalizations {
   /// **'Nota'**
   String get gradeFormScore;
 
-  /// No description provided for @gradeFormScoreHint.
-  ///
-  /// In es, this message translates to:
-  /// **'Ej: 8.5'**
-  String get gradeFormScoreHint;
-
   /// No description provided for @gradeFormDescription.
   ///
   /// In es, this message translates to:

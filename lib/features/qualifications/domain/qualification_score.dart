@@ -36,9 +36,16 @@ double? qualificationScoreValue(String? raw) {
 /// separator) or one of the web text scores (case-insensitive). When editing,
 /// [original] may be passed so an unchanged legacy value is always accepted,
 /// even if it matches neither format. Returns null when the value is invalid.
-String? normalizeQualificationScore(String raw, {String? original}) {
+///
+/// When [allowEmpty] is true, an empty value is accepted and returned as an
+/// empty string, which the API uses to clear a previously blank grade.
+String? normalizeQualificationScore(
+  String raw, {
+  String? original,
+  bool allowEmpty = false,
+}) {
   final trimmed = raw.trim();
-  if (trimmed.isEmpty) return null;
+  if (trimmed.isEmpty) return allowEmpty ? '' : null;
   if (original != null && trimmed == original.trim()) return trimmed;
 
   final numeric = double.tryParse(trimmed.replaceAll(',', '.'));

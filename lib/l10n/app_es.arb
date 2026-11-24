@@ -575,7 +575,6 @@
   "gradeFormType": "Tipo",
   "gradeFormPeriod": "Período",
   "gradeFormScore": "Nota",
-  "gradeFormScoreHint": "Ej: 8.5",
   "gradeFormDescription": "Descripción (opcional)",
   "gradeFormSave": "Guardar",
   "gradeFormScoreInvalid": "Ingresá una nota válida (0 a 10 o texto)",

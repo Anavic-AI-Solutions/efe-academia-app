@@ -1187,9 +1187,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gradeFormScore => 'Nota';
 
   @override
-  String get gradeFormScoreHint => 'Ej: 8.5';
-
-  @override
   String get gradeFormDescription => 'Descripción (opcional)';
 
   @override

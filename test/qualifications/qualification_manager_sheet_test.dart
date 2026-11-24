@@ -281,6 +281,48 @@ void main() {
     expect(find.text('3°'), findsOneWidget);
   });
 
+  testWidgets('no mezcla aulas distintas con el mismo nombre', (tester) async {
+    final repository = _FakeQualificationRepository([
+      _qualification(),
+      _qualification(
+        id: 'q2',
+        classroomId: 'c2',
+        classroomName: '3G X',
+        type: 'Parcial',
+      ),
+    ]);
+    await _pumpManager(
+      tester,
+      repository: repository,
+      manager: const QualificationManagerSheet(
+        studentId: 's1',
+        studentFullname: 'Ana Gómez',
+      ),
+    );
+
+    // One heading per classroom id even though the names match.
+    expect(find.text('3G X'), findsNWidgets(2));
+    expect(find.text('Proyecto'), findsOneWidget);
+    expect(find.text('Parcial'), findsOneWidget);
+  });
+
+  testWidgets('muestra un guion cuando la nota está vacía', (tester) async {
+    final repository = _FakeQualificationRepository([
+      _qualification(scoreLabel: ''),
+    ]);
+    await _pumpManager(
+      tester,
+      repository: repository,
+      manager: const QualificationManagerSheet(
+        studentId: 's1',
+        studentFullname: 'Ana Gómez',
+      ),
+    );
+
+    expect(find.text('—'), findsOneWidget);
+    expect(find.text('0.0'), findsNothing);
+  });
+
   testWidgets('filtra por aula cuando recibe classroomId', (tester) async {
     final repository = _FakeQualificationRepository([
       _qualification(),
