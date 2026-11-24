@@ -224,6 +224,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSupportEmail => 'Email support';
 
   @override
+  String get profileSupportEmailSubject => 'Support - EFE Mobile';
+
+  @override
   String get profileSupportEmailError => 'Could not open the email app';
 
   @override

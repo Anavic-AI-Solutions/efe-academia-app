@@ -9,6 +9,13 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
   /// por [compactActions] para que el header no desborde en teléfonos.
   static const double compactBreakpoint = 480;
 
+  /// Padding horizontal del header, compartido para calcular el ancho real
+  /// disponible desde otras pantallas.
+  static const double horizontalPadding = 16;
+
+  static bool isCompactContentWidth(double contentWidth) =>
+      contentWidth < compactBreakpoint;
+
   final String title;
   final List<Widget>? actions;
 
@@ -53,8 +60,8 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top + 4,
-          left: 16,
-          right: 16,
+          left: horizontalPadding,
+          right: horizontalPadding,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +71,7 @@ class LargeTitleBar extends StatelessWidget implements PreferredSizeWidget {
               height: kToolbarHeight,
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final compact = constraints.maxWidth < compactBreakpoint;
+                  final compact = isCompactContentWidth(constraints.maxWidth);
                   final effectiveActions = compact && compactActions != null
                       ? compactActions
                       : actions;

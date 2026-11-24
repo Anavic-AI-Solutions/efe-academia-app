@@ -61,6 +61,7 @@
   "profileAboutCopyright": "© 2026 EFE English Academy. All rights reserved.",
   "profileHelpFaqsSubtitle": "Answers to the most common questions",
   "profileSupportEmail": "Email support",
+  "profileSupportEmailSubject": "Support - EFE Mobile",
   "profileSupportEmailError": "Could not open the email app",
   "profileLogout": "Logout",
   "profileLogoutConfirm": "Are you sure you want to logout?",

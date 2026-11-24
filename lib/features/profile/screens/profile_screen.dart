@@ -20,7 +20,10 @@ import '../../../l10n/l10n.dart';
 import '../../role_mode/widgets/mode_section.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  /// Inyectable para tests; por defecto abre con `url_launcher`.
+  final Future<bool> Function(Uri)? openUrl;
+
+  const ProfileScreen({super.key, this.openUrl});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -233,64 +236,67 @@ class ProfileScreen extends ConsumerWidget {
       ),
       builder: (sheetContext) {
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _SheetHandle(
-                  color: isDark ? AppColors.darkBorder : AppColors.lightDivider,
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 88,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    gradient: isDark
-                        ? AppColors.primaryGradientDark
-                        : AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(20),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _SheetHandle(
+                    color:
+                        isDark ? AppColors.darkBorder : AppColors.lightDivider,
                   ),
-                  child: Image.asset(
-                    'assets/images/efe_logo_white.png',
-                    width: 150,
-                    fit: BoxFit.contain,
-                    semanticLabel: 'EFE',
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    height: 88,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: isDark
+                          ? AppColors.primaryGradientDark
+                          : AppColors.primaryGradient,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.asset(
+                      'assets/images/efe_logo_white.png',
+                      width: 150,
+                      fit: BoxFit.contain,
+                      semanticLabel: 'EFE',
+                    ),
                   ),
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  AppInfo.name,
-                  style: AppTypography.headlineMedium.copyWith(
-                    color: AppColors.inkFor(isDark),
+                  const SizedBox(height: 18),
+                  Text(
+                    AppInfo.name,
+                    style: AppTypography.headlineMedium.copyWith(
+                      color: AppColors.inkFor(isDark),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${l10n.profileVersionLabel} ${AppInfo.version} '
-                  '(${AppInfo.buildNumber})',
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: AppColors.mutedFor(isDark),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${l10n.profileVersionLabel} ${AppInfo.version} '
+                    '(${AppInfo.buildNumber})',
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.mutedFor(isDark),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  l10n.profileAboutDescription,
-                  textAlign: TextAlign.center,
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: AppColors.inkFor(isDark),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.profileAboutDescription,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.inkFor(isDark),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  l10n.profileAboutCopyright,
-                  textAlign: TextAlign.center,
-                  style: AppTypography.labelSmall.copyWith(
-                    color: AppColors.mutedFor(isDark),
+                  const SizedBox(height: 20),
+                  Text(
+                    l10n.profileAboutCopyright,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.labelSmall.copyWith(
+                      color: AppColors.mutedFor(isDark),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -311,51 +317,54 @@ class ProfileScreen extends ConsumerWidget {
       ),
       builder: (sheetContext) {
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 12),
-                _SheetHandle(
-                  color: isDark ? AppColors.darkBorder : AppColors.lightDivider,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      l10n.profileHelpSupport,
-                      style: AppTypography.titleLarge.copyWith(
-                        color: AppColors.inkFor(isDark),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 12),
+                  _SheetHandle(
+                    color:
+                        isDark ? AppColors.darkBorder : AppColors.lightDivider,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        l10n.profileHelpSupport,
+                        style: AppTypography.titleLarge.copyWith(
+                          color: AppColors.inkFor(isDark),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                _SettingsTile(
-                  key: const ValueKey('profile-help-faq-tile'),
-                  icon: PhosphorIconsRegular.question,
-                  title: l10n.faqsTitle,
-                  subtitle: l10n.profileHelpFaqsSubtitle,
-                  onTap: () {
-                    Navigator.pop(sheetContext);
-                    context.push('/faqs');
-                  },
-                  isDark: isDark,
-                ),
-                _SettingsTile(
-                  key: const ValueKey('profile-help-email-tile'),
-                  icon: PhosphorIconsRegular.envelope,
-                  title: l10n.profileSupportEmail,
-                  subtitle: AppInfo.supportEmail,
-                  onTap: () {
-                    Navigator.pop(sheetContext);
-                    _openSupportEmail(context, messenger, l10n);
-                  },
-                  isDark: isDark,
-                  showDivider: false,
-                ),
-              ],
+                  _SettingsTile(
+                    key: const ValueKey('profile-help-faq-tile'),
+                    icon: PhosphorIconsRegular.question,
+                    title: l10n.faqsTitle,
+                    subtitle: l10n.profileHelpFaqsSubtitle,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      context.push('/faqs');
+                    },
+                    isDark: isDark,
+                  ),
+                  _SettingsTile(
+                    key: const ValueKey('profile-help-email-tile'),
+                    icon: PhosphorIconsRegular.envelope,
+                    title: l10n.profileSupportEmail,
+                    subtitle: AppInfo.supportEmail,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _openSupportEmail(context, messenger, l10n, openUrl);
+                    },
+                    isDark: isDark,
+                    showDivider: false,
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -367,16 +376,18 @@ class ProfileScreen extends ConsumerWidget {
     BuildContext context,
     ScaffoldMessengerState messenger,
     AppLocalizations l10n,
+    Future<bool> Function(Uri)? openUrl,
   ) async {
+    final subject = Uri.encodeComponent(l10n.profileSupportEmailSubject);
     final uri = Uri(
       scheme: 'mailto',
       path: AppInfo.supportEmail,
-      queryParameters: {'subject': 'Soporte ${AppInfo.name}'},
+      query: 'subject=$subject',
     );
 
     var opened = false;
     try {
-      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      opened = await (openUrl ?? _launchExternal)(uri);
     } catch (_) {
       opened = false;
     }
@@ -494,6 +505,9 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
+
+Future<bool> _launchExternal(Uri uri) =>
+    launchUrl(uri, mode: LaunchMode.externalApplication);
 
 String _themeModeLabel(ThemeMode mode, AppLocalizations l10n) {
   switch (mode) {

@@ -97,8 +97,12 @@ class _FakeAuthRepository implements AuthRepository {
 }
 
 void main() {
-  Future<GoRouter> pumpProfile(WidgetTester tester) async {
-    tester.view.physicalSize = const Size(400, 900);
+  Future<GoRouter> pumpProfile(
+    WidgetTester tester, {
+    Size size = const Size(400, 900),
+    Future<bool> Function(Uri)? openUrl,
+  }) async {
+    tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
 
@@ -107,7 +111,7 @@ void main() {
       routes: [
         GoRoute(
           path: '/',
-          builder: (_, __) => const ProfileScreen(),
+          builder: (_, __) => ProfileScreen(openUrl: openUrl),
         ),
         GoRoute(
           path: '/faqs',
@@ -172,6 +176,68 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('FAQs screen'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('about and help sheets scroll on small screens', (tester) async {
+    await pumpProfile(tester, size: const Size(320, 568));
+
+    final about = find.byKey(const ValueKey('profile-about-tile'));
+    await tester.scrollUntilVisible(about, 200);
+    await tester.tap(about);
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(
+      find.text(
+        '© 2026 EFE Academia de Inglés. Todos los derechos reservados.',
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tapAt(const Offset(8, 8));
+    await tester.pumpAndSettle();
+
+    final help = find.byKey(const ValueKey('profile-help-tile'));
+    await tester.scrollUntilVisible(help, 200);
+    await tester.tap(help);
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Escribir a soporte'), findsOneWidget);
+  });
+
+  testWidgets('email support opens a localized mailto and reports failure',
+      (tester) async {
+    Uri? launched;
+
+    await pumpProfile(
+      tester,
+      openUrl: (uri) async {
+        launched = uri;
+        return false;
+      },
+    );
+
+    final help = find.byKey(const ValueKey('profile-help-tile'));
+    await tester.ensureVisible(help);
+    await tester.tap(help);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const ValueKey('profile-help-email-tile')));
+    await tester.pumpAndSettle();
+
+    expect(launched, isNotNull);
+    expect(launched!.scheme, 'mailto');
+    expect(launched!.path, 'equipo@anavic-ai.com');
+    expect(
+      Uri.decodeQueryComponent(launched!.query),
+      contains('Soporte - EFE Mobile'),
+    );
+    expect(
+      find.text('No se pudo abrir la aplicación de correo'),
+      findsOneWidget,
+    );
     expect(tester.takeException(), isNull);
   });
 }

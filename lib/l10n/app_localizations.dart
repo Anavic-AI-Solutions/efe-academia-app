@@ -464,6 +464,12 @@ abstract class AppLocalizations {
   /// **'Escribir a soporte'**
   String get profileSupportEmail;
 
+  /// No description provided for @profileSupportEmailSubject.
+  ///
+  /// In es, this message translates to:
+  /// **'Soporte - EFE Mobile'**
+  String get profileSupportEmailSubject;
+
   /// No description provided for @profileSupportEmailError.
   ///
   /// In es, this message translates to:
