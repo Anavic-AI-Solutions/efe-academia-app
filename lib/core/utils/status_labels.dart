@@ -80,9 +80,27 @@ String classroomStatusLabel(String status, AppLocalizations l10n) {
   switch (status.toLowerCase()) {
     case 'active':
       return l10n.classroomsStatusActive;
+    case 'inactive':
+      return l10n.classroomsStatusInactive;
     case 'archived':
       return l10n.classroomsStatusArchived;
     default:
       return status;
+  }
+}
+
+/// Localized label for the canonical classroom shift values.
+///
+/// Legacy or unknown raw values are returned untouched so nothing is hidden.
+String classroomShiftLabel(String shift, AppLocalizations l10n) {
+  switch (shift.toLowerCase()) {
+    case 'morning':
+      return l10n.classroomsShiftMorning;
+    case 'afternoon':
+      return l10n.classroomsShiftAfternoon;
+    case 'night':
+      return l10n.classroomsShiftNight;
+    default:
+      return shift;
   }
 }

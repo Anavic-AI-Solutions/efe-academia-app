@@ -17,6 +17,7 @@ import 'package:efe_mobile/features/classrooms/providers/material_provider.dart'
 import 'package:efe_mobile/features/classrooms/screens/classroom_detail_screen.dart';
 import 'package:efe_mobile/features/classrooms/screens/widgets/classroom_related_tabs.dart';
 import 'package:efe_mobile/features/classrooms/screens/widgets/material_form_sheet.dart';
+import 'package:efe_mobile/features/classrooms/screens/widgets/material_tile.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -179,6 +180,9 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
+  @override
+  Future<ClassroomModel> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 }
 
 class _FakeMaterialRepository implements MaterialRepository {
@@ -393,7 +397,10 @@ void main() {
 
     expect(find.text('Cargar material'), findsOneWidget);
     expect(
-      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      find.descendant(
+        of: find.byType(MaterialTile),
+        matching: find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      ),
       findsOneWidget,
     );
   });
@@ -410,7 +417,10 @@ void main() {
 
     expect(find.text('Cargar material'), findsNothing);
     expect(
-      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      find.descendant(
+        of: find.byType(MaterialTile),
+        matching: find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      ),
       findsNothing,
     );
   });
@@ -429,7 +439,10 @@ void main() {
 
     expect(find.text('Cargar material'), findsOneWidget);
     expect(
-      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      find.descendant(
+        of: find.byType(MaterialTile),
+        matching: find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      ),
       findsOneWidget,
     );
   });
@@ -448,7 +461,10 @@ void main() {
 
     expect(find.text('Cargar material'), findsOneWidget);
     expect(
-      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      find.descendant(
+        of: find.byType(MaterialTile),
+        matching: find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      ),
       findsOneWidget,
     );
   });
@@ -466,7 +482,10 @@ void main() {
 
     expect(find.text('Cargar material'), findsNothing);
     expect(
-      find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      find.descendant(
+        of: find.byType(MaterialTile),
+        matching: find.byIcon(PhosphorIconsRegular.dotsThreeVertical),
+      ),
       findsNothing,
     );
   });

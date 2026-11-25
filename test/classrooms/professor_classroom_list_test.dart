@@ -82,7 +82,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
           id: 'room-${i + 1}',
           name: 'Aula ${i + 1}',
           status: 'active',
-          shift: 'Mañana',
+          shift: 'morning',
           day: 'Lunes',
           hour: '08:00',
           room: 'Sala ${i + 1}',
@@ -176,6 +176,9 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
+  @override
+  Future<ClassroomModel> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 }
 
 Future<void> _pumpScreen(
@@ -287,6 +290,6 @@ void main() {
 
     final badge = tester.widget<StatusBadge>(find.byType(StatusBadge).first);
     expect(badge.status, 'active');
-    expect(badge.label, 'Activo');
+    expect(badge.label, 'Activa');
   });
 }

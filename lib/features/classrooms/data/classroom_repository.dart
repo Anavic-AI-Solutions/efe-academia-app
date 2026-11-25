@@ -224,6 +224,15 @@ class ClassroomRepository {
     }
   }
 
+  Future<ClassroomModel> setArchived(String id, bool isArchived) async {
+    try {
+      final response = await _api.setArchived(id, isArchived);
+      return ClassroomModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   Future<ClassroomFilters> getFilters() async {
     try {
       final response = await _api.getClassroomFilters();

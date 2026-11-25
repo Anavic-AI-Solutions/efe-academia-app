@@ -140,6 +140,9 @@ class _FakeClassroomApi implements ClassroomApi {
   @override
   Future<Response> deleteClassroom(String id) =>
       Future.error(UnimplementedError());
+  @override
+  Future<Response> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 }
 
 void main() {

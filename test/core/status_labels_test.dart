@@ -42,9 +42,24 @@ void main() {
     expect(absenceStatusLabel('raro', '', es), 'raro');
   });
 
-  test('classroomStatusLabel mantiene los textos existentes', () {
-    expect(classroomStatusLabel('active', es), 'Activo');
+  test('classroomStatusLabel localiza activo, inactivo, archivado y crudos',
+      () {
+    expect(classroomStatusLabel('active', es), 'Activa');
+    expect(classroomStatusLabel('inactive', es), 'Inactiva');
     expect(classroomStatusLabel('archived', es), 'Archivado');
+    expect(classroomStatusLabel('ACTIVE', en), 'Active');
+    expect(classroomStatusLabel('inactive', en), 'Inactive');
     expect(classroomStatusLabel('other', es), 'other');
+    expect(classroomStatusLabel('', es), '');
+  });
+
+  test('classroomShiftLabel localiza turnos canónicos y conserva crudos', () {
+    expect(classroomShiftLabel('morning', es), 'Mañana');
+    expect(classroomShiftLabel('afternoon', es), 'Tarde');
+    expect(classroomShiftLabel('night', es), 'Noche');
+    expect(classroomShiftLabel('Morning', en), 'Morning');
+    expect(classroomShiftLabel('afternoon', en), 'Afternoon');
+    expect(classroomShiftLabel('Mañana', es), 'Mañana');
+    expect(classroomShiftLabel('', es), '');
   });
 }

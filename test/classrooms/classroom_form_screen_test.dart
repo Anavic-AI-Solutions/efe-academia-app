@@ -192,6 +192,9 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<void> deleteClassroom(String id) async {}
+  @override
+  Future<ClassroomModel> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 
   @override
   Future<PageResult<StudentModel>> getClassroomStudents(

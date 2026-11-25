@@ -37,6 +37,11 @@ class ClassroomApi {
   Future<Response> deleteClassroom(String id) =>
       _client.delete('/classrooms/$id');
 
+  Future<Response> setArchived(String id, bool isArchived) => _client.patch(
+        '/classrooms/$id',
+        data: {'is_archivated': isArchived},
+      );
+
   Future<Response> getClassroomFilters() => _client.get('/classrooms/filters');
 
   Future<Response> getClassroomStudents(

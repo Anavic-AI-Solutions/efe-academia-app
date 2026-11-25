@@ -450,7 +450,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomsFilterClear => 'Limpiá';
 
   @override
-  String get classroomsStatusActive => 'Activo';
+  String get classroomsStatusActive => 'Activa';
 
   @override
   String get classroomsStatusInactive => 'Inactiva';
@@ -560,6 +560,27 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get classroomsUpdated => 'Clase actualizada';
+
+  @override
+  String get classroomsDeleted => 'Clase eliminada';
+
+  @override
+  String get classroomsDeleteTitle => 'Eliminar clase';
+
+  @override
+  String get classroomsArchive => 'Archivar clase';
+
+  @override
+  String get classroomsUnarchive => 'Desarchivar clase';
+
+  @override
+  String get classroomsArchived => 'Clase archivada';
+
+  @override
+  String get classroomsUnarchived => 'Clase desarchivada';
+
+  @override
+  String get classroomsArchiveError => 'No se pudo actualizar la clase';
 
   @override
   String get classroomsGrade => 'Grado';

@@ -184,6 +184,9 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
+  @override
+  Future<ClassroomModel> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 }
 
 Future<void> _pumpDetail(
@@ -273,7 +276,7 @@ const _classroom = ClassroomModel(
   name: 'A2 A',
   description: 'Curso de enfermería',
   status: 'active',
-  shift: 'Mañana',
+  shift: 'morning',
   day: 'Lunes',
   hour: '08:00',
   room: 'Aula 3',
@@ -293,7 +296,7 @@ void main() {
     await _pumpDetail(tester, _FakeClassroomRepository(classroom: _classroom));
 
     expect(find.text('A2 A'), findsOneWidget);
-    expect(find.text('Activo'), findsOneWidget);
+    expect(find.text('Activa'), findsOneWidget);
     expect(find.text('Reconquista'), findsOneWidget);
     expect(find.text('Resumen'), findsOneWidget);
     expect(find.text('Estudiantes'), findsWidgets);

@@ -177,6 +177,10 @@ class _FakeClassroomApi implements ClassroomApi {
       _resolve(_Call('DELETE', '/classrooms/$id', null));
 
   @override
+  Future<Response> setArchived(String id, bool isArchived) => _resolve(
+      _Call('PATCH', '/classrooms/$id', {'is_archivated': isArchived}));
+
+  @override
   Future<Response> getClassrooms({
     String? search,
     int page = 1,
@@ -275,6 +279,22 @@ void main() {
 
       expect(client.calls.single.method, 'DELETE');
       expect(client.calls.single.path, '/classrooms/c1');
+    });
+
+    test('patches only the archive flag to /classrooms/{id}', () async {
+      final client = _RecordingApiClient(
+        responseData: _classroomBody(isArchived: true),
+      );
+      final api = ClassroomApi(client);
+
+      await api.setArchived('c1', true);
+      await api.setArchived('c1', false);
+
+      expect(client.calls, hasLength(2));
+      expect(client.calls.first.method, 'PATCH');
+      expect(client.calls.first.path, '/classrooms/c1');
+      expect(client.calls.first.data, {'is_archivated': true});
+      expect(client.calls.last.data, {'is_archivated': false});
     });
   });
 
@@ -394,6 +414,23 @@ void main() {
 
       expect(api.calls.single.method, 'DELETE');
       expect(api.calls.single.path, '/classrooms/c1');
+    });
+
+    test('archives and unarchives with the archive flag only', () async {
+      final api = _FakeClassroomApi(
+        responseData: _classroomBody(isArchived: true),
+      );
+      final repository = ClassroomRepository(api);
+
+      final archived = await repository.setArchived('c1', true);
+      await repository.setArchived('c1', false);
+
+      expect(api.calls, hasLength(2));
+      expect(api.calls.first.method, 'PATCH');
+      expect(api.calls.first.path, '/classrooms/c1');
+      expect(api.calls.first.data, {'is_archivated': true});
+      expect(api.calls.last.data, {'is_archivated': false});
+      expect(archived.isArchived, isTrue);
     });
 
     test('propagates the 422 ValidationException when creating', () async {

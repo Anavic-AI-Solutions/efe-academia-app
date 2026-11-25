@@ -559,6 +559,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsUpdated => 'Class updated';
 
   @override
+  String get classroomsDeleted => 'Class deleted';
+
+  @override
+  String get classroomsDeleteTitle => 'Delete class';
+
+  @override
+  String get classroomsArchive => 'Archive class';
+
+  @override
+  String get classroomsUnarchive => 'Unarchive class';
+
+  @override
+  String get classroomsArchived => 'Class archived';
+
+  @override
+  String get classroomsUnarchived => 'Class unarchived';
+
+  @override
+  String get classroomsArchiveError => 'Could not update the class';
+
+  @override
   String get classroomsGrade => 'Grade';
 
   @override

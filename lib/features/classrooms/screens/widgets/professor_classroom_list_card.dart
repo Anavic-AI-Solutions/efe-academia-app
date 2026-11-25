@@ -18,15 +18,17 @@ class ProfessorClassroomListCard extends StatelessWidget {
     required this.onTap,
   });
 
-  String get _schedule => [classroom.shift, classroom.day, classroom.hour]
-      .where((value) => value.isNotEmpty)
-      .join(' · ');
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = context.l10n;
     final status = classroom.status.toLowerCase();
+    final schedule = [
+      if (classroom.shift.isNotEmpty)
+        classroomShiftLabel(classroom.shift, l10n),
+      if (classroom.day.isNotEmpty) classroom.day,
+      if (classroom.hour.isNotEmpty) classroom.hour,
+    ].join(' · ');
 
     return AppCard(
       onTap: onTap,
@@ -61,10 +63,10 @@ class ProfessorClassroomListCard extends StatelessWidget {
                         isDark ? AppColors.darkTextPrimary : AppColors.lightInk,
                   ),
                 ),
-                if (_schedule.isNotEmpty) ...[
+                if (schedule.isNotEmpty) ...[
                   const SizedBox(height: 3),
                   Text(
-                    _schedule,
+                    schedule,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

@@ -175,6 +175,9 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
+  @override
+  Future<ClassroomModel> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 }
 
 class _ThrowingClassroomRepository implements ClassroomRepository {
@@ -263,6 +266,9 @@ class _ThrowingClassroomRepository implements ClassroomRepository {
 
   @override
   Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
+  @override
+  Future<ClassroomModel> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 }
 
 Future<void> _pumpClassrooms(

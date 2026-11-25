@@ -6,6 +6,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../core/utils/status_labels.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_view.dart';
@@ -225,9 +226,8 @@ class _ClassroomHistoryScreenState
       return EmptyState(
         icon: PhosphorIconsRegular.clockCounterClockwise,
         title: l10n.historyEmptyTitle,
-        subtitle: searching
-            ? l10n.historyEmptySearch
-            : l10n.historyEmptySubtitle,
+        subtitle:
+            searching ? l10n.historyEmptySearch : l10n.historyEmptySubtitle,
       );
     }
 
@@ -259,7 +259,8 @@ class _ArchivedClassroomCard extends StatelessWidget {
     final subtitle = [
       classroom.year,
       classroom.level,
-      classroom.shift,
+      if (classroom.shift.isNotEmpty)
+        classroomShiftLabel(classroom.shift, l10n),
     ].where((value) => value.isNotEmpty).join(' · ');
 
     return AppCard(

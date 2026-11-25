@@ -905,7 +905,7 @@ abstract class AppLocalizations {
   /// No description provided for @classroomsStatusActive.
   ///
   /// In es, this message translates to:
-  /// **'Activo'**
+  /// **'Activa'**
   String get classroomsStatusActive;
 
   /// No description provided for @classroomsStatusInactive.
@@ -1099,6 +1099,48 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Clase actualizada'**
   String get classroomsUpdated;
+
+  /// No description provided for @classroomsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Clase eliminada'**
+  String get classroomsDeleted;
+
+  /// No description provided for @classroomsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar clase'**
+  String get classroomsDeleteTitle;
+
+  /// No description provided for @classroomsArchive.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivar clase'**
+  String get classroomsArchive;
+
+  /// No description provided for @classroomsUnarchive.
+  ///
+  /// In es, this message translates to:
+  /// **'Desarchivar clase'**
+  String get classroomsUnarchive;
+
+  /// No description provided for @classroomsArchived.
+  ///
+  /// In es, this message translates to:
+  /// **'Clase archivada'**
+  String get classroomsArchived;
+
+  /// No description provided for @classroomsUnarchived.
+  ///
+  /// In es, this message translates to:
+  /// **'Clase desarchivada'**
+  String get classroomsUnarchived;
+
+  /// No description provided for @classroomsArchiveError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo actualizar la clase'**
+  String get classroomsArchiveError;
 
   /// No description provided for @classroomsGrade.
   ///

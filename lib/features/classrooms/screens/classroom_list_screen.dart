@@ -10,6 +10,7 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/domain/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../relations/providers/relations_provider.dart';
 import '../../relations/providers/selected_child_provider.dart';
@@ -82,6 +83,12 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     await _applySelection(selection);
   }
 
+  Future<void> _openCreate() async {
+    await context.push<bool>('/classrooms/new');
+    if (!mounted) return;
+    await ref.read(classroomListProvider.notifier).refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -91,6 +98,8 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     final role = ref.watch(authProvider).user?.role;
     final isProf = role == 'professor';
     final isParent = role == 'parent';
+    final canManageClassrooms =
+        ref.watch(authProvider).user?.canManageClassrooms ?? false;
 
     ref.listen<String?>(parentSelectedStudentProvider, (_, next) {
       if (!mounted) return;
@@ -119,6 +128,18 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
+      floatingActionButton: canManageClassrooms
+          ? FloatingActionButton(
+              key: const Key('classroom-list-fab'),
+              tooltip: l10n.commonCreate,
+              onPressed: _openCreate,
+              backgroundColor: AppColors.primary,
+              child: const Icon(
+                PhosphorIconsRegular.plus,
+                color: Colors.white,
+              ),
+            )
+          : null,
       body: Column(
         children: [
           ProfessorClassroomsHeader(

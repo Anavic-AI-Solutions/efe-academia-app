@@ -105,7 +105,15 @@ class _FakeClassroomRepository implements ClassroomRepository {
       'studentId': studentId,
     });
     return PageResult(
-      data: const [ClassroomModel(id: 'c1', name: 'Aula archivada')],
+      data: const [
+        ClassroomModel(
+          id: 'c1',
+          name: 'Aula archivada',
+          year: '2026',
+          level: 'A2',
+          shift: 'morning',
+        ),
+      ],
       page: page,
       perPage: limit,
       total: 1,
@@ -191,6 +199,9 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
+  @override
+  Future<ClassroomModel> setArchived(String id, bool isArchived) =>
+      Future.error(UnimplementedError());
 }
 
 Future<_FakeClassroomRepository> _pumpHistory(
@@ -257,5 +268,6 @@ void main() {
     expect(repository.calls.single['status'], 'archived');
     expect(repository.calls.single['studentId'], isNull);
     expect(find.text('Aula archivada'), findsOneWidget);
+    expect(find.text('2026 · A2 · Mañana'), findsOneWidget);
   });
 }

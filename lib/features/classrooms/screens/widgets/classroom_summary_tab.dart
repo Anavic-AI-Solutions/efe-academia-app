@@ -3,6 +3,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/utils/status_labels.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/info_row.dart';
 import '../../../../core/widgets/section_header.dart';
@@ -46,7 +47,9 @@ class ClassroomSummaryTab extends StatelessWidget {
               const SizedBox(width: 12),
               StatCard(
                 icon: PhosphorIconsRegular.clock,
-                value: classroom.shift.isNotEmpty ? classroom.shift : '—',
+                value: classroom.shift.isNotEmpty
+                    ? classroomShiftLabel(classroom.shift, l10n)
+                    : '—',
                 label: l10n.classroomsShift,
                 iconColor: AppColors.accent,
               ),
@@ -78,7 +81,10 @@ class ClassroomSummaryTab extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Column(
             children: [
-              InfoRow(label: l10n.classroomsShift, value: classroom.shift),
+              InfoRow(
+                label: l10n.classroomsShift,
+                value: classroomShiftLabel(classroom.shift, l10n),
+              ),
               InfoRow(label: l10n.classroomsDay, value: classroom.day),
               InfoRow(label: l10n.classroomsHour, value: classroom.hour),
               InfoRow(

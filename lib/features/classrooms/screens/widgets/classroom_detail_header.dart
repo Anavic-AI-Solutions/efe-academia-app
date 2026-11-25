@@ -13,12 +13,18 @@ class ClassroomDetailHeader extends StatelessWidget {
   final VoidCallback? onAttendance;
   final VoidCallback? onGrades;
 
+  /// Extra management widget (for example the staff actions menu).
+  ///
+  /// Rendered below the professor actions so both can coexist.
+  final Widget? menu;
+
   const ClassroomDetailHeader({
     super.key,
     required this.classroom,
     this.showActions = false,
     this.onAttendance,
     this.onGrades,
+    this.menu,
   });
 
   @override
@@ -48,26 +54,40 @@ class ClassroomDetailHeader extends StatelessWidget {
             label: classroom.year,
           ),
       ],
-      bottom: showActions
-          ? Row(
+      bottom: showActions || menu != null
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: _HeroActionButton(
-                    icon: PhosphorIconsRegular.checkSquare,
-                    label: context.l10n.professorTakeAttendance,
-                    primary: true,
-                    onPressed: onAttendance,
+                if (showActions)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _HeroActionButton(
+                          icon: PhosphorIconsRegular.checkSquare,
+                          label: context.l10n.professorTakeAttendance,
+                          primary: true,
+                          onPressed: onAttendance,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _HeroActionButton(
+                          icon: PhosphorIconsRegular.notePencil,
+                          label: context.l10n.professorLoadGrade,
+                          primary: false,
+                          onPressed: onGrades,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _HeroActionButton(
-                    icon: PhosphorIconsRegular.notePencil,
-                    label: context.l10n.professorLoadGrade,
-                    primary: false,
-                    onPressed: onGrades,
+                if (menu != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: showActions ? 8 : 0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: menu,
+                    ),
                   ),
-                ),
               ],
             )
           : null,
