@@ -63,6 +63,8 @@ class CursorListNotifier<T> extends StateNotifier<CursorListState<T>> {
   /// arrives, which avoids an empty flash on pull to refresh. Without it the
   /// list is cleared first, as expected for an initial load or a new search.
   Future<void> load({bool refresh = false}) async {
+    if (!mounted) return;
+
     final requestId = ++_requestId;
     final search = state.search;
     _loadingMore = false;
@@ -74,17 +76,22 @@ class CursorListNotifier<T> extends StateNotifier<CursorListState<T>> {
 
     try {
       final result = await _loader(cursor: null, search: search);
-      if (requestId != _requestId) return;
+      if (!mounted || requestId != _requestId) return;
       state = state.copyWith(pagination: result, isLoading: false);
     } catch (e) {
-      if (requestId != _requestId) return;
+      if (!mounted || requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
   /// Appends the next page, if any, using `pagination.nextCursor`.
   Future<void> loadMore() async {
-    if (_loadingMore || state.isLoading || !state.pagination.hasMore) return;
+    if (!mounted ||
+        _loadingMore ||
+        state.isLoading ||
+        !state.pagination.hasMore) {
+      return;
+    }
 
     final cursor = state.pagination.nextCursor;
     if (cursor == null) return;
@@ -96,7 +103,7 @@ class CursorListNotifier<T> extends StateNotifier<CursorListState<T>> {
 
     try {
       final result = await _loader(cursor: cursor, search: search);
-      if (requestId != _requestId) return;
+      if (!mounted || requestId != _requestId) return;
       state = state.copyWith(
         pagination: result.copyWith(
           data: [...state.pagination.data, ...result.data],
@@ -104,7 +111,7 @@ class CursorListNotifier<T> extends StateNotifier<CursorListState<T>> {
         isLoading: false,
       );
     } catch (e) {
-      if (requestId != _requestId) return;
+      if (!mounted || requestId != _requestId) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     } finally {
       if (requestId == _requestId) _loadingMore = false;
@@ -113,6 +120,8 @@ class CursorListNotifier<T> extends StateNotifier<CursorListState<T>> {
 
   /// Applies a new search term and reloads from the first page.
   Future<void> setSearch(String value) {
+    if (!mounted) return Future<void>.value();
+
     final search = value.trim();
     if (search == state.search) return Future<void>.value();
 
@@ -121,5 +130,8 @@ class CursorListNotifier<T> extends StateNotifier<CursorListState<T>> {
   }
 
   /// Reloads the first page keeping the active search and current results.
-  Future<void> refresh() => load(refresh: true);
+  Future<void> refresh() {
+    if (!mounted) return Future<void>.value();
+    return load(refresh: true);
+  }
 }

@@ -245,6 +245,50 @@ void main() {
       expect(notifier.state.isLoading, isFalse);
     });
 
+    test('ignores the in-flight first page after dispose', () async {
+      final initial = Completer<CursorPagination<int>>();
+      final loader = _Loader()..enqueueFuture(() => initial.future);
+      final notifier = CursorListNotifier<int>(loader.call);
+      await pumpEventQueue();
+
+      notifier.dispose();
+      initial.complete(_page([1]));
+      await pumpEventQueue();
+
+      expect(notifier.mounted, isFalse);
+      expect(loader.calls.length, 1);
+    });
+
+    test('ignores an in-flight loadMore after dispose', () async {
+      final secondPage = Completer<CursorPagination<int>>();
+      final loader = _Loader()
+        ..enqueue(_page([1], nextCursor: 'c2'))
+        ..enqueueFuture(() => secondPage.future);
+      final notifier = CursorListNotifier<int>(loader.call);
+      await pumpEventQueue();
+
+      final moreFuture = notifier.loadMore();
+      notifier.dispose();
+      secondPage.complete(_page([2], nextCursor: 'c3'));
+      await moreFuture;
+
+      expect(loader.calls.length, 2);
+    });
+
+    test('ignores calls made after dispose', () async {
+      final loader = _Loader()..enqueue(_page([1]));
+      final notifier = CursorListNotifier<int>(loader.call);
+      await pumpEventQueue();
+
+      notifier.dispose();
+
+      await notifier.refresh();
+      await notifier.setSearch('ana');
+      await notifier.loadMore();
+
+      expect(loader.calls.length, 1);
+    });
+
     test('ignores a stale loadMore that resolves after a new search', () async {
       final more = Completer<CursorPagination<int>>();
       final search = Completer<CursorPagination<int>>();
