@@ -1052,6 +1052,120 @@ abstract class AppLocalizations {
   /// **'Editar alumno'**
   String get studentsFormEditTitle;
 
+  /// No description provided for @professorsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesores'**
+  String get professorsTitle;
+
+  /// No description provided for @professorsSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar profesores...'**
+  String get professorsSearchHint;
+
+  /// No description provided for @professorsEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay profesores'**
+  String get professorsEmptyTitle;
+
+  /// No description provided for @professorsEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Probá con otra búsqueda'**
+  String get professorsEmptySubtitle;
+
+  /// No description provided for @professorsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los profesores'**
+  String get professorsLoadError;
+
+  /// No description provided for @professorsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo profesor'**
+  String get professorsFormCreateTitle;
+
+  /// No description provided for @professorsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar profesor'**
+  String get professorsFormEditTitle;
+
+  /// No description provided for @professorsFormFullname.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre completo'**
+  String get professorsFormFullname;
+
+  /// No description provided for @professorsFormEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get professorsFormEmail;
+
+  /// No description provided for @professorsFormPhone.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get professorsFormPhone;
+
+  /// No description provided for @professorsFormAddress.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección'**
+  String get professorsFormAddress;
+
+  /// No description provided for @professorsFormIdentity.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento'**
+  String get professorsFormIdentity;
+
+  /// No description provided for @professorsFormBio.
+  ///
+  /// In es, this message translates to:
+  /// **'Biografía'**
+  String get professorsFormBio;
+
+  /// No description provided for @professorsFormSpecialty.
+  ///
+  /// In es, this message translates to:
+  /// **'Especialidad'**
+  String get professorsFormSpecialty;
+
+  /// No description provided for @professorsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor creado'**
+  String get professorsCreated;
+
+  /// No description provided for @professorsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor actualizado'**
+  String get professorsUpdated;
+
+  /// No description provided for @professorsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor eliminado'**
+  String get professorsDeleted;
+
+  /// No description provided for @professorsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar profesor'**
+  String get professorsDeleteTitle;
+
+  /// No description provided for @professorsClassroomsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, one{1 aula} other{{count} aulas}}'**
+  String professorsClassroomsCount(int count);
+
   /// No description provided for @studentsFormFullname.
   ///
   /// In es, this message translates to:
@@ -3301,6 +3415,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Alumnos'**
   String get managementStudents;
+
+  /// No description provided for @managementProfessors.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesores'**
+  String get managementProfessors;
 
   /// No description provided for @managementClassrooms.
   ///

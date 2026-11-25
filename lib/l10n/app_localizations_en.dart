@@ -535,6 +535,71 @@ class AppLocalizationsEn extends AppLocalizations {
   String get studentsFormEditTitle => 'Edit student';
 
   @override
+  String get professorsTitle => 'Professors';
+
+  @override
+  String get professorsSearchHint => 'Search professors...';
+
+  @override
+  String get professorsEmptyTitle => 'No professors';
+
+  @override
+  String get professorsEmptySubtitle => 'Try another search';
+
+  @override
+  String get professorsLoadError => 'Could not load professors';
+
+  @override
+  String get professorsFormCreateTitle => 'New professor';
+
+  @override
+  String get professorsFormEditTitle => 'Edit professor';
+
+  @override
+  String get professorsFormFullname => 'Full name';
+
+  @override
+  String get professorsFormEmail => 'Email';
+
+  @override
+  String get professorsFormPhone => 'Phone';
+
+  @override
+  String get professorsFormAddress => 'Address';
+
+  @override
+  String get professorsFormIdentity => 'Identity number';
+
+  @override
+  String get professorsFormBio => 'Bio';
+
+  @override
+  String get professorsFormSpecialty => 'Specialty';
+
+  @override
+  String get professorsCreated => 'Professor created';
+
+  @override
+  String get professorsUpdated => 'Professor updated';
+
+  @override
+  String get professorsDeleted => 'Professor deleted';
+
+  @override
+  String get professorsDeleteTitle => 'Delete professor';
+
+  @override
+  String professorsClassroomsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count classrooms',
+      one: '1 classroom',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get studentsFormFullname => 'Full name';
 
   @override
@@ -1744,6 +1809,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get managementStudents => 'Students';
+
+  @override
+  String get managementProfessors => 'Professors';
 
   @override
   String get managementClassrooms => 'Classrooms';

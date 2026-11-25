@@ -515,7 +515,8 @@ void main() {
       expect(professor.fullname, 'Ana Editada');
     });
 
-    test('omits the optional empty fields when updating', () async {
+    test('sends every optional field when updating so empties clear it',
+        () async {
       final api = _FakeProfessorApi(responseData: _professorBody());
       final repository = ProfessorRepository(api);
 
@@ -531,7 +532,11 @@ void main() {
       expect(api.calls.single.data, {
         'fullname': 'Ana Editada',
         'email': 'ana@example.com',
+        'phone': '',
+        'address': '',
         'identity_number': '30111222',
+        'bio': '',
+        'specialty': '',
       });
     });
 

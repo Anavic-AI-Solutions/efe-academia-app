@@ -536,6 +536,71 @@ class AppLocalizationsEs extends AppLocalizations {
   String get studentsFormEditTitle => 'Editar alumno';
 
   @override
+  String get professorsTitle => 'Profesores';
+
+  @override
+  String get professorsSearchHint => 'Buscar profesores...';
+
+  @override
+  String get professorsEmptyTitle => 'No hay profesores';
+
+  @override
+  String get professorsEmptySubtitle => 'Probá con otra búsqueda';
+
+  @override
+  String get professorsLoadError => 'No se pudieron cargar los profesores';
+
+  @override
+  String get professorsFormCreateTitle => 'Nuevo profesor';
+
+  @override
+  String get professorsFormEditTitle => 'Editar profesor';
+
+  @override
+  String get professorsFormFullname => 'Nombre completo';
+
+  @override
+  String get professorsFormEmail => 'Correo electrónico';
+
+  @override
+  String get professorsFormPhone => 'Teléfono';
+
+  @override
+  String get professorsFormAddress => 'Dirección';
+
+  @override
+  String get professorsFormIdentity => 'Documento';
+
+  @override
+  String get professorsFormBio => 'Biografía';
+
+  @override
+  String get professorsFormSpecialty => 'Especialidad';
+
+  @override
+  String get professorsCreated => 'Profesor creado';
+
+  @override
+  String get professorsUpdated => 'Profesor actualizado';
+
+  @override
+  String get professorsDeleted => 'Profesor eliminado';
+
+  @override
+  String get professorsDeleteTitle => 'Eliminar profesor';
+
+  @override
+  String professorsClassroomsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aulas',
+      one: '1 aula',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get studentsFormFullname => 'Nombre completo';
 
   @override
@@ -1752,6 +1817,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get managementStudents => 'Alumnos';
+
+  @override
+  String get managementProfessors => 'Profesores';
 
   @override
   String get managementClassrooms => 'Aulas';

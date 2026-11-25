@@ -92,6 +92,7 @@ class ProfessorRepository {
           identityNumber: identityNumber,
           bio: bio,
           specialty: specialty,
+          includeOptionalEmpties: true,
         ),
       );
       return ProfessorModel.fromJson(response.data);
@@ -116,16 +117,29 @@ class ProfessorRepository {
     String? address,
     String? bio,
     String? specialty,
+    bool includeOptionalEmpties = false,
   }) {
-    return {
+    final payload = <String, dynamic>{
       'fullname': fullname,
       'email': email,
-      if (_hasValue(phone)) 'phone': phone,
-      if (_hasValue(address)) 'address': address,
       'identity_number': identityNumber,
-      if (_hasValue(bio)) 'bio': bio,
-      if (_hasValue(specialty)) 'specialty': specialty,
     };
+    final optional = {
+      'phone': phone,
+      'address': address,
+      'bio': bio,
+      'specialty': specialty,
+    };
+    optional.forEach((key, value) {
+      if (includeOptionalEmpties) {
+        // Updates must send every optional key: the backend turns an empty
+        // string into null, which is how a cleared field is persisted.
+        payload[key] = value?.trim() ?? '';
+      } else if (_hasValue(value)) {
+        payload[key] = value;
+      }
+    });
+    return payload;
   }
 
   bool _hasValue(String? value) => value != null && value.trim().isNotEmpty;

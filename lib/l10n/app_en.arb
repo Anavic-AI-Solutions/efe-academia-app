@@ -159,6 +159,32 @@
   "classroomsMaterialDownloads": "{count} downloads",
   "studentsFormCreateTitle": "New student",
   "studentsFormEditTitle": "Edit student",
+  "professorsTitle": "Professors",
+  "professorsSearchHint": "Search professors...",
+  "professorsEmptyTitle": "No professors",
+  "professorsEmptySubtitle": "Try another search",
+  "professorsLoadError": "Could not load professors",
+  "professorsFormCreateTitle": "New professor",
+  "professorsFormEditTitle": "Edit professor",
+  "professorsFormFullname": "Full name",
+  "professorsFormEmail": "Email",
+  "professorsFormPhone": "Phone",
+  "professorsFormAddress": "Address",
+  "professorsFormIdentity": "Identity number",
+  "professorsFormBio": "Bio",
+  "professorsFormSpecialty": "Specialty",
+  "professorsCreated": "Professor created",
+  "professorsUpdated": "Professor updated",
+  "professorsDeleted": "Professor deleted",
+  "professorsDeleteTitle": "Delete professor",
+  "professorsClassroomsCount": "{count, plural, one{1 classroom} other{{count} classrooms}}",
+  "@professorsClassroomsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "studentsFormFullname": "Full name",
   "studentsFormEmail": "Email",
   "studentsFormYear": "Year",
@@ -569,6 +595,7 @@
   "managementAcademic": "Academic",
   "managementContent": "Content",
   "managementStudents": "Students",
+  "managementProfessors": "Professors",
   "managementClassrooms": "Classrooms",
   "managementNews": "News",
   "managementEvents": "Events",

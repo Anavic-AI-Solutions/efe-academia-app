@@ -256,6 +256,32 @@
   },
   "studentsFormCreateTitle": "Nuevo alumno",
   "studentsFormEditTitle": "Editar alumno",
+  "professorsTitle": "Profesores",
+  "professorsSearchHint": "Buscar profesores...",
+  "professorsEmptyTitle": "No hay profesores",
+  "professorsEmptySubtitle": "Probá con otra búsqueda",
+  "professorsLoadError": "No se pudieron cargar los profesores",
+  "professorsFormCreateTitle": "Nuevo profesor",
+  "professorsFormEditTitle": "Editar profesor",
+  "professorsFormFullname": "Nombre completo",
+  "professorsFormEmail": "Correo electrónico",
+  "professorsFormPhone": "Teléfono",
+  "professorsFormAddress": "Dirección",
+  "professorsFormIdentity": "Documento",
+  "professorsFormBio": "Biografía",
+  "professorsFormSpecialty": "Especialidad",
+  "professorsCreated": "Profesor creado",
+  "professorsUpdated": "Profesor actualizado",
+  "professorsDeleted": "Profesor eliminado",
+  "professorsDeleteTitle": "Eliminar profesor",
+  "professorsClassroomsCount": "{count, plural, one{1 aula} other{{count} aulas}}",
+  "@professorsClassroomsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "studentsFormFullname": "Nombre completo",
   "studentsFormEmail": "Correo electrónico",
   "studentsFormYear": "Año",
@@ -797,6 +823,7 @@
   "managementAcademic": "Académico",
   "managementContent": "Contenido",
   "managementStudents": "Alumnos",
+  "managementProfessors": "Profesores",
   "managementClassrooms": "Aulas",
   "managementNews": "Noticias",
   "managementEvents": "Eventos",
