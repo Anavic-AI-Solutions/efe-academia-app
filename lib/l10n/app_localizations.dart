@@ -152,12 +152,6 @@ abstract class AppLocalizations {
   /// **'No se pudo guardar'**
   String get commonSaveError;
 
-  /// No description provided for @commonStatus.
-  ///
-  /// In es, this message translates to:
-  /// **'Estado'**
-  String get commonStatus;
-
   /// No description provided for @commonActions.
   ///
   /// In es, this message translates to:
@@ -1165,6 +1159,132 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{count, plural, one{1 aula} other{{count} aulas}}'**
   String professorsClassroomsCount(int count);
+
+  /// No description provided for @parentsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Padres'**
+  String get parentsTitle;
+
+  /// No description provided for @parentsSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar padres...'**
+  String get parentsSearchHint;
+
+  /// No description provided for @parentsEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay padres'**
+  String get parentsEmptyTitle;
+
+  /// No description provided for @parentsEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Probá con otra búsqueda'**
+  String get parentsEmptySubtitle;
+
+  /// No description provided for @parentsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los padres'**
+  String get parentsLoadError;
+
+  /// No description provided for @parentsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo padre'**
+  String get parentsFormCreateTitle;
+
+  /// No description provided for @parentsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar padre'**
+  String get parentsFormEditTitle;
+
+  /// No description provided for @parentsFormFullname.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre completo'**
+  String get parentsFormFullname;
+
+  /// No description provided for @parentsFormEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get parentsFormEmail;
+
+  /// No description provided for @parentsFormPhone.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get parentsFormPhone;
+
+  /// No description provided for @parentsFormAddress.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección'**
+  String get parentsFormAddress;
+
+  /// No description provided for @parentsFormIdentity.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento'**
+  String get parentsFormIdentity;
+
+  /// No description provided for @parentsFormStatus.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado'**
+  String get parentsFormStatus;
+
+  /// No description provided for @parentsStatusPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get parentsStatusPending;
+
+  /// No description provided for @parentsStatusApproved.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobado'**
+  String get parentsStatusApproved;
+
+  /// No description provided for @parentsStatusRejected.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazado'**
+  String get parentsStatusRejected;
+
+  /// No description provided for @parentsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre creado'**
+  String get parentsCreated;
+
+  /// No description provided for @parentsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre actualizado'**
+  String get parentsUpdated;
+
+  /// No description provided for @parentsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre eliminado'**
+  String get parentsDeleted;
+
+  /// No description provided for @parentsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar padre'**
+  String get parentsDeleteTitle;
+
+  /// No description provided for @parentsStudentCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, one{1 alumno} other{{count} alumnos}}'**
+  String parentsStudentCount(int count);
 
   /// No description provided for @studentsFormFullname.
   ///
@@ -3421,6 +3541,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Profesores'**
   String get managementProfessors;
+
+  /// No description provided for @managementParents.
+  ///
+  /// In es, this message translates to:
+  /// **'Padres'**
+  String get managementParents;
 
   /// No description provided for @managementClassrooms.
   ///

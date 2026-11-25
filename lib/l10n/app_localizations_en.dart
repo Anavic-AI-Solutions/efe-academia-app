@@ -36,9 +36,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonSaveError => 'Could not save';
 
   @override
-  String get commonStatus => 'Status';
-
-  @override
   String get commonActions => 'Actions';
 
   @override
@@ -595,6 +592,77 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other: '$count classrooms',
       one: '1 classroom',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get parentsTitle => 'Parents';
+
+  @override
+  String get parentsSearchHint => 'Search parents...';
+
+  @override
+  String get parentsEmptyTitle => 'No parents';
+
+  @override
+  String get parentsEmptySubtitle => 'Try another search';
+
+  @override
+  String get parentsLoadError => 'Could not load parents';
+
+  @override
+  String get parentsFormCreateTitle => 'New parent';
+
+  @override
+  String get parentsFormEditTitle => 'Edit parent';
+
+  @override
+  String get parentsFormFullname => 'Full name';
+
+  @override
+  String get parentsFormEmail => 'Email';
+
+  @override
+  String get parentsFormPhone => 'Phone';
+
+  @override
+  String get parentsFormAddress => 'Address';
+
+  @override
+  String get parentsFormIdentity => 'Identity number';
+
+  @override
+  String get parentsFormStatus => 'Status';
+
+  @override
+  String get parentsStatusPending => 'Pending';
+
+  @override
+  String get parentsStatusApproved => 'Approved';
+
+  @override
+  String get parentsStatusRejected => 'Rejected';
+
+  @override
+  String get parentsCreated => 'Parent created';
+
+  @override
+  String get parentsUpdated => 'Parent updated';
+
+  @override
+  String get parentsDeleted => 'Parent deleted';
+
+  @override
+  String get parentsDeleteTitle => 'Delete parent';
+
+  @override
+  String parentsStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count students',
+      one: '1 student',
     );
     return '$_temp0';
   }
@@ -1812,6 +1880,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get managementProfessors => 'Professors';
+
+  @override
+  String get managementParents => 'Parents';
 
   @override
   String get managementClassrooms => 'Classrooms';

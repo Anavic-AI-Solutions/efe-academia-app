@@ -9,7 +9,6 @@
   "commonDelete": "Delete",
   "commonSave": "Save",
   "commonSaveError": "Could not save",
-  "commonStatus": "Status",
   "commonActions": "Actions",
   "commonDeleteError": "Could not delete",
   "commonDeleteMessage": "This action cannot be undone.",
@@ -179,6 +178,34 @@
   "professorsDeleteTitle": "Delete professor",
   "professorsClassroomsCount": "{count, plural, one{1 classroom} other{{count} classrooms}}",
   "@professorsClassroomsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parentsTitle": "Parents",
+  "parentsSearchHint": "Search parents...",
+  "parentsEmptyTitle": "No parents",
+  "parentsEmptySubtitle": "Try another search",
+  "parentsLoadError": "Could not load parents",
+  "parentsFormCreateTitle": "New parent",
+  "parentsFormEditTitle": "Edit parent",
+  "parentsFormFullname": "Full name",
+  "parentsFormEmail": "Email",
+  "parentsFormPhone": "Phone",
+  "parentsFormAddress": "Address",
+  "parentsFormIdentity": "Identity number",
+  "parentsFormStatus": "Status",
+  "parentsStatusPending": "Pending",
+  "parentsStatusApproved": "Approved",
+  "parentsStatusRejected": "Rejected",
+  "parentsCreated": "Parent created",
+  "parentsUpdated": "Parent updated",
+  "parentsDeleted": "Parent deleted",
+  "parentsDeleteTitle": "Delete parent",
+  "parentsStudentCount": "{count, plural, one{1 student} other{{count} students}}",
+  "@parentsStudentCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -596,6 +623,7 @@
   "managementContent": "Content",
   "managementStudents": "Students",
   "managementProfessors": "Professors",
+  "managementParents": "Parents",
   "managementClassrooms": "Classrooms",
   "managementNews": "News",
   "managementEvents": "Events",

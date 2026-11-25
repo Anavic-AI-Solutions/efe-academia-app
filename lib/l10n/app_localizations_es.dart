@@ -36,9 +36,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonSaveError => 'No se pudo guardar';
 
   @override
-  String get commonStatus => 'Estado';
-
-  @override
   String get commonActions => 'Acciones';
 
   @override
@@ -596,6 +593,77 @@ class AppLocalizationsEs extends AppLocalizations {
       locale: localeName,
       other: '$count aulas',
       one: '1 aula',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get parentsTitle => 'Padres';
+
+  @override
+  String get parentsSearchHint => 'Buscar padres...';
+
+  @override
+  String get parentsEmptyTitle => 'No hay padres';
+
+  @override
+  String get parentsEmptySubtitle => 'Probá con otra búsqueda';
+
+  @override
+  String get parentsLoadError => 'No se pudieron cargar los padres';
+
+  @override
+  String get parentsFormCreateTitle => 'Nuevo padre';
+
+  @override
+  String get parentsFormEditTitle => 'Editar padre';
+
+  @override
+  String get parentsFormFullname => 'Nombre completo';
+
+  @override
+  String get parentsFormEmail => 'Correo electrónico';
+
+  @override
+  String get parentsFormPhone => 'Teléfono';
+
+  @override
+  String get parentsFormAddress => 'Dirección';
+
+  @override
+  String get parentsFormIdentity => 'Documento';
+
+  @override
+  String get parentsFormStatus => 'Estado';
+
+  @override
+  String get parentsStatusPending => 'Pendiente';
+
+  @override
+  String get parentsStatusApproved => 'Aprobado';
+
+  @override
+  String get parentsStatusRejected => 'Rechazado';
+
+  @override
+  String get parentsCreated => 'Padre creado';
+
+  @override
+  String get parentsUpdated => 'Padre actualizado';
+
+  @override
+  String get parentsDeleted => 'Padre eliminado';
+
+  @override
+  String get parentsDeleteTitle => 'Eliminar padre';
+
+  @override
+  String parentsStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos',
+      one: '1 alumno',
     );
     return '$_temp0';
   }
@@ -1820,6 +1888,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get managementProfessors => 'Profesores';
+
+  @override
+  String get managementParents => 'Padres';
 
   @override
   String get managementClassrooms => 'Aulas';
