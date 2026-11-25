@@ -35,6 +35,7 @@ mixin _$ClassroomModel {
   int get period2Days => throw _privateConstructorUsedError;
   int get period3Days => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
+  bool get isArchived => throw _privateConstructorUsedError;
   int get studentCount => throw _privateConstructorUsedError;
 
   /// Create a copy of ClassroomModel
@@ -70,6 +71,7 @@ abstract class $ClassroomModelCopyWith<$Res> {
       int period2Days,
       int period3Days,
       bool isActive,
+      bool isArchived,
       int studentCount});
 }
 
@@ -107,6 +109,7 @@ class _$ClassroomModelCopyWithImpl<$Res, $Val extends ClassroomModel>
     Object? period2Days = null,
     Object? period3Days = null,
     Object? isActive = null,
+    Object? isArchived = null,
     Object? studentCount = null,
   }) {
     return _then(_value.copyWith(
@@ -186,6 +189,10 @@ class _$ClassroomModelCopyWithImpl<$Res, $Val extends ClassroomModel>
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
+      isArchived: null == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool,
       studentCount: null == studentCount
           ? _value.studentCount
           : studentCount // ignore: cast_nullable_to_non_nullable
@@ -222,6 +229,7 @@ abstract class _$$ClassroomModelImplCopyWith<$Res>
       int period2Days,
       int period3Days,
       bool isActive,
+      bool isArchived,
       int studentCount});
 }
 
@@ -257,6 +265,7 @@ class __$$ClassroomModelImplCopyWithImpl<$Res>
     Object? period2Days = null,
     Object? period3Days = null,
     Object? isActive = null,
+    Object? isArchived = null,
     Object? studentCount = null,
   }) {
     return _then(_$ClassroomModelImpl(
@@ -336,6 +345,10 @@ class __$$ClassroomModelImplCopyWithImpl<$Res>
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
+      isArchived: null == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool,
       studentCount: null == studentCount
           ? _value.studentCount
           : studentCount // ignore: cast_nullable_to_non_nullable
@@ -367,6 +380,7 @@ class _$ClassroomModelImpl implements _ClassroomModel {
       this.period2Days = 0,
       this.period3Days = 0,
       this.isActive = true,
+      this.isArchived = false,
       this.studentCount = 0});
 
   @override
@@ -427,11 +441,14 @@ class _$ClassroomModelImpl implements _ClassroomModel {
   final bool isActive;
   @override
   @JsonKey()
+  final bool isArchived;
+  @override
+  @JsonKey()
   final int studentCount;
 
   @override
   String toString() {
-    return 'ClassroomModel(id: $id, name: $name, description: $description, status: $status, shift: $shift, day: $day, hour: $hour, room: $room, year: $year, branch: $branch, level: $level, grade: $grade, book: $book, commission: $commission, courseDays: $courseDays, period1Days: $period1Days, period2Days: $period2Days, period3Days: $period3Days, isActive: $isActive, studentCount: $studentCount)';
+    return 'ClassroomModel(id: $id, name: $name, description: $description, status: $status, shift: $shift, day: $day, hour: $hour, room: $room, year: $year, branch: $branch, level: $level, grade: $grade, book: $book, commission: $commission, courseDays: $courseDays, period1Days: $period1Days, period2Days: $period2Days, period3Days: $period3Days, isActive: $isActive, isArchived: $isArchived, studentCount: $studentCount)';
   }
 
   @override
@@ -465,6 +482,8 @@ class _$ClassroomModelImpl implements _ClassroomModel {
                 other.period3Days == period3Days) &&
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
+            (identical(other.isArchived, isArchived) ||
+                other.isArchived == isArchived) &&
             (identical(other.studentCount, studentCount) ||
                 other.studentCount == studentCount));
   }
@@ -491,6 +510,7 @@ class _$ClassroomModelImpl implements _ClassroomModel {
         period2Days,
         period3Days,
         isActive,
+        isArchived,
         studentCount
       ]);
 
@@ -525,6 +545,7 @@ abstract class _ClassroomModel implements ClassroomModel {
       final int period2Days,
       final int period3Days,
       final bool isActive,
+      final bool isArchived,
       final int studentCount}) = _$ClassroomModelImpl;
 
   @override
@@ -565,6 +586,8 @@ abstract class _ClassroomModel implements ClassroomModel {
   int get period3Days;
   @override
   bool get isActive;
+  @override
+  bool get isArchived;
   @override
   int get studentCount;
 

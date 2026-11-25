@@ -162,6 +162,56 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<ClassroomFilters> getFilters() => throw UnimplementedError();
+
+  @override
+  Future<ClassroomModel> createClassroom({
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<ClassroomModel> updateClassroom(
+    String id, {
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
 }
 
 class _FakeAttendanceRepository implements AttendanceRepository {

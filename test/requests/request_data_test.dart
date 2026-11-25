@@ -196,6 +196,56 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<ClassroomFilters> getFilters() => throw UnimplementedError();
+
+  @override
+  Future<ClassroomModel> createClassroom({
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<ClassroomModel> updateClassroom(
+    String id, {
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
 }
 
 void main() {
@@ -319,7 +369,8 @@ void main() {
       expect(request.kind, RequestKind.parent);
       expect(request.phone, '1234');
       expect(request.childrenCount, 2);
-      expect(request.children.map((child) => child.status), ['pending', 'approved']);
+      expect(request.children.map((child) => child.status),
+          ['pending', 'approved']);
     });
 
     test('approve student sends classroom_id', () async {
@@ -432,8 +483,8 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      final result =
-          await container.read(requestClassroomOptionsProvider('inglés').future);
+      final result = await container
+          .read(requestClassroomOptionsProvider('inglés').future);
 
       expect(result.single.name, 'Inglés 1');
       expect(classrooms.calls.single['search'], 'inglés');

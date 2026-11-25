@@ -128,6 +128,18 @@ class _FakeClassroomApi implements ClassroomApi {
       'meta': {'cursor': null, 'has_more': false, 'total': 1},
     });
   }
+
+  @override
+  Future<Response> createClassroom(Map<String, dynamic> data) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<Response> updateClassroom(String id, Map<String, dynamic> data) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<Response> deleteClassroom(String id) =>
+      Future.error(UnimplementedError());
 }
 
 void main() {

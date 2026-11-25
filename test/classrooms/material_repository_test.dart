@@ -176,6 +176,18 @@ class _FakeClassroomApi implements ClassroomApi {
     int limit = 20,
   }) =>
       Future.error(UnimplementedError());
+
+  @override
+  Future<Response> createClassroom(Map<String, dynamic> data) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<Response> updateClassroom(String id, Map<String, dynamic> data) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<Response> deleteClassroom(String id) =>
+      Future.error(UnimplementedError());
 }
 
 Map<String, String> _fields(FormData data) =>

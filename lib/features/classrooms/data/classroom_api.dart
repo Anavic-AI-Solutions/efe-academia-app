@@ -28,6 +28,15 @@ class ClassroomApi {
 
   Future<Response> getClassroom(String id) => _client.get('/classrooms/$id');
 
+  Future<Response> createClassroom(Map<String, dynamic> data) =>
+      _client.post('/classrooms', data: data);
+
+  Future<Response> updateClassroom(String id, Map<String, dynamic> data) =>
+      _client.patch('/classrooms/$id', data: data);
+
+  Future<Response> deleteClassroom(String id) =>
+      _client.delete('/classrooms/$id');
+
   Future<Response> getClassroomFilters() => _client.get('/classrooms/filters');
 
   Future<Response> getClassroomStudents(

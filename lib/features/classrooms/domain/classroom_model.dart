@@ -24,6 +24,7 @@ class ClassroomModel with _$ClassroomModel {
     @Default(0) int period2Days,
     @Default(0) int period3Days,
     @Default(true) bool isActive,
+    @Default(false) bool isArchived,
     @Default(0) int studentCount,
   }) = _ClassroomModel;
 
@@ -57,6 +58,7 @@ class ClassroomModel with _$ClassroomModel {
       period3Days: _parseInt(attrs['period_3_days']),
       isActive: attrs['is_active'] as bool? ??
           !((attrs['is_archivated'] as bool?) ?? false),
+      isArchived: (attrs['is_archivated'] as bool?) ?? false,
       studentCount: students?.length ?? _parseInt(attrs['student_count']),
     );
   }

@@ -118,6 +118,56 @@ class _FakeClassroomRepository implements ClassroomRepository {
 
   @override
   Future<ClassroomFilters> getFilters() => throw UnimplementedError();
+
+  @override
+  Future<ClassroomModel> createClassroom({
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<ClassroomModel> updateClassroom(
+    String id, {
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> deleteClassroom(String id) => Future.error(UnimplementedError());
 }
 
 RequestModel _student({
@@ -417,7 +467,9 @@ void main() {
       status: 'pending',
     );
     final repository = _FakeRequestRepository(
-      details: [_parent(children: [child])],
+      details: [
+        _parent(children: [child])
+      ],
     );
     final router = GoRouter(
       initialLocation: '/requests/parent/p1',
@@ -538,7 +590,8 @@ void main() {
     expect(find.text('Aprobado'), findsOneWidget);
   });
 
-  testWidgets('classroom picker keeps the list below the header with keyboard open',
+  testWidgets(
+      'classroom picker keeps the list below the header with keyboard open',
       (tester) async {
     tester.view.physicalSize = const Size(400, 700);
     tester.view.devicePixelRatio = 1;

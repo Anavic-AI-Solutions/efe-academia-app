@@ -121,6 +121,109 @@ class ClassroomRepository {
     }
   }
 
+  Future<ClassroomModel> createClassroom({
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) async {
+    try {
+      final response = await _api.createClassroom({
+        'name': name,
+        'description': description,
+        'status': status,
+        'shift': shift,
+        'day': day,
+        'hour': hour,
+        'room': room,
+        'year': year,
+        'branch': branch,
+        'level': level,
+        'grade': grade,
+        'book': book,
+        'commission': commission,
+        'course_days': courseDays,
+        'period_1_days': period1Days,
+        'period_2_days': period2Days,
+        'period_3_days': period3Days,
+        'is_archivated': isArchived,
+      });
+      return ClassroomModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<ClassroomModel> updateClassroom(
+    String id, {
+    required String name,
+    String description = '',
+    String status = 'active',
+    String shift = '',
+    String day = '',
+    String hour = '',
+    String room = '',
+    String year = '',
+    String branch = '',
+    String level = '',
+    String grade = '',
+    String book = '',
+    String commission = '',
+    String courseDays = '',
+    String period1Days = '',
+    String period2Days = '',
+    String period3Days = '',
+    bool isArchived = false,
+  }) async {
+    try {
+      final response = await _api.updateClassroom(id, {
+        'name': name,
+        'description': description,
+        'status': status,
+        'shift': shift,
+        'day': day,
+        'hour': hour,
+        'room': room,
+        'year': year,
+        'branch': branch,
+        'level': level,
+        'grade': grade,
+        'book': book,
+        'commission': commission,
+        'course_days': courseDays,
+        'period_1_days': period1Days,
+        'period_2_days': period2Days,
+        'period_3_days': period3Days,
+        'is_archivated': isArchived,
+      });
+      return ClassroomModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<void> deleteClassroom(String id) async {
+    try {
+      await _api.deleteClassroom(id);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   Future<ClassroomFilters> getFilters() async {
     try {
       final response = await _api.getClassroomFilters();
