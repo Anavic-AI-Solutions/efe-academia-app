@@ -298,6 +298,7 @@ class _ParentLinkedStudentsSectionState
 
     ref.invalidate(parentStudentsProvider(widget.parentId));
     ref.invalidate(parentDetailProvider(widget.parentId));
+    ref.invalidate(parentListProvider);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.parentsLinked)),
     );
@@ -327,6 +328,7 @@ class _ParentLinkedStudentsSectionState
       setState(() => _unlinkingId = null);
       ref.invalidate(parentStudentsProvider(widget.parentId));
       ref.invalidate(parentDetailProvider(widget.parentId));
+      ref.invalidate(parentListProvider);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.parentsUnlinked)),
       );

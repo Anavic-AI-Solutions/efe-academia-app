@@ -499,7 +499,7 @@ void main() {
       expect(repo.parentDetailCalls, greaterThan(1));
     });
 
-    testWidgets('link failure keeps the sheet open and shows an error',
+    testWidgets('link failure shows an inline error in the open sheet',
         (tester) async {
       final repo = _FakeParentRepository()..linkError = Exception('boom');
       await _pumpDetail(tester, repository: repo);
@@ -510,11 +510,42 @@ void main() {
 
       expect(repo.linked, ['s3']);
       expect(find.byKey(const Key('link-student-sheet')), findsOneWidget);
+      expect(find.byKey(const Key('link-student-error')), findsOneWidget);
       expect(
-        find.text('No se pudo vincular el alumno'),
+        _inSheet(find.text('No se pudo vincular el alumno')),
         findsOneWidget,
       );
+      // The modal sheet covers the Scaffold's snackbar host, so the failure
+      // must be reported inside the sheet instead of via a snackbar.
+      expect(find.byType(SnackBar), findsNothing);
       expect(repo.students.any((student) => student.id == 's3'), isFalse);
+
+      // Retrying clears the inline error and links the student.
+      repo.linkError = null;
+      await tester.tap(find.byKey(const Key('link-student-s3')));
+      await tester.pumpAndSettle();
+
+      expect(repo.linked, ['s3', 's3']);
+      expect(find.byKey(const Key('link-student-sheet')), findsNothing);
+      expect(find.text('Marta Ruiz'), findsOneWidget);
+    });
+
+    testWidgets('searching again clears the link error', (tester) async {
+      final repo = _FakeParentRepository()..linkError = Exception('boom');
+      await _pumpDetail(tester, repository: repo);
+
+      await _openLinkSheet(tester);
+      await tester.tap(find.byKey(const Key('link-student-s3')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('link-student-error')), findsOneWidget);
+
+      repo.linkError = null;
+      await tester.enterText(_searchField(), 'Lu');
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('link-student-error')), findsNothing);
+      expect(_inSheet(find.text('Lucas Pérez')), findsOneWidget);
     });
   });
 }

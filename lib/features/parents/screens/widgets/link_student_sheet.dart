@@ -40,6 +40,7 @@ class _LinkStudentSheetState extends ConsumerState<LinkStudentSheet> {
   String? _error;
   bool _isLoading = true;
   String? _linkingId;
+  bool _linkFailed = false;
   int _requestId = 0;
 
   @override
@@ -60,6 +61,7 @@ class _LinkStudentSheetState extends ConsumerState<LinkStudentSheet> {
     _debounce = Timer(_searchDebounce, () {
       if (!mounted) return;
       _search = value;
+      _linkFailed = false;
       _loadStudents();
     });
   }
@@ -94,7 +96,10 @@ class _LinkStudentSheetState extends ConsumerState<LinkStudentSheet> {
   Future<void> _link(StudentModel student) async {
     if (_linkingId != null) return;
 
-    setState(() => _linkingId = student.id);
+    setState(() {
+      _linkingId = student.id;
+      _linkFailed = false;
+    });
 
     try {
       await ref.read(parentRepositoryProvider).linkStudent(
@@ -105,10 +110,10 @@ class _LinkStudentSheetState extends ConsumerState<LinkStudentSheet> {
       Navigator.of(context).pop(true);
     } catch (_) {
       if (!mounted) return;
-      setState(() => _linkingId = null);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.parentsLinkError)),
-      );
+      setState(() {
+        _linkingId = null;
+        _linkFailed = true;
+      });
     }
   }
 
@@ -178,6 +183,46 @@ class _LinkStudentSheetState extends ConsumerState<LinkStudentSheet> {
                         onChanged: _onSearchChanged,
                       ),
                     ),
+                    if (_linkFailed)
+                      Padding(
+                        key: const Key('link-student-error'),
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? AppColors.darkDangerSoft
+                                : AppColors.dangerSoft,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.error_outline_rounded,
+                                size: 16,
+                                color: isDark
+                                    ? AppColors.darkDangerInk
+                                    : AppColors.dangerInk,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n.parentsLinkError,
+                                  style: AppTypography.bodySmall.copyWith(
+                                    color: isDark
+                                        ? AppColors.darkDangerInk
+                                        : AppColors.dangerInk,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     Expanded(child: _buildResults(context, isDark)),
                   ],
                 ),
