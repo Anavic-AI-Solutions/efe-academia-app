@@ -67,6 +67,7 @@ class _FakeClassroomRepository implements ClassroomRepository {
   Object? detailError;
   int getClassroomCalls = 0;
   int getClassroomsCalls = 0;
+  final List<Map<String, Object?>> listCalls = [];
   final List<Map<String, Object>> createCalls = [];
   final List<Map<String, Object>> updateCalls = [];
 
@@ -93,6 +94,14 @@ class _FakeClassroomRepository implements ClassroomRepository {
     String? studentId,
   }) async {
     getClassroomsCalls++;
+    listCalls.add({
+      'search': search,
+      'page': page,
+      'branch': branch,
+      'level': level,
+      'year': year,
+      'status': status,
+    });
     return PageResult.empty(perPage: limit);
   }
 
@@ -563,5 +572,92 @@ void main() {
     expect(find.text('La descripción no es válida'), findsOneWidget);
     expect(find.byType(ClassroomFormScreen), findsOneWidget);
     expect(result, isNull);
+  });
+
+  testWidgets('editing a field dismisses the stale save error banner',
+      (tester) async {
+    final repo = _FakeClassroomRepository()
+      ..createError = ApiException(message: 'boom');
+    await _openForm(tester, repository: repo);
+
+    await tester.enterText(
+      find.byKey(const Key('classroom-form-name')),
+      'A2 A',
+    );
+    await _save(tester);
+
+    expect(find.text('No se pudo guardar'), findsOneWidget);
+
+    await tester.enterText(
+      find.byKey(const Key('classroom-form-description')),
+      'algo',
+    );
+    await tester.pump();
+
+    expect(find.text('No se pudo guardar'), findsNothing);
+    expect(find.byType(ClassroomFormScreen), findsOneWidget);
+  });
+
+  testWidgets('clearing the shift on edit sends an empty value',
+      (tester) async {
+    final repo = await _openForm(tester, classroom: _classroom);
+
+    await _scrollTo(tester, const Key('classroom-form-shift'));
+    await tester.tap(find.byKey(const Key('classroom-form-shift')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Sin turno').last);
+    await tester.pumpAndSettle();
+    await _save(tester);
+
+    expect(repo.updateCalls, hasLength(1));
+    expect(repo.updateCalls.single['shift'], '');
+  });
+
+  testWidgets('numeric day fields keep only digits', (tester) async {
+    await _openForm(tester, classroom: _classroom);
+
+    const key = Key('classroom-form-course-days');
+    await _scrollTo(tester, key);
+    await tester.enterText(find.byKey(key), '12a3-b');
+    await tester.pump();
+
+    final field = tester.widget<TextFormField>(find.byKey(key));
+    expect(field.controller?.text, '123');
+  });
+
+  testWidgets('edit refreshes the list keeping search, filters and page',
+      (tester) async {
+    final repo = _FakeClassroomRepository(classroom: _classroom);
+    final container = ProviderContainer(
+      overrides: [
+        classroomRepositoryProvider.overrideWithValue(repo),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    final notifier = container.read(classroomListProvider.notifier);
+    await notifier.applyFilters(branch: 'Reconquista', status: 'active');
+    await notifier.search('A2');
+    repo.listCalls.clear();
+
+    await _openForm(
+      tester,
+      classroom: _classroom,
+      repository: repo,
+      container: container,
+    );
+    await _save(tester);
+
+    expect(repo.updateCalls, hasLength(1));
+    expect(repo.listCalls, isNotEmpty);
+    expect(repo.listCalls.last['search'], 'A2');
+    expect(repo.listCalls.last['branch'], 'Reconquista');
+    expect(repo.listCalls.last['status'], 'active');
+
+    final state = container.read(classroomListProvider);
+    expect(state.search, 'A2');
+    expect(state.branch, 'Reconquista');
+    expect(state.status, 'active');
+    expect(state.page.page, 1);
   });
 }

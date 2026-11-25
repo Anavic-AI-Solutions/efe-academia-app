@@ -137,6 +137,7 @@
   "classroomsStatusActive": "Active",
   "classroomsStatusInactive": "Inactive",
   "classroomsStatusArchived": "Archived",
+  "classroomsShiftNone": "No shift",
   "classroomsShiftMorning": "Morning",
   "classroomsShiftAfternoon": "Afternoon",
   "classroomsShiftNight": "Night",

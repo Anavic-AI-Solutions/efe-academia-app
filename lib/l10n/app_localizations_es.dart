@@ -456,7 +456,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get classroomsStatusInactive => 'Inactiva';
 
   @override
-  String get classroomsStatusArchived => 'Archivado';
+  String get classroomsStatusArchived => 'Archivada';
+
+  @override
+  String get classroomsShiftNone => 'Sin turno';
 
   @override
   String get classroomsShiftMorning => 'Mañana';
@@ -2200,7 +2203,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get historyLoadError => 'No se pudo cargar el historial';
 
   @override
-  String get historyArchivedBadge => 'Archivado';
+  String get historyArchivedBadge => 'Archivada';
 
   @override
   String get historyChooseChild => 'Elegí un hijo para ver su historial';

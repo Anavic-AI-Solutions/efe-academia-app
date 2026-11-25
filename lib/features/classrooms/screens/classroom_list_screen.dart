@@ -184,7 +184,12 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
               ),
             ),
           Expanded(
-            child: _buildBody(listState, isProf: isProf, isParent: isParent),
+            child: _buildBody(
+              listState,
+              isProf: isProf,
+              isParent: isParent,
+              canManageClassrooms: canManageClassrooms,
+            ),
           ),
         ],
       ),
@@ -223,8 +228,12 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
     );
   }
 
-  Widget _buildBody(ClassroomListState state,
-      {required bool isProf, bool isParent = false}) {
+  Widget _buildBody(
+    ClassroomListState state, {
+    required bool isProf,
+    bool isParent = false,
+    bool canManageClassrooms = false,
+  }) {
     final l10n = context.l10n;
 
     if (isParent && state.studentId == null) {
@@ -292,14 +301,20 @@ class _ClassroomListScreenState extends ConsumerState<ClassroomListScreen> {
             ),
           ),
         ),
-        PaginationBar(
-          page: state.page.page,
-          totalPages: state.page.totalPages,
-          from: state.page.firstItem,
-          to: state.page.lastItem,
-          total: state.page.total,
-          enabled: !state.isLoading,
-          onPageChanged: _goToPage,
+        // Reserve room for the create FAB so it never covers the next arrow.
+        Padding(
+          padding: EdgeInsets.only(
+            right: canManageClassrooms ? 64 : 0,
+          ),
+          child: PaginationBar(
+            page: state.page.page,
+            totalPages: state.page.totalPages,
+            from: state.page.firstItem,
+            to: state.page.lastItem,
+            total: state.page.total,
+            enabled: !state.isLoading,
+            onPageChanged: _goToPage,
+          ),
         ),
       ],
     );

@@ -456,6 +456,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsStatusArchived => 'Archived';
 
   @override
+  String get classroomsShiftNone => 'No shift';
+
+  @override
   String get classroomsShiftMorning => 'Morning';
 
   @override

@@ -22,7 +22,8 @@ class ProfessorClassroomListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = context.l10n;
-    final status = classroom.status.toLowerCase();
+    final status =
+        classroom.isArchived ? 'archived' : classroom.status.toLowerCase();
     final schedule = [
       if (classroom.shift.isNotEmpty)
         classroomShiftLabel(classroom.shift, l10n),

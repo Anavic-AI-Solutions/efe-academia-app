@@ -1,4 +1,5 @@
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/status_badge.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
@@ -65,17 +66,23 @@ class _FakeClassroomRepository implements ClassroomRepository {
     this.classroom = _classroom,
     this.failArchive = false,
     this.failDelete = false,
+    this.total = 1,
   });
 
   ClassroomModel classroom;
   final bool failArchive;
   final bool failDelete;
+  final int total;
 
   int getClassroomsCalls = 0;
   int getClassroomCalls = 0;
   int setArchivedCalls = 0;
   int deleteCalls = 0;
   bool? lastArchived;
+  final List<Map<String, Object?>> listCalls = [];
+
+  int? get lastPage =>
+      listCalls.isEmpty ? null : listCalls.last['page'] as int?;
 
   @override
   Future<PageResult<ClassroomModel>> getClassrooms({
@@ -89,11 +96,30 @@ class _FakeClassroomRepository implements ClassroomRepository {
     String? studentId,
   }) async {
     getClassroomsCalls++;
+    listCalls.add({
+      'search': search,
+      'page': page,
+      'branch': branch,
+      'level': level,
+      'year': year,
+      'status': status,
+    });
+    if (total == 0) return PageResult.empty(perPage: limit);
+    final offset = (page - 1) * limit;
+    final count = (total - offset).clamp(0, limit);
     return PageResult(
-      data: [classroom],
+      data: List.generate(
+        count,
+        (i) => page == 1 && i == 0
+            ? classroom
+            : ClassroomModel(
+                id: 'room-${offset + i + 1}',
+                name: 'Aula ${offset + i + 1}',
+              ),
+      ),
       page: page,
       perPage: limit,
-      total: 1,
+      total: total,
     );
   }
 
@@ -412,6 +438,25 @@ void main() {
       expect(find.byType(ClassroomListScreen), findsOneWidget);
       expect(repository.getClassroomsCalls, greaterThan(callsBefore));
     });
+
+    testWidgets(
+        'staff pages forward with the next arrow without triggering the FAB',
+        (tester) async {
+      final repository = _FakeClassroomRepository(total: 57);
+      await _pumpList(tester, repository);
+
+      expect(find.byKey(const Key('classroom-list-fab')), findsOneWidget);
+      expect(find.text('Mostrando 1–20 de 57'), findsOneWidget);
+
+      // The FAB sits over the bottom-right corner; the next arrow must stay
+      // tappable instead of being swallowed by the FAB.
+      await tester.tap(find.byTooltip('Página siguiente'));
+      await tester.pumpAndSettle();
+
+      expect(repository.lastPage, 2);
+      expect(find.text('Mostrando 21–40 de 57'), findsOneWidget);
+      expect(find.text('formulario nueva clase'), findsNothing);
+    });
   });
 
   group('Detail staff menu', () {
@@ -532,6 +577,45 @@ void main() {
       expect(find.text('Desarchivar clase'), findsOneWidget);
     });
 
+    testWidgets('archive refreshes the list keeping search, filters and page',
+        (tester) async {
+      final repository = _FakeClassroomRepository(total: 57);
+      final container = await _pumpDetail(tester, repository);
+
+      final notifier = container.read(classroomListProvider.notifier);
+      await notifier.applyFilters(branch: 'Reconquista', status: 'active');
+      await notifier.search('A2');
+      await notifier.goToPage(2);
+      repository.listCalls.clear();
+
+      await _openMenu(tester);
+      await tester.tap(find.text('Archivar clase'));
+      await tester.pumpAndSettle();
+
+      expect(repository.setArchivedCalls, 1);
+      expect(repository.listCalls, isNotEmpty);
+      expect(repository.listCalls.last['search'], 'A2');
+      expect(repository.listCalls.last['branch'], 'Reconquista');
+      expect(repository.listCalls.last['status'], 'active');
+      expect(repository.listCalls.last['page'], 2);
+
+      final state = container.read(classroomListProvider);
+      expect(state.search, 'A2');
+      expect(state.branch, 'Reconquista');
+      expect(state.status, 'active');
+      expect(state.page.page, 2);
+    });
+
+    testWidgets('staff actions trigger is at least 48 dp', (tester) async {
+      await _pumpDetail(tester, _FakeClassroomRepository(), role: 'admin');
+
+      final size = tester.getSize(
+        find.byKey(const Key('classroom-detail-actions')),
+      );
+      expect(size.height, greaterThanOrEqualTo(48));
+      expect(size.width, greaterThanOrEqualTo(48));
+    });
+
     testWidgets('unarchive calls setArchived with false', (tester) async {
       final repository = _FakeClassroomRepository(
         classroom: _classroom.copyWith(isArchived: true),
@@ -643,6 +727,26 @@ void main() {
       );
 
       expect(find.text('Mañana · Lunes · 08:00'), findsOneWidget);
+    });
+
+    testWidgets('list card shows the archived badge for archived classrooms',
+        (tester) async {
+      await tester.pumpWidget(
+        localizedApp(
+          home: Scaffold(
+            body: ProfessorClassroomListCard(
+              classroom: _classroom.copyWith(isArchived: true),
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+
+      final badge = tester.widget<StatusBadge>(find.byType(StatusBadge));
+      expect(badge.status, 'archived');
+      expect(badge.label, 'Archivada');
+      expect(find.text('Archivada'), findsOneWidget);
+      expect(find.text('Activa'), findsNothing);
     });
   });
 }

@@ -13,6 +13,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/domain/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../students/providers/student_provider.dart';
 import '../domain/classroom_model.dart';
 import '../providers/classroom_provider.dart';
 import 'widgets/classroom_detail_header.dart';
@@ -183,6 +184,9 @@ class ClassroomStaffMenu extends ConsumerWidget {
         ),
       ],
       child: Container(
+        // Keep the trigger at the 48 dp minimum touch target.
+        constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.16),
@@ -219,6 +223,8 @@ class ClassroomStaffMenu extends ConsumerWidget {
     // rebuilds its subtree, so this widget must not use `ref` afterwards.
     await ref.read(classroomListProvider.notifier).refresh();
     if (!context.mounted) return;
+    ref.invalidate(studentClassroomsProvider);
+    ref.invalidate(classroomFiltersProvider);
     ref.invalidate(classroomDetailProvider(id));
   }
 
@@ -238,7 +244,10 @@ class ClassroomStaffMenu extends ConsumerWidget {
           ),
         ),
       );
-      ref.invalidate(classroomListProvider);
+      // Refresh in place so the active search/filter/page survive.
+      await ref.read(classroomListProvider.notifier).refresh();
+      if (!context.mounted) return;
+      ref.invalidate(studentClassroomsProvider);
       ref.invalidate(classroomDetailProvider(classroom.id));
     } catch (_) {
       if (!context.mounted) return;
@@ -271,6 +280,7 @@ class ClassroomStaffMenu extends ConsumerWidget {
       // the pop and could strand the user on the error view.
       await ref.read(classroomListProvider.notifier).refresh();
       if (!context.mounted) return;
+      ref.invalidate(studentClassroomsProvider);
       Navigator.of(context).pop();
     } catch (_) {
       if (!context.mounted) return;

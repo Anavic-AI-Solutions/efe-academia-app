@@ -917,8 +917,14 @@ abstract class AppLocalizations {
   /// No description provided for @classroomsStatusArchived.
   ///
   /// In es, this message translates to:
-  /// **'Archivado'**
+  /// **'Archivada'**
   String get classroomsStatusArchived;
+
+  /// No description provided for @classroomsShiftNone.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin turno'**
+  String get classroomsShiftNone;
 
   /// No description provided for @classroomsShiftMorning.
   ///
@@ -4127,7 +4133,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyArchivedBadge.
   ///
   /// In es, this message translates to:
-  /// **'Archivado'**
+  /// **'Archivada'**
   String get historyArchivedBadge;
 
   /// No description provided for @historyChooseChild.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -7,6 +8,7 @@ import '../../../core/utils/validators.dart';
 import '../../../core/widgets/entity_form_screen.dart';
 import '../../../core/widgets/section_header.dart';
 import '../../../l10n/l10n.dart';
+import '../../students/providers/student_provider.dart';
 import '../domain/classroom_model.dart';
 import '../providers/classroom_provider.dart';
 
@@ -33,7 +35,8 @@ class ClassroomFormScreen extends ConsumerStatefulWidget {
 
 class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
   static const _statuses = ['active', 'inactive'];
-  static const _shifts = ['morning', 'afternoon', 'night'];
+  // The empty value is the explicit "no shift" option used to clear it.
+  static const _shifts = ['', 'morning', 'afternoon', 'night'];
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -187,9 +190,11 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
   }
 
   void _clearFieldError(String key) {
-    if (!_fieldErrors.containsKey(key)) return;
+    if (!_fieldErrors.containsKey(key) && _error == null) return;
     setState(() {
       _fieldErrors = Map.of(_fieldErrors)..remove(key);
+      // Editing dismisses the stale "could not save" banner too.
+      _error = null;
     });
   }
 
@@ -250,8 +255,13 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
             );
       if (!mounted) return;
       final id = _isEditing ? _editingId! : saved.id;
-      ref.invalidate(classroomListProvider);
+      // Refresh in place so the active search/filter/page survive.
+      await ref.read(classroomListProvider.notifier).refresh();
+      if (!mounted) return;
       ref.invalidate(classroomDetailProvider(id));
+      // Keep cross-feature caches in sync with the new/edited classroom.
+      ref.invalidate(studentClassroomsProvider);
+      ref.invalidate(classroomFiltersProvider);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -336,8 +346,11 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
               label: l10n.classroomsShift,
               value: _shift,
               canonical: _shifts,
-              labelFor: (value) => classroomShiftLabel(value, l10n),
+              labelFor: (value) => value.isEmpty
+                  ? l10n.classroomsShiftNone
+                  : classroomShiftLabel(value, l10n),
               errorKey: 'shift',
+              allowEmpty: true,
               onChanged: (value) => setState(() => _shift = value),
             ),
             SwitchListTile(
@@ -425,6 +438,7 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
               label: l10n.classroomsCourseDays,
               errorKey: 'course_days',
               keyboardType: TextInputType.number,
+              digitsOnly: true,
             ),
             _field(
               key: const Key('classroom-form-period-1-days'),
@@ -432,6 +446,7 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
               label: l10n.classroomsFormPeriod1Days,
               errorKey: 'period_1_days',
               keyboardType: TextInputType.number,
+              digitsOnly: true,
             ),
             _field(
               key: const Key('classroom-form-period-2-days'),
@@ -439,6 +454,7 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
               label: l10n.classroomsFormPeriod2Days,
               errorKey: 'period_2_days',
               keyboardType: TextInputType.number,
+              digitsOnly: true,
             ),
             _field(
               key: const Key('classroom-form-period-3-days'),
@@ -446,6 +462,7 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
               label: l10n.classroomsFormPeriod3Days,
               errorKey: 'period_3_days',
               keyboardType: TextInputType.number,
+              digitsOnly: true,
             ),
           ],
         ],
@@ -460,6 +477,7 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
     required String errorKey,
     bool isRequired = false,
     TextInputType? keyboardType,
+    bool digitsOnly = false,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -467,6 +485,8 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
         key: key,
         controller: controller,
         keyboardType: keyboardType,
+        inputFormatters:
+            digitsOnly ? [FilteringTextInputFormatter.digitsOnly] : null,
         textInputAction: TextInputAction.next,
         validator: (value) {
           if (isRequired) {
@@ -493,13 +513,14 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
     required String Function(String) labelFor,
     required String errorKey,
     required ValueChanged<String> onChanged,
+    bool allowEmpty = false,
   }) {
     final options = _optionsWithCurrent(canonical, value);
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: DropdownButtonFormField<String>(
         key: key,
-        initialValue: value.isEmpty ? null : value,
+        initialValue: allowEmpty ? value : (value.isEmpty ? null : value),
         isExpanded: true,
         decoration: InputDecoration(labelText: label),
         items: [

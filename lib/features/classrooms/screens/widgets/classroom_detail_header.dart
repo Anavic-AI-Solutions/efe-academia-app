@@ -29,13 +29,14 @@ class ClassroomDetailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final status = classroom.isArchived ? 'archived' : classroom.status;
     return DetailHero(
       leading: const DetailHeroIcon(
         icon: PhosphorIconsRegular.chalkboardTeacher,
       ),
       title: classroom.name,
-      status: classroom.status,
-      statusLabel: classroomStatusLabel(classroom.status, context.l10n),
+      status: status,
+      statusLabel: classroomStatusLabel(status, context.l10n),
       fallbackRoute: '/classrooms',
       chips: [
         if (classroom.branch.isNotEmpty)

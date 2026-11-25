@@ -317,6 +317,19 @@ void main() {
     expect(find.text('3'), findsOneWidget);
   });
 
+  testWidgets('archived classroom shows the archived badge in the hero',
+      (tester) async {
+    await _pumpDetail(
+      tester,
+      _FakeClassroomRepository(
+        classroom: _classroom.copyWith(isArchived: true),
+      ),
+    );
+
+    expect(find.text('Archivada'), findsOneWidget);
+    expect(find.text('Activa'), findsNothing);
+  });
+
   testWidgets('shows the error view when the classroom fails to load',
       (tester) async {
     await _pumpDetail(tester, _FakeClassroomRepository(fails: true));

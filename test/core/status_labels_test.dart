@@ -46,7 +46,7 @@ void main() {
       () {
     expect(classroomStatusLabel('active', es), 'Activa');
     expect(classroomStatusLabel('inactive', es), 'Inactiva');
-    expect(classroomStatusLabel('archived', es), 'Archivado');
+    expect(classroomStatusLabel('archived', es), 'Archivada');
     expect(classroomStatusLabel('ACTIVE', en), 'Active');
     expect(classroomStatusLabel('inactive', en), 'Inactive');
     expect(classroomStatusLabel('other', es), 'other');
