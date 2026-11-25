@@ -13,12 +13,16 @@ class ProfessorModel with _$ProfessorModel {
     @Default('') String identityNumber,
     @Default('') String bio,
     @Default('') String specialty,
+    @Default(0) int classroomCount,
   }) = _ProfessorModel;
 
   factory ProfessorModel.fromJson(Map<String, dynamic> json) {
     final attrs = json['attributes'] as Map<String, dynamic>? ??
         json['data']?['attributes'] as Map<String, dynamic>? ??
         json;
+    final relationships = json['relationships'] as Map<String, dynamic>? ??
+        json['data']?['relationships'] as Map<String, dynamic>?;
+    final classrooms = relationships?['classrooms']?['data'] as List<dynamic>?;
     return ProfessorModel(
       id: json['data']?['id']?.toString() ??
           json['id']?.toString() ??
@@ -31,6 +35,7 @@ class ProfessorModel with _$ProfessorModel {
       identityNumber: attrs['identity_number'] ?? '',
       bio: attrs['bio'] ?? '',
       specialty: attrs['specialty'] ?? '',
+      classroomCount: classrooms?.length ?? 0,
     );
   }
 }
