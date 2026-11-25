@@ -118,7 +118,8 @@ void main() {
     expect(find.text('2 hijos'), findsOneWidget);
   });
 
-  testWidgets('filtering by parent requests asks the repository for type parent',
+  testWidgets(
+      'filtering by parent requests asks the repository for type parent',
       (tester) async {
     final repository = _FakeRequestRepository(
       pages: [

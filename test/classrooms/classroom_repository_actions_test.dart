@@ -417,12 +417,12 @@ void main() {
     });
 
     test('archives and unarchives with the archive flag only', () async {
-      final api = _FakeClassroomApi(
-        responseData: _classroomBody(isArchived: true),
-      );
+      // No body: the endpoint may answer 204 or an empty payload, so the
+      // repository must not try to parse a classroom out of it.
+      final api = _FakeClassroomApi();
       final repository = ClassroomRepository(api);
 
-      final archived = await repository.setArchived('c1', true);
+      await repository.setArchived('c1', true);
       await repository.setArchived('c1', false);
 
       expect(api.calls, hasLength(2));
@@ -430,7 +430,6 @@ void main() {
       expect(api.calls.first.path, '/classrooms/c1');
       expect(api.calls.first.data, {'is_archivated': true});
       expect(api.calls.last.data, {'is_archivated': false});
-      expect(archived.isArchived, isTrue);
     });
 
     test('propagates the 422 ValidationException when creating', () async {

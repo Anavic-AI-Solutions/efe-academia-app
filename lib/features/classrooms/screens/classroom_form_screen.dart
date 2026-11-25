@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_exception.dart';
+import '../../../core/utils/status_labels.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/entity_form_screen.dart';
 import '../../../core/widgets/section_header.dart';
@@ -185,19 +186,6 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
     }
   }
 
-  String _shiftLabel(String value) {
-    switch (value) {
-      case 'morning':
-        return context.l10n.classroomsShiftMorning;
-      case 'afternoon':
-        return context.l10n.classroomsShiftAfternoon;
-      case 'night':
-        return context.l10n.classroomsShiftNight;
-      default:
-        return value;
-    }
-  }
-
   void _clearFieldError(String key) {
     if (!_fieldErrors.containsKey(key)) return;
     setState(() {
@@ -348,7 +336,7 @@ class _ClassroomFormScreenState extends ConsumerState<ClassroomFormScreen> {
               label: l10n.classroomsShift,
               value: _shift,
               canonical: _shifts,
-              labelFor: _shiftLabel,
+              labelFor: (value) => classroomShiftLabel(value, l10n),
               errorKey: 'shift',
               onChanged: (value) => setState(() => _shift = value),
             ),

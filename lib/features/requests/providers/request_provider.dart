@@ -125,7 +125,8 @@ final requestListProvider =
 
 final requestDetailProvider =
     FutureProvider.family<RequestModel, ({RequestKind kind, String id})>(
-  (ref, key) => ref.watch(requestRepositoryProvider).getRequest(key.kind, key.id),
+  (ref, key) =>
+      ref.watch(requestRepositoryProvider).getRequest(key.kind, key.id),
 );
 
 final requestClassroomOptionsProvider =

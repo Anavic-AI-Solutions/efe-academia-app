@@ -73,9 +73,8 @@ class ParentHomeScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final parentHome = data?.parentHome ?? const ParentHomeData();
     final relationsState = ref.watch(relationsProvider);
-    final children = relationsState.relations
-        .where((r) => r.role == 'student')
-        .toList();
+    final children =
+        relationsState.relations.where((r) => r.role == 'student').toList();
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),

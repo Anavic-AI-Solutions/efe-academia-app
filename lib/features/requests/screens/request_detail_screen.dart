@@ -81,9 +81,8 @@ class _RequestDetailScreenState extends ConsumerState<RequestDetailScreen> {
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
               confirmLabel,
-              style: destructive
-                  ? const TextStyle(color: AppColors.error)
-                  : null,
+              style:
+                  destructive ? const TextStyle(color: AppColors.error) : null,
             ),
           ),
         ],
@@ -268,9 +267,8 @@ class _RequestDetailScreenState extends ConsumerState<RequestDetailScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: request.status == 'pending'
-          ? _actions(request, l10n)
-          : null,
+      bottomNavigationBar:
+          request.status == 'pending' ? _actions(request, l10n) : null,
     );
   }
 

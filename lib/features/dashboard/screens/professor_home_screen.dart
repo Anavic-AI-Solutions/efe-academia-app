@@ -63,8 +63,7 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
 
     final data = dashboardState.data;
     final classrooms = data?.classrooms ?? const <ProfessorClassroomSummary>[];
-    final selectedId =
-        _selectedClassroomId ??
+    final selectedId = _selectedClassroomId ??
         (classrooms.isNotEmpty ? classrooms.first.id : null);
 
     return Scaffold(
@@ -154,8 +153,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
-                                  '/classrooms/$selectedId/attendance',
-                                ),
+                                    '/classrooms/$selectedId/attendance',
+                                  ),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -166,8 +165,8 @@ class _ProfessorHomeScreenState extends ConsumerState<ProfessorHomeScreen> {
                           onPressed: selectedId == null
                               ? null
                               : () => context.go(
-                                  '/classrooms/$selectedId/grades',
-                                ),
+                                    '/classrooms/$selectedId/grades',
+                                  ),
                         ),
                       ),
                     ],

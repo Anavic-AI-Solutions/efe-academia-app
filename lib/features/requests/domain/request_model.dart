@@ -101,7 +101,8 @@ class RequestModel {
     final attrs = json['attributes'] as Map<String, dynamic>? ??
         (data is Map ? data['attributes'] as Map<String, dynamic>? : null) ??
         json;
-    final rawId = json['id'] ?? (data is Map ? data['id'] : null) ?? attrs['id'];
+    final rawId =
+        json['id'] ?? (data is Map ? data['id'] : null) ?? attrs['id'];
 
     return RequestModel(
       id: rawId?.toString() ?? '',

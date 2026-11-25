@@ -57,7 +57,7 @@ void main() {
     expect(classroomShiftLabel('morning', es), 'Mañana');
     expect(classroomShiftLabel('afternoon', es), 'Tarde');
     expect(classroomShiftLabel('night', es), 'Noche');
-    expect(classroomShiftLabel('Morning', en), 'Morning');
+    expect(classroomShiftLabel('MORNING', es), 'Mañana');
     expect(classroomShiftLabel('afternoon', en), 'Afternoon');
     expect(classroomShiftLabel('Mañana', es), 'Mañana');
     expect(classroomShiftLabel('', es), '');

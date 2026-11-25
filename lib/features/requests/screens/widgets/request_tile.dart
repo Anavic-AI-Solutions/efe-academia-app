@@ -26,9 +26,8 @@ class RequestTile extends StatelessWidget {
     final kindLabel = request.kind == RequestKind.student
         ? l10n.requestsKindStudent
         : l10n.requestsKindParent;
-    final secondary = request.email.isNotEmpty
-        ? request.email
-        : request.identityNumber;
+    final secondary =
+        request.email.isNotEmpty ? request.email : request.identityNumber;
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 10),

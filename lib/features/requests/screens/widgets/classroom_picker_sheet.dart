@@ -68,9 +68,8 @@ class _ClassroomPickerSheetState extends ConsumerState<ClassroomPickerSheet> {
                     width: 40,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: isDark
-                          ? AppColors.darkBorder
-                          : AppColors.lightBorder,
+                      color:
+                          isDark ? AppColors.darkBorder : AppColors.lightBorder,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
