@@ -41,6 +41,7 @@ class _ParentFormScreenState extends ConsumerState<ParentFormScreen> {
   String _status = 'pending';
   bool _isSaving = false;
   bool _isLoadingParent = false;
+  bool _loadFailed = false;
   String? _error;
   Map<String, String> _fieldErrors = {};
 
@@ -83,6 +84,7 @@ class _ParentFormScreenState extends ConsumerState<ParentFormScreen> {
       if (!mounted) return;
       setState(() {
         _isLoadingParent = false;
+        _loadFailed = true;
         _error = context.l10n.parentsLoadError;
       });
     }
@@ -202,7 +204,7 @@ class _ParentFormScreenState extends ConsumerState<ParentFormScreen> {
             ? l10n.parentsFormEditTitle
             : l10n.parentsFormCreateTitle,
         saveLabel: l10n.commonSave,
-        onSave: _isLoadingParent || _isSaving ? null : _save,
+        onSave: _isLoadingParent || _loadFailed || _isSaving ? null : _save,
         isSaving: _isSaving,
         error: _error,
         children: [

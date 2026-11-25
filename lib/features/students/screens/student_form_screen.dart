@@ -37,6 +37,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
 
   bool _isSaving = false;
   bool _isLoadingStudent = false;
+  bool _loadFailed = false;
   String? _error;
   Map<String, String> _fieldErrors = {};
 
@@ -79,6 +80,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
       if (!mounted) return;
       setState(() {
         _isLoadingStudent = false;
+        _loadFailed = true;
         _error = context.l10n.studentsDetailLoadError;
       });
     }
@@ -189,7 +191,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
             ? l10n.studentsFormEditTitle
             : l10n.studentsFormCreateTitle,
         saveLabel: l10n.commonSave,
-        onSave: _isLoadingStudent || _isSaving ? null : _save,
+        onSave: _isLoadingStudent || _loadFailed || _isSaving ? null : _save,
         isSaving: _isSaving,
         error: _error,
         children: [

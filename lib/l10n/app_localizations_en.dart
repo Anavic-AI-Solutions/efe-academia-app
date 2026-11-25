@@ -728,6 +728,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get studentsReactivated => 'Student reactivated';
 
   @override
+  String get studentsStatusError => 'Could not update the student status';
+
+  @override
   String get studentsDeactivate => 'Deactivate student';
 
   @override

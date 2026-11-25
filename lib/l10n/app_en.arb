@@ -232,6 +232,7 @@
   "studentsUpdated": "Student updated",
   "studentsDeactivated": "Student deactivated",
   "studentsReactivated": "Student reactivated",
+  "studentsStatusError": "Could not update the student status",
   "studentsDeactivate": "Deactivate student",
   "studentsReactivate": "Reactivate student",
   "studentsDeactivateTitle": "Deactivate student",

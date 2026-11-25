@@ -329,6 +329,7 @@
   "studentsUpdated": "Alumno actualizado",
   "studentsDeactivated": "Alumno desactivado",
   "studentsReactivated": "Alumno reactivado",
+  "studentsStatusError": "No se pudo actualizar el estado del alumno",
   "studentsDeactivate": "Desactivar alumno",
   "studentsReactivate": "Reactivar alumno",
   "studentsDeactivateTitle": "Desactivar alumno",

@@ -1,3 +1,4 @@
+import 'package:efe_mobile/core/api/api_exception.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
@@ -68,6 +69,8 @@ class _FakeStudentRepository implements StudentRepository {
   final List<String> reactivated = [];
   int getStudentCalls = 0;
   int getStudentsCalls = 0;
+  Object? deactivateError;
+  Object? reactivateError;
 
   @override
   Future<StudentModel> getStudent(String id) async {
@@ -78,11 +81,15 @@ class _FakeStudentRepository implements StudentRepository {
   @override
   Future<void> deactivateStudent(String id) async {
     deactivated.add(id);
+    final error = deactivateError;
+    if (error != null) throw error;
   }
 
   @override
   Future<void> reactivateStudent(String id) async {
     reactivated.add(id);
+    final error = reactivateError;
+    if (error != null) throw error;
   }
 
   @override
@@ -209,6 +216,16 @@ const _inactiveStudent = StudentModel(
   status: 'inactive',
 );
 
+const _unknownStatusStudent = StudentModel(
+  id: 's1',
+  fullname: 'Ana Gómez',
+  email: 'ana@example.com',
+  year: '2026',
+  branch: 'Reconquista',
+  identityNumber: '30111222',
+  status: 'suspended',
+);
+
 Future<void> _pumpList(WidgetTester tester, String role) async {
   await tester.pumpWidget(
     ProviderScope(
@@ -247,6 +264,16 @@ Future<_FakeStudentRepository> _pumpDetail(
 
 Future<void> _openActions(WidgetTester tester) async {
   await tester.tap(find.byKey(const Key('student-detail-actions')));
+  await tester.pumpAndSettle();
+}
+
+/// Initializes the list provider and waits for its load so the tests can
+/// assert the exact number of `getStudents` calls triggered by an action.
+Future<void> _primeStudentList(WidgetTester tester) async {
+  final container = ProviderScope.containerOf(
+    tester.element(find.byType(StudentDetailScreen)),
+  );
+  await container.read(studentListProvider.notifier).refresh();
   await tester.pumpAndSettle();
 }
 
@@ -323,6 +350,21 @@ void main() {
     expect(find.text('Desactivar alumno'), findsNothing);
   });
 
+  testWidgets('staff menu offers deactivate for an unknown status',
+      (tester) async {
+    await _pumpDetail(
+      tester,
+      role: 'admin',
+      student: _unknownStatusStudent,
+    );
+
+    await _openActions(tester);
+
+    expect(find.text('Editar alumno'), findsOneWidget);
+    expect(find.text('Desactivar alumno'), findsOneWidget);
+    expect(find.text('Reactivar alumno'), findsNothing);
+  });
+
   testWidgets(
       'deactivating asks for confirmation, calls the repo and refreshes',
       (tester) async {
@@ -331,7 +373,9 @@ void main() {
       role: 'admin',
       student: _activeStudent,
     );
+    await _primeStudentList(tester);
     final detailCallsBefore = repository.getStudentCalls;
+    final listCallsBefore = repository.getStudentsCalls;
 
     await _openActions(tester);
     await tester.tap(find.text('Desactivar alumno'));
@@ -348,9 +392,29 @@ void main() {
 
     expect(repository.deactivated, ['s1']);
     expect(repository.reactivated, isEmpty);
-    expect(repository.getStudentsCalls, greaterThan(0));
+    expect(repository.getStudentsCalls, listCallsBefore + 1);
     expect(repository.getStudentCalls, greaterThan(detailCallsBefore));
     expect(find.text('Alumno desactivado'), findsOneWidget);
+  });
+
+  testWidgets('deactivation failures report the status error', (tester) async {
+    final repository = await _pumpDetail(
+      tester,
+      role: 'admin',
+      student: _activeStudent,
+    );
+    repository.deactivateError = ApiException(message: 'boom');
+
+    await _openActions(tester);
+    await tester.tap(find.text('Desactivar alumno'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Desactivar alumno').last);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('No se pudo actualizar el estado del alumno'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('cancelling the confirmation leaves the student untouched',
@@ -360,6 +424,8 @@ void main() {
       role: 'admin',
       student: _activeStudent,
     );
+    await _primeStudentList(tester);
+    final listCallsBefore = repository.getStudentsCalls;
 
     await _openActions(tester);
     await tester.tap(find.text('Desactivar alumno'));
@@ -369,7 +435,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(repository.deactivated, isEmpty);
-    expect(repository.getStudentsCalls, 0);
+    expect(repository.getStudentsCalls, listCallsBefore);
   });
 
   testWidgets('reactivating calls the repo without confirmation and refreshes',
@@ -379,7 +445,9 @@ void main() {
       role: 'branch',
       student: _inactiveStudent,
     );
+    await _primeStudentList(tester);
     final detailCallsBefore = repository.getStudentCalls;
+    final listCallsBefore = repository.getStudentsCalls;
 
     await _openActions(tester);
     await tester.tap(find.text('Reactivar alumno'));
@@ -387,8 +455,26 @@ void main() {
 
     expect(repository.reactivated, ['s1']);
     expect(repository.deactivated, isEmpty);
-    expect(repository.getStudentsCalls, greaterThan(0));
+    expect(repository.getStudentsCalls, listCallsBefore + 1);
     expect(repository.getStudentCalls, greaterThan(detailCallsBefore));
     expect(find.text('Alumno reactivado'), findsOneWidget);
+  });
+
+  testWidgets('reactivation failures report the status error', (tester) async {
+    final repository = await _pumpDetail(
+      tester,
+      role: 'admin',
+      student: _inactiveStudent,
+    );
+    repository.reactivateError = ApiException(message: 'boom');
+
+    await _openActions(tester);
+    await tester.tap(find.text('Reactivar alumno'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('No se pudo actualizar el estado del alumno'),
+      findsOneWidget,
+    );
   });
 }

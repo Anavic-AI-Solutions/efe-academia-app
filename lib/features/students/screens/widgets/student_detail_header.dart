@@ -59,7 +59,7 @@ class StudentDetailActions extends ConsumerWidget {
 
   const StudentDetailActions({super.key, required this.student});
 
-  bool get _isActive => student.status.toLowerCase() == 'active';
+  bool get _isInactive => student.status.toLowerCase() == 'inactive';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -87,7 +87,7 @@ class StudentDetailActions extends ConsumerWidget {
           PopupMenuItem(
             value: _StudentAction.toggle,
             child: Text(
-              _isActive ? l10n.studentsDeactivate : l10n.studentsReactivate,
+              _isInactive ? l10n.studentsReactivate : l10n.studentsDeactivate,
             ),
           ),
         ],
@@ -130,7 +130,7 @@ class StudentDetailActions extends ConsumerWidget {
 
   Future<void> _toggle(BuildContext context, WidgetRef ref) async {
     final l10n = context.l10n;
-    final deactivating = _isActive;
+    final deactivating = !_isInactive;
 
     if (deactivating) {
       final confirmed = await showConfirmDialog(
@@ -164,7 +164,7 @@ class StudentDetailActions extends ConsumerWidget {
     } catch (_) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.commonSaveError)),
+        SnackBar(content: Text(l10n.studentsStatusError)),
       );
     }
   }

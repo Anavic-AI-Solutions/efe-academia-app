@@ -1406,6 +1406,12 @@ abstract class AppLocalizations {
   /// **'Alumno reactivado'**
   String get studentsReactivated;
 
+  /// No description provided for @studentsStatusError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo actualizar el estado del alumno'**
+  String get studentsStatusError;
+
   /// No description provided for @studentsDeactivate.
   ///
   /// In es, this message translates to:

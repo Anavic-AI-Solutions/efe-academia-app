@@ -1,5 +1,6 @@
 import 'package:efe_mobile/core/api/api_exception.dart';
 import 'package:efe_mobile/core/api/cursor_pagination.dart';
+import 'package:efe_mobile/core/widgets/pill_button.dart';
 import 'package:efe_mobile/features/auth/data/auth_repository.dart';
 import 'package:efe_mobile/features/auth/domain/user_model.dart';
 import 'package:efe_mobile/features/auth/providers/auth_provider.dart';
@@ -712,6 +713,25 @@ void main() {
       await _save(tester);
 
       expect(repo.updateCalls.single['id'], 'p1');
+    });
+
+    testWidgets('disables save when the professor detail fails to load',
+        (tester) async {
+      final repo = _FakeProfessorRepository()
+        ..detailError = ApiException(message: 'gone', statusCode: 404);
+      await _openForm(
+        tester,
+        professorId: 'p1',
+        repository: repo,
+      );
+
+      expect(find.text('No se pudieron cargar los profesores'), findsOneWidget);
+
+      final save = tester.widget<PillButton>(
+        find.byKey(const ValueKey('entity-form-save')),
+      );
+      expect(save.onPressed, isNull);
+      expect(repo.updateCalls, isEmpty);
     });
 
     testWidgets('maps 422 field errors to the matching fields', (tester) async {

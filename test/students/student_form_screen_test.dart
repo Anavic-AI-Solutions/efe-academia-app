@@ -1,5 +1,6 @@
 import 'package:efe_mobile/core/api/api_exception.dart';
 import 'package:efe_mobile/core/api/page_pagination.dart';
+import 'package:efe_mobile/core/widgets/pill_button.dart';
 import 'package:efe_mobile/features/classrooms/domain/classroom_model.dart';
 import 'package:efe_mobile/features/students/data/student_repository.dart';
 import 'package:efe_mobile/features/students/domain/student_model.dart';
@@ -18,6 +19,7 @@ class _FakeStudentRepository implements StudentRepository {
   StudentModel? student;
   ApiException? createError;
   ApiException? updateError;
+  Object? detailError;
   int getStudentCalls = 0;
   final List<Map<String, String>> createCalls = [];
   final List<Map<String, Object>> updateCalls = [];
@@ -25,6 +27,8 @@ class _FakeStudentRepository implements StudentRepository {
   @override
   Future<StudentModel> getStudent(String id) async {
     getStudentCalls++;
+    final error = detailError;
+    if (error != null) throw error;
     return student!;
   }
 
@@ -300,6 +304,21 @@ void main() {
     await _save(tester);
 
     expect(repo.updateCalls.single['id'], 's1');
+  });
+
+  testWidgets('disables save when the student detail fails to load',
+      (tester) async {
+    final repo = _FakeStudentRepository()
+      ..detailError = ApiException(message: 'gone', statusCode: 404);
+    await _openForm(tester, studentId: 's1', repository: repo);
+
+    expect(find.text('No se pudo cargar el estudiante'), findsOneWidget);
+
+    final save = tester.widget<PillButton>(
+      find.byKey(const ValueKey('entity-form-save')),
+    );
+    expect(save.onPressed, isNull);
+    expect(repo.updateCalls, isEmpty);
   });
 
   testWidgets('maps 422 field errors to the matching fields', (tester) async {
