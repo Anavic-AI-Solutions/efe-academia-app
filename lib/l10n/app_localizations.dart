@@ -1340,6 +1340,12 @@ abstract class AppLocalizations {
   /// **'Desvincular alumno'**
   String get parentsUnlinkTitle;
 
+  /// No description provided for @parentsUnlinkMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'El alumno dejará de estar vinculado, pero no se elimina.'**
+  String get parentsUnlinkMessage;
+
   /// No description provided for @parentsLinkError.
   ///
   /// In es, this message translates to:
@@ -1789,6 +1795,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Rechazado'**
   String get studentsStatusRejected;
+
+  /// No description provided for @studentsStatusActive.
+  ///
+  /// In es, this message translates to:
+  /// **'Activo'**
+  String get studentsStatusActive;
+
+  /// No description provided for @studentsStatusInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'Inactivo'**
+  String get studentsStatusInactive;
 
   /// No description provided for @feesStatusPaid.
   ///

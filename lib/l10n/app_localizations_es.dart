@@ -696,6 +696,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get parentsUnlinkTitle => 'Desvincular alumno';
 
   @override
+  String get parentsUnlinkMessage =>
+      'El alumno dejará de estar vinculado, pero no se elimina.';
+
+  @override
   String get parentsLinkError => 'No se pudo vincular el alumno';
 
   @override
@@ -931,6 +935,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get studentsStatusRejected => 'Rechazado';
+
+  @override
+  String get studentsStatusActive => 'Activo';
+
+  @override
+  String get studentsStatusInactive => 'Inactivo';
 
   @override
   String get feesStatusPaid => 'Pagado';

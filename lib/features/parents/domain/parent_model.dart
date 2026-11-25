@@ -73,10 +73,10 @@ class ParentModel {
           (attrs['identity_number'] ?? attrs['identityNumber'])?.toString() ??
               '',
       status: attrs['status']?.toString() ?? '',
-      currentStudentId: (attrs['current_student_id'] ??
-              attrs['currentStudentId'])
-          ?.toString() ??
-          '',
+      currentStudentId:
+          (attrs['current_student_id'] ?? attrs['currentStudentId'])
+                  ?.toString() ??
+              '',
       studentIds: _parseStudentIds(students),
       studentCount: students?.length ?? 0,
       media: _parseMedia(attrs['media']),

@@ -390,7 +390,7 @@ void main() {
     );
 
     expect(find.text('Ana Gómez'), findsOneWidget);
-    expect(find.text('active'), findsOneWidget);
+    expect(find.text('Activo'), findsOneWidget);
     expect(find.text('Reconquista'), findsOneWidget);
     expect(find.text('2026'), findsOneWidget);
     expect(find.text('Notas'), findsOneWidget);

@@ -14,6 +14,10 @@ String studentStatusLabel(String status, AppLocalizations l10n) {
       return l10n.studentsStatusPending;
     case 'rejected':
       return l10n.studentsStatusRejected;
+    case 'active':
+      return l10n.studentsStatusActive;
+    case 'inactive':
+      return l10n.studentsStatusInactive;
     default:
       return status;
   }

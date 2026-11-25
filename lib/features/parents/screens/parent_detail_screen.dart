@@ -18,6 +18,7 @@ import '../../../l10n/l10n.dart';
 import '../../auth/domain/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../students/domain/student_model.dart';
+import '../../students/providers/student_provider.dart';
 import '../domain/parent_model.dart';
 import '../providers/parent_provider.dart';
 import 'widgets/link_student_sheet.dart';
@@ -232,6 +233,7 @@ class ParentDetailActions extends ConsumerWidget {
     );
     if (result != true || !context.mounted) return;
     ref.invalidate(parentDetailProvider(parent.id));
+    ref.invalidate(studentParentsProvider);
     await ref.read(parentListProvider.notifier).refresh();
   }
 
@@ -256,6 +258,7 @@ class ParentDetailActions extends ConsumerWidget {
       // Refresh the list before popping: the detail is leaving the tree, so
       // re-fetching the just-deleted parent would only race a 404 against the
       // pop and could strand the user on the error view.
+      ref.invalidate(studentParentsProvider);
       await ref.read(parentListProvider.notifier).refresh();
       if (!context.mounted) return;
       Navigator.of(context).pop();
@@ -298,7 +301,9 @@ class _ParentLinkedStudentsSectionState
 
     ref.invalidate(parentStudentsProvider(widget.parentId));
     ref.invalidate(parentDetailProvider(widget.parentId));
-    ref.invalidate(parentListProvider);
+    ref.invalidate(studentParentsProvider);
+    await ref.read(parentListProvider.notifier).refresh();
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.parentsLinked)),
     );
@@ -311,7 +316,7 @@ class _ParentLinkedStudentsSectionState
     final confirmed = await showConfirmDialog(
       context,
       title: l10n.parentsUnlinkTitle,
-      message: l10n.commonDeleteMessage,
+      message: l10n.parentsUnlinkMessage,
       confirmLabel: l10n.parentsUnlink,
       cancelLabel: l10n.commonCancel,
       destructive: true,
@@ -328,7 +333,9 @@ class _ParentLinkedStudentsSectionState
       setState(() => _unlinkingId = null);
       ref.invalidate(parentStudentsProvider(widget.parentId));
       ref.invalidate(parentDetailProvider(widget.parentId));
-      ref.invalidate(parentListProvider);
+      ref.invalidate(studentParentsProvider);
+      await ref.read(parentListProvider.notifier).refresh();
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.parentsUnlinked)),
       );

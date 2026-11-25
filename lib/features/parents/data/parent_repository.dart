@@ -104,8 +104,7 @@ class ParentRepository {
           cursor: cursor,
           limit: _studentPageSize,
         );
-        final result =
-            _parseCursorPage(response.data, StudentModel.fromJson);
+        final result = _parseCursorPage(response.data, StudentModel.fromJson);
         students.addAll(result.data);
 
         final nextCursor = result.nextCursor;
@@ -155,10 +154,7 @@ class ParentRepository {
         : const <String, dynamic>{};
 
     return CursorPagination<T>(
-      data: rawItems
-          .whereType<Map<String, dynamic>>()
-          .map(parse)
-          .toList(),
+      data: rawItems.whereType<Map<String, dynamic>>().map(parse).toList(),
       nextCursor: meta['cursor']?.toString(),
       hasMore: meta['has_more'] == true,
       total: (meta['total'] as num?)?.toInt(),

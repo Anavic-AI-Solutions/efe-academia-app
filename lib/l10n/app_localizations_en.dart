@@ -695,6 +695,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get parentsUnlinkTitle => 'Unlink student';
 
   @override
+  String get parentsUnlinkMessage =>
+      'The student will be unlinked but not deleted.';
+
+  @override
   String get parentsLinkError => 'Could not link the student';
 
   @override
@@ -927,6 +931,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get studentsStatusRejected => 'Rejected';
+
+  @override
+  String get studentsStatusActive => 'Active';
+
+  @override
+  String get studentsStatusInactive => 'Inactive';
 
   @override
   String get feesStatusPaid => 'Paid';

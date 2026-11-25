@@ -137,9 +137,31 @@ class _ProfessorListScreenState extends ConsumerState<ProfessorListScreen> {
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-        itemCount: state.data.length + (state.hasMore ? 1 : 0),
+        itemCount: state.data.length +
+            ((state.hasMore || state.error != null) ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= state.data.length) {
+            if (state.error != null) {
+              return Padding(
+                key: const Key('professor-list-load-more-error'),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  children: [
+                    Text(
+                      l10n.professorsLoadError,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: AppColors.error),
+                    ),
+                    TextButton(
+                      onPressed: () => state.hasMore
+                          ? ref.read(professorListProvider.notifier).loadMore()
+                          : ref.read(professorListProvider.notifier).refresh(),
+                      child: Text(l10n.commonRetry),
+                    ),
+                  ],
+                ),
+              );
+            }
             return const Padding(
               key: Key('professor-list-load-more'),
               padding: EdgeInsets.symmetric(vertical: 20),

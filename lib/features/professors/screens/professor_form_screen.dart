@@ -6,6 +6,7 @@ import '../../../core/utils/validators.dart';
 import '../../../core/widgets/entity_form_screen.dart';
 import '../../../l10n/l10n.dart';
 import '../../classrooms/domain/professor_model.dart';
+import '../../classrooms/providers/classroom_provider.dart';
 import '../providers/professor_provider.dart';
 
 /// Full screen create/edit form for professors.
@@ -168,6 +169,7 @@ class _ProfessorFormScreenState extends ConsumerState<ProfessorFormScreen> {
         );
       }
       if (!mounted) return;
+      ref.invalidate(classroomProfessorsProvider);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(

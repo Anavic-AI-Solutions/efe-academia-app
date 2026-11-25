@@ -17,7 +17,11 @@ void main() {
     expect(studentStatusLabel('PENDING', es), 'Pendiente');
     expect(studentStatusLabel('rejected', es), 'Rechazado');
     expect(studentStatusLabel('approved', en), 'Approved');
-    expect(studentStatusLabel('active', es), 'active'); // desconocido → crudo
+    expect(studentStatusLabel('active', es), 'Activo');
+    expect(studentStatusLabel('inactive', es), 'Inactivo');
+    expect(studentStatusLabel('active', en), 'Active');
+    expect(
+        studentStatusLabel('archived', es), 'archived'); // desconocido → crudo
     expect(studentStatusLabel('', es), '');
   });
 

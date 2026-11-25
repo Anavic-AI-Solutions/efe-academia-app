@@ -369,7 +369,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Desvincular alumno'), findsOneWidget);
-      expect(find.text('Esta acción no se puede deshacer.'), findsOneWidget);
+      expect(
+        find.text('El alumno dejará de estar vinculado, pero no se elimina.'),
+        findsOneWidget,
+      );
 
       await tester.tap(find.text('Cancelar'));
       await tester.pumpAndSettle();

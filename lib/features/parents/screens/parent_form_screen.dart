@@ -5,6 +5,7 @@ import '../../../core/api/api_exception.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/entity_form_screen.dart';
 import '../../../l10n/l10n.dart';
+import '../../students/providers/student_provider.dart';
 import '../domain/parent_model.dart';
 import '../providers/parent_provider.dart';
 import 'widgets/parent_card.dart';
@@ -162,6 +163,7 @@ class _ParentFormScreenState extends ConsumerState<ParentFormScreen> {
         );
       }
       if (!mounted) return;
+      ref.invalidate(studentParentsProvider);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(

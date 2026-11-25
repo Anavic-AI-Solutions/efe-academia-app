@@ -23,8 +23,8 @@ final parentRepositoryProvider = Provider<ParentRepository>((ref) {
 // List Provider
 // ---------------------------------------------------------------------------
 
-final parentListProvider = StateNotifierProvider<CursorListNotifier<ParentModel>,
-    CursorListState<ParentModel>>((ref) {
+final parentListProvider = StateNotifierProvider<
+    CursorListNotifier<ParentModel>, CursorListState<ParentModel>>((ref) {
   final repository = ref.watch(parentRepositoryProvider);
   return CursorListNotifier<ParentModel>(
     ({String? cursor, String search = ''}) =>

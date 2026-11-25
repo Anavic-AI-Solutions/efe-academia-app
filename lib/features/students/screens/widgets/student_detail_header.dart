@@ -8,6 +8,7 @@ import '../../../../core/widgets/avatar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/detail_hero.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../classrooms/providers/classroom_provider.dart';
 import '../../domain/student_model.dart';
 import '../../providers/student_provider.dart';
 
@@ -125,6 +126,7 @@ class StudentDetailActions extends ConsumerWidget {
     final result = await context.push<bool>('/students/${student.id}/edit');
     if (result != true || !context.mounted) return;
     ref.invalidate(studentDetailProvider(student.id));
+    ref.invalidate(classroomStudentsProvider);
     await ref.read(studentListProvider.notifier).refresh();
   }
 
@@ -160,6 +162,7 @@ class StudentDetailActions extends ConsumerWidget {
         ),
       );
       ref.invalidate(studentDetailProvider(student.id));
+      ref.invalidate(classroomStudentsProvider);
       await ref.read(studentListProvider.notifier).refresh();
     } catch (_) {
       if (!context.mounted) return;

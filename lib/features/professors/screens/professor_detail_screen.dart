@@ -17,6 +17,7 @@ import '../../../l10n/l10n.dart';
 import '../../auth/domain/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../classrooms/domain/professor_model.dart';
+import '../../classrooms/providers/classroom_provider.dart';
 import '../providers/professor_provider.dart';
 
 class ProfessorDetailScreen extends ConsumerWidget {
@@ -235,6 +236,7 @@ class ProfessorDetailActions extends ConsumerWidget {
     );
     if (result != true || !context.mounted) return;
     ref.invalidate(professorDetailProvider(professor.id));
+    ref.invalidate(classroomProfessorsProvider);
     await ref.read(professorListProvider.notifier).refresh();
   }
 
@@ -261,6 +263,7 @@ class ProfessorDetailActions extends ConsumerWidget {
       // Refresh the list before popping: the detail is leaving the tree, so
       // re-fetching the just-deleted professor would only race a 404 against
       // the pop and could strand the user on the error view.
+      ref.invalidate(classroomProfessorsProvider);
       await ref.read(professorListProvider.notifier).refresh();
       if (!context.mounted) return;
       Navigator.of(context).pop();

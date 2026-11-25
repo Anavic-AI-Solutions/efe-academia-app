@@ -254,8 +254,7 @@ class _FakeParentApi implements ParentApi {
       );
 
   @override
-  Future<Response> unlinkStudent(String parentId, String studentId) =>
-      _resolve(
+  Future<Response> unlinkStudent(String parentId, String studentId) => _resolve(
         _Call(
           'DELETE',
           '/parents/$parentId/unlink-student/$studentId',
@@ -792,8 +791,7 @@ void main() {
       );
     });
 
-    test('stops after five pages even when the backend keeps paging',
-        () async {
+    test('stops after five pages even when the backend keeps paging', () async {
       final api = _FakeParentApi(
         studentPages: {
           null: _page(

@@ -61,7 +61,7 @@ class ManagementHubScreen extends ConsumerWidget {
             ),
             _HubLink(
               label: l10n.managementProfessors,
-              icon: PhosphorIconsRegular.chalkboardTeacher,
+              icon: PhosphorIconsRegular.userGear,
               route: '/professors',
             ),
             _HubLink(
