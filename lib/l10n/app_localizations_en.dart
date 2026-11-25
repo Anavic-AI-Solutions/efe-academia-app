@@ -450,7 +450,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classroomsStatusActive => 'Active';
 
   @override
+  String get classroomsStatusInactive => 'Inactive';
+
+  @override
   String get classroomsStatusArchived => 'Archived';
+
+  @override
+  String get classroomsShiftMorning => 'Morning';
+
+  @override
+  String get classroomsShiftAfternoon => 'Afternoon';
+
+  @override
+  String get classroomsShiftNight => 'Night';
 
   @override
   String get classroomsFiltersLoadError => 'Could not load filters';
@@ -515,6 +527,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classroomsSectionLocation => 'Location';
+
+  @override
+  String get classroomsSectionData => 'Data';
+
+  @override
+  String get classroomsSectionPeriods => 'Periods';
+
+  @override
+  String get classroomsFormCreateTitle => 'New class';
+
+  @override
+  String get classroomsFormEditTitle => 'Edit class';
+
+  @override
+  String get classroomsFormPeriod1Days => 'Period 1 days';
+
+  @override
+  String get classroomsFormPeriod2Days => 'Period 2 days';
+
+  @override
+  String get classroomsFormPeriod3Days => 'Period 3 days';
+
+  @override
+  String get classroomsFormArchived => 'Archived';
+
+  @override
+  String get classroomsCreated => 'Class created';
+
+  @override
+  String get classroomsUpdated => 'Class updated';
 
   @override
   String get classroomsGrade => 'Grade';

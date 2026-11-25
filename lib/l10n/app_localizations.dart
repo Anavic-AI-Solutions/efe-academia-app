@@ -908,11 +908,35 @@ abstract class AppLocalizations {
   /// **'Activo'**
   String get classroomsStatusActive;
 
+  /// No description provided for @classroomsStatusInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'Inactiva'**
+  String get classroomsStatusInactive;
+
   /// No description provided for @classroomsStatusArchived.
   ///
   /// In es, this message translates to:
   /// **'Archivado'**
   String get classroomsStatusArchived;
+
+  /// No description provided for @classroomsShiftMorning.
+  ///
+  /// In es, this message translates to:
+  /// **'Mañana'**
+  String get classroomsShiftMorning;
+
+  /// No description provided for @classroomsShiftAfternoon.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarde'**
+  String get classroomsShiftAfternoon;
+
+  /// No description provided for @classroomsShiftNight.
+  ///
+  /// In es, this message translates to:
+  /// **'Noche'**
+  String get classroomsShiftNight;
 
   /// No description provided for @classroomsFiltersLoadError.
   ///
@@ -1015,6 +1039,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ubicación'**
   String get classroomsSectionLocation;
+
+  /// No description provided for @classroomsSectionData.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos'**
+  String get classroomsSectionData;
+
+  /// No description provided for @classroomsSectionPeriods.
+  ///
+  /// In es, this message translates to:
+  /// **'Períodos'**
+  String get classroomsSectionPeriods;
+
+  /// No description provided for @classroomsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva clase'**
+  String get classroomsFormCreateTitle;
+
+  /// No description provided for @classroomsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar clase'**
+  String get classroomsFormEditTitle;
+
+  /// No description provided for @classroomsFormPeriod1Days.
+  ///
+  /// In es, this message translates to:
+  /// **'Días período 1'**
+  String get classroomsFormPeriod1Days;
+
+  /// No description provided for @classroomsFormPeriod2Days.
+  ///
+  /// In es, this message translates to:
+  /// **'Días período 2'**
+  String get classroomsFormPeriod2Days;
+
+  /// No description provided for @classroomsFormPeriod3Days.
+  ///
+  /// In es, this message translates to:
+  /// **'Días período 3'**
+  String get classroomsFormPeriod3Days;
+
+  /// No description provided for @classroomsFormArchived.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivada'**
+  String get classroomsFormArchived;
+
+  /// No description provided for @classroomsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Clase creada'**
+  String get classroomsCreated;
+
+  /// No description provided for @classroomsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Clase actualizada'**
+  String get classroomsUpdated;
 
   /// No description provided for @classroomsGrade.
   ///

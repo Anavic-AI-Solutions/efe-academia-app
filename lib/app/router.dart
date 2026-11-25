@@ -9,6 +9,7 @@ import '../features/auth/screens/forgot_password_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/classrooms/screens/classroom_list_screen.dart';
 import '../features/classrooms/screens/classroom_detail_screen.dart';
+import '../features/classrooms/screens/classroom_form_screen.dart';
 import '../features/attendance/screens/attendance_screen.dart';
 import '../features/qualifications/screens/classroom_grades_screen.dart';
 import '../features/qualifications/screens/student_boletin_screen.dart';
@@ -291,6 +292,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                 builder: (context, state) => const ClassroomListScreen(),
                 routes: [
                   GoRoute(
+                    path: 'new',
+                    builder: (context, state) => const ClassroomFormScreen(),
+                  ),
+                  GoRoute(
                     path: ':id',
                     builder: (context, state) => ClassroomDetailScreen(
                       classroomId: state.pathParameters['id']!,
@@ -305,6 +310,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                       GoRoute(
                         path: 'grades',
                         builder: (context, state) => ClassroomGradesScreen(
+                          classroomId: state.pathParameters['id']!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'edit',
+                        builder: (context, state) => ClassroomFormScreen(
                           classroomId: state.pathParameters['id']!,
                         ),
                       ),
