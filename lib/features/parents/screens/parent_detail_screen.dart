@@ -248,7 +248,9 @@ class ParentDetailActions extends ConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.parentsDeleted)),
       );
-      ref.invalidate(parentDetailProvider(parent.id));
+      // Refresh the list before popping: the detail is leaving the tree, so
+      // re-fetching the just-deleted parent would only race a 404 against the
+      // pop and could strand the user on the error view.
       await ref.read(parentListProvider.notifier).refresh();
       if (!context.mounted) return;
       Navigator.of(context).pop();

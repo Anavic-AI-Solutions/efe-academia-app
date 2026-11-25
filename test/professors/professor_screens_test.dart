@@ -68,6 +68,8 @@ class _FakeProfessorRepository implements ProfessorRepository {
   int get pageSize => 20;
   Object? listError;
   Object? detailError;
+  bool failDetailAfterDelete = false;
+  Duration listDelay = Duration.zero;
   ApiException? createError;
   ApiException? updateError;
 
@@ -92,6 +94,9 @@ class _FakeProfessorRepository implements ProfessorRepository {
     String? cursor,
   }) async {
     listCalls.add({'search': search, 'cursor': cursor});
+    if (listDelay > Duration.zero) {
+      await Future.delayed(listDelay);
+    }
     final error = listError;
     if (error != null) throw error;
     final start = cursor == null ? 0 : int.parse(cursor);
@@ -186,6 +191,9 @@ class _FakeProfessorRepository implements ProfessorRepository {
   @override
   Future<void> deleteProfessor(String id) async {
     deleted.add(id);
+    if (failDetailAfterDelete) {
+      detailError = ApiException(message: 'gone', statusCode: 404);
+    }
   }
 }
 
@@ -541,6 +549,44 @@ void main() {
       expect(repo.deleted, ['p1']);
       expect(find.byType(ProfessorDetailScreen), findsNothing);
       expect(find.byKey(const Key('detail-harness')), findsOneWidget);
+    });
+
+    testWidgets('deleting pops even when the detail refetch would 404',
+        (tester) async {
+      final repo = _FakeProfessorRepository()
+        ..failDetailAfterDelete = true
+        ..listDelay = const Duration(milliseconds: 500);
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authRepositoryProvider
+                .overrideWithValue(_FakeAuthRepository('admin')),
+            professorRepositoryProvider.overrideWithValue(repo),
+          ],
+          child: localizedApp(
+            home: const _DetailHarness(professorId: 'p1'),
+          ),
+        ),
+      );
+      await tester.tap(find.byKey(const Key('open-detail')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('professor-detail-actions')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Eliminar').last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Eliminar').last);
+      await tester.pump();
+      // A frame lands while the list refresh is still in flight; the deleted
+      // detail must not re-fetch and replace itself with an error view.
+      await tester.pump(const Duration(milliseconds: 10));
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pumpAndSettle();
+
+      expect(repo.deleted, ['p1']);
+      expect(find.byType(ProfessorDetailScreen), findsNothing);
+      expect(find.byKey(const Key('detail-harness')), findsOneWidget);
+      expect(find.text('No se pudieron cargar los profesores'), findsNothing);
     });
   });
 

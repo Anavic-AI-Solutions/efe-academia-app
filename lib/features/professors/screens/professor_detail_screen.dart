@@ -258,7 +258,9 @@ class ProfessorDetailActions extends ConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.professorsDeleted)),
       );
-      ref.invalidate(professorDetailProvider(professor.id));
+      // Refresh the list before popping: the detail is leaving the tree, so
+      // re-fetching the just-deleted professor would only race a 404 against
+      // the pop and could strand the user on the error view.
       await ref.read(professorListProvider.notifier).refresh();
       if (!context.mounted) return;
       Navigator.of(context).pop();
