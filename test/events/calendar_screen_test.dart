@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 /// Octubre 2026: el 1° es jueves. Eventos el 5 y el 12.
 List<EventModel> _octoberEvents() => [
@@ -189,10 +190,47 @@ void main() {
     testWidgets('acción ver lista navega a /events', (tester) async {
       await _pumpCalendar(tester, load: (_) async => _octoberEvents());
 
+      expect(
+        find.text(DateFormat('MMMM yyyy').format(DateTime(2026, 10))),
+        findsOneWidget,
+      );
       await tester.tap(find.text('Ver lista'));
       await tester.pumpAndSettle();
       expect(find.text('Events screen'), findsOneWidget);
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('header usa acciones compactas en pantalla angosta',
+        (tester) async {
+      tester.view.physicalSize = const Size(360, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await _pumpCalendar(tester, load: (_) async => _octoberEvents());
+
+      expect(
+        find.text(DateFormat('MMM yyyy').format(DateTime(2026, 10))),
+        findsOneWidget,
+      );
+      final monthTitle = tester.widget<Text>(find.textContaining('2026').first);
+      expect(monthTitle.maxLines, 1);
+      expect(monthTitle.style?.fontSize, 20);
+      expect(find.text('Ver lista'), findsNothing);
+      expect(find.byKey(const ValueKey('calendar-view-list')), findsOneWidget);
+
+      final previous = tester.widget<IconButton>(
+        find.byKey(const ValueKey('calendar-prev-month')),
+      );
+      final next = tester.widget<IconButton>(
+        find.byKey(const ValueKey('calendar-next-month')),
+      );
+      expect(previous.tooltip, isNotNull);
+      expect(next.tooltip, isNotNull);
+      expect(tester.takeException(), isNull);
+
+      await tester.tap(find.byKey(const ValueKey('calendar-view-list')));
+      await tester.pumpAndSettle();
+      expect(find.text('Events screen'), findsOneWidget);
     });
   });
 }

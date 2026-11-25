@@ -2,6 +2,7 @@ import 'package:efe_mobile/app/theme/app_colors.dart';
 import 'package:efe_mobile/core/widgets/gradient_header.dart';
 import 'package:efe_mobile/core/widgets/header_stats_row.dart';
 import 'package:efe_mobile/core/widgets/home_header.dart';
+import 'package:efe_mobile/core/widgets/large_title_bar.dart';
 import 'package:efe_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -68,6 +69,70 @@ void main() {
     ));
     expect(find.text('Hola'), findsOneWidget);
     expect(find.byIcon(PhosphorIconsRegular.magnifyingGlass), findsNothing);
+  });
+
+  testWidgets('LargeTitleBar uses compact actions on narrow widths',
+      (tester) async {
+    tester.view.physicalSize = const Size(360, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: LargeTitleBar(
+          title: 'Notificaciones',
+          actions: [
+            TextButton(
+              onPressed: () {},
+              child: const Text('Marcar todas como leídas'),
+            ),
+          ],
+          compactActions: [
+            IconButton(
+              key: const ValueKey('compact-action'),
+              onPressed: () {},
+              icon: const Icon(Icons.check),
+            ),
+          ],
+        ),
+      ),
+    ));
+
+    expect(find.byKey(const ValueKey('compact-action')), findsOneWidget);
+    expect(find.text('Marcar todas como leídas'), findsNothing);
+
+    final title = tester.widget<Text>(find.text('Notificaciones'));
+    expect(title.maxLines, 1);
+    expect(title.overflow, TextOverflow.ellipsis);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('LargeTitleBar keeps text actions on wide widths',
+      (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: LargeTitleBar(
+          title: 'Notificaciones',
+          actions: [
+            TextButton(
+              onPressed: () {},
+              child: const Text('Marcar todas como leídas'),
+            ),
+          ],
+          compactActions: [
+            IconButton(
+              key: const ValueKey('compact-action'),
+              onPressed: () {},
+              icon: const Icon(Icons.check),
+            ),
+          ],
+        ),
+      ),
+    ));
+
+    expect(find.text('Marcar todas como leídas'), findsOneWidget);
+    expect(find.byKey(const ValueKey('compact-action')), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('HeaderStatsRow renders 24/w900 values with highlighted tile',

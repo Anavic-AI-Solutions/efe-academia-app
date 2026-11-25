@@ -51,6 +51,7 @@ class _NotificationListScreenState
     final state = ref.watch(notificationListProvider);
     final l10n = context.l10n;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final hasUnread = state.notifications.any((n) => !n.read);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
@@ -59,7 +60,7 @@ class _NotificationListScreenState
           LargeTitleBar(
             title: l10n.profileNotifications,
             actions: [
-              if (state.notifications.any((n) => !n.read))
+              if (hasUnread)
                 TextButton(
                   onPressed: () =>
                       ref.read(notificationListProvider.notifier).markAllRead(),
@@ -68,6 +69,20 @@ class _NotificationListScreenState
                     style: AppTypography.labelLarge.copyWith(
                       color: AppColors.accentFor(isDark),
                     ),
+                  ),
+                ),
+            ],
+            compactActions: [
+              if (hasUnread)
+                IconButton(
+                  key: const ValueKey('notifications-mark-all-read'),
+                  tooltip: l10n.notificationsMarkAllRead,
+                  onPressed: () =>
+                      ref.read(notificationListProvider.notifier).markAllRead(),
+                  icon: const Icon(
+                    PhosphorIconsRegular.checks,
+                    color: Colors.white,
+                    size: 22,
                   ),
                 ),
             ],

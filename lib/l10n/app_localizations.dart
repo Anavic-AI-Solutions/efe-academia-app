@@ -434,6 +434,48 @@ abstract class AppLocalizations {
   /// **'Ayuda y soporte'**
   String get profileHelpSupport;
 
+  /// No description provided for @profileAboutDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'EFE Mobile es la aplicación de gestión académica de EFE Academia de Inglés.'**
+  String get profileAboutDescription;
+
+  /// No description provided for @profileVersionLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Versión'**
+  String get profileVersionLabel;
+
+  /// No description provided for @profileAboutCopyright.
+  ///
+  /// In es, this message translates to:
+  /// **'© 2026 EFE Academia de Inglés. Todos los derechos reservados.'**
+  String get profileAboutCopyright;
+
+  /// No description provided for @profileHelpFaqsSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Respuestas a las preguntas más comunes'**
+  String get profileHelpFaqsSubtitle;
+
+  /// No description provided for @profileSupportEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir a soporte'**
+  String get profileSupportEmail;
+
+  /// No description provided for @profileSupportEmailSubject.
+  ///
+  /// In es, this message translates to:
+  /// **'Soporte - EFE Mobile'**
+  String get profileSupportEmailSubject;
+
+  /// No description provided for @profileSupportEmailError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir la aplicación de correo'**
+  String get profileSupportEmailError;
+
   /// No description provided for @profileLogout.
   ///
   /// In es, this message translates to:

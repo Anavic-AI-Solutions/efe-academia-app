@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../app/app_info.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/avatar.dart';
@@ -18,7 +20,10 @@ import '../../../l10n/l10n.dart';
 import '../../role_mode/widgets/mode_section.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  /// Inyectable para tests; por defecto abre con `url_launcher`.
+  final Future<bool> Function(Uri)? openUrl;
+
+  const ProfileScreen({super.key, this.openUrl});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -158,15 +163,17 @@ class ProfileScreen extends ConsumerWidget {
                   child: Column(
                     children: [
                       _SettingsTile(
+                        key: const ValueKey('profile-about-tile'),
                         icon: PhosphorIconsRegular.info,
                         title: l10n.profileAbout,
-                        onTap: () {},
+                        onTap: () => _showAboutSheet(context),
                         isDark: isDark,
                       ),
                       _SettingsTile(
+                        key: const ValueKey('profile-help-tile'),
                         icon: PhosphorIconsRegular.question,
                         title: l10n.profileHelpSupport,
-                        onTap: () {},
+                        onTap: () => _showHelpSheet(context),
                         isDark: isDark,
                         showDivider: false,
                       ),
@@ -215,6 +222,181 @@ class ProfileScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _showAboutSheet(BuildContext context) {
+    final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _SheetHandle(
+                    color:
+                        isDark ? AppColors.darkBorder : AppColors.lightDivider,
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    height: 88,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: isDark
+                          ? AppColors.primaryGradientDark
+                          : AppColors.primaryGradient,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.asset(
+                      'assets/images/efe_logo_white.png',
+                      width: 150,
+                      fit: BoxFit.contain,
+                      semanticLabel: 'EFE',
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Text(
+                    AppInfo.name,
+                    style: AppTypography.headlineMedium.copyWith(
+                      color: AppColors.inkFor(isDark),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${l10n.profileVersionLabel} ${AppInfo.version} '
+                    '(${AppInfo.buildNumber})',
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.mutedFor(isDark),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.profileAboutDescription,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.inkFor(isDark),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    l10n.profileAboutCopyright,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.labelSmall.copyWith(
+                      color: AppColors.mutedFor(isDark),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showHelpSheet(BuildContext context) async {
+    final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final messenger = ScaffoldMessenger.of(context);
+
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 12),
+                  _SheetHandle(
+                    color:
+                        isDark ? AppColors.darkBorder : AppColors.lightDivider,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        l10n.profileHelpSupport,
+                        style: AppTypography.titleLarge.copyWith(
+                          color: AppColors.inkFor(isDark),
+                        ),
+                      ),
+                    ),
+                  ),
+                  _SettingsTile(
+                    key: const ValueKey('profile-help-faq-tile'),
+                    icon: PhosphorIconsRegular.question,
+                    title: l10n.faqsTitle,
+                    subtitle: l10n.profileHelpFaqsSubtitle,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      context.push('/faqs');
+                    },
+                    isDark: isDark,
+                  ),
+                  _SettingsTile(
+                    key: const ValueKey('profile-help-email-tile'),
+                    icon: PhosphorIconsRegular.envelope,
+                    title: l10n.profileSupportEmail,
+                    subtitle: AppInfo.supportEmail,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _openSupportEmail(context, messenger, l10n, openUrl);
+                    },
+                    isDark: isDark,
+                    showDivider: false,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _openSupportEmail(
+    BuildContext context,
+    ScaffoldMessengerState messenger,
+    AppLocalizations l10n,
+    Future<bool> Function(Uri)? openUrl,
+  ) async {
+    final subject = Uri.encodeComponent(l10n.profileSupportEmailSubject);
+    final uri = Uri(
+      scheme: 'mailto',
+      path: AppInfo.supportEmail,
+      query: 'subject=$subject',
+    );
+
+    var opened = false;
+    try {
+      opened = await (openUrl ?? _launchExternal)(uri);
+    } catch (_) {
+      opened = false;
+    }
+
+    if (!opened && context.mounted) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.profileSupportEmailError)),
+      );
+    }
   }
 
   Future<void> _showLanguageSheet(BuildContext context, WidgetRef ref) async {
@@ -324,6 +506,9 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
+Future<bool> _launchExternal(Uri uri) =>
+    launchUrl(uri, mode: LaunchMode.externalApplication);
+
 String _themeModeLabel(ThemeMode mode, AppLocalizations l10n) {
   switch (mode) {
     case ThemeMode.light:
@@ -396,17 +581,38 @@ class _RoleBadge extends StatelessWidget {
   }
 }
 
+class _SheetHandle extends StatelessWidget {
+  final Color color;
+
+  const _SheetHandle({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 4,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(2),
+      ),
+    );
+  }
+}
+
 class _SettingsTile extends StatelessWidget {
   final IconData icon;
   final String title;
+  final String? subtitle;
   final Widget? trailing;
   final VoidCallback? onTap;
   final bool isDark;
   final bool showDivider;
 
   const _SettingsTile({
+    super.key,
     required this.icon,
     required this.title,
+    this.subtitle,
     this.trailing,
     this.onTap,
     required this.isDark,
@@ -429,6 +635,16 @@ class _SettingsTile extends StatelessWidget {
                   : AppColors.lightTextPrimary,
             ),
           ),
+          subtitle: subtitle == null
+              ? null
+              : Text(
+                  subtitle!,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: isDark
+                        ? AppColors.darkTextTertiary
+                        : AppColors.lightTextTertiary,
+                  ),
+                ),
           trailing: trailing ??
               Icon(
                 PhosphorIconsRegular.caretRight,

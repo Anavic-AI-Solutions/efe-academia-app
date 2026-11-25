@@ -207,6 +207,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileHelpSupport => 'Help & Support';
 
   @override
+  String get profileAboutDescription =>
+      'EFE Mobile is the academic management app for EFE English Academy.';
+
+  @override
+  String get profileVersionLabel => 'Version';
+
+  @override
+  String get profileAboutCopyright =>
+      '© 2026 EFE English Academy. All rights reserved.';
+
+  @override
+  String get profileHelpFaqsSubtitle => 'Answers to the most common questions';
+
+  @override
+  String get profileSupportEmail => 'Email support';
+
+  @override
+  String get profileSupportEmailSubject => 'Support - EFE Mobile';
+
+  @override
+  String get profileSupportEmailError => 'Could not open the email app';
+
+  @override
   String get profileLogout => 'Logout';
 
   @override

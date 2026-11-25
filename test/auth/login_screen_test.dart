@@ -107,6 +107,34 @@ void main() {
     expect(radius.bottomRight, const Radius.circular(24));
   });
 
+  testWidgets('centers the form in the space below the header', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await _pumpLoginScreen(tester);
+
+    final header = tester.getRect(find.byType(GradientHeader));
+    final form = tester.getRect(find.byType(Form));
+    final screenHeight =
+        tester.view.physicalSize.height / tester.view.devicePixelRatio;
+    final availableCenter = (header.bottom + screenHeight) / 2;
+
+    expect((form.center.dy - availableCenter).abs(), lessThan(8));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('keeps the form scrollable on small screens', (tester) async {
+    tester.view.physicalSize = const Size(320, 568);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await _pumpLoginScreen(tester);
+
+    expect(find.byType(SingleChildScrollView), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('login CTA is PillButton with height 46 and radius 13',
       (tester) async {
     await _pumpLoginScreen(tester);
