@@ -43,13 +43,13 @@ void main() {
       localizedApp(
         home: const Scaffold(
           body: StudentCard(
-            student: StudentModel(id: 's1', status: 'active'),
+            student: StudentModel(id: 's1', status: 'archived'),
           ),
         ),
       ),
     );
 
-    expect(find.text('active'), findsOneWidget);
+    expect(find.text('archived'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

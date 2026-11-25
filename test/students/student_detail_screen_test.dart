@@ -110,6 +110,35 @@ class _FakeStudentRepository implements StudentRepository {
     int limit = 20,
   }) =>
       Future.error(UnimplementedError());
+
+  @override
+  Future<StudentModel> createStudent({
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<StudentModel> updateStudent(
+    String id, {
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> deactivateStudent(String id) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> reactivateStudent(String id) =>
+      Future.error(UnimplementedError());
 }
 
 class _FakeRequestRepository implements RequestRepository {
@@ -361,7 +390,7 @@ void main() {
     );
 
     expect(find.text('Ana Gómez'), findsOneWidget);
-    expect(find.text('active'), findsOneWidget);
+    expect(find.text('Activo'), findsOneWidget);
     expect(find.text('Reconquista'), findsOneWidget);
     expect(find.text('2026'), findsOneWidget);
     expect(find.text('Notas'), findsOneWidget);

@@ -35,6 +35,7 @@ class StudentDetailScreen extends ConsumerWidget {
     final user = ref.watch(authProvider).user;
     final isProfessor = user?.isProfessor ?? false;
     final canManageQualifications = user?.canManageQualifications ?? false;
+    final canManageStudents = user?.canManageStudents ?? false;
     final role = user?.role ?? '';
     final showRequestTabs =
         role == 'admin' || role == 'branch' || role == 'sede';
@@ -52,6 +53,9 @@ class StudentDetailScreen extends ConsumerWidget {
             children: [
               StudentDetailHeader(
                 student: student,
+                actions: canManageStudents
+                    ? StudentDetailActions(student: student)
+                    : null,
               ),
               TabBar(
                 isScrollable: true,

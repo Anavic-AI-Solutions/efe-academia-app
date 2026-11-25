@@ -36,6 +36,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonSaveError => 'No se pudo guardar';
 
   @override
+  String get commonActions => 'Acciones';
+
+  @override
   String get commonDeleteError => 'No se pudo eliminar';
 
   @override
@@ -549,6 +552,232 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get studentsFormCreateTitle => 'Nuevo alumno';
+
+  @override
+  String get studentsFormEditTitle => 'Editar alumno';
+
+  @override
+  String get professorsTitle => 'Profesores';
+
+  @override
+  String get professorsSearchHint => 'Buscar profesores...';
+
+  @override
+  String get professorsEmptyTitle => 'No hay profesores';
+
+  @override
+  String get professorsEmptySubtitle => 'Probá con otra búsqueda';
+
+  @override
+  String get professorsLoadError => 'No se pudieron cargar los profesores';
+
+  @override
+  String get professorsFormCreateTitle => 'Nuevo profesor';
+
+  @override
+  String get professorsFormEditTitle => 'Editar profesor';
+
+  @override
+  String get professorsFormFullname => 'Nombre completo';
+
+  @override
+  String get professorsFormEmail => 'Correo electrónico';
+
+  @override
+  String get professorsFormPhone => 'Teléfono';
+
+  @override
+  String get professorsFormAddress => 'Dirección';
+
+  @override
+  String get professorsFormIdentity => 'Documento';
+
+  @override
+  String get professorsFormBio => 'Biografía';
+
+  @override
+  String get professorsFormSpecialty => 'Especialidad';
+
+  @override
+  String get professorsCreated => 'Profesor creado';
+
+  @override
+  String get professorsUpdated => 'Profesor actualizado';
+
+  @override
+  String get professorsDeleted => 'Profesor eliminado';
+
+  @override
+  String get professorsDeleteTitle => 'Eliminar profesor';
+
+  @override
+  String professorsClassroomsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aulas',
+      one: '1 aula',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get parentsTitle => 'Padres';
+
+  @override
+  String get parentsSearchHint => 'Buscar padres...';
+
+  @override
+  String get parentsEmptyTitle => 'No hay padres';
+
+  @override
+  String get parentsEmptySubtitle => 'Probá con otra búsqueda';
+
+  @override
+  String get parentsLoadError => 'No se pudieron cargar los padres';
+
+  @override
+  String get parentsFormCreateTitle => 'Nuevo padre';
+
+  @override
+  String get parentsFormEditTitle => 'Editar padre';
+
+  @override
+  String get parentsFormFullname => 'Nombre completo';
+
+  @override
+  String get parentsFormEmail => 'Correo electrónico';
+
+  @override
+  String get parentsFormPhone => 'Teléfono';
+
+  @override
+  String get parentsFormAddress => 'Dirección';
+
+  @override
+  String get parentsFormIdentity => 'Documento';
+
+  @override
+  String get parentsFormStatus => 'Estado';
+
+  @override
+  String get parentsStatusPending => 'Pendiente';
+
+  @override
+  String get parentsStatusApproved => 'Aprobado';
+
+  @override
+  String get parentsStatusRejected => 'Rechazado';
+
+  @override
+  String get parentsCreated => 'Padre creado';
+
+  @override
+  String get parentsUpdated => 'Padre actualizado';
+
+  @override
+  String get parentsDeleted => 'Padre eliminado';
+
+  @override
+  String get parentsDeleteTitle => 'Eliminar padre';
+
+  @override
+  String parentsStudentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alumnos',
+      one: '1 alumno',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get parentsLinkedStudents => 'Alumnos vinculados';
+
+  @override
+  String get parentsNoStudents => 'Sin alumnos vinculados';
+
+  @override
+  String get parentsLinkStudent => 'Vincular alumno';
+
+  @override
+  String get parentsLinkStudentTitle => 'Vincular alumno';
+
+  @override
+  String get parentsLinkStudentSearch => 'Buscar alumnos...';
+
+  @override
+  String get parentsLinked => 'Alumno vinculado';
+
+  @override
+  String get parentsUnlinked => 'Alumno desvinculado';
+
+  @override
+  String get parentsUnlink => 'Desvincular';
+
+  @override
+  String get parentsUnlinkTitle => 'Desvincular alumno';
+
+  @override
+  String get parentsUnlinkMessage =>
+      'El alumno dejará de estar vinculado, pero no se elimina.';
+
+  @override
+  String get parentsLinkError => 'No se pudo vincular el alumno';
+
+  @override
+  String get parentsUnlinkError => 'No se pudo desvincular el alumno';
+
+  @override
+  String get studentsFormFullname => 'Nombre completo';
+
+  @override
+  String get studentsFormEmail => 'Correo electrónico';
+
+  @override
+  String get studentsFormYear => 'Año';
+
+  @override
+  String get studentsFormBranch => 'Sede';
+
+  @override
+  String get studentsFormIdentity => 'Documento';
+
+  @override
+  String get studentsCreated => 'Alumno creado';
+
+  @override
+  String get studentsUpdated => 'Alumno actualizado';
+
+  @override
+  String get studentsDeactivated => 'Alumno desactivado';
+
+  @override
+  String get studentsReactivated => 'Alumno reactivado';
+
+  @override
+  String get studentsStatusError =>
+      'No se pudo actualizar el estado del alumno';
+
+  @override
+  String get studentsDeactivate => 'Desactivar alumno';
+
+  @override
+  String get studentsReactivate => 'Reactivar alumno';
+
+  @override
+  String get studentsDeactivateTitle => 'Desactivar alumno';
+
+  @override
+  String get studentsDeactivateMessage =>
+      'El alumno quedará inactivo y podrá reactivarse.';
+
+  @override
+  String get studentsEditAction => 'Editar alumno';
+
+  @override
   String get studentsTitle => 'Estudiantes';
 
   @override
@@ -731,6 +960,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get studentsStatusRejected => 'Rechazado';
+
+  @override
+  String get studentsStatusActive => 'Activo';
+
+  @override
+  String get studentsStatusInactive => 'Inactivo';
 
   @override
   String get feesStatusPaid => 'Pagado';
@@ -1722,6 +1957,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get managementStudents => 'Alumnos';
+
+  @override
+  String get managementProfessors => 'Profesores';
+
+  @override
+  String get managementParents => 'Padres';
 
   @override
   String get managementClassrooms => 'Aulas';

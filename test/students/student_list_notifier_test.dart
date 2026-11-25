@@ -73,6 +73,35 @@ class _FakeStudentRepository implements StudentRepository {
   @override
   Future<List<ClassroomModel>> getClassrooms(String studentId) async =>
       const [];
+
+  @override
+  Future<StudentModel> createStudent({
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<StudentModel> updateStudent(
+    String id, {
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> deactivateStudent(String id) =>
+      Future.error(UnimplementedError());
+
+  @override
+  Future<void> reactivateStudent(String id) =>
+      Future.error(UnimplementedError());
 }
 
 void main() {

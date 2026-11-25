@@ -14,6 +14,13 @@ import '../features/qualifications/screens/classroom_grades_screen.dart';
 import '../features/qualifications/screens/student_boletin_screen.dart';
 import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
+import '../features/students/screens/student_form_screen.dart';
+import '../features/professors/screens/professor_detail_screen.dart';
+import '../features/professors/screens/professor_form_screen.dart';
+import '../features/professors/screens/professor_list_screen.dart';
+import '../features/parents/screens/parent_detail_screen.dart';
+import '../features/parents/screens/parent_form_screen.dart';
+import '../features/parents/screens/parent_list_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
 import '../features/chat/screens/chat_detail_screen.dart';
 import '../features/chat/providers/chat_provider.dart';
@@ -377,6 +384,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const StudentListScreen(),
         routes: [
           GoRoute(
+            path: 'new',
+            builder: (context, state) => const StudentFormScreen(),
+          ),
+          GoRoute(
             path: ':id',
             builder: (context, state) => StudentDetailScreen(
               studentId: state.pathParameters['id']!,
@@ -387,6 +398,60 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: 'boletin',
                 builder: (context, state) => StudentBoletinScreen(
                   studentId: state.pathParameters['id']!,
+                ),
+              ),
+              GoRoute(
+                path: 'edit',
+                builder: (context, state) => StudentFormScreen(
+                  studentId: state.pathParameters['id']!,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/professors',
+        builder: (context, state) => const ProfessorListScreen(),
+        routes: [
+          GoRoute(
+            path: 'new',
+            builder: (context, state) => const ProfessorFormScreen(),
+          ),
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => ProfessorDetailScreen(
+              professorId: state.pathParameters['id']!,
+            ),
+            routes: [
+              GoRoute(
+                path: 'edit',
+                builder: (context, state) => ProfessorFormScreen(
+                  professorId: state.pathParameters['id']!,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/parents',
+        builder: (context, state) => const ParentListScreen(),
+        routes: [
+          GoRoute(
+            path: 'new',
+            builder: (context, state) => const ParentFormScreen(),
+          ),
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => ParentDetailScreen(
+              parentId: state.pathParameters['id']!,
+            ),
+            routes: [
+              GoRoute(
+                path: 'edit',
+                builder: (context, state) => ParentFormScreen(
+                  parentId: state.pathParameters['id']!,
                 ),
               ),
             ],

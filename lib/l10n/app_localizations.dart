@@ -152,6 +152,12 @@ abstract class AppLocalizations {
   /// **'No se pudo guardar'**
   String get commonSaveError;
 
+  /// No description provided for @commonActions.
+  ///
+  /// In es, this message translates to:
+  /// **'Acciones'**
+  String get commonActions;
+
   /// No description provided for @commonDeleteError.
   ///
   /// In es, this message translates to:
@@ -1070,6 +1076,420 @@ abstract class AppLocalizations {
   /// **'{count} descargas'**
   String classroomsMaterialDownloads(int count);
 
+  /// No description provided for @studentsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo alumno'**
+  String get studentsFormCreateTitle;
+
+  /// No description provided for @studentsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar alumno'**
+  String get studentsFormEditTitle;
+
+  /// No description provided for @professorsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesores'**
+  String get professorsTitle;
+
+  /// No description provided for @professorsSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar profesores...'**
+  String get professorsSearchHint;
+
+  /// No description provided for @professorsEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay profesores'**
+  String get professorsEmptyTitle;
+
+  /// No description provided for @professorsEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Probá con otra búsqueda'**
+  String get professorsEmptySubtitle;
+
+  /// No description provided for @professorsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los profesores'**
+  String get professorsLoadError;
+
+  /// No description provided for @professorsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo profesor'**
+  String get professorsFormCreateTitle;
+
+  /// No description provided for @professorsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar profesor'**
+  String get professorsFormEditTitle;
+
+  /// No description provided for @professorsFormFullname.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre completo'**
+  String get professorsFormFullname;
+
+  /// No description provided for @professorsFormEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get professorsFormEmail;
+
+  /// No description provided for @professorsFormPhone.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get professorsFormPhone;
+
+  /// No description provided for @professorsFormAddress.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección'**
+  String get professorsFormAddress;
+
+  /// No description provided for @professorsFormIdentity.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento'**
+  String get professorsFormIdentity;
+
+  /// No description provided for @professorsFormBio.
+  ///
+  /// In es, this message translates to:
+  /// **'Biografía'**
+  String get professorsFormBio;
+
+  /// No description provided for @professorsFormSpecialty.
+  ///
+  /// In es, this message translates to:
+  /// **'Especialidad'**
+  String get professorsFormSpecialty;
+
+  /// No description provided for @professorsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor creado'**
+  String get professorsCreated;
+
+  /// No description provided for @professorsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor actualizado'**
+  String get professorsUpdated;
+
+  /// No description provided for @professorsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesor eliminado'**
+  String get professorsDeleted;
+
+  /// No description provided for @professorsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar profesor'**
+  String get professorsDeleteTitle;
+
+  /// No description provided for @professorsClassroomsCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, one{1 aula} other{{count} aulas}}'**
+  String professorsClassroomsCount(int count);
+
+  /// No description provided for @parentsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Padres'**
+  String get parentsTitle;
+
+  /// No description provided for @parentsSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar padres...'**
+  String get parentsSearchHint;
+
+  /// No description provided for @parentsEmptyTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay padres'**
+  String get parentsEmptyTitle;
+
+  /// No description provided for @parentsEmptySubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Probá con otra búsqueda'**
+  String get parentsEmptySubtitle;
+
+  /// No description provided for @parentsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los padres'**
+  String get parentsLoadError;
+
+  /// No description provided for @parentsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo padre'**
+  String get parentsFormCreateTitle;
+
+  /// No description provided for @parentsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar padre'**
+  String get parentsFormEditTitle;
+
+  /// No description provided for @parentsFormFullname.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre completo'**
+  String get parentsFormFullname;
+
+  /// No description provided for @parentsFormEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get parentsFormEmail;
+
+  /// No description provided for @parentsFormPhone.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get parentsFormPhone;
+
+  /// No description provided for @parentsFormAddress.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección'**
+  String get parentsFormAddress;
+
+  /// No description provided for @parentsFormIdentity.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento'**
+  String get parentsFormIdentity;
+
+  /// No description provided for @parentsFormStatus.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado'**
+  String get parentsFormStatus;
+
+  /// No description provided for @parentsStatusPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get parentsStatusPending;
+
+  /// No description provided for @parentsStatusApproved.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobado'**
+  String get parentsStatusApproved;
+
+  /// No description provided for @parentsStatusRejected.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazado'**
+  String get parentsStatusRejected;
+
+  /// No description provided for @parentsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre creado'**
+  String get parentsCreated;
+
+  /// No description provided for @parentsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre actualizado'**
+  String get parentsUpdated;
+
+  /// No description provided for @parentsDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Padre eliminado'**
+  String get parentsDeleted;
+
+  /// No description provided for @parentsDeleteTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar padre'**
+  String get parentsDeleteTitle;
+
+  /// No description provided for @parentsStudentCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, one{1 alumno} other{{count} alumnos}}'**
+  String parentsStudentCount(int count);
+
+  /// No description provided for @parentsLinkedStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos vinculados'**
+  String get parentsLinkedStudents;
+
+  /// No description provided for @parentsNoStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin alumnos vinculados'**
+  String get parentsNoStudents;
+
+  /// No description provided for @parentsLinkStudent.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincular alumno'**
+  String get parentsLinkStudent;
+
+  /// No description provided for @parentsLinkStudentTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincular alumno'**
+  String get parentsLinkStudentTitle;
+
+  /// No description provided for @parentsLinkStudentSearch.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar alumnos...'**
+  String get parentsLinkStudentSearch;
+
+  /// No description provided for @parentsLinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno vinculado'**
+  String get parentsLinked;
+
+  /// No description provided for @parentsUnlinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno desvinculado'**
+  String get parentsUnlinked;
+
+  /// No description provided for @parentsUnlink.
+  ///
+  /// In es, this message translates to:
+  /// **'Desvincular'**
+  String get parentsUnlink;
+
+  /// No description provided for @parentsUnlinkTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Desvincular alumno'**
+  String get parentsUnlinkTitle;
+
+  /// No description provided for @parentsUnlinkMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'El alumno dejará de estar vinculado, pero no se elimina.'**
+  String get parentsUnlinkMessage;
+
+  /// No description provided for @parentsLinkError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo vincular el alumno'**
+  String get parentsLinkError;
+
+  /// No description provided for @parentsUnlinkError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo desvincular el alumno'**
+  String get parentsUnlinkError;
+
+  /// No description provided for @studentsFormFullname.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre completo'**
+  String get studentsFormFullname;
+
+  /// No description provided for @studentsFormEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get studentsFormEmail;
+
+  /// No description provided for @studentsFormYear.
+  ///
+  /// In es, this message translates to:
+  /// **'Año'**
+  String get studentsFormYear;
+
+  /// No description provided for @studentsFormBranch.
+  ///
+  /// In es, this message translates to:
+  /// **'Sede'**
+  String get studentsFormBranch;
+
+  /// No description provided for @studentsFormIdentity.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento'**
+  String get studentsFormIdentity;
+
+  /// No description provided for @studentsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno creado'**
+  String get studentsCreated;
+
+  /// No description provided for @studentsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno actualizado'**
+  String get studentsUpdated;
+
+  /// No description provided for @studentsDeactivated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno desactivado'**
+  String get studentsDeactivated;
+
+  /// No description provided for @studentsReactivated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno reactivado'**
+  String get studentsReactivated;
+
+  /// No description provided for @studentsStatusError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo actualizar el estado del alumno'**
+  String get studentsStatusError;
+
+  /// No description provided for @studentsDeactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Desactivar alumno'**
+  String get studentsDeactivate;
+
+  /// No description provided for @studentsReactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Reactivar alumno'**
+  String get studentsReactivate;
+
+  /// No description provided for @studentsDeactivateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Desactivar alumno'**
+  String get studentsDeactivateTitle;
+
+  /// No description provided for @studentsDeactivateMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'El alumno quedará inactivo y podrá reactivarse.'**
+  String get studentsDeactivateMessage;
+
+  /// No description provided for @studentsEditAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar alumno'**
+  String get studentsEditAction;
+
   /// No description provided for @studentsTitle.
   ///
   /// In es, this message translates to:
@@ -1417,6 +1837,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Rechazado'**
   String get studentsStatusRejected;
+
+  /// No description provided for @studentsStatusActive.
+  ///
+  /// In es, this message translates to:
+  /// **'Activo'**
+  String get studentsStatusActive;
+
+  /// No description provided for @studentsStatusInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'Inactivo'**
+  String get studentsStatusInactive;
 
   /// No description provided for @feesStatusPaid.
   ///
@@ -3235,6 +3667,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Alumnos'**
   String get managementStudents;
+
+  /// No description provided for @managementProfessors.
+  ///
+  /// In es, this message translates to:
+  /// **'Profesores'**
+  String get managementProfessors;
+
+  /// No description provided for @managementParents.
+  ///
+  /// In es, this message translates to:
+  /// **'Padres'**
+  String get managementParents;
 
   /// No description provided for @managementClassrooms.
   ///

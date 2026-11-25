@@ -24,6 +24,7 @@ mixin _$ProfessorModel {
   String get identityNumber => throw _privateConstructorUsedError;
   String get bio => throw _privateConstructorUsedError;
   String get specialty => throw _privateConstructorUsedError;
+  int get classroomCount => throw _privateConstructorUsedError;
 
   /// Create a copy of ProfessorModel
   /// with the given fields replaced by the non-null parameter values.
@@ -46,7 +47,8 @@ abstract class $ProfessorModelCopyWith<$Res> {
       String address,
       String identityNumber,
       String bio,
-      String specialty});
+      String specialty,
+      int classroomCount});
 }
 
 /// @nodoc
@@ -72,6 +74,7 @@ class _$ProfessorModelCopyWithImpl<$Res, $Val extends ProfessorModel>
     Object? identityNumber = null,
     Object? bio = null,
     Object? specialty = null,
+    Object? classroomCount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -106,6 +109,10 @@ class _$ProfessorModelCopyWithImpl<$Res, $Val extends ProfessorModel>
           ? _value.specialty
           : specialty // ignore: cast_nullable_to_non_nullable
               as String,
+      classroomCount: null == classroomCount
+          ? _value.classroomCount
+          : classroomCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -126,7 +133,8 @@ abstract class _$$ProfessorModelImplCopyWith<$Res>
       String address,
       String identityNumber,
       String bio,
-      String specialty});
+      String specialty,
+      int classroomCount});
 }
 
 /// @nodoc
@@ -150,6 +158,7 @@ class __$$ProfessorModelImplCopyWithImpl<$Res>
     Object? identityNumber = null,
     Object? bio = null,
     Object? specialty = null,
+    Object? classroomCount = null,
   }) {
     return _then(_$ProfessorModelImpl(
       id: null == id
@@ -184,6 +193,10 @@ class __$$ProfessorModelImplCopyWithImpl<$Res>
           ? _value.specialty
           : specialty // ignore: cast_nullable_to_non_nullable
               as String,
+      classroomCount: null == classroomCount
+          ? _value.classroomCount
+          : classroomCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -199,7 +212,8 @@ class _$ProfessorModelImpl implements _ProfessorModel {
       this.address = '',
       this.identityNumber = '',
       this.bio = '',
-      this.specialty = ''});
+      this.specialty = '',
+      this.classroomCount = 0});
 
   @override
   final String id;
@@ -224,10 +238,13 @@ class _$ProfessorModelImpl implements _ProfessorModel {
   @override
   @JsonKey()
   final String specialty;
+  @override
+  @JsonKey()
+  final int classroomCount;
 
   @override
   String toString() {
-    return 'ProfessorModel(id: $id, fullname: $fullname, email: $email, phone: $phone, address: $address, identityNumber: $identityNumber, bio: $bio, specialty: $specialty)';
+    return 'ProfessorModel(id: $id, fullname: $fullname, email: $email, phone: $phone, address: $address, identityNumber: $identityNumber, bio: $bio, specialty: $specialty, classroomCount: $classroomCount)';
   }
 
   @override
@@ -245,12 +262,14 @@ class _$ProfessorModelImpl implements _ProfessorModel {
                 other.identityNumber == identityNumber) &&
             (identical(other.bio, bio) || other.bio == bio) &&
             (identical(other.specialty, specialty) ||
-                other.specialty == specialty));
+                other.specialty == specialty) &&
+            (identical(other.classroomCount, classroomCount) ||
+                other.classroomCount == classroomCount));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, fullname, email, phone,
-      address, identityNumber, bio, specialty);
+      address, identityNumber, bio, specialty, classroomCount);
 
   /// Create a copy of ProfessorModel
   /// with the given fields replaced by the non-null parameter values.
@@ -271,7 +290,8 @@ abstract class _ProfessorModel implements ProfessorModel {
       final String address,
       final String identityNumber,
       final String bio,
-      final String specialty}) = _$ProfessorModelImpl;
+      final String specialty,
+      final int classroomCount}) = _$ProfessorModelImpl;
 
   @override
   String get id;
@@ -289,6 +309,8 @@ abstract class _ProfessorModel implements ProfessorModel {
   String get bio;
   @override
   String get specialty;
+  @override
+  int get classroomCount;
 
   /// Create a copy of ProfessorModel
   /// with the given fields replaced by the non-null parameter values.

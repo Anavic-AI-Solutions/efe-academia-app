@@ -49,6 +49,65 @@ class StudentRepository {
     }
   }
 
+  Future<StudentModel> createStudent({
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) async {
+    try {
+      final response = await _api.createStudent({
+        'fullname': fullname,
+        'email': email,
+        'year': year,
+        'branch': branch,
+        'identity_number': identityNumber,
+      });
+      return StudentModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<StudentModel> updateStudent(
+    String id, {
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) async {
+    try {
+      final response = await _api.updateStudent(id, {
+        'fullname': fullname,
+        'email': email,
+        'year': year,
+        'branch': branch,
+        'identity_number': identityNumber,
+      });
+      return StudentModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<void> deactivateStudent(String id) async {
+    try {
+      await _api.deactivateStudent(id);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<void> reactivateStudent(String id) async {
+    try {
+      await _api.reactivateStudent(id);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   Future<List<ClassroomModel>> getClassrooms(String studentId) async {
     try {
       final response = await _api.getClassrooms(studentId);

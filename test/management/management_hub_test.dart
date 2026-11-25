@@ -102,6 +102,8 @@ void _expectStaffHubLinks(WidgetTester tester) {
 
   for (final label in [
     'Alumnos',
+    'Profesores',
+    'Padres',
     'Aulas',
     'Noticias',
     'Eventos',
@@ -116,7 +118,7 @@ void _expectStaffHubLinks(WidgetTester tester) {
 
 void main() {
   for (final role in ['admin', 'branch', 'sede']) {
-    testWidgets('$role hub lists the six management links', (tester) async {
+    testWidgets('$role hub lists the eight management links', (tester) async {
       await _pumpHub(tester, role);
       _expectStaffHubLinks(tester);
     });
@@ -136,6 +138,8 @@ void main() {
 
     expect(find.byType(EmptyState), findsOneWidget);
     expect(find.text('Alumnos'), findsNothing);
+    expect(find.text('Profesores'), findsNothing);
+    expect(find.text('Padres'), findsNothing);
     expect(find.text('Aulas'), findsNothing);
     expect(find.text('Noticias'), findsNothing);
     expect(find.text('Eventos'), findsNothing);
