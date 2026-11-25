@@ -24,6 +24,18 @@ class StudentApi {
 
   Future<Response> getStudent(String id) => _client.get('/students/$id');
 
+  Future<Response> createStudent(Map<String, dynamic> data) =>
+      _client.post('/students', data: data);
+
+  Future<Response> updateStudent(String id, Map<String, dynamic> data) =>
+      _client.patch('/students/$id', data: data);
+
+  Future<Response> deactivateStudent(String id) =>
+      _client.post('/students/$id/deactivate');
+
+  Future<Response> reactivateStudent(String id) =>
+      _client.post('/students/$id/reactivate');
+
   Future<Response> getClassrooms(String studentId) =>
       _client.get('/students/$studentId/classrooms');
 

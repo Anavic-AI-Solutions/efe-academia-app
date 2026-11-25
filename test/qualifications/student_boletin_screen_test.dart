@@ -168,6 +168,33 @@ class _FakeStudentRepository implements StudentRepository {
     int limit = 20,
   }) =>
       throw UnimplementedError();
+
+  @override
+  Future<StudentModel> createStudent({
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<StudentModel> updateStudent(
+    String id, {
+    required String fullname,
+    required String email,
+    required String year,
+    required String branch,
+    required String identityNumber,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> deactivateStudent(String id) => throw UnimplementedError();
+
+  @override
+  Future<void> reactivateStudent(String id) => throw UnimplementedError();
 }
 
 /// Repositorio de auth falso: el rol decide si la pantalla acota las aulas

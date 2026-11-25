@@ -87,6 +87,22 @@ class _FakeStudentApi implements StudentApi {
           },
         ],
       });
+
+  @override
+  Future<Response> createStudent(Map<String, dynamic> data) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<Response> updateStudent(String id, Map<String, dynamic> data) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<Response> deactivateStudent(String id) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<Response> reactivateStudent(String id) async =>
+      throw UnimplementedError();
 }
 
 void main() {
