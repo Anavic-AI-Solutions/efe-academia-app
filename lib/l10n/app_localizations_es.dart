@@ -36,6 +36,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonSaveError => 'No se pudo guardar';
 
   @override
+  String get commonStatus => 'Estado';
+
+  @override
+  String get commonActions => 'Acciones';
+
+  @override
   String get commonDeleteError => 'No se pudo eliminar';
 
   @override
@@ -522,6 +528,55 @@ class AppLocalizationsEs extends AppLocalizations {
   String classroomsMaterialDownloads(int count) {
     return '$count descargas';
   }
+
+  @override
+  String get studentsFormCreateTitle => 'Nuevo alumno';
+
+  @override
+  String get studentsFormEditTitle => 'Editar alumno';
+
+  @override
+  String get studentsFormFullname => 'Nombre completo';
+
+  @override
+  String get studentsFormEmail => 'Correo electrónico';
+
+  @override
+  String get studentsFormYear => 'Año';
+
+  @override
+  String get studentsFormBranch => 'Sede';
+
+  @override
+  String get studentsFormIdentity => 'Documento';
+
+  @override
+  String get studentsCreated => 'Alumno creado';
+
+  @override
+  String get studentsUpdated => 'Alumno actualizado';
+
+  @override
+  String get studentsDeactivated => 'Alumno desactivado';
+
+  @override
+  String get studentsReactivated => 'Alumno reactivado';
+
+  @override
+  String get studentsDeactivate => 'Desactivar alumno';
+
+  @override
+  String get studentsReactivate => 'Reactivar alumno';
+
+  @override
+  String get studentsDeactivateTitle => 'Desactivar alumno';
+
+  @override
+  String get studentsDeactivateMessage =>
+      'El alumno quedará inactivo y podrá reactivarse.';
+
+  @override
+  String get studentsEditAction => 'Editar alumno';
 
   @override
   String get studentsTitle => 'Estudiantes';

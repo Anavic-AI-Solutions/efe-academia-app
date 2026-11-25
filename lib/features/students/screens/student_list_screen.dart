@@ -12,6 +12,8 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/pagination_bar.dart';
 import '../../../core/widgets/search_bar.dart';
 import '../../../l10n/l10n.dart';
+import '../../auth/domain/user_model.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../providers/student_provider.dart';
 import 'widgets/student_card.dart';
 
@@ -46,15 +48,35 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
     _scrollToTop();
   }
 
+  Future<void> _openCreate() async {
+    await context.push<bool>('/students/new');
+    if (!mounted) return;
+    await ref.read(studentListProvider.notifier).refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final listState = ref.watch(studentListProvider);
     final notifier = ref.read(studentListProvider.notifier);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final canManageStudents =
+        ref.watch(authProvider).user?.canManageStudents ?? false;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundFor(isDark),
+      floatingActionButton: canManageStudents
+          ? FloatingActionButton(
+              key: const Key('student-list-fab'),
+              tooltip: l10n.commonCreate,
+              onPressed: _openCreate,
+              backgroundColor: AppColors.primary,
+              child: const Icon(
+                PhosphorIconsRegular.plus,
+                color: Colors.white,
+              ),
+            )
+          : null,
       body: Column(
         children: [
           LargeTitleBar(

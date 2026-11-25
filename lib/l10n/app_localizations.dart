@@ -152,6 +152,18 @@ abstract class AppLocalizations {
   /// **'No se pudo guardar'**
   String get commonSaveError;
 
+  /// No description provided for @commonStatus.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado'**
+  String get commonStatus;
+
+  /// No description provided for @commonActions.
+  ///
+  /// In es, this message translates to:
+  /// **'Acciones'**
+  String get commonActions;
+
   /// No description provided for @commonDeleteError.
   ///
   /// In es, this message translates to:
@@ -1027,6 +1039,102 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{count} descargas'**
   String classroomsMaterialDownloads(int count);
+
+  /// No description provided for @studentsFormCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo alumno'**
+  String get studentsFormCreateTitle;
+
+  /// No description provided for @studentsFormEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar alumno'**
+  String get studentsFormEditTitle;
+
+  /// No description provided for @studentsFormFullname.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre completo'**
+  String get studentsFormFullname;
+
+  /// No description provided for @studentsFormEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get studentsFormEmail;
+
+  /// No description provided for @studentsFormYear.
+  ///
+  /// In es, this message translates to:
+  /// **'Año'**
+  String get studentsFormYear;
+
+  /// No description provided for @studentsFormBranch.
+  ///
+  /// In es, this message translates to:
+  /// **'Sede'**
+  String get studentsFormBranch;
+
+  /// No description provided for @studentsFormIdentity.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento'**
+  String get studentsFormIdentity;
+
+  /// No description provided for @studentsCreated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno creado'**
+  String get studentsCreated;
+
+  /// No description provided for @studentsUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno actualizado'**
+  String get studentsUpdated;
+
+  /// No description provided for @studentsDeactivated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno desactivado'**
+  String get studentsDeactivated;
+
+  /// No description provided for @studentsReactivated.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno reactivado'**
+  String get studentsReactivated;
+
+  /// No description provided for @studentsDeactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Desactivar alumno'**
+  String get studentsDeactivate;
+
+  /// No description provided for @studentsReactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Reactivar alumno'**
+  String get studentsReactivate;
+
+  /// No description provided for @studentsDeactivateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Desactivar alumno'**
+  String get studentsDeactivateTitle;
+
+  /// No description provided for @studentsDeactivateMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'El alumno quedará inactivo y podrá reactivarse.'**
+  String get studentsDeactivateMessage;
+
+  /// No description provided for @studentsEditAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar alumno'**
+  String get studentsEditAction;
 
   /// No description provided for @studentsTitle.
   ///

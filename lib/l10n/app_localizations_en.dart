@@ -36,6 +36,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonSaveError => 'Could not save';
 
   @override
+  String get commonStatus => 'Status';
+
+  @override
+  String get commonActions => 'Actions';
+
+  @override
   String get commonDeleteError => 'Could not delete';
 
   @override
@@ -521,6 +527,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String classroomsMaterialDownloads(int count) {
     return '$count downloads';
   }
+
+  @override
+  String get studentsFormCreateTitle => 'New student';
+
+  @override
+  String get studentsFormEditTitle => 'Edit student';
+
+  @override
+  String get studentsFormFullname => 'Full name';
+
+  @override
+  String get studentsFormEmail => 'Email';
+
+  @override
+  String get studentsFormYear => 'Year';
+
+  @override
+  String get studentsFormBranch => 'Branch';
+
+  @override
+  String get studentsFormIdentity => 'Identity number';
+
+  @override
+  String get studentsCreated => 'Student created';
+
+  @override
+  String get studentsUpdated => 'Student updated';
+
+  @override
+  String get studentsDeactivated => 'Student deactivated';
+
+  @override
+  String get studentsReactivated => 'Student reactivated';
+
+  @override
+  String get studentsDeactivate => 'Deactivate student';
+
+  @override
+  String get studentsReactivate => 'Reactivate student';
+
+  @override
+  String get studentsDeactivateTitle => 'Deactivate student';
+
+  @override
+  String get studentsDeactivateMessage =>
+      'The student will become inactive and can be reactivated.';
+
+  @override
+  String get studentsEditAction => 'Edit student';
 
   @override
   String get studentsTitle => 'Students';

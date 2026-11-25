@@ -14,6 +14,7 @@ import '../features/qualifications/screens/classroom_grades_screen.dart';
 import '../features/qualifications/screens/student_boletin_screen.dart';
 import '../features/students/screens/student_list_screen.dart';
 import '../features/students/screens/student_detail_screen.dart';
+import '../features/students/screens/student_form_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
 import '../features/chat/screens/chat_detail_screen.dart';
 import '../features/chat/providers/chat_provider.dart';
@@ -377,6 +378,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const StudentListScreen(),
         routes: [
           GoRoute(
+            path: 'new',
+            builder: (context, state) => const StudentFormScreen(),
+          ),
+          GoRoute(
             path: ':id',
             builder: (context, state) => StudentDetailScreen(
               studentId: state.pathParameters['id']!,
@@ -386,6 +391,12 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'boletin',
                 builder: (context, state) => StudentBoletinScreen(
+                  studentId: state.pathParameters['id']!,
+                ),
+              ),
+              GoRoute(
+                path: 'edit',
+                builder: (context, state) => StudentFormScreen(
                   studentId: state.pathParameters['id']!,
                 ),
               ),
