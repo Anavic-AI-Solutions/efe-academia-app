@@ -1286,6 +1286,72 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{1 alumno} other{{count} alumnos}}'**
   String parentsStudentCount(int count);
 
+  /// No description provided for @parentsLinkedStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumnos vinculados'**
+  String get parentsLinkedStudents;
+
+  /// No description provided for @parentsNoStudents.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin alumnos vinculados'**
+  String get parentsNoStudents;
+
+  /// No description provided for @parentsLinkStudent.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincular alumno'**
+  String get parentsLinkStudent;
+
+  /// No description provided for @parentsLinkStudentTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincular alumno'**
+  String get parentsLinkStudentTitle;
+
+  /// No description provided for @parentsLinkStudentSearch.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar alumnos...'**
+  String get parentsLinkStudentSearch;
+
+  /// No description provided for @parentsLinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno vinculado'**
+  String get parentsLinked;
+
+  /// No description provided for @parentsUnlinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Alumno desvinculado'**
+  String get parentsUnlinked;
+
+  /// No description provided for @parentsUnlink.
+  ///
+  /// In es, this message translates to:
+  /// **'Desvincular'**
+  String get parentsUnlink;
+
+  /// No description provided for @parentsUnlinkTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Desvincular alumno'**
+  String get parentsUnlinkTitle;
+
+  /// No description provided for @parentsLinkError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo vincular el alumno'**
+  String get parentsLinkError;
+
+  /// No description provided for @parentsUnlinkError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo desvincular el alumno'**
+  String get parentsUnlinkError;
+
   /// No description provided for @studentsFormFullname.
   ///
   /// In es, this message translates to:

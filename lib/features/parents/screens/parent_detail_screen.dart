@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/avatar.dart';
 import '../../../core/widgets/confirm_dialog.dart';
@@ -16,8 +17,10 @@ import '../../../l10n/app_localizations.dart';
 import '../../../l10n/l10n.dart';
 import '../../auth/domain/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../students/domain/student_model.dart';
 import '../domain/parent_model.dart';
 import '../providers/parent_provider.dart';
+import 'widgets/link_student_sheet.dart';
 import 'widgets/parent_card.dart';
 
 class ParentDetailScreen extends ConsumerWidget {
@@ -105,6 +108,8 @@ class ParentDetailScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  _ParentLinkedStudentsSection(parentId: parentId),
                 ],
               ),
             ),
@@ -260,5 +265,250 @@ class ParentDetailActions extends ConsumerWidget {
         SnackBar(content: Text(l10n.commonDeleteError)),
       );
     }
+  }
+}
+
+/// Sección “Alumnos vinculados” del detalle.
+///
+/// Lee `parentStudentsProvider(parentId)` y, para staff, permite vincular
+/// (abre [LinkStudentSheet]) y desvincular (con confirmación destructiva).
+class _ParentLinkedStudentsSection extends ConsumerStatefulWidget {
+  final String parentId;
+
+  const _ParentLinkedStudentsSection({required this.parentId});
+
+  @override
+  ConsumerState<_ParentLinkedStudentsSection> createState() =>
+      _ParentLinkedStudentsSectionState();
+}
+
+class _ParentLinkedStudentsSectionState
+    extends ConsumerState<_ParentLinkedStudentsSection> {
+  String? _unlinkingId;
+
+  Future<void> _openLinkSheet() async {
+    final l10n = context.l10n;
+    final linked = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => LinkStudentSheet(parentId: widget.parentId),
+    );
+    if (linked != true || !mounted) return;
+
+    ref.invalidate(parentStudentsProvider(widget.parentId));
+    ref.invalidate(parentDetailProvider(widget.parentId));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.parentsLinked)),
+    );
+  }
+
+  Future<void> _unlink(StudentModel student) async {
+    if (_unlinkingId != null) return;
+
+    final l10n = context.l10n;
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l10n.parentsUnlinkTitle,
+      message: l10n.commonDeleteMessage,
+      confirmLabel: l10n.parentsUnlink,
+      cancelLabel: l10n.commonCancel,
+      destructive: true,
+    );
+    if (!confirmed || !mounted) return;
+
+    setState(() => _unlinkingId = student.id);
+    try {
+      await ref.read(parentRepositoryProvider).unlinkStudent(
+            widget.parentId,
+            student.id,
+          );
+      if (!mounted) return;
+      setState(() => _unlinkingId = null);
+      ref.invalidate(parentStudentsProvider(widget.parentId));
+      ref.invalidate(parentDetailProvider(widget.parentId));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.parentsUnlinked)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _unlinkingId = null);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.parentsUnlinkError)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final canManageParents =
+        ref.watch(authProvider).user?.canManageParents ?? false;
+    final studentsAsync = ref.watch(parentStudentsProvider(widget.parentId));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.parentsLinkedStudents.toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.6,
+                  color: AppColors.sectionLabel,
+                ),
+              ),
+            ),
+            if (canManageParents)
+              TextButton.icon(
+                key: const Key('parent-link-student'),
+                onPressed: _openLinkSheet,
+                icon: const Icon(PhosphorIconsRegular.plus, size: 14),
+                label: Text(l10n.parentsLinkStudent),
+                style: TextButton.styleFrom(
+                  foregroundColor: AppColors.accentFor(isDark),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  textStyle: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        studentsAsync.when(
+          loading: () => const SizedBox(
+            height: 100,
+            child: ListShimmer(itemCount: 2, itemHeight: 44),
+          ),
+          error: (error, _) => ErrorView(
+            message: l10n.studentsLoadError,
+            detail: error.toString(),
+            onRetry: () =>
+                ref.invalidate(parentStudentsProvider(widget.parentId)),
+          ),
+          data: (students) {
+            if (students.isEmpty) {
+              return AppCard(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 16,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      PhosphorIconsRegular.userMinus,
+                      size: 18,
+                      color: AppColors.mutedFor(isDark),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        l10n.parentsNoStudents,
+                        style: AppTypography.bodyMedium.copyWith(
+                          color: AppColors.mutedFor(isDark),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return Column(
+              children: [
+                for (final student in students) ...[
+                  _LinkedStudentRow(
+                    student: student,
+                    isUnlinking: _unlinkingId == student.id,
+                    onUnlink: canManageParents ? () => _unlink(student) : null,
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _LinkedStudentRow extends StatelessWidget {
+  final StudentModel student;
+  final bool isUnlinking;
+  final VoidCallback? onUnlink;
+
+  const _LinkedStudentRow({
+    required this.student,
+    required this.isUnlinking,
+    this.onUnlink,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return AppCard(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Row(
+        children: [
+          AppAvatar(name: student.fullname, size: 40),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  student.fullname,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTypography.titleSmall.copyWith(
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
+                  ),
+                ),
+                if (student.year.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    student.year,
+                    style: AppTypography.bodySmall.copyWith(
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.lightTextSecondary,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          if (onUnlink != null)
+            IconButton(
+              key: Key('parent-unlink-${student.id}'),
+              tooltip: context.l10n.parentsUnlink,
+              onPressed: isUnlinking ? null : onUnlink,
+              icon: isUnlinking
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(
+                      PhosphorIconsRegular.linkBreak,
+                      size: 18,
+                      color: AppColors.error,
+                    ),
+            ),
+        ],
+      ),
+    );
   }
 }

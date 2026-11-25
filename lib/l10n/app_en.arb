@@ -212,6 +212,17 @@
       }
     }
   },
+  "parentsLinkedStudents": "Linked students",
+  "parentsNoStudents": "No linked students",
+  "parentsLinkStudent": "Link student",
+  "parentsLinkStudentTitle": "Link student",
+  "parentsLinkStudentSearch": "Search students...",
+  "parentsLinked": "Student linked",
+  "parentsUnlinked": "Student unlinked",
+  "parentsUnlink": "Unlink",
+  "parentsUnlinkTitle": "Unlink student",
+  "parentsLinkError": "Could not link the student",
+  "parentsUnlinkError": "Could not unlink the student",
   "studentsFormFullname": "Full name",
   "studentsFormEmail": "Email",
   "studentsFormYear": "Year",

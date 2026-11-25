@@ -309,6 +309,17 @@
       }
     }
   },
+  "parentsLinkedStudents": "Alumnos vinculados",
+  "parentsNoStudents": "Sin alumnos vinculados",
+  "parentsLinkStudent": "Vincular alumno",
+  "parentsLinkStudentTitle": "Vincular alumno",
+  "parentsLinkStudentSearch": "Buscar alumnos...",
+  "parentsLinked": "Alumno vinculado",
+  "parentsUnlinked": "Alumno desvinculado",
+  "parentsUnlink": "Desvincular",
+  "parentsUnlinkTitle": "Desvincular alumno",
+  "parentsLinkError": "No se pudo vincular el alumno",
+  "parentsUnlinkError": "No se pudo desvincular el alumno",
   "studentsFormFullname": "Nombre completo",
   "studentsFormEmail": "Correo electrónico",
   "studentsFormYear": "Año",

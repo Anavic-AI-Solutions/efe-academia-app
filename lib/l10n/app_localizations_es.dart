@@ -669,6 +669,39 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get parentsLinkedStudents => 'Alumnos vinculados';
+
+  @override
+  String get parentsNoStudents => 'Sin alumnos vinculados';
+
+  @override
+  String get parentsLinkStudent => 'Vincular alumno';
+
+  @override
+  String get parentsLinkStudentTitle => 'Vincular alumno';
+
+  @override
+  String get parentsLinkStudentSearch => 'Buscar alumnos...';
+
+  @override
+  String get parentsLinked => 'Alumno vinculado';
+
+  @override
+  String get parentsUnlinked => 'Alumno desvinculado';
+
+  @override
+  String get parentsUnlink => 'Desvincular';
+
+  @override
+  String get parentsUnlinkTitle => 'Desvincular alumno';
+
+  @override
+  String get parentsLinkError => 'No se pudo vincular el alumno';
+
+  @override
+  String get parentsUnlinkError => 'No se pudo desvincular el alumno';
+
+  @override
   String get studentsFormFullname => 'Nombre completo';
 
   @override

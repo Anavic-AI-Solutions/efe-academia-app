@@ -668,6 +668,39 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get parentsLinkedStudents => 'Linked students';
+
+  @override
+  String get parentsNoStudents => 'No linked students';
+
+  @override
+  String get parentsLinkStudent => 'Link student';
+
+  @override
+  String get parentsLinkStudentTitle => 'Link student';
+
+  @override
+  String get parentsLinkStudentSearch => 'Search students...';
+
+  @override
+  String get parentsLinked => 'Student linked';
+
+  @override
+  String get parentsUnlinked => 'Student unlinked';
+
+  @override
+  String get parentsUnlink => 'Unlink';
+
+  @override
+  String get parentsUnlinkTitle => 'Unlink student';
+
+  @override
+  String get parentsLinkError => 'Could not link the student';
+
+  @override
+  String get parentsUnlinkError => 'Could not unlink the student';
+
+  @override
   String get studentsFormFullname => 'Full name';
 
   @override
